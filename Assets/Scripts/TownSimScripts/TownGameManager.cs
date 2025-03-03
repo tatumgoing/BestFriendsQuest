@@ -38,6 +38,8 @@ public class TownGameManager : MonoBehaviour
     public GameObject neighborhoodUI;
     public GameObject neighborhood;
 
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -76,6 +78,7 @@ public class TownGameManager : MonoBehaviour
 
         //delete later
         MakeCharacterHouses();
+
 
     }
 
@@ -211,6 +214,8 @@ public class TownGameManager : MonoBehaviour
             GameObject newHouse = Instantiate(houseButtonPrefab, houseGrid.transform);
             newHouse.GetComponent<Button>().onClick.AddListener(() => OpenHouse(character));
             newHouse.GetComponentInChildren<TMP_Text>().text = character.characterName;
+
+            newHouse.GetComponentInChildren<Image>().sprite= character.characterIcon;
 
             GameObject newHouseMenu = Instantiate(houseMenuPrefab, houseMenuUI.transform);
             newHouseMenu.SetActive(false);

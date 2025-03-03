@@ -22,4 +22,12 @@ public class CharacterData
     [Header("House")]
     public GameObject house;
 
+    [Header("Icon")]
+    public Sprite characterIcon;
+
+    public void UpdateIcon(Sprite icon)
+    {
+        characterIcon = icon;
+    }
+
 }
