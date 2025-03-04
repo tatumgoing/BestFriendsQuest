@@ -8,11 +8,20 @@ public class MinigameManager : MonoBehaviour
 {
     public TownGameManager gameManager;
 
+    public List<GameObject> gameScenes = new List<GameObject>();
+    private int currentScene;
+
     [Header("Character Select")]
     public CharacterData selectedCharacter;
     public GameObject characterButtonPrefab;
     public GameObject characterSelectionGrid;
 
+    public GameObject confirmWindow;
+    public TMP_Text windowText;
+    private bool confirmWindowVisible = false;
+
+    [Header("Cooking Minigame")]
+    public GameObject tempIcon;
 
 
     // Start is called before the first frame update
@@ -35,7 +44,6 @@ public class MinigameManager : MonoBehaviour
             GameObject newIcon = Instantiate(characterButtonPrefab, characterSelectionGrid.transform);
             newIcon.GetComponent<Button>().onClick.AddListener(() => SelectCharacter(character));
             newIcon.GetComponentInChildren<Image>().sprite = character.characterIcon;
-
         }
 
 
@@ -45,5 +53,32 @@ public class MinigameManager : MonoBehaviour
     
         selectedCharacter = character;
 
+    }
+
+    public void NextMinigameScene()
+    {
+        gameScenes[currentScene].gameObject.SetActive(false);
+
+        currentScene++;
+
+        gameScenes[currentScene].gameObject.SetActive(true);
+
+        tempIcon.GetComponent<Image>().sprite= selectedCharacter.characterIcon;
+    }
+
+    public void ToggleConfirmWindow()
+    {            
+        windowText.text = "Start cooking with " + selectedCharacter.characterName + "?";
+
+        if (confirmWindowVisible)
+        {
+            confirmWindow.SetActive(false);
+            confirmWindowVisible= !confirmWindowVisible;
+        }
+        else if (!confirmWindowVisible)
+        {
+            confirmWindow.SetActive(true);
+            confirmWindowVisible = !confirmWindowVisible;
+        }
     }
 }
