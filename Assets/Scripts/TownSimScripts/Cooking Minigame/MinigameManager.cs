@@ -22,6 +22,10 @@ public class MinigameManager : MonoBehaviour
 
     [Header("Cooking Minigame")]
     public GameObject tempIcon;
+    public MinigameTimer currentTimer;
+
+    [Header("Scoring")]
+    public List<float> minigameScores = new List<float>();
 
 
     // Start is called before the first frame update
@@ -64,6 +68,13 @@ public class MinigameManager : MonoBehaviour
         gameScenes[currentScene].gameObject.SetActive(true);
 
         tempIcon.GetComponent<Image>().sprite= selectedCharacter.characterIcon;
+
+        //assign new variables, could be unique method
+        if (gameScenes[currentScene].GetComponentInChildren<MinigameTimer>() != null) {
+
+            currentTimer = gameScenes[currentScene].GetComponentInChildren<MinigameTimer>();
+
+        }
     }
 
     public void ToggleConfirmWindow()
@@ -81,4 +92,19 @@ public class MinigameManager : MonoBehaviour
             confirmWindowVisible = !confirmWindowVisible;
         }
     }
+
+    public void TotalScore(float newScore)
+    {
+        Debug.Log("Totalling Score");
+        minigameScores.Add(newScore);
+        StartCoroutine(StartNextMinigameDelay());
+    }
+
+    IEnumerator StartNextMinigameDelay()
+    {
+        yield return new WaitForSeconds(3);
+
+        NextMinigameScene();
+    }
+
 }

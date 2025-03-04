@@ -11,7 +11,7 @@ public class TargetZone : MonoBehaviour
     public float height;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
          width = GetComponent<RectTransform>().sizeDelta.x;
          height = GetComponent<RectTransform>().sizeDelta.y;
@@ -25,6 +25,8 @@ public class TargetZone : MonoBehaviour
 
     public void SetBounds(float center, bool isHorizontal)
     {
+
+        Debug.Log("Setting Bounds");
         if (isHorizontal)
         {
             upperBound = center + (width / 2);

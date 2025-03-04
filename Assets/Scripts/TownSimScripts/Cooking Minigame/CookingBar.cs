@@ -4,9 +4,14 @@ using UnityEngine;
 
 public class CookingBar : MonoBehaviour
 {
+    public MinigameManager manager;
+
     public bool isHorizontal;
 
     public List<TargetZone> targets = new List<TargetZone>();
+
+    public float addScore;
+    public float penaltyScore;
 
     [Header("Icon")]
     public GameObject barIcon;
@@ -54,20 +59,40 @@ public class CookingBar : MonoBehaviour
             barIcon.GetComponent<RectTransform>().anchoredPosition = new Vector2(iconPosX, iconPosY);
         }
 
+        if (Input.GetKeyDown("space"))
+        {
+            if (CheckTargets())
+            {
+                manager.currentTimer.AddProgress(addScore); 
+            }
+            else
+            {
+                manager.currentTimer.RemoveProgress(penaltyScore);
+            }
 
-        //if (isHorizontal) { 
-           
-        //}
-        //else
-        //{
-        //    if (iconPosX < GetComponent<RectTransform>().anchoredPosition.x && flipped == false) { 
-        //        //move towards firstpoint
-        //    }
-        //    else if( iconPosY >= GetComponent<RectTransform>().anchoredPosition.x  && flipped == false)
-        //    {   
-        //        //flip that thang around
-        //    }
-        //}
-
+            Debug.Log(CheckTargets());
+        }
     }
+
+
+    public bool CheckTargets()
+    {
+        bool inRange = false;
+        foreach (TargetZone target in targets)
+        {
+            if (isHorizontal)
+            {
+                if (iconPosX >= target.lowerBound && iconPosX <= target.upperBound)
+                {
+                    inRange = true;
+                }
+            }
+        }
+
+        Debug.Log(inRange);
+
+        return inRange;
+    }
+
+
 }
