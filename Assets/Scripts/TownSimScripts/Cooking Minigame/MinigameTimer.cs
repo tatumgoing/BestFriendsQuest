@@ -30,6 +30,8 @@ public class MinigameTimer : MonoBehaviour
 
         startTimer = true;
 
+        progressBar.GetComponent<RectTransform>().sizeDelta = new Vector2(progressBar.GetComponent<RectTransform>().sizeDelta.x, 0);
+
     }
 
     // Update is called once per frame
@@ -60,7 +62,7 @@ public class MinigameTimer : MonoBehaviour
         {
             progressScore = 100;
         }
-        Debug.Log(progressScore);
+        UpdateProgress();
     }
 
     public void RemoveProgress(float score) 
@@ -72,7 +74,14 @@ public class MinigameTimer : MonoBehaviour
         {
             progressScore = 0;
         }
-        Debug.Log(progressScore);
+        UpdateProgress();
+    }
+
+    public void UpdateProgress()
+    {
+        float newHeight = progressBar.transform.parent.GetComponent<RectTransform>().sizeDelta.y * (progressScore / 100);
+
+        progressBar.GetComponent<RectTransform>().sizeDelta = new Vector2(progressBar.GetComponent<RectTransform>().sizeDelta.x, newHeight);
     }
 
 }

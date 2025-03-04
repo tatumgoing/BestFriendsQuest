@@ -86,7 +86,7 @@ public class MinigameManager : MonoBehaviour
             confirmWindow.SetActive(false);
             confirmWindowVisible= !confirmWindowVisible;
         }
-        else if (!confirmWindowVisible)
+        else if (!confirmWindowVisible && selectedCharacter.characterName!= "")
         {
             confirmWindow.SetActive(true);
             confirmWindowVisible = !confirmWindowVisible;
