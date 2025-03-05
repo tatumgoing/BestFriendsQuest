@@ -2,13 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CookingBar : MonoBehaviour
+public class ChopMinigame : MonoBehaviour
 {
     public MinigameManager manager;
+
+    public GameObject cookingBar;
 
     public bool isHorizontal;
 
     public List<TargetZone> targets = new List<TargetZone>();
+
+    [Header("Scoring")]
 
     public float addScore;
     public float penaltyScore;
@@ -32,18 +36,15 @@ public class CookingBar : MonoBehaviour
         iconPosX = barIcon.GetComponent<RectTransform>().anchoredPosition.x;
         iconPosY = barIcon.GetComponent<RectTransform>().anchoredPosition.y;
 
-        //var rectTransform = GetComponent<RectTransform>();
-        //float width = rectTransform.sizeDelta.x;
-        //float height = rectTransform.sizeDelta.y;
 
         if (isHorizontal)
         {
-            amplitude = GetComponent<RectTransform>().sizeDelta.x /2 ;
-            shift = GetComponent<RectTransform>().anchoredPosition.x;
+            amplitude = cookingBar.GetComponent<RectTransform>().sizeDelta.x /2 ;
+            shift = cookingBar.GetComponent<RectTransform>().anchoredPosition.x;
 
         }
 
-        foreach (TargetZone target in GetComponentsInChildren<TargetZone>()) { 
+        foreach (TargetZone target in cookingBar.GetComponentsInChildren<TargetZone>()) { 
             targets.Add(target);
             target.SetBounds(target.GetComponent<RectTransform>().anchoredPosition.x, isHorizontal);
         }
