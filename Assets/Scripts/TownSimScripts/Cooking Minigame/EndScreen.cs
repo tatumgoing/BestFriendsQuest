@@ -31,6 +31,7 @@ public class EndScreen : MonoBehaviour
 
     private void DisplayScore(float score)
     {
+        score = Mathf.Round(score);
         finalScore.text = "Final Score: " + score.ToString();
     }
 }

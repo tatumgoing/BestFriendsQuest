@@ -1,3 +1,4 @@
+using MyBox;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,10 +6,10 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Recipe", menuName = "Recipe", order = 1)]
 public class Recipe : ScriptableObject
 {
-    public Sprite icon;
+    public Sprite Icon;
 
     public string Name;
 
-    public List<GameObject> minigames= new List<GameObject> ();
+    [DisplayInspector] public List<GameObject> Minigames= new List<GameObject> ();
 
 }

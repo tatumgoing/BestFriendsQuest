@@ -7,6 +7,7 @@ using TMPro;
 public class MinigameManager : MonoBehaviour
 {
     public TownGameManager gameManager;
+    public GameObject minigameUIContainer;
 
     public List<GameObject> gameScenes = new List<GameObject>();
     private int currentScene;
@@ -20,6 +21,12 @@ public class MinigameManager : MonoBehaviour
     public TMP_Text windowText;
     private bool confirmWindowVisible = false;
 
+    [Header("Recipes")]
+    public List<Recipe> allRecipes = new List<Recipe>();
+    public GameObject recipeGrid;
+    public GameObject recipeButtonPrefab;
+    public Recipe selectedRecipe;
+
     [Header("Cooking Minigame")]
     public GameObject tempIcon;
     public MinigameTimer currentTimer;
@@ -27,11 +34,15 @@ public class MinigameManager : MonoBehaviour
     [Header("Scoring")]
     public List<float> minigameScores = new List<float>();
 
+    [Header("End Screen")]
+    public GameObject endScreen;
+
 
     // Start is called before the first frame update
     void Start()
     {
         GenerateCharacterSelect();
+        GenerateRecipeSelect();
     }
 
     // Update is called once per frame
@@ -42,6 +53,11 @@ public class MinigameManager : MonoBehaviour
 
     public void GenerateCharacterSelect()
     {
+        foreach (Transform child in characterSelectionGrid.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
         foreach (CharacterData character in gameManager.characterManager.allCharacters)
         {
             //make their icons dawg
@@ -53,10 +69,46 @@ public class MinigameManager : MonoBehaviour
 
     }
 
+    public void GenerateRecipeSelect()
+    {
+        foreach (Transform child in recipeGrid.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        foreach (Recipe recipe in allRecipes)
+        {
+            //make their icons dawg
+            GameObject newIcon = Instantiate(recipeButtonPrefab, recipeGrid.transform);
+            newIcon.GetComponent<Button>().onClick.AddListener(() => SelectRecipe(recipe));
+            newIcon.GetComponentInChildren<Image>().sprite = recipe.Icon;
+            newIcon.GetComponentInChildren<TMP_Text>().text = recipe.Name;
+        }
+
+
+    }
+
     private void SelectCharacter(CharacterData character) { 
     
         selectedCharacter = character;
 
+    }
+
+    private void SelectRecipe(Recipe recipe)
+    {
+        selectedRecipe = recipe;
+
+        foreach (GameObject minigame in recipe.Minigames) {
+
+            var newMinigame = Instantiate(minigame, minigameUIContainer.transform);
+            newMinigame.SetActive(false);
+            gameScenes.Add(newMinigame);
+
+        }
+
+        gameScenes.Add(endScreen);
+
+        NextMinigameScene();
     }
 
     public void NextMinigameScene()
@@ -67,13 +119,17 @@ public class MinigameManager : MonoBehaviour
 
         gameScenes[currentScene].gameObject.SetActive(true);
 
-        tempIcon.GetComponent<Image>().sprite= selectedCharacter.characterIcon;
-
         //assign new variables, could be unique method
         if (gameScenes[currentScene].GetComponentInChildren<MinigameTimer>() != null) {
 
             currentTimer = gameScenes[currentScene].GetComponentInChildren<MinigameTimer>();
 
+        }
+
+        if (gameScenes[currentScene].GetComponentInChildren<ChopMinigame>() != null)
+        {
+            gameScenes[currentScene].GetComponentInChildren<ChopMinigame>().tempIcon.GetComponent<Image>().sprite = selectedCharacter.characterIcon;
+            //ew
         }
     }
 

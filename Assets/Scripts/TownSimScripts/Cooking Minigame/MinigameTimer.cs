@@ -32,6 +32,11 @@ public class MinigameTimer : MonoBehaviour
 
         progressBar.GetComponent<RectTransform>().sizeDelta = new Vector2(progressBar.GetComponent<RectTransform>().sizeDelta.x, 0);
 
+
+        //BAD BAD BAD KILL KILL KILL
+        minigameManager = FindFirstObjectByType<MinigameManager>();
+
+
     }
 
     // Update is called once per frame

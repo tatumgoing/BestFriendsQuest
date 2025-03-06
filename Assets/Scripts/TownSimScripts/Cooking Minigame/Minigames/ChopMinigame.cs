@@ -12,6 +12,8 @@ public class ChopMinigame : MonoBehaviour
 
     public List<TargetZone> targets = new List<TargetZone>();
 
+    public GameObject tempIcon;
+
     [Header("Scoring")]
 
     public float addScore;
@@ -33,6 +35,10 @@ public class ChopMinigame : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //BAD BAD BAD BAD BAD KILL
+        manager= FindFirstObjectByType<MinigameManager>();
+
+
         iconPosX = barIcon.GetComponent<RectTransform>().anchoredPosition.x;
         iconPosY = barIcon.GetComponent<RectTransform>().anchoredPosition.y;
 
