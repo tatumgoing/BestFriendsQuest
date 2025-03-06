@@ -134,22 +134,25 @@ public class MinigameManager : MonoBehaviour
     }
 
     public void ToggleConfirmWindow()
-    {            
-        windowText.text = "Start cooking with " + selectedCharacter.characterName + "?";
+    {
+        if (selectedCharacter != null)
+        {
+            if (confirmWindowVisible)
+            {
+                confirmWindow.SetActive(false);
+                confirmWindowVisible = !confirmWindowVisible;
+            }
+            else if (!confirmWindowVisible && selectedCharacter.characterName != "")
+            {
+                windowText.text = "Start cooking with " + selectedCharacter.characterName + "?";
 
-        if (confirmWindowVisible)
-        {
-            confirmWindow.SetActive(false);
-            confirmWindowVisible= !confirmWindowVisible;
-        }
-        else if (!confirmWindowVisible && selectedCharacter.characterName!= "")
-        {
-            confirmWindow.SetActive(true);
-            confirmWindowVisible = !confirmWindowVisible;
+                confirmWindow.SetActive(true);
+                confirmWindowVisible = !confirmWindowVisible;
+            }
         }
     }
 
-    public void TotalScore(float newScore)
+        public void TotalScore(float newScore)
     {
         Debug.Log("Totalling Score");
         minigameScores.Add(newScore);
@@ -161,6 +164,30 @@ public class MinigameManager : MonoBehaviour
         yield return new WaitForSeconds(3);
 
         NextMinigameScene();
+    }
+
+    public void RestartGame()
+    {
+        ToggleConfirmWindow();
+
+        gameScenes[currentScene].gameObject.SetActive(false);
+
+        List<GameObject> gameScenesTemp = new List<GameObject>();
+
+        gameScenesTemp.Add(gameScenes[0]);
+        gameScenesTemp.Add(gameScenes[1]);
+
+        gameScenes = gameScenesTemp;
+
+        gameScenes[0].gameObject.SetActive(true);
+
+        currentScene = 0;
+
+        selectedCharacter = null;
+        selectedRecipe = null;
+
+        minigameScores.Clear();
+
     }
 
 }

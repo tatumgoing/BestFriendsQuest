@@ -77,7 +77,7 @@ public class ChopMinigame : MonoBehaviour
                 manager.currentTimer.RemoveProgress(penaltyScore);
             }
 
-            Debug.Log(CheckTargets());
+            //Debug.Log(CheckTargets());
         }
     }
 
@@ -96,7 +96,7 @@ public class ChopMinigame : MonoBehaviour
             }
         }
 
-        Debug.Log(inRange);
+        //Debug.Log(inRange);
 
         return inRange;
     }
