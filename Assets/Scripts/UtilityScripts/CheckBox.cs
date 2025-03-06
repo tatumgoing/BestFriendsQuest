@@ -11,7 +11,7 @@ public class CheckBox : MonoBehaviour
     [SerializeField] private Image _checkboxImg;
     [SerializeField] private bool _checked = false;
 
-    [SerializeField, ConditionalField(nameof(_manual), true)] private UnityEvent<bool> _onChange;
+    [ConditionalField(nameof(_manual), true)] public UnityEvent<bool> OnChange;
     [SerializeField] private bool _manual;
     [SerializeField, ConditionalField(nameof(_manual))] private UnityEvent _onToggleOn;
     [SerializeField, ConditionalField(nameof(_manual))] private UnityEvent _onToggleOff;
@@ -36,7 +36,7 @@ public class CheckBox : MonoBehaviour
     {
         if (_checked) ToggleOff();
         else ToggleOn();
-        if (!_manual) _onChange.Invoke(_checked);
+        if (!_manual) OnChange.Invoke(_checked);
     }
 
     private void ToggleOn()
