@@ -6,6 +6,7 @@ using MyBox;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using Unity.VisualScripting;
+using System.Runtime.ExceptionServices;
 
 public enum SelectableItemDataType { GRAPHIC, GAMEOBJECT, CANVASGROUP, SPRITE}
 public enum ButtonState { NORMAL, HOVERED, SELECTED, DISABLED }
@@ -136,7 +137,7 @@ public class SelectableItemData
 
 public class SelectableItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
 { 
-    [Header("Misc")]
+    [Header("Main")]
     [SerializeField] private ClickBehavior _clickBehavior = ClickBehavior.SELECT;
 
     [Header("Hover")]
@@ -145,8 +146,10 @@ public class SelectableItem : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     [SerializeField, ConditionalField(nameof(_hasHoverCooldown))] private float _hoverCooldown = 0.05f;
     [SerializeField] private bool _hoverWhenSelected = true;
 
-    [Header("Animation")]
+    [Header("Appearance")]
     [SerializeField] private List<SelectableItemData> _data = new List<SelectableItemData>();
+
+    [Header("Animation")]
     [SerializeField] private bool _hasAnimation;
     [SerializeField, ConditionalField(nameof(_hasAnimation))] private Animator _animator;
     [SerializeField, ConditionalField(nameof(_hasAnimation))] private string _animationSelectedBool = "Selected";
