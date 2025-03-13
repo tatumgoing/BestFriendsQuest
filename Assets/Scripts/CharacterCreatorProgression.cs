@@ -9,6 +9,7 @@ public class CharacterCreatorProgression : MonoBehaviour
     [SerializeField] private GameObject _titleOptions;
     [SerializeField] private GameObject _facialOptions;
     [SerializeField] private GameObject _bodyOptions;
+    [SerializeField] private GameObject _profileOptions;
 
     private void Start()
     {
@@ -34,9 +35,16 @@ public class CharacterCreatorProgression : MonoBehaviour
         _cameraController.SetBodyDistance();
     }
 
+    public void FocusProfile()
+    {
+        HideAll();
+        _profileOptions.SetActive(true);
+    }
+
     private void HideAll()
     {
         _facialOptions.SetActive(false);
         _bodyOptions.SetActive(false);
+        _profileOptions.SetActive(false);
     }
 }
