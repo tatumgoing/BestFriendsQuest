@@ -21,7 +21,7 @@ public class TownGameManager : MonoBehaviour
     [Header ("Inventory")]
     public float currency;
     
-    public RecordsManager recordsManager;
+    public List<RecordsManager> recordsManagers = new List<RecordsManager>();
 
     [SerializeField]private List<Item> allItems = new List<Item> ();
     
@@ -60,11 +60,13 @@ public class TownGameManager : MonoBehaviour
 
     public void ChangeScene(GameObject newScene, GameObject newSceneUI)
     {
+        //Debug.Log("Change Scene Going To: " + newScene + newSceneUI);
+
         //iterates over all environments and UIs, disabling. then, enables selected environment and UI
         foreach (GameObject i in sceneList)
         {
             i.SetActive(false);
-            ViewRecords();
+            UpdateRecords();
             
 
         }
@@ -186,14 +188,19 @@ public class TownGameManager : MonoBehaviour
         ChangeCurrency(100);
     }
 
-    public void ViewRecords()
+    public void UpdateRecords()
     {
-        recordsManager.ClearRecords();
-
-        foreach (var i in items)
+        foreach (RecordsManager rManager in recordsManagers)
         {
-             recordsManager.CreateRecordItem(i.Key.Name, i.Value);
+            rManager.ClearRecords();
+
+            foreach (var i in items)
+            {
+                rManager.CreateHeldItem(i.Key.Name, i.Value);
+            }
         }
+
+        
     }
     private void MakeCharacterHouses()
     {
