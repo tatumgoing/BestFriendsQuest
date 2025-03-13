@@ -9894,15 +9894,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1679714420996306318, guid: e9b462f47ee96b447aba5e7efeda8dd9, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1679714420996306318, guid: e9b462f47ee96b447aba5e7efeda8dd9, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 264.86594
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1679714420996306318, guid: e9b462f47ee96b447aba5e7efeda8dd9, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 66.1262
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1679714420996306318, guid: e9b462f47ee96b447aba5e7efeda8dd9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -9934,11 +9934,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1679714420996306318, guid: e9b462f47ee96b447aba5e7efeda8dd9, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 132.43297
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1679714420996306318, guid: e9b462f47ee96b447aba5e7efeda8dd9, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -33.0631
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1679714420996306318, guid: e9b462f47ee96b447aba5e7efeda8dd9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -10625,17 +10625,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2603652319244235954, guid: ef41c3257ddeda44498c1dd6a28665fa, type: 3}
   m_PrefabInstance: {fileID: 6833552490186794607}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1489528067 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5726772937042829789, guid: ef41c3257ddeda44498c1dd6a28665fa, type: 3}
-  m_PrefabInstance: {fileID: 6833552490186794607}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1489528065}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1489528069
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10648,44 +10637,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 898f698a9835d194c90dd0b423be4462, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _selectOnClick: 1
-  _toggleOnClick: 0
-  _deselectOnClick: 0
-  _dontHoverWhenSelected: 0
-  _selectOnHover: 0
-  _deselectOnExit: 1
+  _clickBehavior: 1
+  _hoverBehavior: 0
   _hasHoverCooldown: 0
   _hoverCooldown: 0.05
-  _deselectOnStart: 1
-  _autoDehover: 1
+  _hoverWhenSelected: 1
   _data:
   - Name: Handle
     _type: 0
-    _target: {fileID: 1489528067}
+    _graphic: {fileID: 0}
     _useMaterials: 1
-    _normalColor: {r: 1, g: 1, b: 1, a: 1}
-    _hoveredColor: {r: 1, g: 1, b: 1, a: 1}
-    _selectedColor: {r: 1, g: 1, b: 1, a: 1}
-    _disabledColor: {r: 1, g: 1, b: 1, a: 1}
-    _normalMat: {fileID: 2100000, guid: 63dcab7f8f0a12f4fb6e6be07d815c05, type: 2}
-    _hoveredMat: {fileID: 2100000, guid: d942fec5482c71046988e09d0577f27b, type: 2}
-    _selectedMat: {fileID: 2100000, guid: 0f3992b290d59b14691586564ff58877, type: 2}
-    _disabledMat: {fileID: 0}
-    _obj: {fileID: 0}
-    _normalState: 0
-    _hoveredState: 0
-    _selectedState: 1
-    _disabledState: 0
-    _group: {fileID: 0}
-    _normalAlpha: 0.3
-    _hoveredAlpha: 0.6
-    _selectedAlpha: 1
-    _disabledAlpha: 0.2
+    _colors:
+      _normal: {r: 1, g: 1, b: 1, a: 1}
+      _hovered: {r: 1, g: 1, b: 1, a: 1}
+      _selected: {r: 1, g: 1, b: 1, a: 1}
+      _disabled: {r: 1, g: 1, b: 1, a: 1}
+    _materials:
+      _normal: {fileID: 0}
+      _hovered: {fileID: 0}
+      _selected: {fileID: 0}
+      _disabled: {fileID: 0}
+    _gameObjectTarget: {fileID: 0}
+    _activeStates:
+      _normal: 0
+      _hovered: 0
+      _selected: 0
+      _disabled: 0
+    _canvasGroup: {fileID: 0}
+    _alphaValues:
+      _normal: 1
+      _hovered: 1
+      _selected: 1
+      _disabled: 1
     _spriteTarget: {fileID: 0}
-    _normalSprite: {fileID: 0}
-    _hoveredSprite: {fileID: 0}
-    _selectedSprite: {fileID: 0}
-    _disabledSprite: {fileID: 0}
+    _sprites:
+      _normal: {fileID: 0}
+      _hovered: {fileID: 0}
+      _selected: {fileID: 0}
+      _disabled: {fileID: 0}
     _showGraphicSettings: 1
     _showGraphicColorSettings: 0
     _showGOSettings: 0
@@ -10693,8 +10682,11 @@ MonoBehaviour:
     _showSpriteSettings: 0
   _hasAnimation: 0
   _animator: {fileID: 0}
-  _animationBool: Selected
+  _animationSelectedBool: Selected
+  _animationHoveredBool: Hovered
+  _animationDisabledBool: Disabled
   _hoverSound: {fileID: 0}
+  _mouseDownSound: {fileID: 0}
   _selectSound: {fileID: 0}
   _deselectSound: {fileID: 0}
   OnSelect:
@@ -10709,8 +10701,7 @@ MonoBehaviour:
   OnDeselect:
     m_PersistentCalls:
       m_Calls: []
-  _printSelections: 0
-  _disabled: 0
+  _debugStateChange: 0
 --- !u!1001 &1509146125
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12825,7 +12816,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2116218513
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12994,15 +12985,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1679714420996306318, guid: e9b462f47ee96b447aba5e7efeda8dd9, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1679714420996306318, guid: e9b462f47ee96b447aba5e7efeda8dd9, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 264.86594
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1679714420996306318, guid: e9b462f47ee96b447aba5e7efeda8dd9, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 66.1262
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1679714420996306318, guid: e9b462f47ee96b447aba5e7efeda8dd9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -13034,11 +13025,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1679714420996306318, guid: e9b462f47ee96b447aba5e7efeda8dd9, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 478.3589
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1679714420996306318, guid: e9b462f47ee96b447aba5e7efeda8dd9, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -33.0631
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1679714420996306318, guid: e9b462f47ee96b447aba5e7efeda8dd9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

@@ -66,7 +66,7 @@ public class LayersMenuController : MonoBehaviour
     {
         foreach (var b in _otherTabButtons) {
             b.gameObject.SetActive(_featureController.HasCurrent());
-            b.SetEnabled(_featureController.HasCurrent());
+            b.SetDisabled(!_featureController.HasCurrent());
         }
     }
 
@@ -97,7 +97,12 @@ public class LayersMenuController : MonoBehaviour
 
     public void Select(int siblingIndex, FeatureObj feature)
     {
-        foreach (var l in _spawnedLayers) l.GetComponent<SelectableItem>().SetState(l.transform.GetSiblingIndex() == siblingIndex);
+        foreach (var l in _spawnedLayers) {
+            bool selected = l.transform.GetSiblingIndex() == siblingIndex;
+            var button = l.GetComponent<SelectableItem>();
+            if (selected) button.SetVisuals(ButtonState.SELECTED);
+            else button.SetVisuals(ButtonState.NORMAL);
+        }
         _featureController.Select(feature);
     }
 }
