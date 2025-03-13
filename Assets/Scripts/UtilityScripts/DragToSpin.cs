@@ -50,5 +50,8 @@ public class DragToSpin : MonoBehaviour
         bool hit = Physics.Raycast(raycast, out var hitInfo);
         if (hit) _hovered = hitInfo.collider.GetComponentInParent<DragToSpin>() == this;
         else _hovered = false;
+
+        //print("hit: " + hit);
+        //if (hit) print("hitData: " + hitInfo.collider.name);
     }
 }
