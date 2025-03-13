@@ -1,30 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class ButtonGeneral : MonoBehaviour
+public class ButtonGeneral : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
-    // Start is called before the first frame update
-    void Start()
+
+    public bool buttonPressed;
+
+    public void OnPointerDown(PointerEventData eventData)
     {
-        
+        GetComponent<RectTransform>().anchoredPosition = new Vector2(GetComponent<RectTransform>().anchoredPosition.x, GetComponent<RectTransform>().anchoredPosition.y - 15);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void OnPointerUp(PointerEventData eventData)
     {
-        
-    }
+        GetComponent<RectTransform>().anchoredPosition = new Vector2(GetComponent<RectTransform>().anchoredPosition.x, GetComponent<RectTransform>().anchoredPosition.y + 15);
 
-    public void OnPointerDown()
-    {
-        GetComponent<RectTransform>().anchoredPosition = new Vector2(transform.anchoredPosition.x, transform.anchoredPosition.x -15);
-
-    }
-
-    public void OnPointerUp()
-    {
-        GetComponent<RectTransform>().anchoredPosition = new Vector2(transform.anchoredPosition.x, transform.anchoredPosition.x + 15);
     }
 
 } 
