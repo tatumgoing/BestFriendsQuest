@@ -194,9 +194,25 @@ public class TownGameManager : MonoBehaviour
         {
             rManager.ClearRecords();
 
-            foreach (var i in items)
+            foreach (Item i in allItems)
             {
-                rManager.CreateHeldItem(i.Key.Name, i.Value);
+                //if held
+                if (items.ContainsKey(i) && items[i] != 0 && i.unlocked)
+                {
+                    rManager.CreateHeldItem(i.Name, items[i]);
+                }
+                //if previously held, but count = 0
+                else if (i.unlocked)
+                {
+                    rManager.CreateUnheldItem(i.Name, 0);
+                }
+                else
+                {
+                    rManager.CreateLockedItem(i.Name);
+                }
+
+                // if never held
+
             }
         }
 

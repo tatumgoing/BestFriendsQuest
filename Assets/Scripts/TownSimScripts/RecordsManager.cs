@@ -47,15 +47,25 @@ public class RecordsManager : MonoBehaviour
 
     public void CreateUnheldItem(string itemName, int itemCount)
     {
-        ItemBanner newBanner = Instantiate(unheldItem, this.transform);
-        newBanner.UpdateName(itemName);
-        newBanner.UpdateCount(itemCount);
+        if (isRecords) { 
+            CreateHeldItem(itemName, itemCount);
+        }
+        else
+        {
+            ItemBanner newBanner = Instantiate(unheldItem, this.transform);
+            newBanner.UpdateName(itemName);
+            newBanner.UpdateCount(itemCount);
+        }
     }
 
     public void CreateLockedItem(string itemName) {
+
+        if (isRecords) {
+            ItemBanner newBanner = Instantiate(lockedItem, this.transform);
+            newBanner.UpdateName("???");
+            newBanner.UpdateCount(0);
+        }
         
-        ItemBanner newBanner = Instantiate(lockedItem, this.transform);
-        newBanner.UpdateName("???");
         
     }
 
