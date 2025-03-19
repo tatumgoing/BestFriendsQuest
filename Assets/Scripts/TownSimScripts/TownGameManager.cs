@@ -234,20 +234,36 @@ public class TownGameManager : MonoBehaviour
         foreach (CharacterData character in characterManager.allCharacters)
         {
             //make their house dawg
-            GameObject newHouse = Instantiate(houseButtonPrefab, houseGrid.transform);
-            newHouse.GetComponent<Button>().onClick.AddListener(() => OpenHouse(character));
-            newHouse.GetComponentInChildren<TMP_Text>().text = character.characterName;
 
-            newHouse.GetComponentInChildren<Image>().sprite= character.characterIcon;
+            GameObject newHouseButton = Instantiate(houseButtonPrefab, houseGrid.transform);
 
-            GameObject newHouseMenu = Instantiate(houseMenuPrefab, houseMenuUI.transform);
-            newHouseMenu.SetActive(false);
-            character.house = newHouseMenu;
+            CharacterHouseButton newHouseButtonScript = newHouseButton.GetComponent<CharacterHouseButton>();
+            //set parent, label, and sprite
+            newHouseButtonScript.SetHouseLabel(character.characterName);
+            newHouseButtonScript.SetHouseSprite(character.characterIcon);
+            
+            
+            newHouseButton.GetComponent<Button>().onClick.AddListener(() => OpenHouse(character));
+
+
+            // make dictionary for houses and buttons maybe
+
+
+
+            GameObject newHouse = Instantiate(houseMenuPrefab, houseMenuUI.transform);
+            newHouse.SetActive(false);
+
+            CharacterHouse newHouseScript = newHouse.GetComponent<CharacterHouse>();
+
+            //now they reference each other yay
+
+            newHouseScript.SetHouseCharacter(character);
+            character.house = newHouse;
 
             //sets back button
-            newHouseMenu.GetComponentInChildren<NavigationButton>().newScene = neighborhood;
-            newHouseMenu.GetComponentInChildren<NavigationButton>().newSceneUI = neighborhoodUI;
-            newHouseMenu.GetComponentInChildren<NavigationButton>().gameManager = this;
+            newHouse.GetComponentInChildren<NavigationButton>().newScene = neighborhood;
+            newHouse.GetComponentInChildren<NavigationButton>().newSceneUI = neighborhoodUI;
+            newHouse.GetComponentInChildren<NavigationButton>().gameManager = this;
 
 
 
