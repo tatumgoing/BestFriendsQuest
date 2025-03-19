@@ -8,6 +8,13 @@ using Unity.VisualScripting;
 
 public class TownGameManager : MonoBehaviour
 {
+    public static TownGameManager i;
+
+    private void Awake()
+    {
+        i = this;
+    }
+
     [Header("Character Manager")]
 
     public CharacterManager characterManager;
@@ -52,11 +59,6 @@ public class TownGameManager : MonoBehaviour
 
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void ChangeScene(GameObject newScene, GameObject newSceneUI)
     {

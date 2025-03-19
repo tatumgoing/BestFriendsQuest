@@ -21,9 +21,23 @@ public class CharacterManager : MonoBehaviour
         Sally.characterName = "Sally";
         Goobert.characterName = "Goobert";
 
+        //testing code to be deleted later
+
         allCharacters.Add(Johnny);
         allCharacters.Add(Sally);
-        allCharacters.Add(Goobert); 
+        allCharacters.Add(Goobert);
+
+        Johnny.happiness = 25;
+        Sally.happiness = 75;
+
+        foreach (CharacterData character in allCharacters) {
+
+            foreach (CharacterData reloCharacter in allCharacters)
+            {
+                character.CreateRelationship(reloCharacter);
+            }
+
+        }
     }
 
     // Update is called once per frame

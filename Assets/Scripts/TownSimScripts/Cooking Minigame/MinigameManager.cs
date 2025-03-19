@@ -37,6 +37,9 @@ public class MinigameManager : MonoBehaviour
     [Header("End Screen")]
     public GameObject endScreen;
 
+    public GameObject happinessMeter;
+    public Image endScreenIcon;
+
 
     // Start is called before the first frame update
     void Start()
@@ -188,6 +191,20 @@ public class MinigameManager : MonoBehaviour
 
         minigameScores.Clear();
 
+    }
+
+    public void UpdateHappinessDisplay()
+    {
+        endScreenIcon.sprite= selectedCharacter.characterIcon;
+
+        float newWidth = happinessMeter.transform.parent.GetComponent<RectTransform>().sizeDelta.x * (selectedCharacter.happiness / 100);
+        happinessMeter.GetComponent<RectTransform>().sizeDelta = new Vector2(newWidth, happinessMeter.GetComponent<RectTransform>().sizeDelta.y);
+
+    }
+
+    public void UpdateCurrencyDisplay()
+    {
+        //new currency object and prefab to proceed
     }
 
 }
