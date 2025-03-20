@@ -9,7 +9,7 @@ using TMPro;
 [System.Serializable]
 public class CharacterData 
 {
-    TownGameManager gameManager = TownGameManager.i;
+    TownGameManager gameManager;
 
     [Header("Profile")]
     public string characterName;
@@ -27,6 +27,10 @@ public class CharacterData
     [Header("Icon")]
     public Sprite characterIcon;
 
+    void Start()
+    {
+        gameManager = TownGameManager.i;
+    }
     public void UpdateIcon(Sprite icon)
     {
         characterIcon = icon;

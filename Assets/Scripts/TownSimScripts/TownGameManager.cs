@@ -40,14 +40,10 @@ public class TownGameManager : MonoBehaviour
 
     public List<GameObject> sceneList = new List<GameObject>();
     public List<GameObject> sceneUIList = new List<GameObject>();
-    public List<TMP_Text> currencyDisplays = new List<TMP_Text>();
 
     public GameObject neighborhoodUI;
     public GameObject neighborhood;
 
-
-
-    // Start is called before the first frame update
     void Start()
     {
         currency = PlayerPrefs.GetFloat("PlayerCurrency", 100);
@@ -89,10 +85,11 @@ public class TownGameManager : MonoBehaviour
     public void ChangeCurrency(float curChange)
     {
         currency += curChange;
-        foreach (TMP_Text i in currencyDisplays)
+
+        /*foreach (TMP_Text i in currencyDisplays)
         {
             i.text =  "$" + currency.ToString("F2");
-        }
+        }*/
 
         PlayerPrefs.SetFloat("PlayerCurrency", currency);
 

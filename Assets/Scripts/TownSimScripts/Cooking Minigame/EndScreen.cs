@@ -9,7 +9,7 @@ public class EndScreen : MonoBehaviour
     public TMP_Text finalScore;
 
     float tallyScore;
-    // Start is called before the first frame update
+
     void OnEnable()
     {
         
@@ -20,16 +20,14 @@ public class EndScreen : MonoBehaviour
 
         tallyScore /= manager.minigameScores.Count;
 
+        // updates currency and happiness displays instantly, add delay animation method later.
         DisplayScore(tallyScore);
+
+        manager.UpdateCurrencyDisplay();
+        manager.UpdateHappinessDisplay();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    private void DisplayScore(float score)
+       private void DisplayScore(float score)
     {
         score = Mathf.Round(score);
         finalScore.text = "Final Score: " + score.ToString();

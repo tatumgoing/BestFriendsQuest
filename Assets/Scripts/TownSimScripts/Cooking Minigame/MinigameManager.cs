@@ -155,7 +155,7 @@ public class MinigameManager : MonoBehaviour
         }
     }
 
-        public void TotalScore(float newScore)
+    public void TotalScore(float newScore)
     {
         Debug.Log("Totalling Score");
         minigameScores.Add(newScore);
