@@ -79,16 +79,16 @@ public class BoilMinigame : MonoBehaviour
     {
         if (Input.GetKey("space"))
         {
-            iconVelocity += accSpeed * Time.deltaTime;
+            iconVelocity += accSpeed;
         }
         else
         {
-            iconVelocity -= decSpeed * Time.deltaTime;
+            iconVelocity -= decSpeed;
         }
 
         iconVelocity = Mathf.Clamp(iconVelocity, minSpeed, maxSpeed);
 
-        iconPosX += iconVelocity;
+        iconPosX += iconVelocity * Time.deltaTime;
 
         iconPosX = Mathf.Clamp(iconPosX, lowerBound, upperBound);
         barIcon.GetComponent<RectTransform>().localPosition = new Vector2(iconPosX, iconPosY);
