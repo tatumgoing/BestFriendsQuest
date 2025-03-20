@@ -12,7 +12,8 @@ public class EndScreen : MonoBehaviour
 
     void OnEnable()
     {
-        
+        //calculates score
+
         foreach(float score in manager.minigameScores)
         {
             tallyScore += score;
@@ -23,8 +24,8 @@ public class EndScreen : MonoBehaviour
         // updates currency and happiness displays instantly, add delay animation method later.
         DisplayScore(tallyScore);
 
-        manager.UpdateCurrencyDisplay();
-        manager.UpdateHappinessDisplay();
+        manager.UpdateCurrencyDisplay(tallyScore);
+        manager.UpdateHappinessDisplay(tallyScore);
     }
 
        private void DisplayScore(float score)

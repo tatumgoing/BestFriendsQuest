@@ -12,6 +12,11 @@ public class MinigameManager : MonoBehaviour
     public List<GameObject> gameScenes = new List<GameObject>();
     private int currentScene;
 
+    [Header("Happiness and Money Toggles")]
+
+    public float maxHappiness;
+    public float maxCurrency;
+
     [Header("Character Select")]
     public CharacterData selectedCharacter;
     public GameObject characterButtonPrefab;
@@ -44,6 +49,8 @@ public class MinigameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        gameManager = TownGameManager.i;
+
         GenerateCharacterSelect();
         GenerateRecipeSelect();
     }
@@ -193,18 +200,36 @@ public class MinigameManager : MonoBehaviour
 
     }
 
-    public void UpdateHappinessDisplay()
+    public void UpdateHappinessDisplay(float finalScore)
     {
         endScreenIcon.sprite= selectedCharacter.characterIcon;
 
         float newWidth = happinessMeter.transform.parent.GetComponent<RectTransform>().sizeDelta.x * (selectedCharacter.happiness / 100);
         happinessMeter.GetComponent<RectTransform>().sizeDelta = new Vector2(newWidth, happinessMeter.GetComponent<RectTransform>().sizeDelta.y);
 
+        selectedCharacter.happiness = maxHappiness * (finalScore/100);
+
     }
 
-    public void UpdateCurrencyDisplay()
+    public void UpdateCurrencyDisplay(float finalScore)
     {
-        //new currency object and prefab to proceed
+
+        //gameManager.currency += maxCurrency * (finalScore / 100);
+
+        StartCoroutine(EndscreenAnimations(finalScore));
+    }
+
+    IEnumerator EndscreenAnimations(float finalScore)
+    {
+        yield return new WaitForSeconds(2);
+
+        gameManager.currency += maxCurrency * (finalScore / 100);
+
+        yield return new WaitForSeconds(2);
+
+        float newWidth = happinessMeter.transform.parent.GetComponent<RectTransform>().sizeDelta.x * (selectedCharacter.happiness / 100);
+        happinessMeter.GetComponent<RectTransform>().sizeDelta = new Vector2(newWidth, happinessMeter.GetComponent<RectTransform>().sizeDelta.y);
+
     }
 
 }
