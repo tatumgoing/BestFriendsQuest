@@ -18,9 +18,7 @@ public class MinigameManager : MonoBehaviour
     public float maxCurrency;
 
     [Header("Character Select")]
-    public CharacterData selectedCharacter;
-    public GameObject characterButtonPrefab;
-    public GameObject characterSelectionGrid;
+    public CharacterSelectionMenu characterSelectionMenu;
 
     public GameObject confirmWindow;
     public TMP_Text windowText;
@@ -51,32 +49,7 @@ public class MinigameManager : MonoBehaviour
     {
         gameManager = TownGameManager.i;
 
-        GenerateCharacterSelect();
         GenerateRecipeSelect();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    public void GenerateCharacterSelect()
-    {
-        foreach (Transform child in characterSelectionGrid.transform)
-        {
-            Destroy(child.gameObject);
-        }
-
-        foreach (CharacterData character in gameManager.characterManager.allCharacters)
-        {
-            //make their icons dawg
-            GameObject newIcon = Instantiate(characterButtonPrefab, characterSelectionGrid.transform);
-            newIcon.GetComponent<Button>().onClick.AddListener(() => SelectCharacter(character));
-            newIcon.GetComponentInChildren<Image>().sprite = character.characterIcon;
-        }
-
-
     }
 
     public void GenerateRecipeSelect()
@@ -95,12 +68,6 @@ public class MinigameManager : MonoBehaviour
             newIcon.GetComponentInChildren<TMP_Text>().text = recipe.Name;
         }
 
-
-    }
-
-    private void SelectCharacter(CharacterData character) { 
-    
-        selectedCharacter = character;
 
     }
 
@@ -138,23 +105,28 @@ public class MinigameManager : MonoBehaviour
 
         if (gameScenes[currentScene].GetComponentInChildren<ChopMinigame>() != null)
         {
-            gameScenes[currentScene].GetComponentInChildren<ChopMinigame>().tempIcon.GetComponent<Image>().sprite = selectedCharacter.characterIcon;
+            gameScenes[currentScene].GetComponentInChildren<ChopMinigame>().tempIcon.GetComponent<Image>().sprite = characterSelectionMenu.selectedCharacter.characterIcon;
+            //ew
+        }
+        if (gameScenes[currentScene].GetComponentInChildren<BoilMinigame>() != null)
+        {
+            gameScenes[currentScene].GetComponentInChildren<BoilMinigame>().tempIcon.GetComponent<Image>().sprite = characterSelectionMenu.selectedCharacter.characterIcon;
             //ew
         }
     }
 
     public void ToggleConfirmWindow()
     {
-        if (selectedCharacter != null)
+        if (characterSelectionMenu.selectedCharacter != null)
         {
             if (confirmWindowVisible)
             {
                 confirmWindow.SetActive(false);
                 confirmWindowVisible = !confirmWindowVisible;
             }
-            else if (!confirmWindowVisible && selectedCharacter.characterName != "")
+            else if (!confirmWindowVisible && characterSelectionMenu.selectedCharacter.characterName != "")
             {
-                windowText.text = "Start cooking with " + selectedCharacter.characterName + "?";
+                windowText.text = "Start cooking with " + characterSelectionMenu.selectedCharacter.characterName + "?";
 
                 confirmWindow.SetActive(true);
                 confirmWindowVisible = !confirmWindowVisible;
@@ -193,7 +165,7 @@ public class MinigameManager : MonoBehaviour
 
         currentScene = 0;
 
-        selectedCharacter = null;
+        characterSelectionMenu.selectedCharacter = null;
         selectedRecipe = null;
 
         minigameScores.Clear();
@@ -202,12 +174,12 @@ public class MinigameManager : MonoBehaviour
 
     public void UpdateHappinessDisplay(float finalScore)
     {
-        endScreenIcon.sprite= selectedCharacter.characterIcon;
+        endScreenIcon.sprite= characterSelectionMenu.selectedCharacter.characterIcon;
 
-        float newWidth = happinessMeter.transform.parent.GetComponent<RectTransform>().sizeDelta.x * (selectedCharacter.happiness / 100);
+        float newWidth = happinessMeter.transform.parent.GetComponent<RectTransform>().sizeDelta.x * (characterSelectionMenu.selectedCharacter.happiness / 100);
         happinessMeter.GetComponent<RectTransform>().sizeDelta = new Vector2(newWidth, happinessMeter.GetComponent<RectTransform>().sizeDelta.y);
 
-        selectedCharacter.happiness = maxHappiness * (finalScore/100);
+        characterSelectionMenu.selectedCharacter.happiness += maxHappiness * (finalScore/100);
 
     }
 
@@ -227,7 +199,7 @@ public class MinigameManager : MonoBehaviour
 
         yield return new WaitForSeconds(2);
 
-        float newWidth = happinessMeter.transform.parent.GetComponent<RectTransform>().sizeDelta.x * (selectedCharacter.happiness / 100);
+        float newWidth = happinessMeter.transform.parent.GetComponent<RectTransform>().sizeDelta.x * (characterSelectionMenu.selectedCharacter.happiness / 100);
         happinessMeter.GetComponent<RectTransform>().sizeDelta = new Vector2(newWidth, happinessMeter.GetComponent<RectTransform>().sizeDelta.y);
 
     }

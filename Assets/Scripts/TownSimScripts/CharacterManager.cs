@@ -10,8 +10,7 @@ public class CharacterManager : MonoBehaviour
 
     public List<Sprite> characterSprites = new List<Sprite>();
 
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         CharacterData Johnny = new CharacterData();
         CharacterData Sally = new CharacterData();
@@ -38,17 +37,16 @@ public class CharacterManager : MonoBehaviour
             }
 
         }
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        //bad bad evil temporary code bad bad bad
-        for (int i = 0; i < allCharacters.Count; i++) {
+
+        for (int i = 0; i < allCharacters.Count; i++)
+        {
 
             allCharacters[i].UpdateIcon(characterSprites[i]);
         }
 
+
     }
+  
 
 }

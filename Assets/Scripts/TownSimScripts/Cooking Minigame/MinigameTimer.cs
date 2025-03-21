@@ -7,6 +7,8 @@ public class MinigameTimer : MonoBehaviour
 {
     public MinigameManager minigameManager;
 
+    [Header("Timer")]
+
     public float totalTime;
     private bool startTimer = false;
 

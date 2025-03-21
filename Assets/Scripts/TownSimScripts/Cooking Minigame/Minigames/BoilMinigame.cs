@@ -36,10 +36,6 @@ public class BoilMinigame : MonoBehaviour
     float upperBound;
     float lowerBound;
 
-
-
-
-    // Start is called before the first frame update
     void Start()
     {
         //BAD BAD BAD BAD BAD KILL
@@ -51,27 +47,30 @@ public class BoilMinigame : MonoBehaviour
 
         foreach (TargetZone target in cookingBar.GetComponentsInChildren<TargetZone>()) { 
             targets.Add(target);
+            Debug.Log(target.GetComponent<RectTransform>().localPosition);
             target.SetBounds(target.GetComponent<RectTransform>().localPosition.x, isHorizontal);
         }
 
         upperBound = cookingBar.GetComponent<RectTransform>().anchoredPosition.x + cookingBar.GetComponent<RectTransform>().sizeDelta.x / 2;
         lowerBound = cookingBar.GetComponent<RectTransform>().anchoredPosition.x - cookingBar.GetComponent<RectTransform>().sizeDelta.x / 2;
-
+        
     }
 
-    // Update is called once per frame
     void Update()
     {
 
         CheckSpeed();
 
-        if (CheckTargets())
-        {
-            manager.currentTimer.AddProgress(addScore);
-        }
-        else
-        {
-            manager.currentTimer.RemoveProgress(penaltyScore);
+        if (manager.currentTimer != null)
+        {   
+            if (CheckTargets())
+            {
+                manager.currentTimer.AddProgress(addScore);
+            }
+            else
+            {
+                manager.currentTimer.RemoveProgress(penaltyScore);
+            }
         }
     }
 
@@ -100,7 +99,7 @@ public class BoilMinigame : MonoBehaviour
         {
             if (isHorizontal)
             {
-                if (iconPosX >= target.lowerBound && iconPosX <= target.upperBound)
+                if (barIcon.GetComponent<RectTransform>().localPosition.x >= target.lowerBound && barIcon.GetComponent<RectTransform>().localPosition.x <= target.upperBound)
                 {
                     inRange = true;
                 }
