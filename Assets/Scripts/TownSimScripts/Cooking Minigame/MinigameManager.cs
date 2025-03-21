@@ -33,6 +33,7 @@ public class MinigameManager : MonoBehaviour
     [Header("Cooking Minigame")]
     public GameObject tempIcon;
     public MinigameTimer currentTimer;
+    public CompletionText completionText;
 
     [Header("Scoring")]
     public List<float> minigameScores = new List<float>();
@@ -103,16 +104,12 @@ public class MinigameManager : MonoBehaviour
 
         }
 
-        if (gameScenes[currentScene].GetComponentInChildren<ChopMinigame>() != null)
-        {
-            gameScenes[currentScene].GetComponentInChildren<ChopMinigame>().tempIcon.GetComponent<Image>().sprite = characterSelectionMenu.selectedCharacter.characterIcon;
-            //ew
+        if (gameScenes[currentScene].GetComponentInChildren<CompletionText>() != null) {
+            
+            completionText = gameScenes[currentScene].GetComponentInChildren<CompletionText>();
+            completionText.gameObject.SetActive(false);
         }
-        if (gameScenes[currentScene].GetComponentInChildren<BoilMinigame>() != null)
-        {
-            gameScenes[currentScene].GetComponentInChildren<BoilMinigame>().tempIcon.GetComponent<Image>().sprite = characterSelectionMenu.selectedCharacter.characterIcon;
-            //ew
-        }
+        
     }
 
     public void ToggleConfirmWindow()
@@ -136,13 +133,17 @@ public class MinigameManager : MonoBehaviour
 
     public void TotalScore(float newScore)
     {
-        Debug.Log("Totalling Score");
+        //Debug.Log("Totalling Score");
+
+        completionText.gameObject.SetActive(true);
+
         minigameScores.Add(newScore);
         StartCoroutine(StartNextMinigameDelay());
     }
 
     IEnumerator StartNextMinigameDelay()
     {
+
         yield return new WaitForSeconds(3);
 
         NextMinigameScene();
@@ -179,7 +180,8 @@ public class MinigameManager : MonoBehaviour
         float newWidth = happinessMeter.transform.parent.GetComponent<RectTransform>().sizeDelta.x * (characterSelectionMenu.selectedCharacter.happiness / 100);
         happinessMeter.GetComponent<RectTransform>().sizeDelta = new Vector2(newWidth, happinessMeter.GetComponent<RectTransform>().sizeDelta.y);
 
-        characterSelectionMenu.selectedCharacter.happiness += maxHappiness * (finalScore/100);
+        characterSelectionMenu.selectedCharacter.happiness += (maxHappiness * (finalScore / 100));
+        characterSelectionMenu.selectedCharacter.happiness= Mathf.Clamp(characterSelectionMenu.selectedCharacter.happiness, 0, 100);
 
     }
 

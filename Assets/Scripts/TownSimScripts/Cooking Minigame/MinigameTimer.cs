@@ -10,7 +10,7 @@ public class MinigameTimer : MonoBehaviour
     [Header("Timer")]
 
     public float totalTime;
-    private bool startTimer = false;
+    public bool timerActive = false;
 
     public float endTime;
     public float startTime;
@@ -22,6 +22,7 @@ public class MinigameTimer : MonoBehaviour
     public float progressScore;
 
 
+
     // Start is called before the first frame update
     void OnEnable()
     {
@@ -30,7 +31,7 @@ public class MinigameTimer : MonoBehaviour
         startTime = Time.time;
         endTime = Time.time + totalTime;
 
-        startTimer = true;
+        timerActive = true;
 
         progressBar.GetComponent<RectTransform>().sizeDelta = new Vector2(progressBar.GetComponent<RectTransform>().sizeDelta.x, 0);
 
@@ -44,14 +45,12 @@ public class MinigameTimer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (startTimer && Time.time > endTime)
+        if (timerActive && Time.time > endTime)
         {
-            minigameManager.TotalScore(progressScore);
-
-            startTimer = false;
+            EndMinigame();
         }
 
-        if (Time.time <= endTime + .5)
+        if (timerActive && Time.time <= endTime + .5)
         {
             timerText.text = Mathf.Ceil(endTime - Time.time).ToString();
 
@@ -61,27 +60,38 @@ public class MinigameTimer : MonoBehaviour
 
     public void AddProgress(float score)
     {
-        if( progressScore + score <= 100)
+        if (timerActive)
         {
-            progressScore += score;
+             if( progressScore + score <= 100)
+            {
+                progressScore += score;
+            }
+            else
+            {
+                progressScore = 100;
+
+                EndMinigame();
+            }
+            UpdateProgress();
         }
-        else
-        {
-            progressScore = 100;
-        }
-        UpdateProgress();
+       
     }
 
     public void RemoveProgress(float score) 
     {
-        if (progressScore - score >= 0) {
-            progressScore -= score;
-        }
-        else
+        if (timerActive)
         {
-            progressScore = 0;
+            if (progressScore - score >= 0) 
+            {
+                progressScore -= score;
+            }
+            else
+            {
+                progressScore = 0;
+            }
+            UpdateProgress();
         }
-        UpdateProgress();
+        
     }
 
     public void UpdateProgress()
@@ -91,4 +101,10 @@ public class MinigameTimer : MonoBehaviour
         progressBar.GetComponent<RectTransform>().sizeDelta = new Vector2(progressBar.GetComponent<RectTransform>().sizeDelta.x, newHeight);
     }
 
+    public void EndMinigame()
+    {
+        minigameManager.TotalScore(progressScore);
+
+        timerActive = false;
+    }
 }

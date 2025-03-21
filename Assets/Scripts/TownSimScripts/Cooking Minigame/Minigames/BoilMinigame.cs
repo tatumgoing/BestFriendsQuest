@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BoilMinigame : MonoBehaviour
 {
@@ -53,23 +54,29 @@ public class BoilMinigame : MonoBehaviour
 
         upperBound = cookingBar.GetComponent<RectTransform>().anchoredPosition.x + cookingBar.GetComponent<RectTransform>().sizeDelta.x / 2;
         lowerBound = cookingBar.GetComponent<RectTransform>().anchoredPosition.x - cookingBar.GetComponent<RectTransform>().sizeDelta.x / 2;
-        
+
+
+        tempIcon.GetComponent<Image>().sprite = manager.characterSelectionMenu.selectedCharacter.characterIcon;
+
     }
 
     void Update()
     {
-
-        CheckSpeed();
+        if (manager.currentTimer.timerActive)
+        {
+            CheckSpeed();
+        }
+        
 
         if (manager.currentTimer != null)
         {   
             if (CheckTargets())
             {
-                manager.currentTimer.AddProgress(addScore);
+                manager.currentTimer.AddProgress(addScore * Time.deltaTime);
             }
             else
             {
-                manager.currentTimer.RemoveProgress(penaltyScore);
+                manager.currentTimer.RemoveProgress(penaltyScore * Time.deltaTime);
             }
         }
     }
@@ -78,11 +85,15 @@ public class BoilMinigame : MonoBehaviour
     {
         if (Input.GetKey("space"))
         {
-            iconVelocity += accSpeed;
+            iconVelocity += accSpeed * Time.deltaTime;
+        }
+        else if (barIcon.GetComponent<RectTransform>().localPosition.x ==  lowerBound)
+        {
+            iconVelocity = 0;
         }
         else
         {
-            iconVelocity -= decSpeed;
+            iconVelocity -= decSpeed * Time.deltaTime;
         }
 
         iconVelocity = Mathf.Clamp(iconVelocity, minSpeed, maxSpeed);
@@ -91,6 +102,8 @@ public class BoilMinigame : MonoBehaviour
 
         iconPosX = Mathf.Clamp(iconPosX, lowerBound, upperBound);
         barIcon.GetComponent<RectTransform>().localPosition = new Vector2(iconPosX, iconPosY);
+
+        //Debug.Log("Checking Speed: " +  Time.deltaTime + " " + iconVelocity);
     }
     public bool CheckTargets()
     {
