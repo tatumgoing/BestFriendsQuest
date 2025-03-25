@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class NavigationButton : MonoBehaviour
 {
-    public GameObject newScene;
     public GameObject newSceneUI;
 
     public TownGameManager gameManager;
@@ -17,9 +16,9 @@ public class NavigationButton : MonoBehaviour
     }
     public void ClickNavigation()
     {
-        if (newScene != null)
+        if (newSceneUI != null)
         {
-            gameManager.ChangeScene(newScene, newSceneUI);
+            gameManager.ChangeScene(newSceneUI);
         }
 
         //Debug.Log("Going to: " + newScene + newSceneUI);

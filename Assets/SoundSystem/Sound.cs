@@ -10,7 +10,10 @@ public enum SoundType { sfx, music, ambient}
 [CreateAssetMenu(fileName = "New Sound", menuName = "Sound")]
 public class Sound : ScriptableObject
 {
+    public string TrackName;
+
     [System.Serializable]
+
     public class ClipData {
 
         [HideInInspector] public string Name;
