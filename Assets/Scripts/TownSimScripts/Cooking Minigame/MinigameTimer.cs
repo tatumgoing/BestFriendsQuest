@@ -17,15 +17,22 @@ public class MinigameTimer : MonoBehaviour
 
     public TMP_Text timerText;
 
+    private float tempTime;
+
     [Header("Progress Bar")]
     public GameObject progressBar;
     public float progressScore;
+
+    [Header("Audio")]
+    [SerializeField] private Sound tickSFX;
 
 
 
     // Start is called before the first frame update
     void OnEnable()
     {
+        tickSFX = Instantiate(tickSFX);
+
         timerText = GetComponentInChildren<TMP_Text>();
 
         startTime = Time.time;
@@ -39,7 +46,6 @@ public class MinigameTimer : MonoBehaviour
         //BAD BAD BAD KILL KILL KILL
         minigameManager = FindFirstObjectByType<MinigameManager>();
 
-
     }
 
     // Update is called once per frame
@@ -47,13 +53,23 @@ public class MinigameTimer : MonoBehaviour
     {
         if (timerActive && Time.time > endTime)
         {
+            timerText.text = "0";
+
             EndMinigame();
         }
 
         if (timerActive && Time.time <= endTime + .5)
         {
+            //play tick when number changes
+            if (tempTime != 0 && tempTime != Mathf.Ceil(endTime - Time.time))
+            {
+                tickSFX.Play();
+            }
+
             timerText.text = Mathf.Ceil(endTime - Time.time).ToString();
 
+            tempTime = Mathf.Ceil(endTime - Time.time);
+            
         }
 
     }
@@ -62,7 +78,7 @@ public class MinigameTimer : MonoBehaviour
     {
         if (timerActive)
         {
-             if( progressScore + score <= 100)
+             if( progressScore + score < 100)
             {
                 progressScore += score;
             }
@@ -100,6 +116,7 @@ public class MinigameTimer : MonoBehaviour
 
         progressBar.GetComponent<RectTransform>().sizeDelta = new Vector2(progressBar.GetComponent<RectTransform>().sizeDelta.x, newHeight);
     }
+
 
     public void EndMinigame()
     {

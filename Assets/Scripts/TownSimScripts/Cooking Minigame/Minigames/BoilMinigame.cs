@@ -37,10 +37,21 @@ public class BoilMinigame : MonoBehaviour
     float upperBound;
     float lowerBound;
 
+    [Header("Audio")]
+
+    [SerializeField]private Sound boilNormal;
+    [SerializeField]private Sound boilLoud;
+
     void Start()
     {
+        boilNormal = Instantiate(boilNormal);
+        boilLoud = Instantiate(boilLoud);
+
+        boilNormal.Play();
+        boilLoud.Play();
+
         //BAD BAD BAD BAD BAD KILL
-        manager= FindFirstObjectByType<MinigameManager>();
+        manager = FindFirstObjectByType<MinigameManager>();
 
 
         iconPosX = barIcon.GetComponent<RectTransform>().localPosition.x;
@@ -62,23 +73,35 @@ public class BoilMinigame : MonoBehaviour
 
     void Update()
     {
-        if (manager.currentTimer.timerActive)
+        if (manager.currentTimer != null && manager.currentTimer.timerActive)
         {
             CheckSpeed();
         }
-        
 
-        if (manager.currentTimer != null)
+        if (manager.currentTimer != null && manager.currentTimer.timerActive)
         {   
             if (CheckTargets())
             {
                 manager.currentTimer.AddProgress(addScore * Time.deltaTime);
+
+                boilLoud.SetPercentVolume(100, 10 * Time.deltaTime);
+                boilNormal.SetPercentVolume(0, 10 * Time.deltaTime);
             }
             else
             {
                 manager.currentTimer.RemoveProgress(penaltyScore * Time.deltaTime);
+
+                boilLoud.SetPercentVolume(0, 10 * Time.deltaTime);
+                boilNormal.SetPercentVolume(100, 10 * Time.deltaTime);
             }
         }
+
+        if (!manager.currentTimer.timerActive)
+        {
+            boilLoud.SetPercentVolume(0, 10 * Time.deltaTime);
+            boilNormal.SetPercentVolume(0, 10 * Time.deltaTime);
+        }
+
     }
 
     public void CheckSpeed()
@@ -115,6 +138,8 @@ public class BoilMinigame : MonoBehaviour
                 if (barIcon.GetComponent<RectTransform>().localPosition.x >= target.lowerBound && barIcon.GetComponent<RectTransform>().localPosition.x <= target.upperBound)
                 {
                     inRange = true;
+
+                    
                 }
             }
         }
@@ -123,6 +148,9 @@ public class BoilMinigame : MonoBehaviour
 
         return inRange;
     }
+
+    
+
 
 
 }

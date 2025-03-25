@@ -30,12 +30,19 @@ public class ChopMinigame : MonoBehaviour
     public float amplitude; // one half width of bar
     public float shift; //should be the middle of the bar
 
+    [Header("Sounds")]
+    [SerializeField] private Sound chopSFX;
+
 
 
 
     // Start is called before the first frame update
     void Start()
     {
+        //create sounds
+        chopSFX = Instantiate(chopSFX);
+
+
         //BAD BAD BAD BAD BAD KILL
         manager= FindFirstObjectByType<MinigameManager>();
 
@@ -74,6 +81,7 @@ public class ChopMinigame : MonoBehaviour
             if (CheckTargets())
             {
                 manager.currentTimer.AddProgress(addScore); 
+                chopSFX.Play(oneShot:true);
             }
             else
             {

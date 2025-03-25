@@ -143,6 +143,7 @@ public class MinigameManager : MonoBehaviour
 
     IEnumerator StartNextMinigameDelay()
     {
+        completionText.PlayCompletionSFX();
 
         yield return new WaitForSeconds(3);
 
@@ -195,6 +196,7 @@ public class MinigameManager : MonoBehaviour
 
     IEnumerator EndscreenAnimations(float finalScore)
     {
+
         yield return new WaitForSeconds(2);
 
         gameManager.currency += maxCurrency * (finalScore / 100);

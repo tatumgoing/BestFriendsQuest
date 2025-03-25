@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 
 public class ButtonGeneral : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
+    [SerializeField] private Sound clickSFX;
 
     public float initialX;
     public float initialY;
@@ -13,6 +14,8 @@ public class ButtonGeneral : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
 
     public void Start()
     {
+        clickSFX = Instantiate(clickSFX);
+
 
         initialX = GetComponent<RectTransform>().anchoredPosition.x;
         initialY = GetComponent<RectTransform>().anchoredPosition.y;
@@ -20,6 +23,7 @@ public class ButtonGeneral : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        clickSFX.Play();
         GetComponent<RectTransform>().anchoredPosition = new Vector2(initialX, initialY - travelDist);
     }
 

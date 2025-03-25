@@ -27,8 +27,14 @@ public class StirMinigame : MonoBehaviour
     public float minSpeedBlackout;
     public float maxSpeedBlackout;
 
+    [Header("Audio")]
+    [SerializeField] private Sound stirringSFX;
+
     void Start()
     {
+        stirringSFX = Instantiate(stirringSFX);
+        stirringSFX.Play();
+
         iconHeight = barIcon.GetComponent<RectTransform>().sizeDelta.y;
         iconWidth = barIcon.GetComponent<RectTransform>().sizeDelta.x;
 
@@ -47,11 +53,19 @@ public class StirMinigame : MonoBehaviour
             if (CheckTargets())
             {
                 manager.currentTimer.AddProgress(addScore * Time.deltaTime);
+                stirringSFX.SetPercentVolume(100, 10 * Time.deltaTime);
+
             }
             else
             {
                 manager.currentTimer.RemoveProgress(penaltyScore * Time.deltaTime);
+                stirringSFX.SetPercentVolume(0, 10 * Time.deltaTime);
+
             }
+        }
+        if (!manager.currentTimer.timerActive)
+        {
+            ChangeSpeed(0);
         }
 
     }
