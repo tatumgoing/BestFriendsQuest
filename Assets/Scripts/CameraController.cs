@@ -24,14 +24,23 @@ public class CameraController : MonoBehaviour
     }
 
     [ButtonMethod]
-    public void SetHeadDistance() => SetDist(_headZoom, _headYOffset);
+    public void SetHeadDistance()
+    {
+        SetDist(_headZoom, _headYOffset);
+        _body = false;
+    }
 
     [ButtonMethod]
-    public void SetBodyDistance() => SetDist(_bodyZoom, _bodyYOffset);
+    public void SetBodyDistance()
+    {
+        SetDist(_bodyZoom, _bodyYOffset);
+        _body = true;
+    }
 
     public void SetDist(float dist, float yOffset = 0)
     {
         var dir = (_character.position - transform.position).normalized;
+        dir.y = 0;
         transform.position = _character.position;
         transform.position -= dir * dist;
         transform.position += Vector3.up * yOffset;

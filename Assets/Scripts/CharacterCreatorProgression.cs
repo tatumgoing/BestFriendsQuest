@@ -19,8 +19,9 @@ public class CharacterCreatorProgression : MonoBehaviour
         _titleOptions.SetActive(true);
     }
 
-    public void MakeNewCharacter()
+    public void FocusFace()
     {
+        HideAll();
         _titleOptions.SetActive(false);
 
         _facialOptions.SetActive(true);

@@ -2,6 +2,8 @@ using MyBox;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using TMPro;
 using UnityEngine;
 
 public enum BoneName { CORE, CHEST, SHOULDER, UPPER_ARM, FOREARM, HAND, NECK, HEAD, THIGH, SHIN, FOOT, TOES}
@@ -53,6 +55,11 @@ public class BoneSliderData
 public class CharacterRigController : MonoBehaviour
 {
     [SerializeField] private List<BoneData> _bones;
+
+    public string GetSaveString()
+    {
+        return "";
+    }
 
     public void ModifyBone(BoneName name, Vector3 localScale, bool guideBone)
     {
