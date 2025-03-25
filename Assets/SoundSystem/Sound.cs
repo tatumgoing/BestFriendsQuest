@@ -86,7 +86,7 @@ public class Sound : ScriptableObject
         }
 
         if (!AudioSource) FirstTimePlay(caller, restart);
-        Play(true, true);
+        PlayInternal(true, true);
     }
 
     public void SetUp(Transform caller = null, bool restart = true)
@@ -110,7 +110,7 @@ public class Sound : ScriptableObject
         if (!AudioSource) SetUp(speaker);
 
         AudioSource.Stop();
-        Play(true, index:index);
+        PlayInternal(true, index:index);
     }
 
     public float GetClipLength()
@@ -119,7 +119,7 @@ public class Sound : ScriptableObject
         return _clips[0].Clip.length;
     }
 
-    public void Play(Transform caller = null, bool restart = true)
+    public void Play(Transform caller = null, bool restart = true, bool oneShot = false)
     {
         if (!Instantialized) {
             Debug.LogError("Play() was called on an uninstatizlized Sound");
@@ -128,11 +128,11 @@ public class Sound : ScriptableObject
         if (_clips.Count == 0) return;
        
         if (AudioSource == null) FirstTimePlay(caller, restart);
-        else Play(restart);
+        else PlayInternal(restart: restart, oneShot:oneShot);
        
     }
 
-    private void Play(bool restart, bool silent = false, int index = 0, bool oneShot = false)
+    private void PlayInternal(bool restart, bool silent = false, int index = 0, bool oneShot = false)
     {
         if (AudioSource.isPlaying && !restart) return;
 
