@@ -132,7 +132,7 @@ public class Sound : ScriptableObject
        
     }
 
-    private void Play(bool restart, bool silent = false, int index = 0)
+    private void Play(bool restart, bool silent = false, int index = 0, bool oneShot = false)
     {
         if (AudioSource.isPlaying && !restart) return;
 
@@ -140,15 +140,18 @@ public class Sound : ScriptableObject
         if (_setPos) AudioSource.transform.localPosition = _sourcePos;
         _setPos = false;
 
-        if (_randomizePitch) _pitch += Random.Range(-_pitchRandomizeAmount, _pitchRandomizeAmount);
+        var pitch = _pitch;
+        if (_randomizePitch) pitch += Random.Range(-_pitchRandomizeAmount, _pitchRandomizeAmount);
 
         var clip = GetClip();
         _actualVolume = _volume;
         AudioSource.volume = silent ? 0 : _actualVolume;
-        AudioSource.pitch = _pitch;
+        AudioSource.pitch = pitch;
         AudioSource.loop = clip.Looping;
         AudioSource.clip = clip.Clip;
-        AudioSource.Play();
+
+        if (oneShot) AudioSource.PlayOneShot(clip.Clip, _volume);
+        else AudioSource.Play();
     }
 
     private ClipData GetClip()
