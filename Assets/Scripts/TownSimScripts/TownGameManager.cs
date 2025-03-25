@@ -8,6 +8,13 @@ using Unity.VisualScripting;
 
 public class TownGameManager : MonoBehaviour
 {
+    public static TownGameManager i;
+
+    private void Awake()
+    {
+        i = this;
+    }
+
     [Header("Character Manager")]
 
     public CharacterManager characterManager;
@@ -21,7 +28,7 @@ public class TownGameManager : MonoBehaviour
     [Header ("Inventory")]
     public float currency;
     
-    public RecordsManager recordsManager;
+    public List<RecordsManager> recordsManagers = new List<RecordsManager>();
 
     [SerializeField]private List<Item> allItems = new List<Item> ();
     
@@ -33,14 +40,10 @@ public class TownGameManager : MonoBehaviour
 
     public List<GameObject> sceneList = new List<GameObject>();
     public List<GameObject> sceneUIList = new List<GameObject>();
-    public List<TMP_Text> currencyDisplays = new List<TMP_Text>();
 
     public GameObject neighborhoodUI;
     public GameObject neighborhood;
 
-
-
-    // Start is called before the first frame update
     void Start()
     {
         currency = PlayerPrefs.GetFloat("PlayerCurrency", 100);
@@ -52,19 +55,16 @@ public class TownGameManager : MonoBehaviour
 
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void ChangeScene(GameObject newScene, GameObject newSceneUI)
     {
+        //Debug.Log("Change Scene Going To: " + newScene + newSceneUI);
+
         //iterates over all environments and UIs, disabling. then, enables selected environment and UI
         foreach (GameObject i in sceneList)
         {
             i.SetActive(false);
-            ViewRecords();
+            UpdateRecords();
             
 
         }
@@ -85,10 +85,11 @@ public class TownGameManager : MonoBehaviour
     public void ChangeCurrency(float curChange)
     {
         currency += curChange;
-        foreach (TMP_Text i in currencyDisplays)
+
+        /*foreach (TMP_Text i in currencyDisplays)
         {
             i.text =  "$" + currency.ToString("F2");
-        }
+        }*/
 
         PlayerPrefs.SetFloat("PlayerCurrency", currency);
 
@@ -186,14 +187,35 @@ public class TownGameManager : MonoBehaviour
         ChangeCurrency(100);
     }
 
-    public void ViewRecords()
+    public void UpdateRecords()
     {
-        recordsManager.ClearRecords();
-
-        foreach (var i in items)
+        foreach (RecordsManager rManager in recordsManagers)
         {
-             recordsManager.CreateRecordItem(i.Key.Name, i.Value);
+            rManager.ClearRecords();
+
+            foreach (Item i in allItems)
+            {
+                //if held
+                if (items.ContainsKey(i) && items[i] != 0 && i.unlocked)
+                {
+                    rManager.CreateHeldItem(i.Name, items[i]);
+                }
+                //if previously held, but count = 0
+                else if (i.unlocked)
+                {
+                    rManager.CreateUnheldItem(i.Name, 0);
+                }
+                else
+                {
+                    rManager.CreateLockedItem(i.Name);
+                }
+
+                // if never held
+
+            }
         }
+
+        
     }
     private void MakeCharacterHouses()
     {
@@ -211,20 +233,36 @@ public class TownGameManager : MonoBehaviour
         foreach (CharacterData character in characterManager.allCharacters)
         {
             //make their house dawg
-            GameObject newHouse = Instantiate(houseButtonPrefab, houseGrid.transform);
-            newHouse.GetComponent<Button>().onClick.AddListener(() => OpenHouse(character));
-            newHouse.GetComponentInChildren<TMP_Text>().text = character.characterName;
 
-            newHouse.GetComponentInChildren<Image>().sprite= character.characterIcon;
+            GameObject newHouseButton = Instantiate(houseButtonPrefab, houseGrid.transform);
 
-            GameObject newHouseMenu = Instantiate(houseMenuPrefab, houseMenuUI.transform);
-            newHouseMenu.SetActive(false);
-            character.house = newHouseMenu;
+            CharacterHouseButton newHouseButtonScript = newHouseButton.GetComponent<CharacterHouseButton>();
+            //set parent, label, and sprite
+            newHouseButtonScript.SetHouseLabel(character.characterName);
+            newHouseButtonScript.SetHouseSprite(character.characterIcon);
+            
+            
+            newHouseButton.GetComponent<Button>().onClick.AddListener(() => OpenHouse(character));
+
+
+            // make dictionary for houses and buttons maybe
+
+
+
+            GameObject newHouse = Instantiate(houseMenuPrefab, houseMenuUI.transform);
+            newHouse.SetActive(false);
+
+            CharacterHouse newHouseScript = newHouse.GetComponent<CharacterHouse>();
+
+            //now they reference each other yay
+
+            newHouseScript.SetHouseCharacter(character);
+            character.house = newHouse;
 
             //sets back button
-            newHouseMenu.GetComponentInChildren<NavigationButton>().newScene = neighborhood;
-            newHouseMenu.GetComponentInChildren<NavigationButton>().newSceneUI = neighborhoodUI;
-            newHouseMenu.GetComponentInChildren<NavigationButton>().gameManager = this;
+            newHouse.GetComponentInChildren<NavigationButton>().newScene = neighborhood;
+            newHouse.GetComponentInChildren<NavigationButton>().newSceneUI = neighborhoodUI;
+            newHouse.GetComponentInChildren<NavigationButton>().gameManager = this;
 
 
 

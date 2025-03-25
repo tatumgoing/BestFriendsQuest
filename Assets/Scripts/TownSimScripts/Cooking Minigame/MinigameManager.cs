@@ -12,10 +12,13 @@ public class MinigameManager : MonoBehaviour
     public List<GameObject> gameScenes = new List<GameObject>();
     private int currentScene;
 
+    [Header("Happiness and Money Toggles")]
+
+    public float maxHappiness;
+    public float maxCurrency;
+
     [Header("Character Select")]
-    public CharacterData selectedCharacter;
-    public GameObject characterButtonPrefab;
-    public GameObject characterSelectionGrid;
+    public CharacterSelectionMenu characterSelectionMenu;
 
     public GameObject confirmWindow;
     public TMP_Text windowText;
@@ -30,6 +33,7 @@ public class MinigameManager : MonoBehaviour
     [Header("Cooking Minigame")]
     public GameObject tempIcon;
     public MinigameTimer currentTimer;
+    public CompletionText completionText;
 
     [Header("Scoring")]
     public List<float> minigameScores = new List<float>();
@@ -37,36 +41,16 @@ public class MinigameManager : MonoBehaviour
     [Header("End Screen")]
     public GameObject endScreen;
 
+    public GameObject happinessMeter;
+    public Image endScreenIcon;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        GenerateCharacterSelect();
+        gameManager = TownGameManager.i;
+
         GenerateRecipeSelect();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    public void GenerateCharacterSelect()
-    {
-        foreach (Transform child in characterSelectionGrid.transform)
-        {
-            Destroy(child.gameObject);
-        }
-
-        foreach (CharacterData character in gameManager.characterManager.allCharacters)
-        {
-            //make their icons dawg
-            GameObject newIcon = Instantiate(characterButtonPrefab, characterSelectionGrid.transform);
-            newIcon.GetComponent<Button>().onClick.AddListener(() => SelectCharacter(character));
-            newIcon.GetComponentInChildren<Image>().sprite = character.characterIcon;
-        }
-
-
     }
 
     public void GenerateRecipeSelect()
@@ -85,12 +69,6 @@ public class MinigameManager : MonoBehaviour
             newIcon.GetComponentInChildren<TMP_Text>().text = recipe.Name;
         }
 
-
-    }
-
-    private void SelectCharacter(CharacterData character) { 
-    
-        selectedCharacter = character;
 
     }
 
@@ -126,25 +104,26 @@ public class MinigameManager : MonoBehaviour
 
         }
 
-        if (gameScenes[currentScene].GetComponentInChildren<ChopMinigame>() != null)
-        {
-            gameScenes[currentScene].GetComponentInChildren<ChopMinigame>().tempIcon.GetComponent<Image>().sprite = selectedCharacter.characterIcon;
-            //ew
+        if (gameScenes[currentScene].GetComponentInChildren<CompletionText>() != null) {
+            
+            completionText = gameScenes[currentScene].GetComponentInChildren<CompletionText>();
+            completionText.gameObject.SetActive(false);
         }
+        
     }
 
     public void ToggleConfirmWindow()
     {
-        if (selectedCharacter != null)
+        if (characterSelectionMenu.selectedCharacter != null)
         {
             if (confirmWindowVisible)
             {
                 confirmWindow.SetActive(false);
                 confirmWindowVisible = !confirmWindowVisible;
             }
-            else if (!confirmWindowVisible && selectedCharacter.characterName != "")
+            else if (!confirmWindowVisible && characterSelectionMenu.selectedCharacter.characterName != "")
             {
-                windowText.text = "Start cooking with " + selectedCharacter.characterName + "?";
+                windowText.text = "Start cooking with " + characterSelectionMenu.selectedCharacter.characterName + "?";
 
                 confirmWindow.SetActive(true);
                 confirmWindowVisible = !confirmWindowVisible;
@@ -152,15 +131,19 @@ public class MinigameManager : MonoBehaviour
         }
     }
 
-        public void TotalScore(float newScore)
+    public void TotalScore(float newScore)
     {
-        Debug.Log("Totalling Score");
+        //Debug.Log("Totalling Score");
+
+        completionText.gameObject.SetActive(true);
+
         minigameScores.Add(newScore);
         StartCoroutine(StartNextMinigameDelay());
     }
 
     IEnumerator StartNextMinigameDelay()
     {
+
         yield return new WaitForSeconds(3);
 
         NextMinigameScene();
@@ -183,10 +166,43 @@ public class MinigameManager : MonoBehaviour
 
         currentScene = 0;
 
-        selectedCharacter = null;
+        characterSelectionMenu.selectedCharacter = null;
         selectedRecipe = null;
 
         minigameScores.Clear();
+
+    }
+
+    public void UpdateHappinessDisplay(float finalScore)
+    {
+        endScreenIcon.sprite= characterSelectionMenu.selectedCharacter.characterIcon;
+
+        float newWidth = happinessMeter.transform.parent.GetComponent<RectTransform>().sizeDelta.x * (characterSelectionMenu.selectedCharacter.happiness / 100);
+        happinessMeter.GetComponent<RectTransform>().sizeDelta = new Vector2(newWidth, happinessMeter.GetComponent<RectTransform>().sizeDelta.y);
+
+        characterSelectionMenu.selectedCharacter.happiness += (maxHappiness * (finalScore / 100));
+        characterSelectionMenu.selectedCharacter.happiness= Mathf.Clamp(characterSelectionMenu.selectedCharacter.happiness, 0, 100);
+
+    }
+
+    public void UpdateCurrencyDisplay(float finalScore)
+    {
+
+        //gameManager.currency += maxCurrency * (finalScore / 100);
+
+        StartCoroutine(EndscreenAnimations(finalScore));
+    }
+
+    IEnumerator EndscreenAnimations(float finalScore)
+    {
+        yield return new WaitForSeconds(2);
+
+        gameManager.currency += maxCurrency * (finalScore / 100);
+
+        yield return new WaitForSeconds(2);
+
+        float newWidth = happinessMeter.transform.parent.GetComponent<RectTransform>().sizeDelta.x * (characterSelectionMenu.selectedCharacter.happiness / 100);
+        happinessMeter.GetComponent<RectTransform>().sizeDelta = new Vector2(newWidth, happinessMeter.GetComponent<RectTransform>().sizeDelta.y);
 
     }
 

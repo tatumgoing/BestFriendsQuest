@@ -11,4 +11,6 @@ public class Item : ScriptableObject
 
     public int Cost;
 
+    public bool unlocked;
+
 }

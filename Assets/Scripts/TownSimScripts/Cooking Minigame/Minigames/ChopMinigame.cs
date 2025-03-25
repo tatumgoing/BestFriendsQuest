@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ChopMinigame : MonoBehaviour
 {
@@ -55,13 +56,15 @@ public class ChopMinigame : MonoBehaviour
             target.SetBounds(target.GetComponent<RectTransform>().anchoredPosition.x, isHorizontal);
         }
 
+        tempIcon.GetComponent<Image>().sprite = manager.characterSelectionMenu.selectedCharacter.characterIcon;
+
     }
 
     // Update is called once per frame
     void Update()
     {
 
-        if (isHorizontal) {
+        if (isHorizontal && manager.currentTimer.timerActive) {
             iconPosX = (amplitude * Mathf.Sin(barSpeed * (Time.time)) + shift);
             barIcon.GetComponent<RectTransform>().anchoredPosition = new Vector2(iconPosX, iconPosY);
         }

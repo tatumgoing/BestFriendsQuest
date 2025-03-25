@@ -38,5 +38,7 @@ public class TargetZone : MonoBehaviour
             upperBound = center + (height / 2);
             lowerBound = center - (height / 2);
         }
+
+        Debug.Log("lower: " + lowerBound + " upper: " + upperBound);
     }
 }
