@@ -125,7 +125,6 @@ public class TownGameManager : MonoBehaviour
 
         //delete later
         MakeCharacterHouses();
-        UpdateRecords();
 
         await FadeScreen(false);
 

@@ -115,7 +115,7 @@ public class TownMusicPlayer : MonoBehaviour
     }
     public void StopCurrentTrack()
     {
-        currentTrack.Stop();
+        if (currentTrack != null){ currentTrack.Stop(); }
     }
 
 }

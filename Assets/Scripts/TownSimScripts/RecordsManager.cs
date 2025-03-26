@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class RecordsManager : MonoBehaviour
 {
+    TownGameManager gameManager;
+
     public bool isRecords;
 
     public string listType;
@@ -16,17 +18,20 @@ public class RecordsManager : MonoBehaviour
     //public GameObject recordContainer;
 
     // Start is called before the first frame update
+    void OnEnable()
+    {
+        StartCoroutine(UpdateRecord());
+    }
     void Start()
     {
-
+        gameManager = TownGameManager.i;
     }
 
-    // Update is called once per frame
-    void Update()
+    public IEnumerator UpdateRecord()
     {
-        
+        yield return new WaitForSeconds(.05f);
+        gameManager.UpdateRecords();
     }
-
     public void ClearRecords()
     {
         foreach (Transform child in transform)
