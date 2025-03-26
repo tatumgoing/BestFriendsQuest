@@ -1,34 +1,34 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class HoverBehaviorTownMap : MonoBehaviour
+public class HoverBehaviorTownMap : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    [SerializeField] HoverTextTownMap i;
+    HoverTextTownMap i;
 
     [SerializeField] string locationName;
     [SerializeField] string locationDescription;
 
-    public float width;
-    public float height;
+    float width;
+    float height;
 
-    void Awake()
-    {
-         width = GetComponent<RectTransform>().sizeDelta.x;
-         height = GetComponent<RectTransform>().sizeDelta.y;
-    }
     void Start()
     {
         i = HoverTextTownMap.i;
-        //SetBounds(GetComponent<RectTransform>().position.x, GetComponent<RectTransform>().position.y);
+
+        //StartCoroutine(SetBounds());
+
     }
-    void Update()
+
+    public void OnPointerEnter(PointerEventData eventData)
     {
-        if (width==height)
-        {
-            
-        }
-        //check if mouse is over, then pass to HoverTextTownMap
+        i.ActivateMenu(locationName, locationDescription);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        i.StartCoroutine("DeactivateMenu");
     }
 
 
