@@ -26,7 +26,7 @@ public class TargetZone : MonoBehaviour
     public void SetBounds(float center, bool isHorizontal)
     {
 
-        Debug.Log("Setting Bounds");
+        //Debug.Log("Setting Bounds");
         if (isHorizontal)
         {
             upperBound = center + (width / 2);
@@ -39,6 +39,6 @@ public class TargetZone : MonoBehaviour
             lowerBound = center - (height / 2);
         }
 
-        Debug.Log("lower: " + lowerBound + " upper: " + upperBound);
+        //Debug.Log("lower: " + lowerBound + " upper: " + upperBound);
     }
 }

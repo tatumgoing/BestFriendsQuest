@@ -5,6 +5,8 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
 using Unity.VisualScripting;
+using System.Threading.Tasks;
+
 
 public class TownGameManager : MonoBehaviour
 {
@@ -57,22 +59,56 @@ public class TownGameManager : MonoBehaviour
 
     }
 
-
-    public IEnumerator ChangeScene(GameObject newSceneUI)
+    async Task FadeScreen(bool fadeIn)
     {
-        fadeScreen.SetActive(true);
-
-        var opacity = fadeScreen.GetComponent<Image>();
-
-        while (opacity.color.a < 1)
+        if (fadeIn) 
         {
-            var tempOpacity = opacity.color;
-            tempOpacity.a = 1f;
-            opacity.color = tempOpacity;
+            fadeScreen.SetActive(true);
 
-            yield return new WaitForSeconds(.01f);
+            var opacity = fadeScreen.GetComponent<Image>();
+            float step = 0;
+            while (opacity.color.a < 1)
+            {
+                var tempOpacity = opacity.color;
+                tempOpacity.a = step;
+                opacity.color = tempOpacity;
+
+                step += 50f * Time.deltaTime;
+
+                await Task.Delay(100);
+
+            }
+        }
+        else
+        {
+            await Task.Delay(500);
+
+            var opacity = fadeScreen.GetComponent<Image>();
+            float step = 1;
+            while (opacity.color.a > 0)
+            {
+                var tempOpacity = opacity.color;
+                tempOpacity.a = step;
+                opacity.color = tempOpacity;
+
+                step -= 50f * Time.deltaTime;
+
+                await Task.Delay(100);
+
+            }
+
+            fadeScreen.SetActive(false);
 
         }
+    }
+    public async void ChangeScene(GameObject newSceneUI)
+    {
+        //fades out track and fades in load screen
+
+        TownMusicPlayer i = TownMusicPlayer.i;
+
+        i.StartCoroutine(i.FadeTrackOut(i.currentTrack));
+        await FadeScreen(true);
 
         //iterates over all UIs, disabling. then, enables selected UI
 
@@ -91,6 +127,7 @@ public class TownGameManager : MonoBehaviour
         MakeCharacterHouses();
         UpdateRecords();
 
+        await FadeScreen(false);
 
     }
 

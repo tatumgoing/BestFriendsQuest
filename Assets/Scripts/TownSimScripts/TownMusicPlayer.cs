@@ -28,7 +28,7 @@ public class TownMusicPlayer : MonoBehaviour
     [Header("Track Management")]
 
     [SerializeField] List<Sound> allTracks = new List<Sound>();
-    [SerializeField] Sound currentTrack;
+    public Sound currentTrack;
 
     private void Awake()
     {
@@ -44,12 +44,6 @@ public class TownMusicPlayer : MonoBehaviour
             allTracks[i] = Instantiate(allTracks[i]);   
         }
        
-        // play all tracks silently
-
-       /* for (int i = 0; i < allTracks.Count; i++)
-        {
-            allTracks[i].PlaySilent();
-        }*/
 
     }
 
@@ -88,7 +82,7 @@ public class TownMusicPlayer : MonoBehaviour
         
     }
 
-    private IEnumerator FadeTrackIn(Sound sound)
+    public IEnumerator FadeTrackIn(Sound sound)
     {
         float vol = sound.percentVolume;
 
@@ -102,14 +96,14 @@ public class TownMusicPlayer : MonoBehaviour
         
     }
 
-    private IEnumerator FadeTrackOut(Sound sound)
+    public IEnumerator FadeTrackOut(Sound sound)
     {
 
         float vol = sound.percentVolume;
 
         while (vol > 0)
         {
-            Debug.Log(vol);
+            //Debug.Log(vol);
 
             vol -= .01f;
 
