@@ -20,7 +20,7 @@ public class HoverBehaviorTownMap : MonoBehaviour
     void Start()
     {
         i = HoverTextTownMap.i;
-        SetBounds(GetComponent<RectTransform>().position.x, GetComponent<RectTransform>().position.y);
+        //SetBounds(GetComponent<RectTransform>().position.x, GetComponent<RectTransform>().position.y);
     }
     void Update()
     {
