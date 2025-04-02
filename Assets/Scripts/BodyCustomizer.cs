@@ -7,6 +7,7 @@ public class BodyCustomizer : MonoBehaviour
     [SerializeField] private List<BoneSliderData> _heightSliderBones = new List<BoneSliderData>();
     [SerializeField] private List<BoneSliderData> _weightSliderBones = new List<BoneSliderData>();
     [SerializeField] private CharacterRigController _rigController;
+    [SerializeField] private GameObject _advancedMenu;
 
     [Header("advanced")]
     [SerializeField] private List<BoneSliderData> _armsSliderBones = new List<BoneSliderData>();
@@ -20,6 +21,11 @@ public class BodyCustomizer : MonoBehaviour
     public void MoveTorsoSlider(float value) => AffectRig(_torsoSliderBones, value);
     public void MoveWaistSlider(float value) => AffectRig(_waistSliderBones, value);
     public void MoveLegsSlider(float value) => AffectRig(_legsSliderBones, value);
+
+    private void Start()
+    {
+        _advancedMenu.SetActive(false);
+    }
 
     private void AffectRig(List<BoneSliderData> data, float value)
     {
