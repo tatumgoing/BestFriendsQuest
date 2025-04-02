@@ -9,8 +9,6 @@ public class BoilMinigame : MonoBehaviour
 
     public GameObject cookingBar;
 
-    public bool isHorizontal;
-
     public List<TargetZone> targets = new List<TargetZone>();
 
     public GameObject tempIcon;
@@ -60,7 +58,7 @@ public class BoilMinigame : MonoBehaviour
         foreach (TargetZone target in cookingBar.GetComponentsInChildren<TargetZone>()) { 
             targets.Add(target);
             Debug.Log(target.GetComponent<RectTransform>().localPosition);
-            target.SetBounds(target.GetComponent<RectTransform>().localPosition.x, isHorizontal);
+            target.SetBounds(target.GetComponent<RectTransform>().localPosition.x);
         }
 
         upperBound = cookingBar.GetComponent<RectTransform>().anchoredPosition.x + cookingBar.GetComponent<RectTransform>().sizeDelta.x / 2;
@@ -106,7 +104,7 @@ public class BoilMinigame : MonoBehaviour
 
     public void CheckSpeed()
     {
-        if (Input.GetKey("space"))
+        if (Input.GetKey("space") || Input.GetMouseButton(0))
         {
             iconVelocity += accSpeed * Time.deltaTime;
         }
@@ -133,15 +131,14 @@ public class BoilMinigame : MonoBehaviour
         bool inRange = false;
         foreach (TargetZone target in targets)
         {
-            if (isHorizontal)
-            {
+            
                 if (barIcon.GetComponent<RectTransform>().localPosition.x >= target.lowerBound && barIcon.GetComponent<RectTransform>().localPosition.x <= target.upperBound)
                 {
                     inRange = true;
 
                     
                 }
-            }
+            
         }
 
         //Debug.Log(inRange);

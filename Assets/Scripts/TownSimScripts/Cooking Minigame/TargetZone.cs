@@ -8,13 +8,13 @@ public class TargetZone : MonoBehaviour
     public float lowerBound;
 
     public float width;
-    public float height;
+    //public float height;
 
     // Start is called before the first frame update
     void Awake()
     {
          width = GetComponent<RectTransform>().sizeDelta.x;
-         height = GetComponent<RectTransform>().sizeDelta.y;
+         //height = GetComponent<RectTransform>().sizeDelta.y;
     }
 
     // Update is called once per frame
@@ -23,22 +23,14 @@ public class TargetZone : MonoBehaviour
         
     }
 
-    public void SetBounds(float center, bool isHorizontal)
+    public void SetBounds(float center)
     {
 
-        //Debug.Log("Setting Bounds");
-        if (isHorizontal)
-        {
-            upperBound = center + (width / 2);
-            lowerBound = center - (width / 2);
+        Debug.Log("Setting Bounds");
+        
+        upperBound = center + (width / 2);
+        lowerBound = center - (width / 2);
 
-        }
-        else
-        {
-            upperBound = center + (height / 2);
-            lowerBound = center - (height / 2);
-        }
-
-        //Debug.Log("lower: " + lowerBound + " upper: " + upperBound);
+        Debug.Log("lower: " + lowerBound + " upper: " + upperBound);
     }
 }

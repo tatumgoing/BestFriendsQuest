@@ -9,8 +9,6 @@ public class ChopMinigame : MonoBehaviour
 
     public GameObject cookingBar;
 
-    public bool isHorizontal;
-
     public List<TargetZone> targets = new List<TargetZone>();
 
     public GameObject tempIcon;
@@ -51,16 +49,15 @@ public class ChopMinigame : MonoBehaviour
         iconPosY = barIcon.GetComponent<RectTransform>().anchoredPosition.y;
 
 
-        if (isHorizontal)
-        {
-            amplitude = cookingBar.GetComponent<RectTransform>().sizeDelta.x /2 ;
-            shift = cookingBar.GetComponent<RectTransform>().anchoredPosition.x;
+      
+         amplitude = cookingBar.GetComponent<RectTransform>().sizeDelta.x /2 ;
+         shift = cookingBar.GetComponent<RectTransform>().anchoredPosition.x;
 
-        }
+        
 
         foreach (TargetZone target in cookingBar.GetComponentsInChildren<TargetZone>()) { 
             targets.Add(target);
-            target.SetBounds(target.GetComponent<RectTransform>().anchoredPosition.x, isHorizontal);
+            target.SetBounds(target.GetComponent<RectTransform>().anchoredPosition.x);
         }
 
         tempIcon.GetComponent<Image>().sprite = manager.characterSelectionMenu.selectedCharacter.characterIcon;
@@ -71,12 +68,12 @@ public class ChopMinigame : MonoBehaviour
     void Update()
     {
 
-        if (isHorizontal && manager.currentTimer.timerActive) {
+        if (manager.currentTimer.timerActive) {
             iconPosX = (amplitude * Mathf.Sin(barSpeed * (Time.time)) + shift);
             barIcon.GetComponent<RectTransform>().anchoredPosition = new Vector2(iconPosX, iconPosY);
         }
 
-        if (Input.GetKeyDown("space"))
+        if (Input.GetKeyDown("space") || Input.GetMouseButtonDown(0))
         {
             if (CheckTargets())
             {
@@ -98,13 +95,12 @@ public class ChopMinigame : MonoBehaviour
         bool inRange = false;
         foreach (TargetZone target in targets)
         {
-            if (isHorizontal)
-            {
-                if (iconPosX >= target.lowerBound && iconPosX <= target.upperBound)
+            
+            if (iconPosX >= target.lowerBound && iconPosX <= target.upperBound)
                 {
                     inRange = true;
                 }
-            }
+            
         }
 
         //Debug.Log(inRange);
