@@ -139,6 +139,7 @@ public class SelectableItem : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 { 
     [Header("Main")]
     [SerializeField] private ClickBehavior _clickBehavior = ClickBehavior.SELECT;
+    [SerializeField, ConditionalField(nameof(_clickBehavior), true, false, ClickBehavior.NONE)] private bool _selectOnMouseDown = false;
 
     [Header("Hover")]
     [SerializeField] private ClickBehavior _hoverBehavior = ClickBehavior.NONE;
@@ -231,9 +232,13 @@ public class SelectableItem : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
         if (_mouseDownSound) _mouseDownSound.Play();
         _clickedDown = true;
+
+        if (_selectOnMouseDown) CompleteSelection();
     }
 
-    public void OnPointerUp(PointerEventData eventData)
+    public void OnPointerUp(PointerEventData eventData) => CompleteSelection();
+
+    private void CompleteSelection()
     {
         if (_disabled || !_clickedDown) return;
         _clickedDown = false;

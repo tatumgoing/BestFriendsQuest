@@ -104,6 +104,7 @@ public class ColorMenuController : MonoBehaviour
         if (!_inputingHex) {
             bool updateSatVal = true;
             var pos = _selector.GetNormalizedPositionFromCenter();
+
             if (!_advanced) {
                 pos.x = ClampToGrid(pos.x);
                 pos.y = ClampToGrid(pos.y);
@@ -139,17 +140,17 @@ public class ColorMenuController : MonoBehaviour
         bestSquare.GetComponent<SelectableItem>().Select();
 
         return true;
-
-        //print("shortestDist: " + shortestDist);
     }
 
     private void StopSelecting()
     {
         _selector.enabled = false;
+        print("stopSelecting");
     }
 
     public void StartSelecting()
     {
+        print("startSelecting");
         _inputingHex = false;
         _selector.enabled = true;   
     }

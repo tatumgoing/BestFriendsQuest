@@ -166,44 +166,45 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 898f698a9835d194c90dd0b423be4462, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _selectOnClick: 0
-  _toggleOnClick: 0
-  _deselectOnClick: 0
-  _dontHoverWhenSelected: 0
-  _selectOnHover: 0
-  _deselectOnExit: 1
+  _clickBehavior: 1
+  _selectOnMouseDown: 0
+  _hoverBehavior: 0
   _hasHoverCooldown: 0
   _hoverCooldown: 0.05
-  _deselectOnStart: 1
-  _autoDehover: 0
+  _hoverWhenSelected: 1
   _data:
   - Name: selected
     _type: 1
-    _target: {fileID: 0}
+    _graphic: {fileID: 0}
     _useMaterials: 0
-    _normalColor: {r: 1, g: 1, b: 1, a: 1}
-    _hoveredColor: {r: 1, g: 1, b: 1, a: 1}
-    _selectedColor: {r: 1, g: 1, b: 1, a: 1}
-    _disabledColor: {r: 1, g: 1, b: 1, a: 1}
-    _normalMat: {fileID: 0}
-    _hoveredMat: {fileID: 0}
-    _selectedMat: {fileID: 0}
-    _disabledMat: {fileID: 0}
-    _obj: {fileID: 8755389922403071589}
-    _normalState: 0
-    _hoveredState: 0
-    _selectedState: 1
-    _disabledState: 0
-    _group: {fileID: 0}
-    _normalAlpha: 0.3
-    _hoveredAlpha: 0.6
-    _selectedAlpha: 1
-    _disabledAlpha: 0.2
+    _colors:
+      _normal: {r: 1, g: 1, b: 1, a: 1}
+      _hovered: {r: 1, g: 1, b: 1, a: 1}
+      _selected: {r: 1, g: 1, b: 1, a: 1}
+      _disabled: {r: 1, g: 1, b: 1, a: 1}
+    _materials:
+      _normal: {fileID: 0}
+      _hovered: {fileID: 0}
+      _selected: {fileID: 0}
+      _disabled: {fileID: 0}
+    _gameObjectTarget: {fileID: 8755389922403071589}
+    _activeStates:
+      _normal: 0
+      _hovered: 0
+      _selected: 1
+      _disabled: 0
+    _canvasGroup: {fileID: 0}
+    _alphaValues:
+      _normal: 1
+      _hovered: 1
+      _selected: 1
+      _disabled: 1
     _spriteTarget: {fileID: 0}
-    _normalSprite: {fileID: 0}
-    _hoveredSprite: {fileID: 0}
-    _selectedSprite: {fileID: 0}
-    _disabledSprite: {fileID: 0}
+    _sprites:
+      _normal: {fileID: 0}
+      _hovered: {fileID: 0}
+      _selected: {fileID: 0}
+      _disabled: {fileID: 0}
     _showGraphicSettings: 0
     _showGraphicColorSettings: 0
     _showGOSettings: 1
@@ -211,8 +212,11 @@ MonoBehaviour:
     _showSpriteSettings: 0
   _hasAnimation: 0
   _animator: {fileID: 0}
-  _animationBool: Selected
+  _animationSelectedBool: Selected
+  _animationHoveredBool: Hovered
+  _animationDisabledBool: Disabled
   _hoverSound: {fileID: 0}
+  _mouseDownSound: {fileID: 0}
   _selectSound: {fileID: 0}
   _deselectSound: {fileID: 0}
   OnSelect:
@@ -227,8 +231,7 @@ MonoBehaviour:
   OnDeselect:
     m_PersistentCalls:
       m_Calls: []
-  _printSelections: 0
-  _disabled: 0
+  _debugStateChange: 0
 --- !u!1 &5439788901532761445
 GameObject:
   m_ObjectHideFlags: 0
