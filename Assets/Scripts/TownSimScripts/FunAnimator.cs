@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Burst.CompilerServices;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class FunAnimator : MonoBehaviour
@@ -32,12 +33,21 @@ public class FunAnimator : MonoBehaviour
 
     private float iconPosX;
 
+    [Header("Scale")]
+    public bool doesScale;
+    public float minScale;
+    public float maxScale;
+    public float scaleSpeed;
+
+    private Vector3 defScale;
+
 
     void Start()
     {
         iconPosX = GetComponent<RectTransform>().anchoredPosition.x;
         iconPosY = GetComponent<RectTransform>().anchoredPosition.y;
         defRot= GetComponent<RectTransform>().rotation.z;
+        defScale = GetComponent<RectTransform>().localScale;
     }
 
     void Update()
@@ -48,17 +58,27 @@ public class FunAnimator : MonoBehaviour
 
         if (doesRot)
         {
-            newIconRot = (maxRot - minRot)/2 * Mathf.Sin(rotSpeed * (Time.time)) + defRot + ((maxRot + minRot) / 2);
-            GetComponent<RectTransform>().rotation= Quaternion.Euler(0, 0, newIconRot);
+            GetComponent<RectTransform>().rotation= Quaternion.Euler(0, 0, SinAnimator(maxRot, minRot, rotSpeed, defRot));
         }
-        if (doesVert) 
+        if (doesVert)
         {
-             newIconPosY = (maxVert - minVert)/2 * Mathf.Sin(vertSpeed * (Time.time)) + iconPosY + ((maxVert + minVert) / 2);
+             newIconPosY = SinAnimator( maxVert, minVert, vertSpeed, iconPosY);
         }
         if (doesHoriz)
         {
-            newIconPosX = (maxHoriz-minHoriz)/2 * Mathf.Sin(horizSpeed * (Time.time)) + iconPosX + ((maxHoriz + minHoriz) / 2);
+            newIconPosX = SinAnimator(maxHoriz, minHoriz, horizSpeed, iconPosX); 
         }
         GetComponent<RectTransform>().anchoredPosition = new Vector2(newIconPosX, newIconPosY);
+        if (doesScale)
+        {
+            GetComponent<RectTransform>().localScale = new Vector3 (SinAnimator(maxScale, minScale, scaleSpeed, defScale.x-1), SinAnimator(maxScale, minScale, scaleSpeed, defScale.y-1), 1);
+        }
+    }
+
+    float SinAnimator(float max, float min, float speed, float start)
+    {
+        var newVal = (max - min) / 2 * Mathf.Sin(speed * (Time.time)) + start + ((max + min) / 2);
+
+        return newVal;
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class StirMinigame : MonoBehaviour
 {
@@ -42,6 +43,9 @@ public class StirMinigame : MonoBehaviour
         manager = FindFirstObjectByType<MinigameManager>();
 
         InvokeRepeating("GenerateNewSpeed", 5.0f, 4.0f);
+
+        tempIcon.GetComponent<Image>().sprite = manager.characterSelectionMenu.selectedCharacter.characterIcon;
+
 
     }
     void Update()
