@@ -81,4 +81,6 @@ public class FunAnimator : MonoBehaviour
 
         return newVal;
     }
+
+   
 }
