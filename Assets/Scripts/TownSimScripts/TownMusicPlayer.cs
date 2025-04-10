@@ -84,17 +84,14 @@ public class TownMusicPlayer : MonoBehaviour
 
     public IEnumerator FadeTrackIn(Sound sound)
     {
-        if(sound != null){
-            float vol = sound.percentVolume;
+        float vol = sound.percentVolume;
 
+        while(vol < 1)
+        {
+            vol += .01f;
 
-            while (vol < 1)
-            {
-                vol += .01f;
-
-                yield return new WaitForSeconds(.01f);
-                sound.SetPercentVolume(vol);
-            }
+            yield return new WaitForSeconds(.01f);
+            sound.SetPercentVolume(vol);
         }
         
     }

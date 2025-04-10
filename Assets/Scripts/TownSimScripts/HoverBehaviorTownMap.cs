@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class HoverBehaviorTownMap : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
@@ -10,11 +11,16 @@ public class HoverBehaviorTownMap : MonoBehaviour, IPointerEnterHandler, IPointe
     [SerializeField] string locationName;
     [SerializeField] string locationDescription;
 
+    public Sprite hoverImage;
+    public Sprite defaultImage;
+
     float width;
     float height;
 
     void Start()
     {
+        GetComponent<Image>().sprite = defaultImage;
+
         i = HoverTextTownMap.i;
 
         //StartCoroutine(SetBounds());
@@ -23,12 +29,21 @@ public class HoverBehaviorTownMap : MonoBehaviour, IPointerEnterHandler, IPointe
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        i.ActivateMenu(locationName, locationDescription);
+        if (i != null)
+        {
+            i.ActivateMenu(locationName, locationDescription);
+        }
+        GetComponent<Image>().sprite = hoverImage;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        i.StartCoroutine("DeactivateMenu");
+        if (i != null)
+        {
+            i.StartCoroutine("DeactivateMenu");
+        }
+
+        GetComponent<Image>().sprite = defaultImage;
     }
 
 
