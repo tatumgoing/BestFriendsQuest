@@ -9,6 +9,8 @@ public class Item : ScriptableObject
 
     public string Name;
 
+    public string ItemType; 
+
     public int Cost;
 
     public bool unlocked;
