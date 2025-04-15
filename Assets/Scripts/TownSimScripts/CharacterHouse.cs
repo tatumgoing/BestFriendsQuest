@@ -2,12 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 
 public class CharacterHouse : MonoBehaviour
 {
+    [Header("Character Info")]
 
     public CharacterData associatedCharacter;
+    public Image tempIcon;
+
+    [Header("Dialogue Box")]
+
+    public CharacterDialogue dialogueBox;
+
+
+    [Header("Gift Inventory")]
+    public GameObject giftMenu;
+
+    public GameObject giftButton;
+
+    private bool giftEnabled = false;
 
     [Header("Status Menu")]
 
@@ -26,7 +40,8 @@ public class CharacterHouse : MonoBehaviour
 
     private void Start()
     {
-
+        dialogueBox.associatedCharacter = associatedCharacter;
+        tempIcon.sprite = associatedCharacter.characterIcon;
     }
     private void OnEnable()
     {
@@ -51,15 +66,32 @@ public class CharacterHouse : MonoBehaviour
             houseStatusMenu.SetActive(false);
             statusEnabled = false;
             statusButtonText.text = "Status";
+            giftButton.SetActive(true);
+
         }
         else
         {
             houseStatusMenu.SetActive(true); 
             statusEnabled = true;
             statusButtonText.text = "X";
+            giftButton.SetActive(false);
         }
     }
 
+    public void ToggleGiftWindow()
+    {
+        if (giftEnabled)
+        {
+            giftMenu.SetActive(false);
+            giftEnabled = false;
+        }
+        else
+        {
+            giftMenu.SetActive(true);
+            giftEnabled = true;
+        }
+
+    }
     
     public void UpdateHappiness()
     {

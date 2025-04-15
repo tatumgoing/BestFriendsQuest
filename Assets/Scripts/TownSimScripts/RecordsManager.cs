@@ -30,7 +30,7 @@ public class RecordsManager : MonoBehaviour
     public IEnumerator UpdateRecord()
     {
         yield return new WaitForSeconds(.05f);
-        gameManager.UpdateRecords();
+        gameManager.UpdateRecords(this);
     }
     public void ClearRecords()
     {

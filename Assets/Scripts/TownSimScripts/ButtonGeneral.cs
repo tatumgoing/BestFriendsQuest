@@ -7,8 +7,8 @@ public class ButtonGeneral : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
 {
     [SerializeField] private Sound clickSFX;
 
-    public float initialX;
-    public float initialY;
+     float initialX;
+     float initialY;
 
     public float travelDist;
 

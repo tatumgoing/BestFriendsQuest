@@ -11,6 +11,7 @@ public class CharacterHouseButton : MonoBehaviour
     public TMP_Text labelText;
     public Image labelSprite;
 
+    public GameObject problemAlert;
 
     public void SetHouseLabel(string characterName)
     {

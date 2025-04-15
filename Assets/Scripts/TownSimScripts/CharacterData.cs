@@ -27,6 +27,10 @@ public class CharacterData
     [Header("Icon")]
     public Sprite characterIcon;
 
+    [Header("Problems")]
+    public bool hasProblem;
+    public Problem currentProblem;
+
     void Start()
     {
         gameManager = TownGameManager.i;

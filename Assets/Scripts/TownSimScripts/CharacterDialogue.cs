@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class CharacterDialogue : MonoBehaviour
 {
+    public CharacterData associatedCharacter;
 
     public List<string> dialogues = new List<string>();
     public TMP_Text dialogueBox;
@@ -17,15 +18,25 @@ public class CharacterDialogue : MonoBehaviour
 
         dialogues.Add("Life is like a dream!");
         dialogues.Add("Lorem ipsum- haha Just Kidding Can You Imagine?");
-        dialogues.Add("The guy who made me is kinda mid at coding. Can you kill him for me?");
-        dialogues.Add("My life is like a video gaaame trying hard to beat the staaage-");
+        dialogues.Add("Whats the weather like in your world?");
+        dialogues.Add("It's good having so many neighbors in this town. Maybe we ought to have a party soon.");
+        dialogues.Add("Thanks for checking in on me!");
+
     }
 
     public void DisplayDialogue()
     {
         //enables the text box and then displays the dialogue
         textBox.SetActive(true);
-        dialogueBox.text = RandomDialogue();
+
+        if(associatedCharacter.hasProblem)
+        {
+            dialogueBox.text = associatedCharacter.currentProblem.problemDialogue;
+        }
+        else
+        {
+            dialogueBox.text = RandomDialogue();
+        }
     }
     public string RandomDialogue()
     {

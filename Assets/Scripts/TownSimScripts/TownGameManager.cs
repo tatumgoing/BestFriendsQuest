@@ -38,6 +38,11 @@ public class TownGameManager : MonoBehaviour
     public List<int> itemCounts = new List<int> ();
     public Dictionary<Item, int> items = new Dictionary<Item, int> ();
 
+    [Header("Problems")]
+
+    public List<Problem> allProblems = new List<Problem> ();
+    //public CharacterData problemCharacter;
+
     [Header ("UI Lists")]
 
     public List<GameObject> sceneList = new List<GameObject>();
@@ -54,6 +59,8 @@ public class TownGameManager : MonoBehaviour
         ChangeCurrency(0);
 
         LoadInventory();
+
+        GenerateProblem(null);
 
         //MakeCharacterHouses();
 
@@ -72,10 +79,10 @@ public class TownGameManager : MonoBehaviour
                 var tempOpacity = opacity.color;
                 tempOpacity.a = step;
                 opacity.color = tempOpacity;
-
                 step += 50f * Time.deltaTime;
 
-                await Task.Delay(100);
+
+                await Task.Delay(Mathf.FloorToInt(10000 * Time.deltaTime));
 
             }
         }
@@ -93,7 +100,7 @@ public class TownGameManager : MonoBehaviour
 
                 step -= 50f * Time.deltaTime;
 
-                await Task.Delay(100);
+                await Task.Delay(Mathf.FloorToInt(10000 * Time.deltaTime));
 
             }
 
@@ -235,33 +242,32 @@ public class TownGameManager : MonoBehaviour
         ChangeCurrency(100);
     }
 
-    public void UpdateRecords()
+    public void UpdateRecords(RecordsManager rManager)
     {
-        foreach (RecordsManager rManager in recordsManagers)
+       
+        rManager.ClearRecords();
+
+        foreach (Item i in allItems)
         {
-            rManager.ClearRecords();
-
-            foreach (Item i in allItems)
+            //if held
+            if (items.ContainsKey(i) && items[i] != 0 && i.unlocked)
             {
-                //if held
-                if (items.ContainsKey(i) && items[i] != 0 && i.unlocked)
-                {
-                    rManager.CreateHeldItem(i.Name, items[i]);
-                }
-                //if previously held, but count = 0
-                else if (i.unlocked)
-                {
-                    rManager.CreateUnheldItem(i.Name, 0);
-                }
-                else
-                {
-                    rManager.CreateLockedItem(i.Name);
-                }
-
-                // if never held
-
+                rManager.CreateHeldItem(i.Name, items[i]);
             }
-        }
+            //if previously held, but count = 0
+            else if (i.unlocked)
+            {
+                rManager.CreateUnheldItem(i.Name, 0);
+            }
+            else
+            {
+                rManager.CreateLockedItem(i.Name);
+            }
+
+            // if never held
+
+        
+    }
 
         
     }
@@ -288,6 +294,8 @@ public class TownGameManager : MonoBehaviour
             //set parent, label, and sprite
             newHouseButtonScript.SetHouseLabel(character.characterName);
             newHouseButtonScript.SetHouseSprite(character.characterIcon);
+            
+            newHouseButtonScript.problemAlert.SetActive(character.hasProblem);
             
             
             newHouseButton.GetComponent<Button>().onClick.AddListener(() => OpenHouse(character));
@@ -320,6 +328,27 @@ public class TownGameManager : MonoBehaviour
         character.house.gameObject.SetActive(true);
     }
 
+
+
+    private void GenerateProblem(CharacterData lastCharacter)
+    {
+        CharacterData newProblemCharacter = characterManager.allCharacters[Random.Range(0, characterManager.allCharacters.Count)];
+
+        if(newProblemCharacter != lastCharacter)
+        {
+
+            newProblemCharacter.hasProblem = true;
+            newProblemCharacter.currentProblem = allProblems[Random.Range(0, allProblems.Count)];
+
+            Debug.Log("New Problem Character: " + newProblemCharacter.characterName + "Problem:" + newProblemCharacter.currentProblem);
+
+
+        }
+        else
+        {
+            GenerateProblem(lastCharacter);
+        }
+    }
 
 
 }
