@@ -23,6 +23,9 @@ public class CharacterHouse : MonoBehaviour
 
     private bool giftEnabled = false;
 
+    public RecordsManager giftManager;
+    public ItemBanner selectedGift;
+
     [Header("Status Menu")]
 
     public GameObject houseStatusMenu;
@@ -42,6 +45,9 @@ public class CharacterHouse : MonoBehaviour
     {
         dialogueBox.associatedCharacter = associatedCharacter;
         tempIcon.sprite = associatedCharacter.characterIcon;
+
+        giftMenu.SetActive(false);
+        houseStatusMenu.SetActive(false);
     }
     private void OnEnable()
     {
@@ -109,5 +115,46 @@ public class CharacterHouse : MonoBehaviour
             newBanner.level.text = associatedCharacter.relationships[reloCharacter].ToString();
             newBanner.status.text = "Testing";
         } 
+    }
+
+    public void SelectGift()
+    {
+
+    }
+    public void GiveGift()
+    {
+        if (selectedGift != null)
+        {
+            if (associatedCharacter.hasProblem)
+            {
+                if (associatedCharacter.currentProblem.desiredItem.Name == selectedGift.itemName.ToString())
+                {
+                    SolveProblem();
+                }
+                else
+                {
+                    FailProblem();
+                }
+            }
+            else
+            {
+                RecieveGift();
+            }
+        }
+    }
+
+    public void SolveProblem()
+    {
+            
+    }
+
+    public void FailProblem()
+    {
+
+    }
+
+    public void RecieveGift()
+    {
+
     }
 }

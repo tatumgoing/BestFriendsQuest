@@ -252,16 +252,16 @@ public class TownGameManager : MonoBehaviour
             //if held
             if (items.ContainsKey(i) && items[i] != 0 && i.unlocked)
             {
-                rManager.CreateHeldItem(i.Name, items[i]);
+                rManager.CreateHeldItem(i, items[i]);
             }
             //if previously held, but count = 0
             else if (i.unlocked)
             {
-                rManager.CreateUnheldItem(i.Name, 0);
+                rManager.CreateUnheldItem(i, 0);
             }
             else
             {
-                rManager.CreateLockedItem(i.Name);
+                rManager.CreateLockedItem(i);
             }
 
             // if never held
