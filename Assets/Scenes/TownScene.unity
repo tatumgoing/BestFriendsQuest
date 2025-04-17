@@ -783,6 +783,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c595689aa577ebd4c81c4f5ba29ff5db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameManager: {fileID: 0}
   associatedCharacter:
     characterName: Sally
     age: 0
@@ -795,12 +796,16 @@ MonoBehaviour:
   dialogueBox: {fileID: 0}
   giftMenu: {fileID: 0}
   giftButton: {fileID: 0}
+  giftManager: {fileID: 0}
   houseStatusMenu: {fileID: 1245779477}
   displayName: {fileID: 159759667}
   statusButtonText: {fileID: 1164770266}
   houseProgressBar: {fileID: 377382422}
   relationshipPrefab: {fileID: 3038436094880140047, guid: 6134600ad98a22f47866b967c1681c6c, type: 3}
   relationshipContainer: {fileID: 1403482519}
+  happinessMeter: {fileID: 0}
+  happinessProgress: {fileID: 0}
+  currencyDisplay: {fileID: 0}
 --- !u!1 &105684745 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8219895899309317679, guid: 5e39acf2f1421b14fbdf4aefc9fdf830, type: 3}
@@ -14257,90 +14262,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   manager: {fileID: 638591775}
   finalScore: {fileID: 1960099886}
---- !u!1 &1270437613
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1270437615}
-  - component: {fileID: 1270437614}
-  m_Layer: 0
-  m_Name: PalmTree
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!212 &1270437614
-SpriteRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1270437613}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 0
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: ca8b98e7748ba2841bd5bd742110d8a6, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 4.53, y: 3.4}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
---- !u!4 &1270437615
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1270437613}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 173.613, y: 294.1769, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1282947949
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16103,6 +16024,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c595689aa577ebd4c81c4f5ba29ff5db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameManager: {fileID: 0}
   associatedCharacter:
     characterName: Goobert
     age: 0
@@ -16115,12 +16037,16 @@ MonoBehaviour:
   dialogueBox: {fileID: 0}
   giftMenu: {fileID: 0}
   giftButton: {fileID: 0}
+  giftManager: {fileID: 0}
   houseStatusMenu: {fileID: 1178406294}
   displayName: {fileID: 2010298594}
   statusButtonText: {fileID: 1876200597}
   houseProgressBar: {fileID: 2005536654}
   relationshipPrefab: {fileID: 3038436094880140047, guid: 6134600ad98a22f47866b967c1681c6c, type: 3}
   relationshipContainer: {fileID: 324863366}
+  happinessMeter: {fileID: 0}
+  happinessProgress: {fileID: 0}
+  currencyDisplay: {fileID: 0}
 --- !u!1 &1491910241
 GameObject:
   m_ObjectHideFlags: 0
@@ -18488,6 +18414,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c595689aa577ebd4c81c4f5ba29ff5db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameManager: {fileID: 0}
   associatedCharacter:
     characterName: Johnny
     age: 0
@@ -18500,12 +18427,16 @@ MonoBehaviour:
   dialogueBox: {fileID: 0}
   giftMenu: {fileID: 0}
   giftButton: {fileID: 0}
+  giftManager: {fileID: 0}
   houseStatusMenu: {fileID: 718651083}
   displayName: {fileID: 1959816577}
   statusButtonText: {fileID: 1605029727}
   houseProgressBar: {fileID: 1056235107}
   relationshipPrefab: {fileID: 3038436094880140047, guid: 6134600ad98a22f47866b967c1681c6c, type: 3}
   relationshipContainer: {fileID: 1244024473}
+  happinessMeter: {fileID: 0}
+  happinessProgress: {fileID: 0}
+  currencyDisplay: {fileID: 0}
 --- !u!1 &1681349646
 GameObject:
   m_ObjectHideFlags: 0
@@ -25074,4 +25005,3 @@ SceneRoots:
   - {fileID: 809776423}
   - {fileID: 635968985}
   - {fileID: 1991988565}
-  - {fileID: 1270437615}

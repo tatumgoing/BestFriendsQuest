@@ -41,7 +41,10 @@ public class RecordsManager : MonoBehaviour
 
         foreach (ItemBanner i in containedItems)
         {
-            i.GetComponent<Button>().onClick.AddListener(() => SelectBanner(i));
+            if (i.GetComponent<Button>() != null)
+            {
+                i.GetComponent<Button>().onClick.AddListener(() => SelectBanner(i));
+            }
         }
     }
     public void ClearRecords()
@@ -92,7 +95,7 @@ public class RecordsManager : MonoBehaviour
     public void SelectBanner(ItemBanner newSelected)
     {
         selectedBanner = newSelected;
-        //Debug.Log("Yay new selected: " + newSelected);
+        Debug.Log("Yay new selected: " + newSelected);
     }
 
     //go back to towngamemanager and update item class to accomodate. sorry future vincent

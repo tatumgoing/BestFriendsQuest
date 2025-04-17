@@ -68,7 +68,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 
     public void SelectButton(GameObject button)
     {
-        Debug.Log(button);
+        //Debug.Log(button);
         foreach (GameObject resetButton in characterSelectionButtons)
         {
             if(resetButton != button)

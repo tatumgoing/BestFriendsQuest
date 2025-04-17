@@ -24,12 +24,16 @@ public class CharacterDialogue : MonoBehaviour
 
     }
 
-    public void DisplayDialogue()
+    public void DisplayDialogue(string newDialogue="")
     {
         //enables the text box and then displays the dialogue
         textBox.SetActive(true);
 
-        if(associatedCharacter.hasProblem)
+        if(newDialogue!= "")
+        {
+            dialogueBox.text = newDialogue;
+        }
+        else if(associatedCharacter.hasProblem)
         {
             dialogueBox.text = associatedCharacter.currentProblem.problemDialogue;
         }
@@ -43,5 +47,10 @@ public class CharacterDialogue : MonoBehaviour
         //finds random dialogue string and returns it
         int index = Random.Range(0, dialogues.Count);
         return dialogues[index];
+    }
+
+    public void HideDialogue()
+    {
+        textBox.SetActive(false);  
     }
 }

@@ -330,7 +330,7 @@ public class TownGameManager : MonoBehaviour
 
 
 
-    private void GenerateProblem(CharacterData lastCharacter)
+    public void GenerateProblem(CharacterData lastCharacter)
     {
         CharacterData newProblemCharacter = characterManager.allCharacters[Random.Range(0, characterManager.allCharacters.Count)];
 
