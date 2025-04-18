@@ -49,7 +49,8 @@ public class TownGameManager : MonoBehaviour
     public List<GameObject> sceneUIList = new List<GameObject>();
 
     public GameObject neighborhoodUI;
-    public GameObject neighborhood;
+    public GameObject minigameUI;
+    //public GameObject neighborhood;
 
     public GameObject fadeScreen;
 
@@ -165,6 +166,18 @@ public class TownGameManager : MonoBehaviour
 
         //items.Add(inventoryName);
 
+        UpdateInventoryInspector();
+
+        SaveCurrentInventory();
+    }
+
+    public void SubtractInventory(Item newItem)
+    {
+        if (items.ContainsKey(newItem))
+        {
+            items[newItem] -= 1;
+        }
+   
         UpdateInventoryInspector();
 
         SaveCurrentInventory();
@@ -343,7 +356,7 @@ public class TownGameManager : MonoBehaviour
             newProblemCharacter.hasProblem = true;
             newProblemCharacter.currentProblem = allProblems[Random.Range(0, allProblems.Count)];
 
-            Debug.Log("New Problem Character: " + newProblemCharacter.characterName + "Problem:" + newProblemCharacter.currentProblem);
+            //Debug.Log("New Problem Character: " + newProblemCharacter.characterName + "Problem:" + newProblemCharacter.currentProblem);
 
 
         }

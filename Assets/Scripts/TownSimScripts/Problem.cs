@@ -11,6 +11,8 @@ public class Problem : ScriptableObject
 
     public Item desiredItem;
 
+    public bool isMinigame;
+
     [Header("Rewards")]
 
     public float rewardHappiness;

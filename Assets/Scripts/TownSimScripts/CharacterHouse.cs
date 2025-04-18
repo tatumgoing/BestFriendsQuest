@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System.Threading.Tasks;
 
 public class CharacterHouse : MonoBehaviour
 {
     public TownGameManager gameManager;
+    public MinigameManager minigameManager;
 
     [Header("Character Info")]
 
@@ -16,6 +18,8 @@ public class CharacterHouse : MonoBehaviour
     [Header("Dialogue Box")]
 
     public CharacterDialogue dialogueBox;
+
+    public GameObject minigameNavMenu;
 
 
     [Header("Gift Inventory")]
@@ -65,10 +69,12 @@ public class CharacterHouse : MonoBehaviour
 
         giftMenu.SetActive(false);
         houseStatusMenu.SetActive(false);
+        minigameNavMenu.SetActive(false);
 
         rewardsHappinessMeter.gameObject.SetActive(false);
 
         gameManager = TownGameManager.i;
+        minigameManager = MinigameManager.i;
 
     }
 
@@ -86,6 +92,32 @@ public class CharacterHouse : MonoBehaviour
     {
         associatedCharacter = character;
     }
+
+    public async void ShowMinigameOptions()
+    {
+        if (associatedCharacter.hasProblem && associatedCharacter.currentProblem.isMinigame)
+        {
+            await Task.Delay(3000);
+
+            dialogueBox.HideDialogue();
+            minigameNavMenu.SetActive(true);
+        }
+    }
+
+    public void NotNow()
+    {
+        dialogueBox.HideDialogue();
+        minigameNavMenu.SetActive(false);
+    }
+
+    public void StartProblemMinigame()
+    {
+        gameManager.ChangeScene(gameManager.minigameUI);
+        minigameManager.StartProblemMinigame(associatedCharacter);
+        SolveProblemInHouse();
+
+    }
+
 
     public void ToggleStatusWindow()
     {
@@ -150,7 +182,10 @@ public class CharacterHouse : MonoBehaviour
             ToggleGiftWindow();
             dialogueBox.HideDialogue();
 
-            if (associatedCharacter.hasProblem)
+            gameManager.SubtractInventory(giftManager.selectedBanner.itemID);
+            gameManager.UpdateRecords(giftManager);
+
+            if (associatedCharacter.hasProblem && !associatedCharacter.currentProblem.isMinigame)
             {
               
                 if (associatedCharacter.currentProblem.desiredItem.Name == giftManager.selectedBanner.itemID.Name)
@@ -243,7 +278,7 @@ public class CharacterHouse : MonoBehaviour
 
         //stop old problem, make new problem
 
-        if (associatedCharacter.hasProblem)
+        if (associatedCharacter.hasProblem && !associatedCharacter.currentProblem.isMinigame)
         {
             associatedCharacter.hasProblem = false;
             associatedCharacter.currentProblem = null;
@@ -252,5 +287,16 @@ public class CharacterHouse : MonoBehaviour
         }
 
 
+    }
+
+    private void SolveProblemInHouse()
+    {
+        if (associatedCharacter.hasProblem)
+        {
+            associatedCharacter.hasProblem = false;
+            associatedCharacter.currentProblem = null;
+
+            gameManager.GenerateProblem(associatedCharacter);
+        }
     }
 }

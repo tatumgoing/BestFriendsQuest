@@ -51,6 +51,9 @@ public class CharacterDialogue : MonoBehaviour
 
     public void HideDialogue()
     {
-        textBox.SetActive(false);  
+        if (textBox != null)
+        {
+            textBox.SetActive(false);
+        }
     }
 }

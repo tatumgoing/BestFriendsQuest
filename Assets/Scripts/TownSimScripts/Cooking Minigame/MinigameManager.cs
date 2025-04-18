@@ -6,6 +6,8 @@ using TMPro;
 
 public class MinigameManager : MonoBehaviour
 {
+    public static MinigameManager i;
+
     public TownGameManager gameManager;
     public GameObject minigameUIContainer;
 
@@ -44,15 +46,28 @@ public class MinigameManager : MonoBehaviour
     public GameObject happinessMeter;
     public Image endScreenIcon;
 
+    private bool isProblemRun;
+
 
     // Start is called before the first frame update
     void Start()
     {
+        i = this;
+
         gameManager = TownGameManager.i;
 
         GenerateRecipeSelect();
     }
 
+    public void StartProblemMinigame(CharacterData problemCharacter)
+    {
+        isProblemRun = true;
+
+        characterSelectionMenu.selectedCharacter = problemCharacter;
+
+        NextMinigameScene();
+
+    }
     public void GenerateRecipeSelect()
     {
         foreach (Transform child in recipeGrid.transform)
@@ -152,7 +167,10 @@ public class MinigameManager : MonoBehaviour
 
     public void RestartGame()
     {
-        ToggleConfirmWindow();
+        if (!isProblemRun)
+        {
+            ToggleConfirmWindow();
+        }
 
         gameScenes[currentScene].gameObject.SetActive(false);
 
@@ -171,6 +189,8 @@ public class MinigameManager : MonoBehaviour
         selectedRecipe = null;
 
         minigameScores.Clear();
+
+        isProblemRun = false;
 
     }
 
