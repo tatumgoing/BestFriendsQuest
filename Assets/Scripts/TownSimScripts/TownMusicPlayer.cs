@@ -49,6 +49,7 @@ public class TownMusicPlayer : MonoBehaviour
 
     public void PlayNewTrack(Sound newTrack)
     {
+
         bool changed = false;
 
         foreach (Sound track in allTracks) {

@@ -95,7 +95,7 @@ public class RecordsManager : MonoBehaviour
     public void SelectBanner(ItemBanner newSelected)
     {
         selectedBanner = newSelected;
-        Debug.Log("Yay new selected: " + newSelected);
+        //Debug.Log("Yay new selected: " + newSelected);
     }
 
     //go back to towngamemanager and update item class to accomodate. sorry future vincent

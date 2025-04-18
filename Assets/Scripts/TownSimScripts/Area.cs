@@ -6,7 +6,7 @@ public class Area : MonoBehaviour
 {
     TownMusicPlayer musicPlayer;
 
-    [SerializeField] Sound associatedTrack;
+    public Sound associatedTrack;
     [SerializeField] GameObject associatedEnvironment;
 
     private void Start()
@@ -15,6 +15,7 @@ public class Area : MonoBehaviour
     }
     private void OnEnable()
     {
+
         StartCoroutine(StartMusic());
 
     }
@@ -29,14 +30,20 @@ public class Area : MonoBehaviour
             associatedEnvironment.SetActive(true);
 
         }
-        if (associatedTrack != null)
-        {
-            musicPlayer.PlayNewTrack(associatedTrack);
-        }
-        else
+
+        if (associatedTrack == null) 
         {
             musicPlayer.StopCurrentTrack();
         }
+        else if (musicPlayer.currentTrack == null)
+        {
+            musicPlayer.PlayNewTrack(associatedTrack);
+        }
+        else if(musicPlayer.currentTrack.TrackName != associatedTrack.TrackName)
+        {
+            musicPlayer.PlayNewTrack(associatedTrack);
+        }
+       
     }
     private void OnDisable()
     {

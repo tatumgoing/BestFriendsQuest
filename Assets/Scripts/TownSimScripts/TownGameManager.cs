@@ -113,8 +113,11 @@ public class TownGameManager : MonoBehaviour
         //fades out track and fades in load screen
 
         TownMusicPlayer i = TownMusicPlayer.i;
+        if(i.currentTrack.TrackName != newSceneUI.GetComponent<Area>().associatedTrack.TrackName )
+        {
+            i.StartCoroutine(i.FadeTrackOut(i.currentTrack));
+        }
 
-        i.StartCoroutine(i.FadeTrackOut(i.currentTrack));
         await FadeScreen(true);
 
         //iterates over all UIs, disabling. then, enables selected UI

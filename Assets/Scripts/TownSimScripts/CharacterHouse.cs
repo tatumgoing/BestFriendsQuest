@@ -22,6 +22,8 @@ public class CharacterHouse : MonoBehaviour
     public GameObject giftMenu;
 
     public GameObject giftButton;
+    public TMP_Text giftButtonText;
+
 
     private bool giftEnabled = false;
 
@@ -32,33 +34,39 @@ public class CharacterHouse : MonoBehaviour
 
     public GameObject houseStatusMenu;
 
+    public GameObject statusButton;
+
     private bool statusEnabled = false;
     public TMP_Text displayName;
     public TMP_Text statusButtonText;
 
-    public GameObject houseProgressBar;
+    public HappinessBar statusHappinessMeter;
 
     public GameObject relationshipPrefab;
     public GameObject relationshipContainer;
 
     [Header("Rewards Animation")]
 
-    public GameObject happinessMeter;
-    public GameObject happinessProgress;
+    public HappinessBar rewardsHappinessMeter;
     public GameObject currencyDisplay;
+   
 
 
 
 
     private void Start()
     {
+        //set associated character lol
+        rewardsHappinessMeter.associatedCharacter = associatedCharacter;
+        statusHappinessMeter.associatedCharacter = associatedCharacter;
+
         dialogueBox.associatedCharacter = associatedCharacter;
         tempIcon.sprite = associatedCharacter.characterIcon;
 
         giftMenu.SetActive(false);
         houseStatusMenu.SetActive(false);
 
-        happinessMeter.SetActive(false);
+        rewardsHappinessMeter.gameObject.SetActive(false);
 
         gameManager = TownGameManager.i;
 
@@ -69,7 +77,6 @@ public class CharacterHouse : MonoBehaviour
         statusEnabled = false;
         houseStatusMenu.SetActive(false);
 
-        UpdateHappiness();
         UpdateRelationships();
 
         displayName.text = associatedCharacter.characterName;
@@ -87,6 +94,7 @@ public class CharacterHouse : MonoBehaviour
             houseStatusMenu.SetActive(false);
             statusEnabled = false;
             statusButtonText.text = "Status";
+            
             giftButton.SetActive(true);
 
         }
@@ -95,6 +103,7 @@ public class CharacterHouse : MonoBehaviour
             houseStatusMenu.SetActive(true); 
             statusEnabled = true;
             statusButtonText.text = "X";
+            
             giftButton.SetActive(false);
         }
     }
@@ -105,24 +114,22 @@ public class CharacterHouse : MonoBehaviour
         {
             giftMenu.SetActive(false);
             giftEnabled = false;
+            giftButtonText.text = "Gift";
+
+            statusButton.SetActive(true);
         }
         else
         {
             giftMenu.SetActive(true);
             giftEnabled = true;
+            giftButtonText.text = "X";
+
+            statusButton.SetActive(false);
         }
 
     }
     
-    public void UpdateHappiness()
-    {
-        float newWidth = houseProgressBar.transform.parent.GetComponent<RectTransform>().sizeDelta.x * (associatedCharacter.happiness / 100);
-        houseProgressBar.GetComponent<RectTransform>().sizeDelta = new Vector2(newWidth, houseProgressBar.GetComponent<RectTransform>().sizeDelta.y);
 
-        newWidth = happinessProgress.transform.parent.GetComponent<RectTransform>().sizeDelta.x * (associatedCharacter.happiness / 100);
-        happinessProgress.GetComponent<RectTransform>().sizeDelta = new Vector2(newWidth, happinessProgress.GetComponent<RectTransform>().sizeDelta.y);
-
-    }
     public void UpdateRelationships()
     {
         foreach (CharacterData reloCharacter in associatedCharacter.relationships.Keys)
@@ -202,7 +209,6 @@ public class CharacterHouse : MonoBehaviour
 
         StartCoroutine(RewardsAnimation(15f, 5f));
 
-
     }
 
     public IEnumerator RewardsAnimation(float rHappiness, float rCurrency)
@@ -212,26 +218,21 @@ public class CharacterHouse : MonoBehaviour
 
         yield return new WaitForSeconds(.5f);
 
-        happinessMeter.SetActive(true);
+        rewardsHappinessMeter.gameObject.SetActive(true);
 
-        yield return new WaitForSeconds(.5f);
-
-
-        float newWidth = happinessProgress.transform.parent.GetComponent<RectTransform>().sizeDelta.x * (associatedCharacter.happiness / 100);
-        happinessProgress.GetComponent<RectTransform>().sizeDelta = new Vector2(newWidth, happinessProgress.GetComponent<RectTransform>().sizeDelta.y);
+        yield return new WaitForSeconds(1f);
 
         associatedCharacter.happiness += rHappiness;
         associatedCharacter.happiness = Mathf.Clamp(associatedCharacter.happiness, 0, 100);
-
 
         yield return new WaitForSeconds(1f);
 
         //currency anim
 
-        happinessMeter.SetActive(false);
+        rewardsHappinessMeter.gameObject.SetActive(false);
         currencyDisplay.SetActive(true);
 
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(1f);
 
         gameManager.currency += rCurrency;
 
@@ -242,10 +243,13 @@ public class CharacterHouse : MonoBehaviour
 
         //stop old problem, make new problem
 
-        associatedCharacter.hasProblem = false;
-        associatedCharacter.currentProblem = null;
+        if (associatedCharacter.hasProblem)
+        {
+            associatedCharacter.hasProblem = false;
+            associatedCharacter.currentProblem = null;
 
-        gameManager.GenerateProblem(associatedCharacter);
+            gameManager.GenerateProblem(associatedCharacter);
+        }
 
 
     }
