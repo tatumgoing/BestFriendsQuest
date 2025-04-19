@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
-using Unity.VisualScripting;
 using System.Threading.Tasks;
 
 
@@ -348,13 +347,13 @@ public class TownGameManager : MonoBehaviour
 
     public void GenerateProblem(CharacterData lastCharacter)
     {
-        CharacterData newProblemCharacter = characterManager.allCharacters[Random.Range(0, characterManager.allCharacters.Count)];
+        CharacterData newProblemCharacter = characterManager.allCharacters[UnityEngine.Random.Range(0, characterManager.allCharacters.Count)];
 
         if(newProblemCharacter != lastCharacter)
         {
 
             newProblemCharacter.hasProblem = true;
-            newProblemCharacter.currentProblem = allProblems[Random.Range(0, allProblems.Count)];
+            newProblemCharacter.currentProblem = allProblems[UnityEngine.Random.Range(0, allProblems.Count)];
 
             //Debug.Log("New Problem Character: " + newProblemCharacter.characterName + "Problem:" + newProblemCharacter.currentProblem);
 
