@@ -183,7 +183,7 @@ public class CharacterHouse : MonoBehaviour
             dialogueBox.HideDialogue();
 
             gameManager.SubtractInventory(giftManager.selectedBanner.itemID);
-            gameManager.UpdateRecords(giftManager);
+            gameManager.UpdateRecordDisplay(giftManager, giftManager.currentType);
 
             if (associatedCharacter.hasProblem && !associatedCharacter.currentProblem.isMinigame)
             {

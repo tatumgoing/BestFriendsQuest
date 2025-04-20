@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ShopTabs : MonoBehaviour
+public class ItemTabs : MonoBehaviour
 {
     public Sprite defaultState;
     public Sprite clickedState;
+
+    public ItemType type;
 
     public bool selected = false; 
 

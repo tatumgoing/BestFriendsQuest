@@ -9,8 +9,6 @@ public class RecordsManager : MonoBehaviour
 
     public bool isRecords;
 
-    public string listType;
-
     public ItemBanner heldItem;
     public ItemBanner unheldItem;
     public ItemBanner lockedItem;
@@ -18,6 +16,12 @@ public class RecordsManager : MonoBehaviour
     public List<ItemBanner> containedItems = new List<ItemBanner>();
 
     public ItemBanner selectedBanner;
+
+    [Header("Item Type")]
+
+    public List<ItemTabs> tabs = new List<ItemTabs>();
+    public ItemType currentType;
+
 
 
     //public GameObject recordContainer;
@@ -32,12 +36,21 @@ public class RecordsManager : MonoBehaviour
         gameManager = TownGameManager.i;
 
         StartCoroutine(UpdateRecord());
+
+        currentType = ItemType.Clothing;
+
+        foreach (ItemTabs tab in tabs) { 
+            tab.GetComponent<Button>().onClick.AddListener(() => UpdateType(tab.type));
+            tab.GetComponent<Button>().onClick.AddListener(() => UpdateTab(tab));
+        }
+
+        UpdateTab(tabs[0]);
     }
 
     public IEnumerator UpdateRecord()
     {
         yield return new WaitForSeconds(.05f);
-        gameManager.UpdateRecords(this);
+        gameManager.UpdateRecordDisplay(this, currentType);
 
         foreach (ItemBanner i in containedItems)
         {
@@ -96,6 +109,24 @@ public class RecordsManager : MonoBehaviour
     {
         selectedBanner = newSelected;
         //Debug.Log("Yay new selected: " + newSelected);
+    }
+
+    public void UpdateType(ItemType type)
+    {
+        currentType = type;
+        gameManager.UpdateRecordDisplay(this, type);
+    }
+    void UpdateTab(ItemTabs clickedTab)
+    {
+        foreach (ItemTabs tab in tabs)
+        {
+            if (tab != clickedTab)
+            {
+                tab.selected = false;
+            }
+        }
+
+        clickedTab.selected = true;
     }
 
     //go back to towngamemanager and update item class to accomodate. sorry future vincent

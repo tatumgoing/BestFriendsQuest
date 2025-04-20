@@ -257,30 +257,33 @@ public class TownGameManager : MonoBehaviour
         ChangeCurrency(100);
     }
 
-    public void UpdateRecords(RecordsManager rManager)
+    public void UpdateRecordDisplay(RecordsManager rManager, ItemType type)
     {
        
         rManager.ClearRecords();
 
         foreach (Item i in allItems)
         {
-            //if held
-            if (items.ContainsKey(i) && items[i] != 0 && i.unlocked)
+            if (i.Type == type)
             {
-                rManager.CreateHeldItem(i, items[i]);
-            }
-            //if previously held, but count = 0
-            else if (i.unlocked)
-            {
-                rManager.CreateUnheldItem(i, 0);
-            }
-            else
-            {
-                rManager.CreateLockedItem(i);
-            }
+                //if held
+                if (items.ContainsKey(i) && items[i] != 0 && i.unlocked)
+                {
+                    rManager.CreateHeldItem(i, items[i]);
+                }
+                //if previously held, but count = 0
+                else if (i.unlocked)
+                {
+                    rManager.CreateUnheldItem(i, 0);
+                }
+                else
+                {
+                    rManager.CreateLockedItem(i);
+                }
 
-            // if never held
+                // if never held
 
+            }
         
     }
 

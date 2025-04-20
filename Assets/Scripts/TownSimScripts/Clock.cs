@@ -15,7 +15,7 @@ public class Clock : MonoBehaviour
 
     private string GetTime()
     {
-        return DateTime.Now.ToString("HH:mm");
+        return DateTime.Now.ToString("h:mm");
        
     }
 
