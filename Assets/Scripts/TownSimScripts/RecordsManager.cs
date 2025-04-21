@@ -49,7 +49,8 @@ public class RecordsManager : MonoBehaviour
 
     public IEnumerator UpdateRecord()
     {
-        yield return new WaitForSeconds(.05f);
+        yield return new WaitForEndOfFrame();
+
         gameManager.UpdateRecordDisplay(this, currentType);
 
         foreach (ItemBanner i in containedItems)
@@ -60,35 +61,56 @@ public class RecordsManager : MonoBehaviour
             }
         }
     }
+
+    public void UpdateRecordSync()
+    {
+         
+        foreach (ItemBanner i in containedItems)
+        {
+            if (i.GetComponent<Button>() != null)
+            {
+                i.GetComponent<Button>().onClick.AddListener(() => SelectBanner(i));
+            }
+        }
+    }
+
     public void ClearRecords()
     {
         foreach (Transform child in transform)
         {
             Destroy(child.gameObject);
+
+            containedItems = new List<ItemBanner>();
+
+            selectedBanner = null;
         }
 
     }
 
-    public void CreateHeldItem(Item item, int itemCount)
+    public void CreateHeldItem(Item item, int itemCount, float price)
     {
 
        ItemBanner newBanner = Instantiate(heldItem, this.transform);
        newBanner.UpdateBanner(item);
        newBanner.UpdateCount(itemCount);
+       newBanner.UpdatePrice(price);
+
        containedItems.Add(newBanner);
 
     }
 
-    public void CreateUnheldItem(Item item, int itemCount)
+    public void CreateUnheldItem(Item item, int itemCount, float price)
     {
         if (isRecords) { 
-            CreateHeldItem(item, itemCount);
+            CreateHeldItem(item, itemCount, item.Cost);
         }
         else
         {
             ItemBanner newBanner = Instantiate(unheldItem, this.transform);
             newBanner.UpdateBanner(item);
             newBanner.UpdateCount(itemCount);
+            newBanner.UpdatePrice(price);
+
             containedItems.Add(newBanner);
         }
     }

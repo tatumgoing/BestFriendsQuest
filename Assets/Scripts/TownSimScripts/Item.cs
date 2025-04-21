@@ -14,7 +14,9 @@ public class Item : ScriptableObject
 
     public ItemType Type;
 
-    public int Cost;
+    public string Description;
+
+    public float Cost;
 
     public bool unlocked;
 

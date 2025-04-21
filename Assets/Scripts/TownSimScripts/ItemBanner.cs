@@ -10,6 +10,7 @@ public class ItemBanner : MonoBehaviour
     // Start is called before the first frame update
     public TMP_Text itemName;
     public TMP_Text itemCount;
+    public TMP_Text itemPrice;
 
     
     public void UpdateBanner(Item item)
@@ -24,6 +25,17 @@ public class ItemBanner : MonoBehaviour
 
     public void UpdateCount(int newCount)
     {
-        itemCount.text = newCount.ToString();
+        if(itemCount != null)
+        {
+            itemCount.text = newCount.ToString();
+        }
+    }
+
+    public void UpdatePrice(float newPrice)
+    {
+        if (itemPrice != null)
+        {
+            itemPrice.text = "$" + newPrice.ToString("F2");
+        }
     }
 }

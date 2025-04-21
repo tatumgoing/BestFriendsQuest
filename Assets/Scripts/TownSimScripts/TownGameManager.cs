@@ -269,25 +269,25 @@ public class TownGameManager : MonoBehaviour
                 //if held
                 if (items.ContainsKey(i) && items[i] != 0 && i.unlocked)
                 {
-                    rManager.CreateHeldItem(i, items[i]);
+                    rManager.CreateHeldItem(i, items[i], i.Cost);
                 }
                 //if previously held, but count = 0
                 else if (i.unlocked)
                 {
-                    rManager.CreateUnheldItem(i, 0);
-                }
+                    rManager.CreateUnheldItem(i, 0, i.Cost);
+                }                
+                // if never held
                 else
                 {
                     rManager.CreateLockedItem(i);
                 }
 
-                // if never held
-
             }
         
-    }
+        }
 
-        
+        rManager.UpdateRecordSync();
+
     }
     private void MakeCharacterHouses()
     {
