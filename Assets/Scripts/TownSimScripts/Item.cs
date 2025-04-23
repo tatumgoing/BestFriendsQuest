@@ -14,6 +14,7 @@ public class Item : ScriptableObject
 
     public ItemType Type;
 
+    [TextArea]
     public string Description;
 
     public float Cost;

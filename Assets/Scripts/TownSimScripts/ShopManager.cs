@@ -17,9 +17,14 @@ public class ShopManager : MonoBehaviour
     public TMP_Text descriptionTextbox;
     public TMP_Text currentHeldTextbox;
 
+    public GameObject purchaseButton;
+
+    public Image spriteDisplay;
+
     [Header("Selection Menu")]
     public RecordsManager recordsManager;
     public List<ItemTabs> tabs = new List<ItemTabs>();
+
 
     // Start is called before the first frame update
     void Start()
@@ -32,34 +37,8 @@ public class ShopManager : MonoBehaviour
         }
 
         UpdateTab(tabs[0]);
-    }
+        purchaseButton.GetComponent<Button>().onClick.AddListener(() => UpdatePurchasedButton());
 
-    private void Update()
-    {
-        
-        if (recordsManager.selectedBanner != null)
-        {
-            if (gameManager.items.ContainsKey(recordsManager.selectedBanner.itemID))
-            {
-
-                descriptionContainer.SetActive(true);
-
-                UpdateDescription(recordsManager.selectedBanner.itemID.Description);
-                UpdateCurrentlyHeld(gameManager.items[recordsManager.selectedBanner.itemID]);
-            }
-            else
-            {
-                descriptionContainer.SetActive(true);
-
-                UpdateDescription(recordsManager.selectedBanner.itemID.Description);
-                UpdateCurrentlyHeld(0);
-            }
-        }
-        else
-        {
-            descriptionContainer.SetActive(false);
-        }
-        
     }
 
 
@@ -77,14 +56,10 @@ public class ShopManager : MonoBehaviour
         clickedTab.selected = true;
     }
 
-    void UpdateDescription(string newDesc)
+    public void UpdatePurchasedButton()
     {
-        descriptionTextbox.text = newDesc;
-    }
-
-    void UpdateCurrentlyHeld(int newCount)
-    {
-        currentHeldTextbox.text = "Currently Held: " + newCount.ToString();
+        purchaseButton.GetComponent<BuyItem>().item = recordsManager.selectedBanner.itemID;
+        purchaseButton.GetComponent<BuyItem>().Puchased();
     }
 
 

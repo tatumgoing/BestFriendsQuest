@@ -182,9 +182,6 @@ public class CharacterHouse : MonoBehaviour
             ToggleGiftWindow();
             dialogueBox.HideDialogue();
 
-            gameManager.SubtractInventory(giftManager.selectedBanner.itemID);
-            gameManager.UpdateRecordDisplay(giftManager, giftManager.currentType);
-
             if (associatedCharacter.hasProblem && !associatedCharacter.currentProblem.isMinigame)
             {
               
@@ -201,6 +198,10 @@ public class CharacterHouse : MonoBehaviour
             {
                 StartCoroutine(RecieveGift());
             }
+
+            gameManager.SubtractInventory(giftManager.selectedBanner.itemID);
+            gameManager.UpdateRecordDisplay(giftManager, giftManager.currentType);
+
         }
     }
 

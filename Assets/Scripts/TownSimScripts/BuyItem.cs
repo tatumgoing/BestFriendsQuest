@@ -8,6 +8,10 @@ public class BuyItem : MonoBehaviour
 
     public Item item;
 
+    private void Start()
+    {
+        gameManager = TownGameManager.i;
+    }
     public void Puchased()
     {
         if(Mathf.Abs(item.Cost) <= gameManager.currency)
