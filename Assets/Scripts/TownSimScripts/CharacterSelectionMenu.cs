@@ -6,10 +6,11 @@ using TMPro;
 
 public class CharacterSelectionMenu : MonoBehaviour
 {
+    public bool isQuest= false;
+
     [Header("Managers")] 
     
     public TownGameManager gameManager;
-    public MinigameManager manager;
 
     [Header("Selected Character")]
 
@@ -45,18 +46,44 @@ public class CharacterSelectionMenu : MonoBehaviour
 
         foreach (CharacterData character in gameManager.characterManager.allCharacters)
         {
-            //make their icons dawg
-            GameObject newIcon = Instantiate(characterButtonPrefab, characterSelectionGrid.transform);
-
-            newIcon.GetComponent<Button>().onClick.AddListener(() => SelectCharacter(character));
-
-            newIcon.GetComponent<Button>().onClick.AddListener(() => SelectButton(newIcon));
-
-            newIcon.GetComponent<Image>().sprite = character.characterIcon;
-
-            characterSelectionButtons.Add(newIcon);
+            if (!isQuest)
+            {
+                MakeIcon(character);
+            }
+            else if(character.happiness>= 100)
+            {
+                MakeIcon(character);
+            }
+            else
+            {
+                MakeUnselectableIcon(character);
+            }
         }
 
+    }
+
+    public void MakeIcon(CharacterData character)
+    {
+        GameObject newIcon = Instantiate(characterButtonPrefab, characterSelectionGrid.transform);
+
+        newIcon.GetComponent<Button>().onClick.AddListener(() => SelectCharacter(character));
+
+        newIcon.GetComponent<Button>().onClick.AddListener(() => SelectButton(newIcon));
+
+        newIcon.GetComponent<Image>().sprite = character.characterIcon;
+
+        characterSelectionButtons.Add(newIcon);
+    }
+
+    public void MakeUnselectableIcon(CharacterData character)
+    {
+        GameObject newIcon = Instantiate(characterButtonPrefab, characterSelectionGrid.transform);
+
+        newIcon.GetComponent<Button>().interactable= false;
+
+        newIcon.GetComponent<Image>().sprite = character.characterIcon;
+
+        characterSelectionButtons.Add(newIcon);
     }
 
     private void SelectCharacter(CharacterData character)
