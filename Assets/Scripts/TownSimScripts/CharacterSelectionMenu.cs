@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.TextCore.Text;
 
 public class CharacterSelectionMenu : MonoBehaviour
 {
-    public bool isQuest= false;
-
     [Header("Managers")] 
     
     public TownGameManager gameManager;
@@ -22,6 +21,10 @@ public class CharacterSelectionMenu : MonoBehaviour
 
     public List<GameObject> characterSelectionButtons = new List<GameObject>();
 
+    [Header("Quest Specific")]
+    public bool isQuest = false;
+    public CharacterSelectionMenu otherSelection;
+
 
     // Start is called before the first frame update
 
@@ -31,10 +34,6 @@ public class CharacterSelectionMenu : MonoBehaviour
 
         GenerateCharacterSelect();
 
-    }
-    void OnEnable()
-    {
-        
     }
 
     public void GenerateCharacterSelect()
@@ -68,7 +67,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 
         newIcon.GetComponent<Button>().onClick.AddListener(() => SelectCharacter(character));
 
-        newIcon.GetComponent<Button>().onClick.AddListener(() => SelectButton(newIcon));
+        newIcon.GetComponent<Button>().onClick.AddListener(() => SelectButton(newIcon, character));
 
         newIcon.GetComponent<Image>().sprite = character.characterIcon;
 
@@ -88,22 +87,30 @@ public class CharacterSelectionMenu : MonoBehaviour
 
     private void SelectCharacter(CharacterData character)
     {
-
-        selectedCharacter = character;
-
-    }
-
-    public void SelectButton(GameObject button)
-    {
-        //Debug.Log(button);
-        foreach (GameObject resetButton in characterSelectionButtons)
+        if(otherSelection != null && otherSelection.selectedCharacter != character)
         {
-            if(resetButton != button)
-            {
-                 resetButton.GetComponent<RectTransform>().localScale = new Vector3(1,1,1);
-            }
+            selectedCharacter = character;
         }
-
-        button.GetComponent<RectTransform>().localScale = new Vector3(1.2f, 1.2f, 1);
     }
+
+    public void SelectButton(GameObject button, CharacterData character)
+    {
+        if (otherSelection != null && otherSelection.selectedCharacter != character)
+        {
+
+            //Debug.Log(button);
+            foreach (GameObject resetButton in characterSelectionButtons)
+            {
+                if (resetButton != button)
+                {
+                    resetButton.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
+                }
+            }
+
+            button.GetComponent<RectTransform>().localScale = new Vector3(1.2f, 1.2f, 1);
+
+        }
+    }
+
+   
 }

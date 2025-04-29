@@ -67,7 +67,7 @@ public class CharacterData
         }
         else
         {
-            relationships.Add(reloCharacter, 0);
+            relationships.Add(reloCharacter, 1);
         }
     }
 

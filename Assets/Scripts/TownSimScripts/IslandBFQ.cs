@@ -13,7 +13,6 @@ public class IslandBFQ : MonoBehaviour
 
     void Start()
     {
-
         //create quest Screen
 
         associatedScreen = Instantiate(screenPrefab, this.transform.parent).GetComponent<QuestScreen>();
@@ -27,6 +26,7 @@ public class IslandBFQ : MonoBehaviour
         Button tempButton = GetComponentInChildren<Button>();
 
         tempButton.onClick.AddListener(() => ToggleScreen(true));
+
     }
 
     void ToggleScreen(bool isActive)

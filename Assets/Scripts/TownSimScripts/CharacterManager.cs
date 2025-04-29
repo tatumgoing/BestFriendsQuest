@@ -26,8 +26,8 @@ public class CharacterManager : MonoBehaviour
         allCharacters.Add(Sally);
         allCharacters.Add(Goobert);
 
-        Johnny.happiness = 25;
-        Sally.happiness = 75;
+        Johnny.happiness = 100;
+        Sally.happiness = 100;
 
         foreach (CharacterData character in allCharacters) {
 
