@@ -87,7 +87,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 
     private void SelectCharacter(CharacterData character)
     {
-        if(otherSelection != null && otherSelection.selectedCharacter != character)
+        if(otherSelection != null && otherSelection.selectedCharacter != character || !isQuest)
         {
             selectedCharacter = character;
         }
@@ -95,7 +95,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 
     public void SelectButton(GameObject button, CharacterData character)
     {
-        if (otherSelection != null && otherSelection.selectedCharacter != character)
+        if (otherSelection != null && otherSelection.selectedCharacter != character || !isQuest)
         {
 
             //Debug.Log(button);

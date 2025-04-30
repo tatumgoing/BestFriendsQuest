@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class IslandBFQ : MonoBehaviour
 {
+    public BFQManager questManager;
+
+
     public Quest associatedQuest;
 
     public GameObject screenPrefab;
@@ -13,6 +16,8 @@ public class IslandBFQ : MonoBehaviour
 
     void Start()
     {
+        questManager = BFQManager.i;
+
         //create quest Screen
 
         associatedScreen = Instantiate(screenPrefab, this.transform.parent).GetComponent<QuestScreen>();
@@ -26,6 +31,7 @@ public class IslandBFQ : MonoBehaviour
         Button tempButton = GetComponentInChildren<Button>();
 
         tempButton.onClick.AddListener(() => ToggleScreen(true));
+        tempButton.onClick.AddListener(() => questManager.SelectQuest(associatedQuest));
 
     }
 
