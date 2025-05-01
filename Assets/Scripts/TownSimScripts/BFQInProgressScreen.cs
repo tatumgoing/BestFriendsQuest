@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System;
 using TMPro;
 
@@ -14,6 +15,9 @@ public class BFQInProgressScreen : MonoBehaviour
     public DateTime endTime;
 
     public TMP_Text timerText;
+
+    public Image iconOne;
+    public Image iconTwo;
 
 
     void Start()

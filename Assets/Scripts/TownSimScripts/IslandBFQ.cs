@@ -33,6 +33,10 @@ public class IslandBFQ : MonoBehaviour
         tempButton.onClick.AddListener(() => ToggleScreen(true));
         tempButton.onClick.AddListener(() => questManager.SelectQuest(associatedQuest));
 
+        associatedScreen.startButton.onClick.AddListener(() => questManager.StartQuest(associatedScreen));
+
+
+
     }
 
     void ToggleScreen(bool isActive)

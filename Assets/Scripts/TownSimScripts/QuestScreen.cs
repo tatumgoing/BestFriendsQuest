@@ -6,6 +6,7 @@ using TMPro;
 
 public class QuestScreen : MonoBehaviour
 {
+    //public BFQManager questManager;
     public Quest associatedQuest;
 
     [Header("Quest Data")]
@@ -18,6 +19,8 @@ public class QuestScreen : MonoBehaviour
 
     public TMP_Text timerText;
     public TMP_Text percentText;
+
+    public Button startButton;
 
     [Header("Character Select")]
 
@@ -37,6 +40,8 @@ public class QuestScreen : MonoBehaviour
 
     void Start()
     {
+        //questManager = BFQManager.i;
+
         ToggleCharacterSelect(selectedCharacterOne.gameObject, false);
         ToggleCharacterSelect(selectedCharacterTwo.gameObject, false);
 
