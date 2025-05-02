@@ -88,10 +88,19 @@ public class BFQManager : MonoBehaviour
 
         resultsScreen.treasureChest.sprite = resultsScreen.chestClosed;
 
-        float successChance = charOne.relationships[charTwo] / selectedQuest.relationshipRequirement;
+        float successChance = (charOne.relationships[charTwo] / selectedQuest.relationshipRequirement ) * 100;
         
-        bool succeeded = (Random.Range(0f, 1f) >= successChance);
+        bool succeeded = (Random.Range(0f, 100f) <= successChance);
 
-        StartCoroutine(resultsScreen.ResultsAnimation(succeeded));
+        if (succeeded) {
+            selectedQuest.completed = true;
+        }
+
+        StartCoroutine(resultsScreen.ResultsAnimation(succeeded, selectedQuest));
+    }
+
+    public void ResetBFQ()
+    {
+        questState = State.Selection;
     }
 }
