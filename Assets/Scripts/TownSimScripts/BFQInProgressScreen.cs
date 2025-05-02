@@ -15,11 +15,17 @@ public class BFQInProgressScreen : MonoBehaviour
     public DateTime endTime;
 
     public TMP_Text timerText;
+    public GameObject completeButton;
 
     public Image iconOne;
     public Image iconTwo;
 
 
+    void OnEnable()
+    {
+        timerText.gameObject.SetActive(true);
+        completeButton.SetActive(false);
+    }
     void Start()
     {
         questManager = BFQManager.i;
@@ -29,8 +35,13 @@ public class BFQInProgressScreen : MonoBehaviour
     {
         currentTime = DateTime.Now;
 
-        if (endTime != null &&  DateTime.Compare(currentTime, endTime) < 0) {
+        if (endTime != null && DateTime.Compare(currentTime, endTime) < 0)
+        {
             timerText.text = (endTime - currentTime).ToString(@"hh\:mm\:ss");
+        }
+        else if (endTime != null && DateTime.Compare(currentTime, endTime) > 0) { 
+            timerText.gameObject.SetActive(false);
+            completeButton.SetActive(true);
         }
     }
     public void SetTime(Quest associatedQuest)
@@ -39,6 +50,8 @@ public class BFQInProgressScreen : MonoBehaviour
         endTime = DateTime.Now.AddHours(associatedQuest.completionTime);
 
         Debug.Log(startTime + " and end at " + endTime);
+
     }
+
 
 }

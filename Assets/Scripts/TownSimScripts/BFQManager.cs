@@ -23,7 +23,8 @@ public class BFQManager : MonoBehaviour
 
     [Header("Results Screen")]
 
-    public GameObject resultsScreen;
+    public BFQResultsScreen resultsScreen;
+    public bool questSuccess;
 
     void Awake()
     {
@@ -37,13 +38,13 @@ public class BFQManager : MonoBehaviour
         {
             selectionScreen.SetActive(true);
             inProgressScreen.gameObject.SetActive(false);
-            resultsScreen.SetActive(false);
+            resultsScreen.gameObject.SetActive(false);
         }
         else if( questState == State.InProgress)
         {
             selectionScreen.SetActive(false);
             inProgressScreen.gameObject.SetActive(true);
-            resultsScreen.SetActive(false);
+            resultsScreen.gameObject.SetActive(false);
         }
     }
     public void SelectQuest(Quest newQuest)
@@ -72,5 +73,25 @@ public class BFQManager : MonoBehaviour
             inProgressScreen.iconTwo.sprite = charTwo.characterIcon;
 
         }
+    }
+
+    public void StartResults()
+    {
+        questState = State.Results;
+
+        //activate screen and set icons
+        inProgressScreen.gameObject.SetActive(false);
+        resultsScreen.gameObject.SetActive(true);
+
+        resultsScreen.charOne.sprite = charOne.characterIcon;
+        resultsScreen.charTwo.sprite = charTwo.characterIcon;
+
+        resultsScreen.treasureChest.sprite = resultsScreen.chestClosed;
+
+        float successChance = charOne.relationships[charTwo] / selectedQuest.relationshipRequirement;
+        
+        bool succeeded = (Random.Range(0f, 1f) >= successChance);
+
+        StartCoroutine(resultsScreen.ResultsAnimation(succeeded));
     }
 }
