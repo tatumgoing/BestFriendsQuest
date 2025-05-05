@@ -14,7 +14,7 @@ public class Quest : ScriptableObject
 
     public float relationshipRequirement;
 
-    public float relationshipGain= 100;
+    public float relationshipGain= .75f;
 
-    public float relationshipLoss = 50;
+    public float relationshipLoss = -.25f;
 }

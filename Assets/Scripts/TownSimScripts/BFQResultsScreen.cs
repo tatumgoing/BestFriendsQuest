@@ -9,9 +9,13 @@ public class BFQResultsScreen : MonoBehaviour
 {
     Quest associatedQuest;
 
+    [Header("Characters")]
+    public CharacterData charOne;
+    public CharacterData charTwo;
+
     [Header("Sprites")]
-    public Image charOne;
-    public Image charTwo;
+    public Image charDisplayOne;
+    public Image charDisplayTwo;
     public Image treasureChest;
 
     public Sprite chestClosed;
@@ -34,6 +38,8 @@ public class BFQResultsScreen : MonoBehaviour
     public GameObject statsWindow;
     public TMP_Text statsText;
 
+    public RelationshipBar relationBar;
+
     void OnEnable()
     {
         resultsScreen.SetActive(false);
@@ -42,9 +48,18 @@ public class BFQResultsScreen : MonoBehaviour
         failWindow.SetActive(false);
         statsWindow.SetActive(false);
     }
-    public IEnumerator ResultsAnimation(bool succeeded, Quest newQuest)
+    public IEnumerator ResultsAnimation(bool succeeded, Quest newQuest, CharacterData cOne, CharacterData cTwo)
     {
         associatedQuest = newQuest;
+
+        charOne = cOne;
+        charTwo = cTwo;
+
+        charDisplayOne.sprite = charOne.characterIcon;
+        charDisplayTwo.sprite = charTwo.characterIcon;
+
+        relationBar.associatedCharacter = charOne;
+        relationBar.secondCharacter = charTwo;
 
         FunAnimator anim = treasureChest.gameObject.GetComponent<FunAnimator>();
         anim.doesRot = false;
@@ -87,7 +102,7 @@ public class BFQResultsScreen : MonoBehaviour
 
         yield return new WaitForSeconds(5f);
 
-        StartCoroutine(StatsAnimation("Friendship strengthened!"));
+        StartCoroutine(StatsAnimation("Friendship strengthened!", true));
 
 
     }
@@ -102,10 +117,10 @@ public class BFQResultsScreen : MonoBehaviour
 
         yield return new WaitForSeconds(5f);
 
-        StartCoroutine(StatsAnimation("Friendship weakened..."));
+        StartCoroutine(StatsAnimation("Friendship weakened...", false));
     }
 
-    public IEnumerator StatsAnimation(string displayText)
+    public IEnumerator StatsAnimation(string displayText, bool success)
     {
         failWindow.SetActive(false);
         successWindow.SetActive(false);
@@ -114,10 +129,22 @@ public class BFQResultsScreen : MonoBehaviour
 
         statsText.text = displayText;
             
-        resCharOne.sprite= charOne.sprite;
-        resCharTwo.sprite= charTwo.sprite;
+        resCharOne.sprite= charOne.characterIcon;
+        resCharTwo.sprite= charTwo.characterIcon;
 
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(3f);
+
+        if (success)
+        {
+            charOne.UpdateRelationship(charTwo, associatedQuest.relationshipGain);
+            charTwo.UpdateRelationship(charOne, associatedQuest.relationshipGain);
+        }
+        else
+        {
+            charOne.UpdateRelationship(charTwo, associatedQuest.relationshipLoss);
+            charTwo.UpdateRelationship(charOne, associatedQuest.relationshipLoss);
+        }
+
 
     }
 

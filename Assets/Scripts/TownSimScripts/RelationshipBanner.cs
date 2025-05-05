@@ -7,7 +7,7 @@ public class RelationshipBanner : MonoBehaviour
 {
     public Image icon;
     public TMP_Text nameRelo;
-    public TMP_Text level;
+    public RelationshipBar level;
     public TMP_Text status;
 
 }

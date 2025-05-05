@@ -52,6 +52,10 @@ public class CharacterData
         else if (relationships.ContainsKey(reloCharacter))
         {
             relationships[reloCharacter] += newValue;
+            if(relationships[reloCharacter] < 1)
+            {
+                relationships[reloCharacter] = 1;
+            }
         }
         else
         {

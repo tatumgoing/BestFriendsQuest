@@ -169,7 +169,8 @@ public class CharacterHouse : MonoBehaviour
             RelationshipBanner newBanner = Instantiate(relationshipPrefab, relationshipContainer.transform).GetComponent<RelationshipBanner>();
             newBanner.icon.sprite = reloCharacter.characterIcon;
             newBanner.nameRelo.text = reloCharacter.characterName;
-            newBanner.level.text = associatedCharacter.relationships[reloCharacter].ToString();
+            newBanner.level.associatedCharacter = associatedCharacter;
+            newBanner.level.secondCharacter = reloCharacter;
             newBanner.status.text = "Testing";
         } 
     }

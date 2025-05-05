@@ -14,6 +14,8 @@ public class IslandBFQ : MonoBehaviour
 
     QuestScreen associatedScreen;
 
+    public GameObject lockIcon;
+
     void Start()
     {
         questManager = BFQManager.i;
@@ -34,9 +36,19 @@ public class IslandBFQ : MonoBehaviour
         tempButton.onClick.AddListener(() => questManager.SelectQuest(associatedQuest));
 
         associatedScreen.startButton.onClick.AddListener(() => questManager.StartQuest(associatedScreen));
+        associatedScreen.startButton.onClick.AddListener(() => ToggleScreen(false));
 
 
 
+    }
+
+    void Update()
+    {
+        if (associatedQuest.completed)
+        {
+            GetComponentInChildren<Button>().interactable = false;
+            lockIcon.SetActive(false);  
+        }
     }
 
     void ToggleScreen(bool isActive)

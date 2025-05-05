@@ -38,6 +38,9 @@ public class CharacterManager : MonoBehaviour
 
         }
 
+        Johnny.UpdateRelationship(Sally, .25f);
+        Sally.UpdateRelationship(Johnny, .25f);
+
 
         for (int i = 0; i < allCharacters.Count; i++)
         {
