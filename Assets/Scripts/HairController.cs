@@ -55,7 +55,7 @@ public class HairController : MonoBehaviour, IFeatureController
     {
         var list = new List<string>();
         foreach (var f in _currentPieces) list.Add(f.ToString());
-        return string.Join("&", list) + "|";
+        return string.Join("&", list);
     }
 
     public void SetCurrentColor(Color newColor)

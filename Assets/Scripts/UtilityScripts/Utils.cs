@@ -13,6 +13,16 @@ public static class Utils
 
     public static float Rand(Vector2 range) => Random.Range(range.x, range.y);
 
+    public static string EnumInt<T>(T enumValue) {
+        return (System.Convert.ToInt32(enumValue)).ToString();
+    }
+
+    public static T IntEnum<T>(string intString)
+    {
+        var num = int.Parse(intString);
+        return (T) (object) num;
+    }
+
     public static List<T> EnumToList<T>()
     {
         var array = System.Enum.GetValues(typeof(T));

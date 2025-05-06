@@ -6,8 +6,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum DropdownDataType { ENUM, RANGE, MONTH, COLOR}
+public enum DropdownDataType { ENUM, RANGE, DAY_MONTH, COLOR, MONTH_ABR}
 public enum ProfileDataEnum { GENDER, PRONOUN, ATTRACTION}
+public enum MonthAbrev { Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec}
 
 [System.Serializable] public class ListWrapper<T> { public List<T> List = new List<T>();  }
 [System.Serializable] public class ColorData { public FavoriteColor Color; public Sprite Sprite; }
@@ -21,8 +22,8 @@ public class SetDropdownOptions : MonoBehaviour
 
     [SerializeField, ConditionalField(nameof(_type), false, false, DropdownDataType.ENUM)] private ProfileDataEnum _enum;
     [SerializeField, ConditionalField(nameof(_type), false, false, DropdownDataType.RANGE)] private Vector2Int _range;
-    [SerializeField, ConditionalField(nameof(_type), false, false, DropdownDataType.MONTH)] private TMP_Dropdown _monthDropdown;
-    [SerializeField, ConditionalField(nameof(_type), false, false, DropdownDataType.MONTH)] private ListWrapper<int> _monthDayCounts = new ListWrapper<int>();
+    [SerializeField, ConditionalField(nameof(_type), false, false, DropdownDataType.DAY_MONTH)] private TMP_Dropdown _monthDropdown;
+    [SerializeField, ConditionalField(nameof(_type), false, false, DropdownDataType.DAY_MONTH)] private ListWrapper<int> _monthDayCounts = new ListWrapper<int>();
     [SerializeField, ConditionalField(nameof(_type), false, false, DropdownDataType.COLOR)] private ListWrapper<ColorData> _colors = new ListWrapper<ColorData>();
 
     [Space()]
@@ -34,9 +35,13 @@ public class SetDropdownOptions : MonoBehaviour
     private void Start()
     {
         if (_type == DropdownDataType.RANGE) AddRange(_range, true);
-        if (_type == DropdownDataType.MONTH) {
+        if (_type == DropdownDataType.DAY_MONTH) {
             SetDays(0);
             _monthDropdown.onValueChanged.AddListener(SetDays);
+        }
+        if (_type == DropdownDataType.MONTH_ABR) {
+            var abrs = Utils.EnumToList<MonthAbrev>().Select(x => x.ToString()).ToList();
+            SetOptions(abrs);
         }
         if (_type == DropdownDataType.ENUM) {
             var list = new List<string>();
@@ -57,6 +62,8 @@ public class SetDropdownOptions : MonoBehaviour
 
         _dropdown.onValueChanged.AddListener(UpdateData); 
         _controller = GetComponentInParent<DataPanelController>();
+
+        UpdateData(0);
     }
 
     private void AddRange(Vector2Int range, bool descending = false)
@@ -84,6 +91,9 @@ public class SetDropdownOptions : MonoBehaviour
 
     private void UpdateData(int index)
     {
-        _controller.SetData(_sendType, _current[index]);
+        var selectedValue = _current[index];
+        if (_type == DropdownDataType.MONTH_ABR) selectedValue = (index + 1).ToString();
+
+        _controller.SetData(_sendType, selectedValue);
     }
 }

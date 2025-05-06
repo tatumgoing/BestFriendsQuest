@@ -54,7 +54,7 @@ public class FaceFeatureController : MonoBehaviour, IFeatureController
     {
         var list = new List<string>();
         foreach (var f in CurrentFeatures) list.Add(f.ToString());
-        return string.Join("&", list) + "|";
+        return string.Join("&", list);
     }
 
     public void SetCurrentColor(Color color)

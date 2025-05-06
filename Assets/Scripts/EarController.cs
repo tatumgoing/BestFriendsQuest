@@ -29,7 +29,7 @@ public class EarController : MonoBehaviour, IFeatureController
 
     public string GetSaveString()
     {
-        return _currentEar.ToString() + "|";
+        return _currentEar.ToString();
     }
 
     public void UpdateCurrentEar(FeatureData data)

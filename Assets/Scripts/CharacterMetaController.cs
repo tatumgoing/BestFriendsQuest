@@ -10,6 +10,9 @@ public class CharacterMetaController : MonoBehaviour
     [SerializeField] private FaceFeatureController _face;
     [SerializeField] private HairController _hair;
     [SerializeField] private EarController _ears;
+    [SerializeField] private DataPanelController _dataPanel;
+
+    [HideInInspector] public CharacterProfileData Data;
 
     public Color SkinColor => _skinColor;
 
@@ -28,16 +31,23 @@ public class CharacterMetaController : MonoBehaviour
 
         ColorUtility.TryParseHtmlString(parts[3], out _skinColor);
         SetSkinColor(_skinColor);
+
+        _dataPanel.LoadFromString(parts[3]);
+
     }
 
     public string GetSaveString()
     {
-        var result = "";
-        result += _face.GetSaveString();
-        result += _hair.GetSaveString();
-        result += _ears.GetSaveString();
-        result += _skinColor.ToHex() + "\n";
-        return result;
+        var list = new List<string>
+        {
+            _face.GetSaveString(),
+            _hair.GetSaveString(),
+            _ears.GetSaveString(),
+            _skinColor.ToHex(),
+            Data.ToString()
+        };
+
+        return string.Join("|", list);
     }
 
     public void SetSkinColor(Color color)
