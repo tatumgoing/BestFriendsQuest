@@ -182,15 +182,17 @@ public class CharacterHouse : MonoBehaviour
         {
             ToggleGiftWindow();
             dialogueBox.HideDialogue();
-
+            bool passed = false;
             if (associatedCharacter.hasProblem && !associatedCharacter.currentProblem.isMinigame)
             {
-              
-                if (associatedCharacter.currentProblem.desiredItem.Name == giftManager.selectedBanner.itemID.Name)
-                {
-                    StartCoroutine(SolveProblem());
+                foreach (Item checkItem in associatedCharacter.currentProblem.desiredItem) {
+                    if (checkItem.Name == giftManager.selectedBanner.itemID.Name)
+                    {
+                        StartCoroutine(SolveProblem());
+                        passed = true;
+                    }
                 }
-                else
+                if(!passed)
                 {
                     StartCoroutine(FailProblem());
                 }

@@ -30,6 +30,8 @@ public class QuestScreen : MonoBehaviour
     public CharacterSelectionMenu selectedCharacterTwo;
     public Image characterDisplayTwo;
 
+    public Sprite defaultSprite;
+
     [Header("Character Select Buttons")]
     public Button toggleButtonOne;
     public Button toggleButtonTwo;
@@ -96,7 +98,14 @@ public class QuestScreen : MonoBehaviour
 
     void SetIcon(Image newImage, Sprite newSprite =null)
     {
-        newImage.sprite = newSprite;
+        if(newSprite == null)
+        {
+            newImage.sprite = defaultSprite;
+        }
+        else
+        {
+            newImage.sprite = newSprite;
+        }
     }
     
 

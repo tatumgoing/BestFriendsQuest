@@ -145,6 +145,9 @@ public class BFQResultsScreen : MonoBehaviour
             charTwo.UpdateRelationship(charOne, associatedQuest.relationshipLoss);
         }
 
+        charOne.happiness = 0;
+        charTwo.happiness = 0;
+
 
     }
 

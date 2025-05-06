@@ -11,11 +11,6 @@ public class TownGameManager : MonoBehaviour
 {
     public static TownGameManager i;
 
-    private void Awake()
-    {
-        i = this;
-    }
-
     [Header("Character Manager")]
 
     public CharacterManager characterManager;
@@ -53,6 +48,16 @@ public class TownGameManager : MonoBehaviour
 
     public GameObject fadeScreen;
 
+    private void Awake()
+    {
+        i = this;
+
+        //load items from Resources
+        foreach (Item item in Resources.LoadAll("Items", typeof(Item))) { 
+        
+            allItems.Add(item);
+        }
+    }
     void Start()
     {
         currency = PlayerPrefs.GetFloat("PlayerCurrency", 100);
@@ -61,6 +66,9 @@ public class TownGameManager : MonoBehaviour
         LoadInventory();
 
         GenerateProblem(null);
+
+        //bad liine of temp code
+        ChangeScene(sceneUIList[sceneUIList.Count -1], true);
 
         //MakeCharacterHouses();
 
@@ -108,17 +116,20 @@ public class TownGameManager : MonoBehaviour
 
         }
     }
-    public async void ChangeScene(GameObject newSceneUI)
+    public async void ChangeScene(GameObject newSceneUI, bool firstLaunch = false)
     {
         //fades out track and fades in load screen
 
         TownMusicPlayer i = TownMusicPlayer.i;
-        if(i.currentTrack.TrackName != newSceneUI.GetComponent<Area>().associatedTrack.TrackName )
+        if(i.currentTrack != null && i.currentTrack.TrackName != newSceneUI.GetComponent<Area>().associatedTrack.TrackName )
         {
             i.StartCoroutine(i.FadeTrackOut(i.currentTrack));
         }
 
-        await FadeScreen(true);
+        if(!firstLaunch)
+        {
+            await FadeScreen(true);
+        }
 
         //iterates over all UIs, disabling. then, enables selected UI
 

@@ -9,7 +9,7 @@ public class Problem : ScriptableObject
 
     public string problemDialogue;
 
-    public Item desiredItem;
+    public List<Item> desiredItem = new List<Item>();
 
     public bool isMinigame;
 
