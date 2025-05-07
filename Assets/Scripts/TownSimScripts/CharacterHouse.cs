@@ -178,7 +178,7 @@ public class CharacterHouse : MonoBehaviour
    
     public void GiveGift()
     {
-        if (giftManager.selectedBanner != null)
+        if (giftManager.selectedBanner != null && giftManager.selectedBanner.itemCount.text != "0")
         {
             ToggleGiftWindow();
             dialogueBox.HideDialogue();
