@@ -30,6 +30,8 @@ public class QuestScreen : MonoBehaviour
     public CharacterSelectionMenu selectedCharacterTwo;
     public Image characterDisplayTwo;
 
+    public Sprite defaultSprite;
+
     [Header("Character Select Buttons")]
     public Button toggleButtonOne;
     public Button toggleButtonTwo;
@@ -66,6 +68,8 @@ public class QuestScreen : MonoBehaviour
         selectedCharacterTwo.selectedCharacter = null;
         SetIcon(characterDisplayOne);
         SetIcon(characterDisplayTwo);
+        relationshipLevelText.text = "Relationship Level: ???";
+        percentText.text = "???";
     }
 
     private void Update()
@@ -83,9 +87,9 @@ public class QuestScreen : MonoBehaviour
 
         if(selectedCharacterOne.selectedCharacter != null && selectedCharacterTwo.selectedCharacter != null)
         {
-            relationshipLevelText.text = "Relationship Level: " + selectedCharacterOne.selectedCharacter.relationships[selectedCharacterTwo.selectedCharacter].ToString();
+            relationshipLevelText.text = "Relationship Level: " + Mathf.Floor(selectedCharacterOne.selectedCharacter.relationships[selectedCharacterTwo.selectedCharacter]).ToString();
 
-            percentText.text = (selectedCharacterOne.selectedCharacter.relationships[selectedCharacterTwo.selectedCharacter] / associatedQuest.relationshipRequirement * 100).ToString("F0") + "%";
+            percentText.text = (Mathf.Floor(selectedCharacterOne.selectedCharacter.relationships[selectedCharacterTwo.selectedCharacter]) / associatedQuest.relationshipRequirement * 100).ToString("F0") + "%";
         }
 
     }
@@ -96,7 +100,14 @@ public class QuestScreen : MonoBehaviour
 
     void SetIcon(Image newImage, Sprite newSprite =null)
     {
-        newImage.sprite = newSprite;
+        if(newSprite == null)
+        {
+            newImage.sprite = defaultSprite;
+        }
+        else
+        {
+            newImage.sprite = newSprite;
+        }
     }
     
 
