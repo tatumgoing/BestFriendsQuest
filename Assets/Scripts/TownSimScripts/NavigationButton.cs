@@ -28,5 +28,5 @@ public class NavigationButton : MonoBehaviour
     {
         SceneManager.LoadScene(1);
     }
-
+        
 }

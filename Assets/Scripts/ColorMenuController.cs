@@ -145,12 +145,12 @@ public class ColorMenuController : MonoBehaviour
     private void StopSelecting()
     {
         _selector.enabled = false;
-        print("stopSelecting");
+        //print("stopSelecting");
     }
 
     public void StartSelecting()
     {
-        print("startSelecting");
+        //print("startSelecting");
         _inputingHex = false;
         _selector.enabled = true;   
     }
