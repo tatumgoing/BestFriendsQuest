@@ -24,6 +24,8 @@ public class ColorMenuController : MonoBehaviour
     [SerializeField] private GameObject _gridParent;
     [SerializeField] private GameObject _fieldOutline;
     [SerializeField] private GameObject _hexSectionParent;
+    [SerializeField] private FollowMouseInRectBounds _advancedSelector;
+    [SerializeField] private FollowMouseInRectBounds _basicSelector;
 
     private float _hue = 0.5f;
     private float _sat = 0.5f;
@@ -36,7 +38,6 @@ public class ColorMenuController : MonoBehaviour
 
     private Color _currentColor => Color.HSVToRGB(_currentHue, _currentSat, _currentVal);
 
-    [SerializeField] private FollowMouseInRectBounds _selector;
 
     private Texture2D _hueTex;
     private Texture2D _satValTex;
@@ -45,13 +46,15 @@ public class ColorMenuController : MonoBehaviour
 
     private void OnEnable()
     {
-        _selector.FollowMouse = _advanced;
+        _advancedSelector.FollowMouse = _advanced;
+        _basicSelector.FollowMouse = !_advanced;
     }
 
     private void Start()
     {
         CreateTextures();
-        _selector.enabled = false;
+        _advancedSelector.enabled = false;
+        _basicSelector.enabled = false;
         _invoke = false;
         UpdateHue();
         _invoke = true;
@@ -59,7 +62,7 @@ public class ColorMenuController : MonoBehaviour
 
     private void Update()
     {
-        if (_selector.enabled) {
+        if (_advancedSelector.enabled || _basicSelector.enabled) {
             if (Input.GetMouseButtonUp(0)) StopSelecting();
             else UpdateCurrentColor();
         } 
@@ -75,11 +78,24 @@ public class ColorMenuController : MonoBehaviour
 
     public void SetMode(bool advanced)
     {
-        _selector.FollowMouse = advanced;
+        _advancedSelector.FollowMouse = advanced;
+        _basicSelector.FollowMouse = !advanced;
         _hexSectionParent.SetActive(advanced);
         _fieldOutline.SetActive(advanced);
         _gridParent.SetActive(!advanced);
         _advanced = advanced;
+
+        _advancedSelector.GetComponent<Image>().enabled = advanced;
+        _basicSelector.GetComponent<Image>().enabled = !advanced;
+
+        if (advanced) {
+            _advancedSelector.transform.position = _basicSelector.transform.position;
+            UpdateCurrentColor();
+        }
+        else {
+            _basicSelector.transform.position = _advancedSelector.transform.position;
+            UpdateCurrentColor();
+        }
     }
 
     public void SetFromHexCode(string hex)
@@ -88,7 +104,7 @@ public class ColorMenuController : MonoBehaviour
         ColorUtility.TryParseHtmlString(hex, out var rgb);
         Color.RGBToHSV(rgb, out _hue, out _sat, out _val);
         _hueSlider.value = _currentHue;
-        _selector.SetPosition(new Vector2(_currentSat, _currentVal));
+        _advancedSelector.SetPosition(new Vector2(_currentSat, _currentVal));
         UpdateCurrentColor();
     }
 
@@ -103,12 +119,14 @@ public class ColorMenuController : MonoBehaviour
     {
         if (!_inputingHex) {
             bool updateSatVal = true;
-            var pos = _selector.GetNormalizedPositionFromCenter();
+            var pos = _advancedSelector.GetNormalizedPositionFromCenter();
+            if (_advanced) pos = _advancedSelector.GetNormalizedPositionFromCenter();
+            
 
             if (!_advanced) {
-                pos.x = ClampToGrid(pos.x);
+                pos.x = ClampToGrid(pos.x); 
                 pos.y = ClampToGrid(pos.y);
-                _selector.SetPosition(pos);
+                //_basicSelector.SetPosition(pos);
                 updateSatVal = SelectClosestGridSquare();
             }
 
@@ -125,10 +143,12 @@ public class ColorMenuController : MonoBehaviour
 
     private bool SelectClosestGridSquare()
     {
+        var selectorRTransform = _basicSelector.GetComponent<RectTransform>();
+
         var shortestDist = Mathf.Infinity;
-        Transform bestSquare = null;
-        foreach (Transform child in _squaresParent) {
-            var dist = (child.position - _selector.transform.position).sqrMagnitude;
+        RectTransform bestSquare = null;
+        foreach (RectTransform child in _squaresParent) {
+            var dist = Vector2.Distance(child.anchoredPosition, selectorRTransform.anchoredPosition);
             if (dist < shortestDist) {
                 bestSquare = child;
                 shortestDist = dist;
@@ -142,17 +162,24 @@ public class ColorMenuController : MonoBehaviour
         return true;
     }
 
+    private Vector3 UIToWorldPos(RectTransform rTransform)
+    {
+        Vector3[] worldCorners = new Vector3[4];
+        rTransform.GetWorldCorners(worldCorners);
+        return (worldCorners[0] + worldCorners[2]) / 2f;
+    }
+
     private void StopSelecting()
     {
-        _selector.enabled = false;
-        //print("stopSelecting");
+        _advancedSelector.enabled = false;
+        _basicSelector.enabled = false;
     }
 
     public void StartSelecting()
     {
-        //print("startSelecting");
         _inputingHex = false;
-        _selector.enabled = true;   
+        if (_advanced) _advancedSelector.enabled = true;
+        else _basicSelector.enabled = true;
     }
 
     private void CreateTextures()

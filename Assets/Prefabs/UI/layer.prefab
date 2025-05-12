@@ -543,44 +543,46 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 898f698a9835d194c90dd0b423be4462, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _selectOnClick: 1
-  _toggleOnClick: 1
-  _deselectOnClick: 0
-  _dontHoverWhenSelected: 0
-  _selectOnHover: 0
-  _deselectOnExit: 1
+  _clickBehavior: 2
+  _selectOnMouseDown: 0
+  _canToggleOff: 0
+  _hoverBehavior: 0
   _hasHoverCooldown: 0
   _hoverCooldown: 0.05
-  _deselectOnStart: 1
-  _autoDehover: 1
+  _hoverWhenSelected: 0
   _data:
   - Name: selected
     _type: 2
-    _target: {fileID: 0}
+    _graphic: {fileID: 0}
     _useMaterials: 0
-    _normalColor: {r: 1, g: 1, b: 1, a: 1}
-    _hoveredColor: {r: 1, g: 1, b: 1, a: 1}
-    _selectedColor: {r: 1, g: 1, b: 1, a: 1}
-    _disabledColor: {r: 1, g: 1, b: 1, a: 1}
-    _normalMat: {fileID: 0}
-    _hoveredMat: {fileID: 0}
-    _selectedMat: {fileID: 0}
-    _disabledMat: {fileID: 0}
-    _obj: {fileID: 0}
-    _normalState: 0
-    _hoveredState: 0
-    _selectedState: 1
-    _disabledState: 0
-    _group: {fileID: 5921000877241702897}
-    _normalAlpha: 0
-    _hoveredAlpha: 0.2
-    _selectedAlpha: 1
-    _disabledAlpha: 0
+    _colors:
+      _normal: {r: 1, g: 1, b: 1, a: 1}
+      _hovered: {r: 1, g: 1, b: 1, a: 1}
+      _selected: {r: 1, g: 1, b: 1, a: 1}
+      _disabled: {r: 1, g: 1, b: 1, a: 1}
+    _materials:
+      _normal: {fileID: 0}
+      _hovered: {fileID: 0}
+      _selected: {fileID: 0}
+      _disabled: {fileID: 0}
+    _gameObjectTarget: {fileID: 0}
+    _activeStates:
+      _normal: 0
+      _hovered: 0
+      _selected: 0
+      _disabled: 0
+    _canvasGroup: {fileID: 5921000877241702897}
+    _alphaValues:
+      _normal: 0
+      _hovered: 0.5
+      _selected: 1
+      _disabled: 1
     _spriteTarget: {fileID: 0}
-    _normalSprite: {fileID: 0}
-    _hoveredSprite: {fileID: 0}
-    _selectedSprite: {fileID: 0}
-    _disabledSprite: {fileID: 0}
+    _sprites:
+      _normal: {fileID: 0}
+      _hovered: {fileID: 0}
+      _selected: {fileID: 0}
+      _disabled: {fileID: 0}
     _showGraphicSettings: 0
     _showGraphicColorSettings: 0
     _showGOSettings: 0
@@ -588,8 +590,11 @@ MonoBehaviour:
     _showSpriteSettings: 0
   _hasAnimation: 0
   _animator: {fileID: 0}
-  _animationBool: Selected
+  _animationSelectedBool: Selected
+  _animationHoveredBool: Hovered
+  _animationDisabledBool: Disabled
   _hoverSound: {fileID: 11400000, guid: 4ba078087b4262248a49dc212ae8bee6, type: 2}
+  _mouseDownSound: {fileID: 0}
   _selectSound: {fileID: 11400000, guid: 937ddfdca0a09a343831e509caa6a123, type: 2}
   _deselectSound: {fileID: 0}
   OnSelect:
@@ -616,8 +621,7 @@ MonoBehaviour:
   OnDeselect:
     m_PersistentCalls:
       m_Calls: []
-  _printSelections: 0
-  _disabled: 0
+  _debugStateChange: 0
 --- !u!1 &5732748553995533869
 GameObject:
   m_ObjectHideFlags: 0
@@ -1108,6 +1112,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1290047717195156347}
     - target: {fileID: 7317325992212931569, guid: 5a27d96a637694b4e8822d29675886f6, type: 3}
+      propertyPath: _data.Array.data[0]._graphic
+      value: 
+      objectReference: {fileID: 1290047717195156347}
+    - target: {fileID: 7317325992212931569, guid: 5a27d96a637694b4e8822d29675886f6, type: 3}
       propertyPath: _data.Array.data[0]._normalMat
       value: 
       objectReference: {fileID: 2100000, guid: 63dcab7f8f0a12f4fb6e6be07d815c05, type: 2}
@@ -1410,6 +1418,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7317325992212931569, guid: 5a27d96a637694b4e8822d29675886f6, type: 3}
       propertyPath: _data.Array.data[0]._target
+      value: 
+      objectReference: {fileID: 6550696240407846605}
+    - target: {fileID: 7317325992212931569, guid: 5a27d96a637694b4e8822d29675886f6, type: 3}
+      propertyPath: _data.Array.data[0]._graphic
       value: 
       objectReference: {fileID: 6550696240407846605}
     - target: {fileID: 7317325992212931569, guid: 5a27d96a637694b4e8822d29675886f6, type: 3}

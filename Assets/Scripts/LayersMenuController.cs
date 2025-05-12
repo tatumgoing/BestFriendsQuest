@@ -65,9 +65,9 @@ public class LayersMenuController : MonoBehaviour
     private void UpdateTabButtons()
     {
         foreach (var b in _otherTabButtons) {
-            b.gameObject.SetActive(_featureController.HasCurrent());
-            b.SetDisabled(!_featureController.HasCurrent());
+            if (b != _otherTabButtons[0]) b.SetDisabled(!_featureController.HasCurrent());
         }
+        _otherTabButtons[0].Select(true, false);
     }
 
     public void DeleteFeature(Layer layer, FeatureObj feature)
@@ -98,10 +98,8 @@ public class LayersMenuController : MonoBehaviour
     public void Select(int siblingIndex, FeatureObj feature)
     {
         foreach (var l in _spawnedLayers) {
-            bool selected = l.transform.GetSiblingIndex() == siblingIndex;
             var button = l.GetComponent<SelectableItem>();
-            if (selected) button.SetVisuals(ButtonState.SELECTED);
-            else button.SetVisuals(ButtonState.NORMAL);
+            if (button.transform.GetSiblingIndex() != siblingIndex) button.Deselect(true, false);
         }
         _featureController.Select(feature);
     }

@@ -6,6 +6,7 @@ public class CharacterCreatorProgression : MonoBehaviour
 {
     [SerializeField] private CameraController _cameraController;
     [SerializeField] private CharacterMetaController _characterController;
+    [SerializeField] private SelectableItem _facialFeaturesTabButton;
     [SerializeField] private GameObject _titleOptions;
     [SerializeField] private GameObject _facialOptions;
     [SerializeField] private GameObject _bodyOptions;
@@ -17,6 +18,12 @@ public class CharacterCreatorProgression : MonoBehaviour
         _characterController.gameObject.SetActive(false);
 
         _titleOptions.SetActive(true);
+    }
+
+    public void StartNew()
+    {
+        _facialFeaturesTabButton.Select(true);
+        FocusFace();
     }
 
     public void FocusFace()

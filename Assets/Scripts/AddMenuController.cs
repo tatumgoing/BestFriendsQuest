@@ -27,14 +27,16 @@ public class AddMenuController : MonoBehaviour
         _spawnedAddOptions.Add(newAddOption);
     }
 
+    public void DeselectCategories() => ChangeCategory(FeatureSubType.ALL);
+
     public void ChangeCategory(FeatureSubType type)
     {
         foreach (var button in _categoryParent.GetComponentsInChildren<AddMenuCategoryButton>()) {
-            if (type != button.Type) button.GetComponent<SelectableItem>().Deselect();
+            if (type != button.Type) button.GetComponent<SelectableItem>().Deselect(true, false);
         }
 
         foreach (var option in _spawnedAddOptions) {
-            option.gameObject.SetActive(option.Type == type);
+            option.gameObject.SetActive(type == FeatureSubType.ALL || option.Type == type);
         }
     }
 }

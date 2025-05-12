@@ -8,9 +8,12 @@ using UnityEngine.UI;
 public class FollowMouseInRectBounds : MonoBehaviour
 {
     [SerializeField] private RectTransform _bounds;
+    [SerializeField] private Vector2 _offset;
+
     private RectTransform _rTransform;
     public bool FollowMouse;
     private Image _image;
+    
 
     private void OnEnable()
     {
@@ -29,13 +32,15 @@ public class FollowMouseInRectBounds : MonoBehaviour
         var pos = _rTransform.anchoredPosition;
         float width = _bounds.sizeDelta.x / 2;
         float height = _bounds.sizeDelta.y / 2;
-        pos.x = Mathf.Clamp(pos.x, -width, width);
-        pos.y = Mathf.Clamp(pos.y, -height, height);
+        pos.x = Mathf.Clamp(pos.x, -width + _offset.x, width + _offset.x);
+        pos.y = Mathf.Clamp(pos.y, -height + _offset.y, height + _offset.y);
         _rTransform.anchoredPosition = pos;
     }
 
     public Vector2 GetNormalizedPositionFromCenter()
     {
+        if (!_rTransform) _rTransform = GetComponent<RectTransform>();
+
         var oldPos = transform.position;
         if (!FollowMouse) {
             transform.position = Input.mousePosition;
@@ -44,6 +49,7 @@ public class FollowMouseInRectBounds : MonoBehaviour
         float x = _rTransform.anchoredPosition.x / _bounds.sizeDelta.x;
         float y = _rTransform.anchoredPosition.y / _bounds.sizeDelta.y;
         var pos = new Vector2(x + 0.5f, y + 0.5f);
+  
 
         if (!FollowMouse) transform.position = oldPos;
 

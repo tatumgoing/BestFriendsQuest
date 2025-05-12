@@ -149,6 +149,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7317325992212931569, guid: 5a27d96a637694b4e8822d29675886f6, type: 3}
+      propertyPath: _clickBehavior
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7317325992212931569, guid: 5a27d96a637694b4e8822d29675886f6, type: 3}
       propertyPath: _toggleOnClick
       value: 1
       objectReference: {fileID: 0}
@@ -157,11 +161,19 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7317325992212931569, guid: 5a27d96a637694b4e8822d29675886f6, type: 3}
+      propertyPath: _hoverWhenSelected
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7317325992212931569, guid: 5a27d96a637694b4e8822d29675886f6, type: 3}
       propertyPath: _data.Array.data[0].Name
       value: backing
       objectReference: {fileID: 0}
     - target: {fileID: 7317325992212931569, guid: 5a27d96a637694b4e8822d29675886f6, type: 3}
       propertyPath: _data.Array.data[0]._target
+      value: 
+      objectReference: {fileID: 3448202944636319314}
+    - target: {fileID: 7317325992212931569, guid: 5a27d96a637694b4e8822d29675886f6, type: 3}
+      propertyPath: _data.Array.data[0]._graphic
       value: 
       objectReference: {fileID: 3448202944636319314}
     - target: {fileID: 7317325992212931569, guid: 5a27d96a637694b4e8822d29675886f6, type: 3}
@@ -260,6 +272,18 @@ PrefabInstance:
       propertyPath: _data.Array.data[0]._selectedColor.r
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7317325992212931569, guid: 5a27d96a637694b4e8822d29675886f6, type: 3}
+      propertyPath: _data.Array.data[0]._materials._normal
+      value: 
+      objectReference: {fileID: 2100000, guid: 63dcab7f8f0a12f4fb6e6be07d815c05, type: 2}
+    - target: {fileID: 7317325992212931569, guid: 5a27d96a637694b4e8822d29675886f6, type: 3}
+      propertyPath: _data.Array.data[0]._materials._hovered
+      value: 
+      objectReference: {fileID: 2100000, guid: d942fec5482c71046988e09d0577f27b, type: 2}
+    - target: {fileID: 7317325992212931569, guid: 5a27d96a637694b4e8822d29675886f6, type: 3}
+      propertyPath: _data.Array.data[0]._materials._selected
+      value: 
+      objectReference: {fileID: 2100000, guid: 0f3992b290d59b14691586564ff58877, type: 2}
     - target: {fileID: 7317325992212931569, guid: 5a27d96a637694b4e8822d29675886f6, type: 3}
       propertyPath: OnSelect.m_PersistentCalls.m_Calls.Array.size
       value: 1

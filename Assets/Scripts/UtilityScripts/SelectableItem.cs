@@ -7,6 +7,7 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using Unity.VisualScripting;
 using System.Runtime.ExceptionServices;
+using UnityEditor;
 
 public enum SelectableItemDataType { GRAPHIC, GAMEOBJECT, CANVASGROUP, SPRITE}
 public enum ButtonState { NORMAL, HOVERED, SELECTED, DISABLED }
@@ -140,12 +141,14 @@ public class SelectableItem : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     [Header("Main")]
     [SerializeField] private ClickBehavior _clickBehavior = ClickBehavior.SELECT;
     [SerializeField, ConditionalField(nameof(_clickBehavior), true, false, ClickBehavior.NONE)] private bool _selectOnMouseDown = false;
+    [SerializeField, ConditionalField(nameof(_clickBehavior), true, false, ClickBehavior.NONE)] private bool _canToggleOff = true;
 
     [Header("Hover")]
     [SerializeField] private ClickBehavior _hoverBehavior = ClickBehavior.NONE;
     [SerializeField] private bool _hasHoverCooldown;
     [SerializeField, ConditionalField(nameof(_hasHoverCooldown))] private float _hoverCooldown = 0.05f;
     [SerializeField] private bool _hoverWhenSelected = true;
+    [SerializeField] private bool _deHoverOnEnable = false; 
 
     [Header("Appearance")]
     [SerializeField] private List<SelectableItemData> _data = new List<SelectableItemData>();
@@ -189,6 +192,11 @@ public class SelectableItem : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     private void OnEnable()
     {
         ValidateAll();
+        if (_deHoverOnEnable && _hovered) {
+            _hovered = false;
+            if (Selected) SetVisuals(ButtonState.SELECTED);
+            else SetVisuals(ButtonState.NORMAL);
+        }
     }
 
     private void Start()
@@ -208,6 +216,7 @@ public class SelectableItem : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         if (_disabled) return;
         if (Selected && !_hoverWhenSelected) return;
         if (_hasHoverCooldown && _hoverDisabledTimeLeft > 0)return;
+        if (_clickBehavior == ClickBehavior.TOGGLE && Selected && !_canToggleOff) return;
 
         _clickedDown = false;
 
@@ -223,6 +232,7 @@ public class SelectableItem : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     public void OnPointerDown(PointerEventData eventData)
     {
         if (_disabled) return;
+        if (_clickBehavior == ClickBehavior.TOGGLE && Selected && !_canToggleOff) return;
 
         if (_clickBehavior == ClickBehavior.SELECT) SetVisuals(ButtonState.SELECTED);
         else if (_clickBehavior == ClickBehavior.TOGGLE) {
@@ -254,11 +264,11 @@ public class SelectableItem : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public void SetDisabled(bool disabled)
     {
-        if (_disabled == disabled) return;
-
         _disabled = disabled;
+
         if (disabled) SetVisuals(ButtonState.DISABLED);
         else {
+            if (Selected) SetVisuals(ButtonState.SELECTED);
             if (_hovered) SetVisuals(ButtonState.HOVERED);
             else SetVisuals(ButtonState.NORMAL);
         }
@@ -334,7 +344,7 @@ public class SelectableItem : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public void SetVisuals(ButtonState state)
     {
-        if (_debugStateChange) print("Changing visuals: " + state);
+        if (_debugStateChange) print(gameObject.name + "Changing visuals: " + state);
 
         _visualState = state;
         foreach (var d in _data) d.Update(_visualState);
