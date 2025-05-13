@@ -1,6 +1,7 @@
 using MyBox;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.Sockets;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -30,9 +31,9 @@ public class ColorMenuController : MonoBehaviour
     private float _hue = 0.5f;
     private float _sat = 0.5f;
     private float _val = 0.5f;
-    private float _currentHue { get { return _hue; } set { _hue = value; } }
-    private float _currentSat { get { return _sat; } set { _sat = ClampToGrid(value); } }
-    private float _currentVal { get { return _val; } set { _val = ClampToGrid(value); } }
+    private float _currentHue { get { return _hue; } set { _hue = Mathf.Abs(value); } }
+    private float _currentSat { get { return _sat; } set { _sat = Mathf.Abs(value); } }
+    private float _currentVal { get { return _val; } set { _val = Mathf.Abs(value); } }
 
     private bool _inputingHex;
 
@@ -58,6 +59,9 @@ public class ColorMenuController : MonoBehaviour
         _invoke = false;
         UpdateHue();
         _invoke = true;
+
+        SetFromHexCode(_defaultColor.ToHex());
+        UpdateCurrentColor();
     }
 
     private void Update()
@@ -90,12 +94,12 @@ public class ColorMenuController : MonoBehaviour
 
         if (advanced) {
             _advancedSelector.transform.position = _basicSelector.transform.position;
-            UpdateCurrentColor();
         }
         else {
             _basicSelector.transform.position = _advancedSelector.transform.position;
-            UpdateCurrentColor();
         }
+
+        UpdateCurrentColor();
     }
 
     public void SetFromHexCode(string hex)
@@ -117,26 +121,29 @@ public class ColorMenuController : MonoBehaviour
 
     private void UpdateCurrentColor()
     {
+        print("Updating color: " + _currentColor);
+
         if (!_inputingHex) {
             bool updateSatVal = true;
+            bool updateColor = true;
+
             var pos = _advancedSelector.GetNormalizedPositionFromCenter();
-            if (_advanced) pos = _advancedSelector.GetNormalizedPositionFromCenter();
-            
+            if (pos.x > 1 || pos.x < 0 || pos.y > 1 || pos.y < 0) updateColor = false;
 
             if (!_advanced) {
                 pos.x = ClampToGrid(pos.x); 
                 pos.y = ClampToGrid(pos.y);
-                //_basicSelector.SetPosition(pos);
                 updateSatVal = SelectClosestGridSquare();
             }
 
-            if (updateSatVal) {
+            if (updateColor && updateSatVal) {
                 _currentSat = pos.x;
                 _currentVal = pos.y;
             }
 
             _hexInput.UpdateText(_currentColor.ToHex());
         }
+
         _currentColorImg.color = _currentColor;
         if (_invoke) _onChangeColor.Invoke(_currentColor);
     }

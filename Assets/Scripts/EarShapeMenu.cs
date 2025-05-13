@@ -9,7 +9,7 @@ public class EarShapeMenu : MonoBehaviour
     [SerializeField] private Transform _listParent;
     private List<AddOption> _spawnedOptions = new List<AddOption>();
 
-    private void OnEnable()
+    private void Start()
     {
         BuildList();
         foreach (var o in _spawnedOptions) {

@@ -39,14 +39,14 @@ public class CheckBox : MonoBehaviour
         if (!_manual) OnChange.Invoke(_checked);
     }
 
-    private void ToggleOn()
+    public void ToggleOn()
     {
         _checked = true;
         if (_manual) _onToggleOn.Invoke();
         _checkMark.SetActive(true);
     }
 
-    private void ToggleOff()
+    public void ToggleOff()
     {
         _checked = false;
         if (_manual) _onToggleOff.Invoke();

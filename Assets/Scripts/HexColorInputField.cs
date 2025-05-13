@@ -19,6 +19,7 @@ public class HexColorInputField : MonoBehaviour
 
     public void UpdateText(string current)
     {
+        print("updating hex text: " + current);
         current = current.Replace("#", "").ToLower();
         _lastValid = current;
         _inputField.text = current;

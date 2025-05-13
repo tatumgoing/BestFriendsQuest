@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public enum FavoriteColor {RED, ORANGE, YELLOW, KIWI, FOREST, NAVY, BLUE, PINK, PURPLE, BROWN, WHITE, BLACK}
 public enum ProfileDataType {NAME, GENDER, PRONOUN, ATTRACTION, DAY, MONTH, YEAR, COLOR}
@@ -50,12 +51,14 @@ public class CharacterProfileData
             Utils.EnumInt(FavColor)
         };
 
-        return string.Join(seperator, list);
+        var joined = string.Join(seperator, list);
+        Debug.Log("Jioned: " + joined);
+
+        return joined;
     }
 
     public void FromString(string inputString)
     {
-        Debug.Log("input string: " + inputString);
         var parts = inputString.Split(seperator);
         Name = parts[0];
         Gender = Utils.IntEnum<Gender>(parts[1]);
@@ -70,18 +73,40 @@ public class CharacterProfileData
 public class DataPanelController : MonoBehaviour
 {
     [SerializeField] private CharacterMetaController _characterController;
+    [SerializeField] private TMP_InputField _nameField;
+    [SerializeField] private TMP_Dropdown _gender;
+    [SerializeField] private TMP_Dropdown _pronoun;
+    [SerializeField] private List<CheckBox> _attractionOptions = new List<CheckBox>();
+    [SerializeField] private List<TMP_Dropdown> _birthdayDropdowns = new List<TMP_Dropdown>();
+    [SerializeField] private TMP_Dropdown _colorDropdown;
 
     private CharacterProfileData _currentData = new CharacterProfileData();
 
     private void Awake()
     {
-        _currentData = new CharacterProfileData();
+        //_currentData = new CharacterProfileData();
     }
 
     public void LoadFromString(string inputString)
     {
+        _currentData = new CharacterProfileData();
         _currentData.FromString(inputString);
         _characterController.Data = _currentData;
+
+        _nameField.text = _currentData.Name;
+
+        _gender.SetValueWithoutNotify((int)_currentData.Gender);
+        _pronoun.SetValueWithoutNotify((int)_currentData.Pronouns);
+
+        _attractionOptions[0].SetCheckedVisual((_currentData.Attraction & Attraction.MALE) != 0);
+        _attractionOptions[1].SetCheckedVisual((_currentData.Attraction & Attraction.FEMALE) != 0);
+        _attractionOptions[2].SetCheckedVisual((_currentData.Attraction & Attraction.NONBINARY) != 0);
+
+        _birthdayDropdowns[0].SetValueWithoutNotify(_currentData.Birthday.Month - 1);
+        _birthdayDropdowns[1].SetValueWithoutNotify(_currentData.Birthday.Day - 1);
+        _birthdayDropdowns[2].SetValueWithoutNotify(2025 - _currentData.Birthday.Year);
+
+        _colorDropdown.SetValueWithoutNotify((int)_currentData.FavColor);
     }
 
     public void UpdateAttraction(Attraction gender, bool state)
@@ -98,7 +123,7 @@ public class DataPanelController : MonoBehaviour
 
     public void SetData(ProfileDataType type, string value)
     {
-        print("recieved value for category: " + type + ", value: " + value);
+        //print("recieved value for category: " + type + ", value: " + value);
 
         if (type == ProfileDataType.NAME) _currentData.Name = value;
         if (type == ProfileDataType.GENDER) _currentData.Gender = Enum.Parse<Gender>(value);
