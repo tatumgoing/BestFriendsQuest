@@ -121,7 +121,7 @@ public class ColorMenuController : MonoBehaviour
 
     private void UpdateCurrentColor()
     {
-        print("Updating color: " + _currentColor);
+        //print("Updating color: " + _currentColor);
 
         if (!_inputingHex) {
             bool updateSatVal = true;

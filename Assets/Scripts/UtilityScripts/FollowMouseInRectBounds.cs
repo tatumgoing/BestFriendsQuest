@@ -53,7 +53,7 @@ public class FollowMouseInRectBounds : MonoBehaviour
 
         if (!FollowMouse) transform.position = oldPos;
 
-        print("pos: " + pos);
+        //print("pos: " + pos);
 
         return pos;
     }
