@@ -1,6 +1,7 @@
 using MyBox;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -56,6 +57,15 @@ public class CameraController : MonoBehaviour
         var limits = new Vector2(_minMaxZoom.x + baseZoom, _minMaxZoom.y + baseZoom);
 
         float scrollDelta = Input.mouseScrollDelta.y;
+
+        var ES = EventSystem.current;
+        if (ES && ES.IsPointerOverGameObject() || !Application.isFocused) scrollDelta = 0;
+        var mousePos = Input.mousePosition;
+        if (mousePos.x < 0 || mousePos.x > Screen.width || mousePos.y < 0 || mousePos.y > Screen.height) scrollDelta = 0;
+#if UNITY_EDITOR
+        //if (!UnityEditor.EditorWindow.focusedWindow || UnityEditor.EditorWindow.focusedWindow.titleContent.text != "Game") scrollDelta = 0;
+#endif
+
         var dirMod = scrollDelta * _zoomSpeed * Time.deltaTime * 10;
         if ( (dist + dirMod > limits.y && scrollDelta < 0) || (dist + dirMod < limits.x && scrollDelta > 0)) return;
         
