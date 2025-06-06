@@ -7,8 +7,9 @@ public class KeepOnGround : MonoBehaviour
 {
     [SerializeField] private Transform _detector;
     [SerializeField] private float _targetY;
+    [SerializeField] private float _lerpFactor = 5;
 
-    private void Update()
+    private void LateUpdate()
     {
         PutOnGround();
     }
@@ -21,7 +22,7 @@ public class KeepOnGround : MonoBehaviour
         float myOffset = transform.position.y - _detector.position.y;
         var pos = transform.position;
         pos.y = _targetY + myOffset;
-        transform.position = pos;
+        transform.position = Vector3.Lerp(transform.position, pos, _lerpFactor * Time.deltaTime);
     }
 
     private void OnDrawGizmosSelected()
