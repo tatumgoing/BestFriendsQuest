@@ -9,7 +9,7 @@ public class FaceFeatureController : MonoBehaviour, IFeatureController
     [SerializeField] private GameObject _featurePrefab;
     [SerializeField] private Transform _featureParent;
     public List<FacialFeature> CurrentFeatures = new List<FacialFeature>();
-    [SerializeField] private List<FeatureData> _allFeatures = new List<FeatureData>();
+    [SerializeField] private List<FeatureSOData> _allFeatures = new List<FeatureSOData>();
     [SerializeField] private int _selected;
 
     private FeatureCategory _currentCategory;
@@ -17,13 +17,13 @@ public class FaceFeatureController : MonoBehaviour, IFeatureController
     public bool HasCurrent() => CurrentFeatures.Count > 0;
     public FacialFeature Current => _selected < CurrentFeatures.Count ? CurrentFeatures[_selected] : CurrentFeatures[0];
     public List<FeatureObj> GetCurrentFeatures() => CurrentFeatures.Cast<FeatureObj>().Where(x => x.GetData().Category == _currentCategory).ToList();
-    public List<FeatureData> GetAllOptions() => _allFeatures;
+    public List<FeatureSOData> GetAllOptions() => _allFeatures;
     public void CopySettingsToCurrent(FeatureObj original) => original.CopyTo(Current);
     public FeatureObj GetCurrent() => Current;
 
     private void OnValidate()
     {
-        foreach (var f in _allFeatures) f.Name = f.Texture.name;
+        foreach (var f in _allFeatures) if (f != null) f.Name = f.Texture.name;
     }
 
     private void Start()
@@ -46,7 +46,7 @@ public class FaceFeatureController : MonoBehaviour, IFeatureController
     private void AddFeatureFromString(string featureString)
     {
         var parts = featureString.Split("~");
-        FeatureData selected = null;
+        FeatureSOData selected = null;
         foreach (var f in _allFeatures) if (f.Icon.name == parts[0]) selected = f;
         var newFeature = AddFeature(selected);
         newFeature.ConfigureFromString(parts[1]);
@@ -64,12 +64,12 @@ public class FaceFeatureController : MonoBehaviour, IFeatureController
         Current.SetColor(color);
     }
 
-    public FeatureObj AddFeature(FeatureData data)
+    public FeatureObj AddFeature(FeatureSOData data)
     {
         data.Category = _currentCategory;
         var newFeature = Instantiate(_featurePrefab, _featureParent).GetComponent<FacialFeature>();
         newFeature.transform.SetAsFirstSibling();
-        newFeature.Set(new FeatureData(data));
+        newFeature.Set(data);
         CurrentFeatures.Add(newFeature);
         return newFeature;
     }
@@ -89,7 +89,7 @@ public class FaceFeatureController : MonoBehaviour, IFeatureController
         }
     }
 
-    public void SaveFeature(FeatureData data)
+    public void SaveFeature(FeatureSOData data)
     {
         data.Name = data.Texture.name;
 

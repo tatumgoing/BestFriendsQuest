@@ -8,7 +8,7 @@ public enum FeatureType { FACE, HAIR, EAR }
 public enum MirrorType { LEFT, BOTH, RIGHT }
 
 [CreateAssetMenu(fileName = "New Facial Feature", menuName = "Facial Feature")]
-public class facialFeatureSOData : ScriptableObject
+public class FeatureSOData : ScriptableObject
 {
     [HideInInspector] public string Name;
     public FeatureType Type;

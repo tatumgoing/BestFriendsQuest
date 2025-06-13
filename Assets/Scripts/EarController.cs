@@ -7,7 +7,7 @@ using UnityEngine;
 public class EarController : MonoBehaviour, IFeatureController
 {
     [SerializeField] private Ear _currentEar;
-    [SerializeField] private List<FeatureData> _allOptions = new List<FeatureData>();
+    [SerializeField] private List<FeatureSOData> _allOptions = new List<FeatureSOData>();
 
     public bool HasCurrent() => true;
     public FeatureObj GetCurrent() => _currentEar;
@@ -21,7 +21,7 @@ public class EarController : MonoBehaviour, IFeatureController
     public void LoadFromString(string saveString)
     {
         var parts = saveString.Split("~");
-        FeatureData selected = null;
+        FeatureSOData selected = null;
         foreach (var f in _allOptions) if (f.Icon.name == parts[0]) selected = f;
         _currentEar.SetData(selected);
         _currentEar.ConfigureFromString(parts[1]);
@@ -32,7 +32,7 @@ public class EarController : MonoBehaviour, IFeatureController
         return _currentEar.ToString();
     }
 
-    public void UpdateCurrentEar(FeatureData data)
+    public void UpdateCurrentEar(FeatureSOData data)
     {
         _currentEar.SetData(data);
     }
@@ -42,13 +42,13 @@ public class EarController : MonoBehaviour, IFeatureController
         _currentEar.SetColor(skinColor);
     }
 
-    public FeatureObj AddFeature(FeatureData data)
+    public FeatureObj AddFeature(FeatureSOData data)
     {
         _currentEar.As<Ear>().SetData(data);
         return _currentEar;
     }
 
-    public List<FeatureData> GetAllOptions()
+    public List<FeatureSOData> GetAllOptions()
     {
         return _allOptions;
     }
@@ -60,7 +60,7 @@ public class EarController : MonoBehaviour, IFeatureController
         return list;
     }
 
-    public void Save(FeatureData data)
+    public void Save(FeatureSOData data)
     {
         for (int i = 0; i < _allOptions.Count; i++) {
             if (_allOptions[i].EarPrefab == data.EarPrefab) {

@@ -43,7 +43,7 @@ public class LayersMenuController : MonoBehaviour
         _featureController.CopySettingsToCurrent(original);
     }
 
-    public void AddFeature(FeatureData data)
+    public void AddFeature(FeatureSOData data)
     {
         var added = _featureController.AddFeature(data);
         AddLayer(added);

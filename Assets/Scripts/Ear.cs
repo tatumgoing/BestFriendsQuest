@@ -64,7 +64,7 @@ public class Ear : FeatureObj
         _model.transform.localPosition = pos;
     }
 
-    public void SetData(FeatureData data)
+    public void SetData(FeatureSOData data)
     {
         Data = data;
         Destroy(_model);

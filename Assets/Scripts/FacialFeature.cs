@@ -16,6 +16,8 @@ public class FacialFeature : FeatureObj
     private DecalProjector _projector;
     private FacialFeature _mirroredFeature;
 
+    [ReadOnly] public FeatureCategory Category;
+
     private void OnValidate()
     {
         if (_projector == null) _projector = GetComponent<DecalProjector>();
@@ -47,7 +49,7 @@ public class FacialFeature : FeatureObj
         _projector = GetComponent<DecalProjector>();
     }
 
-    public void Set(FeatureData data)
+    public void Set(FeatureSOData data)
     {
         Reset();
         Data = data;
@@ -121,7 +123,8 @@ public class FacialFeature : FeatureObj
     [ButtonMethod]
     private void Reset()
     {
-        Data = new FeatureData();
+        //Data = new FeatureData();
+        print("issue");
         OnValidate();
         Utils.SetDirty(this);
     }

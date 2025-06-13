@@ -20,7 +20,7 @@ public class AddMenuController : MonoBehaviour
         foreach (var feature in faceController.GetAllOptions()) AddOption(feature);
     }
 
-    private void AddOption(FeatureData feature)
+    private void AddOption(FeatureSOData feature)
     {
         var newAddOption = Instantiate(_addPrefab, _addListParent).GetComponent<AddOption>();
         newAddOption.Initialize(feature);

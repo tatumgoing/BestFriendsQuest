@@ -10,7 +10,7 @@ public class HairPiece : FeatureObj
     private HairController _controller;
     private HairPiece _mirroredFeature;
 
-    public void Initialize(FeatureData newData, HairController controller)
+    public void Initialize(FeatureSOData newData, HairController controller)
     {
         Data = newData;
         Initialize(controller);

@@ -6,13 +6,13 @@ using UnityEngine.UI;
 public class AddOption : MonoBehaviour
 {
     [SerializeField] private Image _preview;
-    private FeatureData _data;
+    private FeatureSOData _data;
 
     public FeatureSubType Type => _data.SubType;
 
-    public FeatureData GetData() => _data;
+    public FeatureSOData GetData() => _data;
 
-    public void Initialize(FeatureData data)
+    public void Initialize(FeatureSOData data)
     {
         _preview.sprite = data.Icon;
         _data = data;
