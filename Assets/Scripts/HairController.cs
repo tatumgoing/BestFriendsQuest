@@ -148,4 +148,9 @@ public class HairController : MonoBehaviour, IFeatureController
         _allOptions.Add(data);
         Utils.SetDirty(this);
     }
+
+    public void SetCategory(FeatureCategory category)
+    {
+        throw new System.NotImplementedException();
+    }
 }

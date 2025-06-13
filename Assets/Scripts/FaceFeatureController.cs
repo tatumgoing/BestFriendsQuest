@@ -12,9 +12,11 @@ public class FaceFeatureController : MonoBehaviour, IFeatureController
     [SerializeField] private List<FeatureData> _allFeatures = new List<FeatureData>();
     [SerializeField] private int _selected;
 
+    private FeatureCategory _currentCategory;
+
     public bool HasCurrent() => CurrentFeatures.Count > 0;
     public FacialFeature Current => _selected < CurrentFeatures.Count ? CurrentFeatures[_selected] : CurrentFeatures[0];
-    public List<FeatureObj> GetCurrentFeatures() => CurrentFeatures.Cast<FeatureObj>().ToList();
+    public List<FeatureObj> GetCurrentFeatures() => CurrentFeatures.Cast<FeatureObj>().Where(x => x.GetData().Category == _currentCategory).ToList();
     public List<FeatureData> GetAllOptions() => _allFeatures;
     public void CopySettingsToCurrent(FeatureObj original) => original.CopyTo(Current);
     public FeatureObj GetCurrent() => Current;
@@ -64,6 +66,7 @@ public class FaceFeatureController : MonoBehaviour, IFeatureController
 
     public FeatureObj AddFeature(FeatureData data)
     {
+        data.Category = _currentCategory;
         var newFeature = Instantiate(_featurePrefab, _featureParent).GetComponent<FacialFeature>();
         newFeature.transform.SetAsFirstSibling();
         newFeature.Set(new FeatureData(data));
@@ -101,4 +104,8 @@ public class FaceFeatureController : MonoBehaviour, IFeatureController
         Utils.SetDirty(this);
     }
 
+    public void SetCategory(FeatureCategory category)
+    {
+        _currentCategory = category;
+    }
 }

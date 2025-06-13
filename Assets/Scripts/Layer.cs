@@ -26,7 +26,7 @@ public class Layer : MonoBehaviour
     public void Select()
     {
         if (!_controller) _controller = GetComponentInParent<LayersMenuController>();
-        _controller.Select(transform.GetSiblingIndex(), _feature);
+        _controller.Select(this, _feature);
     }
 
     public void Delete()

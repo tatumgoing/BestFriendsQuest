@@ -76,4 +76,8 @@ public class EarController : MonoBehaviour, IFeatureController
     public void CopySettingsToCurrent(FeatureObj original) { }
     public void Select(FeatureObj feature) { }
 
+    public void SetCategory(FeatureCategory category)
+    {
+        throw new System.NotImplementedException();
+    }
 }

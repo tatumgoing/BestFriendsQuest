@@ -3,21 +3,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum FeatureTier { BASE, DETAIL};
+
 public class LayersMenuController : MonoBehaviour
 {
     [SerializeField] private List<SelectableItem> _otherTabButtons = new List<SelectableItem>();
     [SerializeField, OverrideLabel("Feature Controller")] private GameObject _featureControllerMB;
     [SerializeField] private GameObject _main;
     [SerializeField] private AddMenuController _addMenu;
-    [Header("Main")]
     [SerializeField] private GameObject _layerPrefab;
-    [SerializeField] private Transform _layerListParent;
-    public bool HasCurrent => _featureController.HasCurrent();
+    [SerializeField] private Transform _baseLayerListParent;
+    [SerializeField] private Transform _detailLayerListParent;
+    [SerializeField] private FaceMenu _faceMenu;
 
     private List<Layer> _spawnedLayers = new List<Layer>();
-
+    private FeatureTier _currentTier;
     private IFeatureController _featureController;
-    
+    public bool HasCurrent => _featureController.HasCurrent();
+    public FeatureObj GetCurrent() => _featureController.GetCurrent();
+    public void OpenAddMenuBase() => OpenAddMenu(FeatureTier.BASE);
+    public void OpenAddMenuDetails() => OpenAddMenu(FeatureTier.DETAIL);
+
     private void OnEnable()
     {
         _main.SetActive(true);
@@ -25,7 +31,11 @@ public class LayersMenuController : MonoBehaviour
         SelectInitial();
     }
 
-    public FeatureObj GetCurrent() => _featureController.GetCurrent();
+    private void OpenAddMenu(FeatureTier tier)
+    {
+        _currentTier = tier;
+        _addMenu.gameObject.SetActive(true);
+    }
 
     public void Duplicate(FeatureObj original)
     {
@@ -88,19 +98,23 @@ public class LayersMenuController : MonoBehaviour
 
     private void AddLayer(FeatureObj feature)
     {
-        var newLayer = Instantiate(_layerPrefab, _layerListParent).GetComponent<Layer>();
+        var parent = _currentTier == FeatureTier.BASE ? _baseLayerListParent : _detailLayerListParent;
+        var newLayer = Instantiate(_layerPrefab, parent).GetComponent<Layer>();
+
         newLayer.transform.SetAsFirstSibling();
         newLayer.Initialize(feature);
         _spawnedLayers.Add(newLayer);
         UpdateTabButtons();
     }
 
-    public void Select(int siblingIndex, FeatureObj feature)
+    public void Select(Layer layerObj, FeatureObj feature)
     {
         foreach (var l in _spawnedLayers) {
             var button = l.GetComponent<SelectableItem>();
-            if (button.transform.GetSiblingIndex() != siblingIndex) button.Deselect(true, false);
+            if (button.GetComponent<Layer>() != layerObj) button.Deselect(true, false);
         }
         _featureController.Select(feature);
+
+        if (_faceMenu) _faceMenu.SwitchSelectedLayer(layerObj);
     }
 }

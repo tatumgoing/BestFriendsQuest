@@ -10,6 +10,7 @@ public interface IFeatureController
     public FeatureObj GetCurrent();
     public void Delete(FeatureObj feature);
     public List<FeatureObj> GetCurrentFeatures();
+    public void SetCategory(FeatureCategory category);
     public void Select(FeatureObj feature);
     public List<FeatureData> GetAllOptions();
     public string GetSaveString();

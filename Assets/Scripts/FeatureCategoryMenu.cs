@@ -5,18 +5,19 @@ using UnityEngine;
 public class FeatureCategoryMenu : MonoBehaviour
 {
     [SerializeField] private GameObject _tabs;
-    [SerializeField] private TopLevelMenuController _faceMenuController;
+    [SerializeField] private FaceMenu _faceMenuController;
+    [SerializeField] 
 
     private void OnEnable()
     {
         _tabs.SetActive(false);
     }
 
-    public void SelectCategory()
+    public void SelectCategory(int category)
     {
         _tabs.SetActive(true);  
         gameObject.SetActive(false);
 
-        _faceMenuController.SelectTab(1);
+        _faceMenuController.OpenCategory((FeatureCategory) category);
     }
 }

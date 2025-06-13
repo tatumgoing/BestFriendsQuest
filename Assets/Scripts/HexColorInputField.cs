@@ -22,7 +22,7 @@ public class HexColorInputField : MonoBehaviour
         //print("updating hex text: " + current);
         current = current.Replace("#", "").ToLower();
         _lastValid = current;
-        _inputField.text = current;
+        _inputField.text = current.ToUpper();
     }
 
     public void CheckText()
@@ -52,7 +52,7 @@ public class HexColorInputField : MonoBehaviour
 
     private void ResetToLastValid()
     {
-        _inputField.text = _lastValid;
+        _inputField.text = _lastValid.ToUpper();
         _errorSound.Play();
     }
 }

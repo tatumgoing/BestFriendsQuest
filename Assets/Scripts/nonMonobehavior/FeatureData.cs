@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using MyBox;
 
-public enum FeatureSubType { BROWS, EYES, NOSE, LIPS, MISC, BANGS, BIG, STRANDS, ALL}
-public enum FeatureType { FACE, HAIR, EAR }
-public enum MirrorType { LEFT, BOTH, RIGHT}
 
 [System.Serializable]
 public class FeatureData
@@ -31,6 +28,8 @@ public class FeatureData
     [SerializeField] private FeatureObjSettings _defaultSettings;
     public FeatureObjSettings DefaultSettings => _defaultSettings;
 
+    [HideInInspector] public FeatureCategory Category;
+
     public FeatureData() { }
     public FeatureData(FeatureData o)
     {
@@ -50,6 +49,8 @@ public class FeatureData
         HoriLimits = o.HoriLimits;
         VertLimits = o.VertLimits;
         SizeLimits = o.SizeLimits;
+
+        Category = o.Category;
 
         _defaultSettings = new FeatureObjSettings(o.DefaultSettings);
     }
