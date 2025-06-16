@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.Analytics;
 using UnityEngine.Rendering;
 
-public enum BoneName { CORE, CHEST, SHOULDER, UPPER_ARM, FOREARM, HAND, NECK, HEAD, THIGH, SHIN, FOOT, TOES}
+public enum BoneName { CORE, CHEST, SHOULDER, UPPER_ARM, FOREARM, HAND, NECK, HEAD, THIGH, SHIN, FOOT, TOES, BELLY, HEEL}
 
 [System.Serializable]
 public class BoneData
@@ -43,6 +43,7 @@ public class CharacterRigController : MonoBehaviour
 {
     [SerializeField] private List<BoneData> _bones;
     [SerializeField] private Transform _rootBone;
+    [SerializeField] float _localScaleMultiplier = 1f;
 
     public string GetSaveString()
     {
@@ -59,7 +60,7 @@ public class CharacterRigController : MonoBehaviour
 
     private void ScaleModel()
     {
-        _rootBone.localScale = Vector3.one * 100;
+        _rootBone.localScale = Vector3.one * _localScaleMultiplier;
         ScaleBoneRecursive(_rootBone);
     }
 
