@@ -1,6 +1,7 @@
 using MyBox;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -25,10 +26,9 @@ public class CameraController : MonoBehaviour
     private Vector2 _minMaxZoom => _body ? _minMaxZoomBody : _minMaxZoomHead;
     private float _currentBaseZoom => _body ? _bodyZoom : _headZoom;
     private float _currentDist => Vector3.Distance(_targetPosition, _character.position);
-    private Vector3 _currentDir => (_targetPosition - _character.position).normalized;
-    private Vector3 _centerPosition => _character.position + (_currentDir * _currentBaseZoom);
-    private Vector3 _minPosition => _centerPosition + _currentDir * _minMaxZoom.x;
-    private Vector3 _maxPosition => _centerPosition + _currentDir * _minMaxZoom.y;
+    private Vector3 _centerPosition => _character.position + (_getCurrentDir() * _currentBaseZoom);
+    private Vector3 _minPosition => _centerPosition + _getCurrentDir() * _minMaxZoom.x;
+    private Vector3 _maxPosition => _centerPosition + _getCurrentDir() * _minMaxZoom.y;
     private float _minDist => Vector3.Distance(_character.position, _minPosition);
     private float _maxDist => Vector3.Distance(_character.position, _maxPosition);
 
@@ -41,29 +41,38 @@ public class CameraController : MonoBehaviour
     {
         if (!EventSystem.current.IsPointerOverGameObject()) Scroll();
 
+        _targetPosition.y = _body ? _bodyYOffset : _headYOffset;
+
         transform.position = Vector3.Lerp(transform.position, _targetPosition, _lerpFactor * Time.deltaTime);
+    }
+
+    private Vector3 _getCurrentDir()
+    {
+        var dir = (_targetPosition - _character.position).normalized;
+        dir.y = 0;
+        return dir;
     }
 
     public void ZoomOut()
     {
         var zoomAmount = Mathf.Min(_buttonZoomAmount, (_currentBaseZoom + _minMaxZoom.y) - _currentDist);
-        _targetPosition += _currentDir * zoomAmount;
+        _targetPosition += _getCurrentDir() * zoomAmount;
     }
 
     public void ZoomIn()
     {
         var zoomAmount = Mathf.Min(_buttonZoomAmount, _currentDist - (_currentBaseZoom + _minMaxZoom.x));
-        _targetPosition += _currentDir * -zoomAmount;
+        _targetPosition += _getCurrentDir() * -zoomAmount;
     }
 
     public void ResetZoom()
     {
-        _targetPosition = _character.position + (_currentDir * _currentBaseZoom);
+        _targetPosition = _character.position + (_getCurrentDir() * _currentBaseZoom);
     }
 
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
-        Gizmos.DrawRay(_character.position, _currentDir);
+        Gizmos.DrawRay(_character.position, _getCurrentDir());
 
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(_centerPosition, 0.5f);
@@ -104,7 +113,7 @@ public class CameraController : MonoBehaviour
 
         var zoomAmount = scrollDelta * _zoomSpeed * Time.deltaTime * 10;
         
-        var posDelta = _currentDir * zoomAmount;
+        var posDelta = _getCurrentDir() * zoomAmount;
 
         if (Vector3.Distance(_character.position, _targetPosition + posDelta) < _minDist) _targetPosition = _minPosition;
         else if (Vector3.Distance(_character.position, _targetPosition + posDelta) > _maxDist) _targetPosition = _maxPosition;

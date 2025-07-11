@@ -13,6 +13,7 @@ public enum BoneName { CORE, CHEST, SHOULDER, UPPER_ARM, FOREARM, HAND, NECK, HE
 [System.Serializable]
 public class BoneData
 {
+    [HideInInspector] public string DisplayName;
     [SearchableEnum] public BoneName Name;
     public Transform Bone;
     public Dictionary<BoneSliderName, Vector3> _normalScaleMults = new Dictionary<BoneSliderName, Vector3>();
@@ -44,6 +45,14 @@ public class CharacterRigController : MonoBehaviour
     [SerializeField] private List<BoneData> _bones;
     [SerializeField] private Transform _rootBone;
     [SerializeField] float _localScaleMultiplier = 1f;
+
+    private void OnValidate()
+    {
+        foreach (var data in _bones) {
+            data.DisplayName = data.Name.ToString();
+            if (data.Bone) data.DisplayName += ": " + data.Bone.gameObject.name;
+        }
+    }
 
     public string GetSaveString()
     {
