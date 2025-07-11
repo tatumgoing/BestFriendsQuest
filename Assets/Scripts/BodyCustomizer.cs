@@ -66,6 +66,7 @@ public class BodyCustomizer : MonoBehaviour
     [Header("References")]
     [SerializeField] List<Slider> _allSliders = new List<Slider>();
     [SerializeField] private CheckBox _advancedCheck;
+    [SerializeField] private Animator _mainAnimator; 
 
     private const string seperator = "%";
 
@@ -89,6 +90,11 @@ public class BodyCustomizer : MonoBehaviour
         }
 
         while(_sliderGroups.Count > sliderGroupNames.Count) _sliderGroups.RemoveAt(_sliderGroups.Count - 1);
+    }
+
+    private void OnEnable()
+    {
+        _mainAnimator.SetTrigger("Right");
     }
 
     private void Start()

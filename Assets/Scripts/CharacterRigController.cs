@@ -85,8 +85,6 @@ public class CharacterRigController : MonoBehaviour
             scale.z /= independent.z;
             child.localScale = scale;
 
-            print("Scaling down child: " + child.gameObject.name + ", new scale: " + child.localScale);
-
             ScaleBoneRecursive(child);
         }
     }
@@ -99,9 +97,7 @@ public class CharacterRigController : MonoBehaviour
         newScale.Scale(normal);
         newScale.Scale(independant);
 
-
-        print("setting " + data.Bone.gameObject.name + " scale: " + data.Bone.localScale + " * " + normal + " * " + independant + " = " + newScale);
-
+        //print("setting " + data.Bone.gameObject.name + " scale: " + data.Bone.localScale + " * " + normal + " * " + independant + " = " + newScale);
 
         data.Bone.localScale = newScale;
 

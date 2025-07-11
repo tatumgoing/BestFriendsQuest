@@ -7,21 +7,67 @@ using UnityEngine.EventSystems;
 
 public class CameraController : MonoBehaviour
 {
+    [SerializeField] private float _lerpFactor = 10;
     [SerializeField] private float _headZoom;
     [SerializeField] private float _bodyZoom;
     [SerializeField] private float _headYOffset = 0;
     [SerializeField] private float _bodyYOffset = -2;
+    [SerializeField] private float _buttonZoomAmount = 2;
 
-    [SerializeField] private Vector2 _minMaxZoom;
+    [SerializeField] private Vector2 _minMaxZoomHead;
+    [SerializeField] private Vector2 _minMaxZoomBody;
     [SerializeField] private float _zoomSpeed;
     [SerializeField] private Transform _character;
 
     private bool _body;
-    
-    [SerializeField]
+    private Vector3 _targetPosition;
+
+    private Vector2 _minMaxZoom => _body ? _minMaxZoomBody : _minMaxZoomHead;
+    private float _currentBaseZoom => _body ? _bodyZoom : _headZoom;
+    private float _currentDist => Vector3.Distance(_targetPosition, _character.position);
+    private Vector3 _currentDir => (_targetPosition - _character.position).normalized;
+    private Vector3 _centerPosition => _character.position + (_currentDir * _currentBaseZoom);
+    private Vector3 _minPosition => _centerPosition + _currentDir * _minMaxZoom.x;
+    private Vector3 _maxPosition => _centerPosition + _currentDir * _minMaxZoom.y;
+    private float _minDist => Vector3.Distance(_character.position, _minPosition);
+    private float _maxDist => Vector3.Distance(_character.position, _maxPosition);
+
+    private void Start()
+    {
+        _targetPosition = transform.position;
+    }
+
     private void Update()
     {
         if (!EventSystem.current.IsPointerOverGameObject()) Scroll();
+
+        transform.position = Vector3.Lerp(transform.position, _targetPosition, _lerpFactor * Time.deltaTime);
+    }
+
+    public void ZoomOut()
+    {
+        var zoomAmount = Mathf.Min(_buttonZoomAmount, (_currentBaseZoom + _minMaxZoom.y) - _currentDist);
+        _targetPosition += _currentDir * zoomAmount;
+    }
+
+    public void ZoomIn()
+    {
+        var zoomAmount = Mathf.Min(_buttonZoomAmount, _currentDist - (_currentBaseZoom + _minMaxZoom.x));
+        _targetPosition += _currentDir * -zoomAmount;
+    }
+
+    public void ResetZoom()
+    {
+        _targetPosition = _character.position + (_currentDir * _currentBaseZoom);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawRay(_character.position, _currentDir);
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(_centerPosition, 0.5f);
+        Gizmos.DrawLine(_minPosition, _maxPosition);
     }
 
     [ButtonMethod]
@@ -40,36 +86,28 @@ public class CameraController : MonoBehaviour
 
     public void SetDist(float dist, float yOffset = 0)
     {
-        var dir = (_character.position - transform.position).normalized;
+        var dir = (_character.position - _targetPosition).normalized;
         dir.y = 0;
-        transform.position = _character.position;
-        transform.position -= dir * dist;
-        transform.position += Vector3.up * yOffset;
+        _targetPosition = _character.position;
+        _targetPosition -= dir * dist;
+        _targetPosition += Vector3.up * yOffset;
     }
 
     private void Scroll()
     {
-        var dist = Vector3.Distance(transform.position, _character.position);
-        var dir = (_character.position - transform.position).normalized;
+        float scrollDelta = -Input.mouseScrollDelta.y;
 
-        float baseZoom = _headZoom;
-        if (_body) baseZoom = _bodyZoom;
-        var limits = new Vector2(_minMaxZoom.x + baseZoom, _minMaxZoom.y + baseZoom);
+        if (EventSystem.current.IsPointerOverGameObject() || !Application.isFocused) scrollDelta = 0;
 
-        float scrollDelta = Input.mouseScrollDelta.y;
-
-        var ES = EventSystem.current;
-        if (ES && ES.IsPointerOverGameObject() || !Application.isFocused) scrollDelta = 0;
         var mousePos = Input.mousePosition;
         if (mousePos.x < 0 || mousePos.x > Screen.width || mousePos.y < 0 || mousePos.y > Screen.height) scrollDelta = 0;
-#if UNITY_EDITOR
-        //if (!UnityEditor.EditorWindow.focusedWindow || UnityEditor.EditorWindow.focusedWindow.titleContent.text != "Game") scrollDelta = 0;
-#endif
 
-        var dirMod = scrollDelta * _zoomSpeed * Time.deltaTime * 10;
-        if ( (dist + dirMod > limits.y && scrollDelta < 0) || (dist + dirMod < limits.x && scrollDelta > 0)) return;
+        var zoomAmount = scrollDelta * _zoomSpeed * Time.deltaTime * 10;
         
-        var posDelta = dir * dirMod;
-        transform.position += posDelta;
+        var posDelta = _currentDir * zoomAmount;
+
+        if (Vector3.Distance(_character.position, _targetPosition + posDelta) < _minDist) _targetPosition = _minPosition;
+        else if (Vector3.Distance(_character.position, _targetPosition + posDelta) > _maxDist) _targetPosition = _maxPosition;
+        else _targetPosition += posDelta;
     }
 }

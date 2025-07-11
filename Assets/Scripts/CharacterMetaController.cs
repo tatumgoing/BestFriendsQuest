@@ -1,10 +1,12 @@
 using MyBox;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class CharacterMetaController : MonoBehaviour
 {
+
     [SerializeField] private SetMaterialColor _skin;
     [SerializeField] private Color _skinColor;
     [SerializeField] private FaceFeatureController _face;
@@ -12,14 +14,106 @@ public class CharacterMetaController : MonoBehaviour
     [SerializeField] private EarController _ears;
     [SerializeField] private BodyCustomizer _bodyCustomizer;
     [SerializeField] private DataPanelController _dataPanel;
-    
+
+
+    [Header("Expressions")]
+    [SerializeField, DisplayInspector] private ExpressionSetData _expressionSet;
+    public bool Blinking;
+    public bool Talking;
+
     [HideInInspector] public CharacterProfileData Data;
 
+    private float _blinkCooldown = -Mathf.Infinity;
+    private float _blinkDuratingCooldown = 0;
+    private float _talkingCooldown = -Mathf.Infinity;
+    private Expression _currentExpression;
+    private bool _eyesClosed;
+    private bool _mouthOpen;
+
     public Color SkinColor => _skinColor;
+    [ButtonMethod] private void setNeutral() => SetExpression(Expression.NEUTRAL);
+    [ButtonMethod] private void setHappy() => SetExpression(Expression.HAPPY);
+    [ButtonMethod] private void setSurprised() => SetExpression(Expression.SURPRISED);
+    [ButtonMethod] private void setAngry() => SetExpression(Expression.ANGRY);
+    [ButtonMethod] private void setSad() => SetExpression(Expression.SAD);
 
     private void Start()
     {
         SetSkinColor(_skinColor);
+        _currentExpression = Expression.NEUTRAL;
+    }
+
+    private void Update()
+    {
+        HandleBlink();
+        HandleTalking();
+    }
+
+    private void HandleTalking()
+    {
+        _talkingCooldown -= Time.deltaTime;
+
+        if (!Talking) {
+            if (_mouthOpen) SetExpression(_currentExpression, _eyesClosed, false);
+            return;
+        }
+
+        if (_talkingCooldown == -Mathf.Infinity) _talkingCooldown = _expressionSet.TalkingSpeed;
+
+        if (_talkingCooldown <= 0) {
+            _talkingCooldown = _expressionSet.TalkingSpeed;
+
+            if (_mouthOpen) {
+                SetExpression(_currentExpression, _eyesClosed, false);
+            }
+            else {
+                SetExpression(_currentExpression, _eyesClosed, true);
+            }
+        }
+
+    }
+
+    private void HandleBlink()
+    {
+        _blinkDuratingCooldown -= Time.deltaTime;
+        if (_blinkDuratingCooldown <= 0) _blinkCooldown -= Time.deltaTime;
+        if (!Blinking) {
+            if (_eyesClosed) SetExpression(_currentExpression, false, _mouthOpen);
+            return;
+        }
+        
+        if (_blinkCooldown == -Mathf.Infinity) _blinkCooldown = _expressionSet.GetBlinkCooldown();
+        if (_blinkDuratingCooldown > 0) return;
+
+        SetExpression(_currentExpression, false, _mouthOpen);
+
+        if (_blinkCooldown < 0) {
+            SetExpression(_currentExpression, true, _mouthOpen);
+            _blinkDuratingCooldown = _expressionSet.BlinkDuration;
+            _blinkCooldown = _expressionSet.GetBlinkCooldown();
+        }        
+    }
+
+    public void SetExpression(Expression expression, bool eyesClosed, bool mouthOpen)
+    {
+        _eyesClosed = eyesClosed;
+        _mouthOpen = mouthOpen;
+
+        _currentExpression = expression;
+
+        var expressionData = _expressionSet.GetExpressionData(expression);
+        var secondary = eyesClosed ? _expressionSet.GetExpressionData(Expression.BLINKING) : null;
+        var tertiary = mouthOpen ? _expressionSet.GetExpressionData(Expression.TALKING) : null;
+
+        _face.SetExpression(expressionData, secondary, tertiary);
+    }
+
+    public void SetExpression(Expression expression)
+    {
+        _currentExpression = expression;
+
+        var expressionData = _expressionSet.GetExpressionData(expression);
+        if (expressionData != null) _face.SetExpression(expressionData);
     }
 
     public void LoadFromString(string input)

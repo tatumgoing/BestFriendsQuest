@@ -88,6 +88,11 @@ public class ColorMenuController : MonoBehaviour
         } 
     }
 
+    public Color GetDefaultColor()
+    {
+        return _basicColors[0].Color;
+    }
+
     public void SelectBasicColor(Color color, BasicColorOption selected)
     {
         foreach (var o in _basicOptions) if (o != selected) o.Deselect();

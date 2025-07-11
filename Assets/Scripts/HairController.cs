@@ -8,19 +8,24 @@ public class HairController : MonoBehaviour, IFeatureController
     [SerializeField] private GameObject _featurePrefab;
     [SerializeField] private Transform _featureListParent;
     [SerializeField] private List<HairPiece> _currentPieces = new List<HairPiece>();
-    [SerializeField] private List<FeatureSOData> _allOptions = new List<FeatureSOData>();
     [SerializeField] private int _currentIndex;
     [SerializeField] private Vector2 _limits;
     [SerializeField] private Vector2 _scaleLimits = new Vector2(0.2f, 1.8f);
     [SerializeField] private Transform _target;
 
-    public Color HairColor { get; private set; }
+    private List<FeatureSOData> _allOptions = new List<FeatureSOData>();
 
+    public Color HairColor { get; private set; }
     public bool HasCurrent() => _currentPieces.Count > 0;
     public FeatureObj Current => _currentPieces[_currentIndex];
     public FeatureObj GetCurrent() => Current;
     public List<FeatureSOData> GetAllOptions() => _allOptions;
     public List<FeatureObj> GetCurrentFeatures() => _currentPieces.Cast<FeatureObj>().ToList();
+
+    private void Awake()
+    {
+        _allOptions = Resources.LoadAll<FeatureSOData>("HairFeatures").ToList();
+    }
 
     private void Start()
     {

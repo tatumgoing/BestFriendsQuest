@@ -56,6 +56,7 @@ public class ToolTipManager : MonoBehaviour
 
     public void DisplayToolTip(string message, Tooltip caller)
     {
+        if (message.Length == 0) return;
 
         _appearSound.Play();
         

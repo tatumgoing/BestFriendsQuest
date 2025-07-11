@@ -1,23 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CharacterCreatorProgression : MonoBehaviour
 {
     [SerializeField] private CameraController _cameraController;
     [SerializeField] private CharacterMetaController _characterController;
     [SerializeField] private SelectableItem _facialFeaturesTabButton;
-    [SerializeField] private GameObject _titleOptions;
+    [SerializeField] private Animator _titleOptions;
     [SerializeField] private GameObject _facialOptions;
     [SerializeField] private GameObject _bodyOptions;
     [SerializeField] private GameObject _profileOptions;
 
     private void Start()
     {
-        HideAll();
+        HideAll(false);
         _characterController.gameObject.SetActive(false);
-
-        _titleOptions.SetActive(true);
+        _titleOptions.gameObject.SetActive(true);
     }
 
     public void StartNew()
@@ -29,7 +30,6 @@ public class CharacterCreatorProgression : MonoBehaviour
     public void FocusFace()
     {
         HideAll();
-        _titleOptions.SetActive(false);
 
         _facialOptions.SetActive(true);
         _characterController.gameObject.SetActive(true);
@@ -49,8 +49,18 @@ public class CharacterCreatorProgression : MonoBehaviour
         _profileOptions.SetActive(true);
     }
 
-    private void HideAll()
+    public async void FinishCharacter()
     {
+        UIManager.i.Fade.Appear();
+
+        var fadeTime = Mathf.RoundToInt(UIManager.i.Fade.FadeTime * 1000);
+        await Task.Delay(fadeTime);
+        SceneManager.LoadScene(2);
+    }
+
+    private void HideAll(bool hideTitle = true)
+    {
+        if (hideTitle && _titleOptions.gameObject.activeInHierarchy) _titleOptions.SetTrigger("Exit");
         _facialOptions.SetActive(false);
         _bodyOptions.SetActive(false);
         _profileOptions.SetActive(false);

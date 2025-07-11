@@ -8,27 +8,57 @@ public class FaceFeatureController : MonoBehaviour, IFeatureController
 {
     [SerializeField] private GameObject _featurePrefab;
     [SerializeField] private Transform _featureParent;
-    public List<FacialFeature> CurrentFeatures = new List<FacialFeature>();
-    [SerializeField] private List<FeatureSOData> _allFeatures = new List<FeatureSOData>();
     [SerializeField] private int _selected;
 
+    [HideInInspector] public List<FacialFeature> CurrentFeatures = new List<FacialFeature>();
+
+    [ReadOnly] private List<FeatureSOData> _allFeatures = new List<FeatureSOData>();
     private FeatureCategory _currentCategory;
+    private FeatureTier _currentPriority;
 
     public bool HasCurrent() => CurrentFeatures.Count > 0;
     public FacialFeature Current => _selected < CurrentFeatures.Count ? CurrentFeatures[_selected] : CurrentFeatures[0];
-    public List<FeatureObj> GetCurrentFeatures() => CurrentFeatures.Cast<FeatureObj>().Where(x => x.GetData().Category == _currentCategory).ToList();
+    public List<FeatureObj> GetCurrentFeatures() => CurrentFeatures.Where(x => x.Category == _currentCategory).Cast<FeatureObj>().ToList();
     public List<FeatureSOData> GetAllOptions() => _allFeatures;
     public void CopySettingsToCurrent(FeatureObj original) => original.CopyTo(Current);
     public FeatureObj GetCurrent() => Current;
+    public void SetCategory(FeatureCategory category) => _currentCategory = category;
+    public void SetPriority(FeatureTier priority) => _currentPriority = priority;
 
     private void OnValidate()
     {
         foreach (var f in _allFeatures) if (f != null) f.Name = f.Texture.name;
     }
 
+    private void Awake()
+    {
+        _allFeatures = Resources.LoadAll<FeatureSOData>("FacialFeatures").ToList();
+    }
+
     private void Start()
     { 
         CurrentFeatures = GetComponentsInChildren<FacialFeature>().Where(x => !x.IsMirroredVersion).ToList();
+    }
+
+    public void SetExpression(ExpressionData expression, ExpressionData secondary = null, ExpressionData Tertiary = null)
+    {
+        if (expression == null) return;
+
+        ResetExpression();
+        foreach (var category in expression.Data) SetExpressionForCategory(category);
+        if (secondary) foreach (var category in secondary.Data) SetExpressionForCategory(category);
+        if (Tertiary) foreach (var category in Tertiary.Data) SetExpressionForCategory(category);
+    }
+
+    private void ResetExpression()
+    {
+        foreach (var feature in CurrentFeatures) feature.SetExpression(new ExpressionPieceData());
+    }
+
+    private void SetExpressionForCategory(ExpressionPieceData data)
+    {
+        var affectedFeatures = CurrentFeatures.Where(x => x.Category == data.Category);
+        foreach (var f in affectedFeatures) f.SetExpression(data);
     }
 
     public void LoadFromString(string saveString)
@@ -66,10 +96,9 @@ public class FaceFeatureController : MonoBehaviour, IFeatureController
 
     public FeatureObj AddFeature(FeatureSOData data)
     {
-        data.Category = _currentCategory;
         var newFeature = Instantiate(_featurePrefab, _featureParent).GetComponent<FacialFeature>();
         newFeature.transform.SetAsFirstSibling();
-        newFeature.Set(data);
+        newFeature.Set(data, _currentCategory, _currentPriority);
         CurrentFeatures.Add(newFeature);
         return newFeature;
     }
@@ -104,8 +133,4 @@ public class FaceFeatureController : MonoBehaviour, IFeatureController
         Utils.SetDirty(this);
     }
 
-    public void SetCategory(FeatureCategory category)
-    {
-        _currentCategory = category;
-    }
 }

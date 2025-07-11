@@ -46,7 +46,7 @@ public class SetDropdownOptions : MonoBehaviour
         if (_type == DropdownDataType.ENUM) {
             var list = new List<string>();
             if (_enum == ProfileDataEnum.GENDER) list = Utils.EnumToList<Gender>().Select(x => x.ToString()).ToList();
-            if (_enum == ProfileDataEnum.PRONOUN) list = Utils.EnumToList<Pronoun>().Select(x => x.ToString()).ToList();
+            if (_enum == ProfileDataEnum.PRONOUN) list = new List<string>() { "HE/HIM", "THEY/THEM", "SHE/HER" };
             if (_enum == ProfileDataEnum.ATTRACTION) list = Utils.EnumToList<Attraction>().Select(x => x.ToString()).ToList();
             SetOptions(list);
         }
@@ -93,6 +93,7 @@ public class SetDropdownOptions : MonoBehaviour
     {
         var selectedValue = _current[index];
         if (_type == DropdownDataType.MONTH_ABR) selectedValue = (index + 1).ToString();
+        if (_type == DropdownDataType.ENUM && _enum == ProfileDataEnum.PRONOUN) selectedValue = ((Pronoun) index).ToString();
 
         _controller.SetData(_sendType, selectedValue);
     }

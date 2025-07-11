@@ -61,6 +61,7 @@ public abstract class FeatureObj : MonoBehaviour
 
     public virtual void SetColor(Color color)
     {
+        //print(gameObject.name + " setting color ");
         color.a = 1;
         Settings.Color = color;
         UpdateDisplay();
@@ -95,6 +96,11 @@ public abstract class FeatureObj : MonoBehaviour
     {
         MirroredFeature = Instantiate(gameObject, transform.parent).GetComponent<FeatureObj>();
         MirroredFeature.SetAsMirroredVersion();
+    }
+
+    public void SetDefaults()
+    {
+        SetAll(Data.DefaultSettings);
     }
 
     public virtual void CopyTo(FeatureObj feature)

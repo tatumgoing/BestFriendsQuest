@@ -30,6 +30,4 @@ public class FeatureSOData : ScriptableObject
     [Header("Defaults")]
     [SerializeField] private FeatureObjSettings _defaultSettings;
     public FeatureObjSettings DefaultSettings => _defaultSettings;
-
-    [HideInInspector] public FeatureCategory Category;
 }

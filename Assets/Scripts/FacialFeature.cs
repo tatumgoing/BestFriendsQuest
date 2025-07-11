@@ -1,25 +1,28 @@
 using MyBox;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro.EditorUtilities;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
 [RequireComponent(typeof(DecalProjector))]
 public class FacialFeature : FeatureObj
 {
-
     [Header("Misc")]
     [SerializeField] private Material _refMaterial;
+    [SerializeField] private Material _refMaterialDetail;
 
     private DecalProjector _projector;
     private FacialFeature _mirroredFeature;
+    private FeatureSOData _replacementFeature;
+    private Vector3 _expressionOffsets;
+    private float _expressionRotOffset;
 
-    [ReadOnly] public FeatureCategory Category;
+    [ReadOnly, HideInInspector] public FeatureCategory Category;
+    [ReadOnly, HideInInspector] public FeatureTier Tier;
 
     private void OnValidate()
     {
+        if (!Data) return;
         if (_projector == null) _projector = GetComponent<DecalProjector>();
         if (Data.Texture == null) {
             _projector.material = null;
@@ -32,11 +35,25 @@ public class FacialFeature : FeatureObj
         if (MirroredFeature && !MirroredFeature.gameObject.name.Contains("Mirror")) MirroredFeature.gameObject.name += " Mirror";
     }
 
+    public void SetExpression(ExpressionPieceData data)
+    {
+        _replacementFeature = data.Replacement;
+        _expressionRotOffset = data.RotationOffset;
+        _expressionOffsets = new Vector3(data.PositionXOffset, data.PositionYOffset, 0);
+        if (IsMirroredVersion) _expressionOffsets.x *= -1;
+
+        if (_mirroredFeature != null) _mirroredFeature.SetExpression(data);
+
+        UpdateDisplay();
+    }
+
     [ButtonMethod]
     private void MakeNewMaterial()
     {
         if (!_projector) _projector = GetComponent<DecalProjector>();
         var mat = new Material(_refMaterial);
+        if (Tier == FeatureTier.DETAIL) mat = new Material(_refMaterialDetail);
+
         _projector.material = mat;
         if (Data.Texture == null) return;
         mat.name = Data.Texture.name + " (virtual)" + (IsMirroredVersion ? "(mirror)" : "");
@@ -49,31 +66,54 @@ public class FacialFeature : FeatureObj
         _projector = GetComponent<DecalProjector>();
     }
 
-    public void Set(FeatureSOData data)
+    public void Set(FeatureSOData data, FeatureCategory category, FeatureTier priority)
     {
         Reset();
         Data = data;
+        Category = category;
+        Tier = priority;
         OnValidate();
         SetAll(data.DefaultSettings);
     }
 
+    public void SetTier(FeatureTier tier)
+    {
+        if (MirroredFeature != null) MirroredFeature.As<FacialFeature>().SetTier(tier); 
+        Tier = tier;
+    }
+
     protected override void UpdateDisplay()
     {
-        if ( _projector == null) _projector = GetComponent<DecalProjector>();
+        if (_projector == null) {
+            _projector = GetComponent<DecalProjector>();
+            _projector.material = null;
+        }
         UpdatePos();
         UpdateAngle();
 
-        if (Data.Texture == null) return;
+        if (Data.Texture == null) {
+            return;
+        }
         UpdateScale();
         UpdateMaterial();
         base.UpdateDisplay();
+
+        var shouldShowMirrored = IsMirroredVersion && Settings.Mirror == MirrorType.RIGHT;
+        var shouldShow = !IsMirroredVersion && Settings.Mirror == MirrorType.LEFT;
+
+        if (shouldShow || shouldShowMirrored || Settings.Mirror == MirrorType.BOTH) {
+            gameObject.SetActive(_replacementFeature == null || Tier == FeatureTier.BASE);
+        }
     }
 
 
     private void UpdateAngle()
     {
         var angle = Mathf.Lerp(-180, 180, Settings.Angle);
+        angle -= _expressionRotOffset;
+
         var euler = new Vector3(0, 0, IsMirroredVersion ? 1 - angle : angle);
+
         transform.localEulerAngles = euler;
     }
 
@@ -90,16 +130,21 @@ public class FacialFeature : FeatureObj
         var pos = transform.localPosition;
         pos.x = Mathf.Lerp(Data.HoriLimits.x, Data.HoriLimits.y, IsMirroredVersion ? 1- Settings.Hori :  Settings.Hori);
         pos.y = Mathf.Lerp(Data.VertLimits.x, Data.VertLimits.y, Settings.Vert);
+
+        pos += _expressionOffsets;
+
         transform.localPosition = pos;
     }
 
     private void UpdateMaterial()
     {
-        if (_projector.material == null) MakeNewMaterial();
-        _projector.material.SetTexture("_Base_Map", Data.Texture);
-        _projector.material.SetTexture("_colorMap", Data.ColorMask);
+        var currentData = _replacementFeature ? _replacementFeature : Data;
+
+        if (_projector.material == null || _projector.material.shader != _refMaterial.shader) MakeNewMaterial();
+        _projector.material.SetTexture("_Base_Map", currentData.Texture);
+        _projector.material.SetTexture("_colorMap", currentData.ColorMask);
         _projector.material.SetColor("_tint", Settings.Color);
-        _projector.material.SetInt("_hasColor", Data.ColorMask == null ? 0 : 1);
+        _projector.material.SetInt("_hasColor", currentData.ColorMask == null ? 0 : 1);
     }
 
 
@@ -123,8 +168,6 @@ public class FacialFeature : FeatureObj
     [ButtonMethod]
     private void Reset()
     {
-        //Data = new FeatureData();
-        print("issue");
         OnValidate();
         Utils.SetDirty(this);
     }

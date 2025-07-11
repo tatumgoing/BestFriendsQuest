@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c097edc8233d4104ebdc43d46029a983, type: 3}
+  m_Name: DefaultExpressions
+  m_EditorClassIdentifier: 
+  _expressions:
+  - Name: NEUTRAL
+    ExpressionType: 0
+    Expression: {fileID: 11400000, guid: f08cc03ba5bae274ea64ddf07df1530b, type: 2}
+  - Name: TALKING
+    ExpressionType: 1
+    Expression: {fileID: 11400000, guid: dcc302c569ed69f45b77aa0eb747e81a, type: 2}
+  - Name: BLINKING
+    ExpressionType: 2
+    Expression: {fileID: 11400000, guid: 8dc92b79806878e4ab247e60d849f1d8, type: 2}
+  - Name: HAPPY
+    ExpressionType: 3
+    Expression: {fileID: 11400000, guid: 86ca4178e5f74c3479180ce561078af0, type: 2}
+  - Name: SURPRISED
+    ExpressionType: 4
+    Expression: {fileID: 11400000, guid: 392d5009c231d464ba8fae9e603ae471, type: 2}
+  - Name: ANGRY
+    ExpressionType: 5
+    Expression: {fileID: 11400000, guid: b62edc63cad31a248abcaf7f9b5bd2d7, type: 2}
+  - Name: SAD
+    ExpressionType: 6
+    Expression: {fileID: 11400000, guid: 67d07ce13af6c844a9d42977020e08fd, type: 2}
+  _blinkMinMax: {x: 3, y: 20}
+  _blinkDuration: 0.25
+  _talkingSpeed: 0.2
