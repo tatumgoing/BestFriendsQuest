@@ -51,8 +51,7 @@ public class CharacterProfileData
         };
 
         var joined = string.Join(seperator, list);
-        Debug.Log("Jioned: " + joined);
-
+        
         return joined;
     }
 

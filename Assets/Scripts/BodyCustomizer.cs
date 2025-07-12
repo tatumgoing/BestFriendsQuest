@@ -34,7 +34,7 @@ public class BoneSliderData
     [SerializeField, Tooltip("the more more uniform or subtle these values are, the less distorted the model will be")] private Vector3 _minScale;
     [SerializeField, Tooltip("the more more uniform or subtle these values are, the less distorted the model will be")] private Vector3 _maxScale;
     [Tooltip("When checked, this bone will scale independent of its children")] public bool IndependentScale;
-    [Tooltip("When checked, this bone will scale independent of its children"), SerializeField] private bool _uniformScale;
+    [Tooltip("When checked, x, y, and z values will be the same"), SerializeField] private bool _sameXYZ;
 
     public Vector3 GetCurrent(float t) => Vector3.Lerp(_minScale, _maxScale, t);
 
@@ -47,7 +47,7 @@ public class BoneSliderData
             _maxScale = Vector3.one;
         }
 
-        if (_uniformScale) {
+        if (_sameXYZ) {
             _minScale.y = _minScale.z = _minScale.x;
             _maxScale.y = _maxScale.z = _maxScale.x;
         }

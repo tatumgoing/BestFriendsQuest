@@ -23,6 +23,7 @@ public class CharacterCreatorProgression : MonoBehaviour
 
     public void StartNew()
     {
+        _characterController.MakeNewID();
         _facialFeaturesTabButton.Select(true);
         FocusFace();
     }

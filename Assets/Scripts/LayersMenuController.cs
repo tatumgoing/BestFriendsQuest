@@ -60,6 +60,9 @@ public class LayersMenuController : MonoBehaviour
 
     public void Duplicate(FeatureObj original)
     {
+        _currentTier = original.Tier;
+        print("duplicated a " +  original.Tier);
+
         AddFeature(original.GetData(), true);
         _featureController.CopySettingsToCurrent(original);
     }

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class CharacterMetaController : MonoBehaviour
 {
-
+    [SerializeField, ReadOnly] private string ID;
     [SerializeField] private SetMaterialColor _skin;
     [SerializeField] private Color _skinColor;
     [SerializeField] private FaceFeatureController _face;
@@ -28,13 +28,14 @@ public class CharacterMetaController : MonoBehaviour
     private Expression _currentExpression;
     private bool _eyesClosed;
     private bool _mouthOpen;
+    private const int idLength = 4;
 
     public Color SkinColor => _skinColor;
-    [ButtonMethod] private void setNeutral() => SetExpression(Expression.NEUTRAL);
-    [ButtonMethod] private void setHappy() => SetExpression(Expression.HAPPY);
-    [ButtonMethod] private void setSurprised() => SetExpression(Expression.SURPRISED);
-    [ButtonMethod] private void setAngry() => SetExpression(Expression.ANGRY);
-    [ButtonMethod] private void setSad() => SetExpression(Expression.SAD);
+    [ButtonMethod] public void setNeutral() => SetExpression(Expression.NEUTRAL);
+    [ButtonMethod] public void setHappy() => SetExpression(Expression.HAPPY);
+    [ButtonMethod] public void setSurprised() => SetExpression(Expression.SURPRISED);
+    [ButtonMethod] public void setAngry() => SetExpression(Expression.ANGRY);
+    [ButtonMethod] public void setSad() => SetExpression(Expression.SAD);
 
     private void Start()
     {
@@ -46,6 +47,14 @@ public class CharacterMetaController : MonoBehaviour
     {
         HandleBlink();
         HandleTalking();
+    }
+
+    public void MakeNewID()
+    {
+        ID = "";
+        for (int i = 0; i < idLength; i++) {
+            ID += Random.Range(0, 10);
+        }
     }
 
     private void HandleTalking()
@@ -118,6 +127,10 @@ public class CharacterMetaController : MonoBehaviour
     public void LoadFromString(string input)
     {
         input = input.Replace("\n", "");
+
+        ID = input[..idLength];
+        input = input.Substring(idLength);
+
         var parts = input.Split('|');
         _face.LoadFromString(parts[0]);
         _hair.LoadFromString(parts[1]);
@@ -129,7 +142,6 @@ public class CharacterMetaController : MonoBehaviour
         _bodyCustomizer.LoadFromString(parts[4]);
 
         _dataPanel.LoadFromString(parts[5]);
-
     }
 
     public string GetSaveString()
@@ -141,10 +153,10 @@ public class CharacterMetaController : MonoBehaviour
             _ears.GetSaveString(),
             _skinColor.ToHex(),
             _bodyCustomizer.GetSaveString(),
-            Data.ToString()
+            Data.ToString(),
         };
 
-        return string.Join("|", list);
+        return ID + string.Join("|", list);
     }
 
     public void SetSkinColor(Color color)

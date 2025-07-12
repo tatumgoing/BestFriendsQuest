@@ -1,4 +1,5 @@
 using MyBox;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,7 +19,6 @@ public class FacialFeature : FeatureObj
     private float _expressionRotOffset;
 
     [ReadOnly, HideInInspector] public FeatureCategory Category;
-    [ReadOnly, HideInInspector] public FeatureTier Tier;
 
     private void OnValidate()
     {
@@ -33,7 +33,7 @@ public class FacialFeature : FeatureObj
         _projector.material.SetTexture("Base_Map", Data.Texture);
 
         if (MirroredFeature && !MirroredFeature.gameObject.name.Contains("Mirror")) MirroredFeature.gameObject.name += " Mirror";
-    }
+    }    
 
     public void SetExpression(ExpressionPieceData data)
     {
@@ -64,6 +64,24 @@ public class FacialFeature : FeatureObj
     private void Start()
     {
         _projector = GetComponent<DecalProjector>();
+    }
+    public override void ConfigureFromString(string inputString)
+    {
+        base.ConfigureFromString(inputString);
+        Category = (FeatureCategory) int.Parse(inputString.Substring(20, 1));
+    }
+
+    public override string ToString()
+    {
+        var result = Data.Icon.name + "~";
+        result += (Convert.ToInt32(Settings.MatchColor) * 3 + (int)Settings.Mirror);
+        result += RoundToString(Settings.Hori) + RoundToString(Settings.Vert) + RoundToString(Settings.Size) + RoundToString(Settings.Angle) + Settings.Color.ToHex();
+        result += (int)Tier;
+        result += (int)Category;
+
+        result = result.Replace("#", "");
+
+        return result;
     }
 
     public void Set(FeatureSOData data, FeatureCategory category, FeatureTier priority)
@@ -173,26 +191,9 @@ public class FacialFeature : FeatureObj
     }
 
     [ButtonMethod]
-    private void SetBottomLeft()
-    {
-        Data.HoriLimits.x = transform.localPosition.x;
-        Data.VertLimits.x = transform.localPosition.y;
-        Utils.SetDirty(this);
-    }
-
-    [ButtonMethod]
-    private void SetTopRight()
-    {
-        Data.HoriLimits.y = transform.localPosition.x;
-        Data.VertLimits.y = transform.localPosition.y;
-        Utils.SetDirty(this);
-    }
-
-    [ButtonMethod]
     private void SaveSettings()
     {
         var controller = GetComponentInParent<FaceFeatureController>();
         controller.SaveFeature(Data);
     }
-
 }

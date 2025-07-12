@@ -51,6 +51,8 @@ public class GameManager : MonoBehaviour
 
     public void LoadFromSave()
     {
+        if (!File.Exists(_path)) return;
+
         var saveString = File.ReadAllText(_path);
         _character.LoadFromString(saveString);
         print("loaded sucessfully from: " + _path);

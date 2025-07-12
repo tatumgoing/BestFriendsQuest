@@ -23,11 +23,12 @@ public class FeatureSOData : ScriptableObject
     [ConditionalField(nameof(Type), false, FeatureType.EAR)] public GameObject EarPrefab;
     [ConditionalField(nameof(Type), false, FeatureType.EAR)] public Vector2 AngleLimits;
 
-    [ConditionalField(nameof(Type), true, FeatureType.HAIR)] public Vector2 HoriLimits;
+    [ConditionalField(nameof(Type), true, FeatureType.HAIR), SerializeField] private float _horiLimit;
     [ConditionalField(nameof(Type), true, FeatureType.HAIR)] public Vector2 VertLimits;
     public Vector2 SizeLimits;
 
     [Header("Defaults")]
     [SerializeField] private FeatureObjSettings _defaultSettings;
     public FeatureObjSettings DefaultSettings => _defaultSettings;
+    public Vector2 HoriLimits => new Vector2(-_horiLimit, _horiLimit);
 }

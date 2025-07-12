@@ -13,10 +13,12 @@ public abstract class FeatureObj : MonoBehaviour
     [HideInInspector] public bool IsMirroredVersion;
     protected FeatureObj MirroredFeature;
 
+    [ReadOnly, HideInInspector] public FeatureTier Tier;
+
     public FeatureObjSettings GetSettings() => Settings;
     public FeatureSOData GetData() => Data;
 
-    public void ConfigureFromString(string inputString)
+    public virtual void ConfigureFromString(string inputString)
     {
         var numString = inputString.Substring(1);
 
@@ -30,6 +32,9 @@ public abstract class FeatureObj : MonoBehaviour
         Settings.Angle = float.Parse(numString.Substring(9, 3)) / 1000;
 
         ColorUtility.TryParseHtmlString("#" + numString.Substring(12, 6), out Settings.Color);
+
+        Tier = (FeatureTier)int.Parse(numString.Substring(18, 1));
+
         UpdateDisplay();
 
         SetColor(Settings.Color);
@@ -39,14 +44,16 @@ public abstract class FeatureObj : MonoBehaviour
     {
         var result = Data.Icon.name + "~";
         result += (Convert.ToInt32(Settings.MatchColor) * 3 + (int)Settings.Mirror);
-        result += RoundToString(Settings.Hori) + RoundToString(Settings.Vert) + RoundToString(Settings.Size) + RoundToString(Settings.Angle) + Settings.Color.ToHex();
+        result += RoundToString(Settings.Hori) + RoundToString(Settings.Vert) + RoundToString(Settings.Size) + RoundToString(Settings.Angle);
+        result += Settings.Color.ToHex();
+        result += (int)Tier;
 
         result = result.Replace("#", "");
 
         return result;
     }
 
-    private string RoundToString(float input )
+    protected string RoundToString(float input )
     {
         input = Mathf.Clamp(input, 0.001f, 0.999f);
         var res = Mathf.FloorToInt(input * 1000).ToString();
@@ -61,7 +68,6 @@ public abstract class FeatureObj : MonoBehaviour
 
     public virtual void SetColor(Color color)
     {
-        //print(gameObject.name + " setting color ");
         color.a = 1;
         Settings.Color = color;
         UpdateDisplay();
