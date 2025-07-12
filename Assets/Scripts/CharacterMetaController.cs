@@ -5,14 +5,14 @@ using UnityEngine;
 
 public class CharacterMetaController : MonoBehaviour
 {
-    [SerializeField, ReadOnly] private string ID;
+    [ReadOnly] public string ID;
     [SerializeField] private SetMaterialColor _skin;
-    [SerializeField] private Color _skinColor;
     [SerializeField] private FaceFeatureController _face;
     [SerializeField] private HairController _hair;
     [SerializeField] private EarController _ears;
     [SerializeField] private BodyCustomizer _bodyCustomizer;
     [SerializeField] private DataPanelController _dataPanel;
+    [SerializeField] private Color _skinColor;
 
 
     [Header("Expressions")]
@@ -28,7 +28,6 @@ public class CharacterMetaController : MonoBehaviour
     private Expression _currentExpression;
     private bool _eyesClosed;
     private bool _mouthOpen;
-    private const int idLength = 4;
 
     public Color SkinColor => _skinColor;
     [ButtonMethod] public void setNeutral() => SetExpression(Expression.NEUTRAL);
@@ -52,7 +51,7 @@ public class CharacterMetaController : MonoBehaviour
     public void MakeNewID()
     {
         ID = "";
-        for (int i = 0; i < idLength; i++) {
+        for (int i = 0; i < GameManager.idLength; i++) {
             ID += Random.Range(0, 10);
         }
     }
@@ -128,8 +127,8 @@ public class CharacterMetaController : MonoBehaviour
     {
         input = input.Replace("\n", "");
 
-        ID = input[..idLength];
-        input = input.Substring(idLength);
+        ID = input[..GameManager.idLength];
+        input = input.Substring(GameManager.idLength);
 
         var parts = input.Split('|');
         _face.LoadFromString(parts[0]);

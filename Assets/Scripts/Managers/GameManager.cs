@@ -11,6 +11,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager i;
+    public const int idLength = 4;
     private void Awake() { i = this; }
 
     [SerializeField] GameObject _pauseMenu;
@@ -24,7 +25,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextAsset _wordsFile;
     [HideInInspector] public Dictionary<int, string> IntToWord = new Dictionary<int, string>();
     [HideInInspector] public Dictionary<string, int> WordToInt = new Dictionary<string, int>();
-    private string _path => Path.Combine(Application.streamingAssetsPath, _saveFileName);
+
+    public string Path => System.IO.Path.Combine(Application.streamingAssetsPath, _saveFileName);
 
     private void Start()
     {
@@ -43,19 +45,37 @@ public class GameManager : MonoBehaviour
     }
 
     public void SaveCurrent()
-    { 
-        Directory.CreateDirectory(Path.GetDirectoryName(_path));
-        File.WriteAllText(_path, _character.GetSaveString());
-        print("saved sucessfully to: " + _path);
+    {
+        var newData = _character.GetSaveString();
+
+        Directory.CreateDirectory(System.IO.Path.GetDirectoryName(Path));
+        if (!File.Exists(Path)) {
+            File.WriteAllText(Path, newData);
+            return;
+        }
+        
+        var characters = File.ReadAllText(Path).Split("\n").ToList();
+        bool found = false;
+        for (int i = 0; i < characters.Count; i++) {
+            if (characters[i].Substring(0, idLength) == _character.ID) {
+                characters[i] = newData;
+                found = true;
+                break;
+            }
+        }
+        if (!found) characters.Add(newData);
+
+        File.WriteAllText(Path, string.Join("\n", characters));
+        //print("saved sucessfully to: " + Path);
     }
 
     public void LoadFromSave()
     {
-        if (!File.Exists(_path)) return;
+        if (!File.Exists(Path)) return;
 
-        var saveString = File.ReadAllText(_path);
+        var saveString = File.ReadAllText(Path);
         _character.LoadFromString(saveString);
-        print("loaded sucessfully from: " + _path);
+        print("loaded sucessfully from: " + Path);
     }
 
     void TogglePause()

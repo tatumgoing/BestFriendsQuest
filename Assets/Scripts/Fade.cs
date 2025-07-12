@@ -46,7 +46,7 @@ public class Fade : MonoBehaviour
             timePassed += Time.deltaTime;
             await Task.Yield();
         }
-        _img.color = _fadeGradient.Evaluate(reverse ? 0 : 1);
+        if (_img) _img.color = _fadeGradient.Evaluate(reverse ? 0 : 1);
         if (reverse) gameObject.SetActive(false);
     }
 }

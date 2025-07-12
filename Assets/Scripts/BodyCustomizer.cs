@@ -112,7 +112,7 @@ public class BodyCustomizer : MonoBehaviour
             if (i > 1 && Mathf.Abs(0.5f - value) > 0.01f) advanced = true;
         }
 
-        if (advanced) _advancedCheck.ToggleOn();
+        if (advanced && _advancedCheck) _advancedCheck.ToggleOn();
     }
 
     public string GetSaveString()
