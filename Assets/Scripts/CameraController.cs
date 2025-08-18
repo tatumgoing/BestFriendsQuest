@@ -41,7 +41,7 @@ public class CameraController : MonoBehaviour
     {
         if (!EventSystem.current.IsPointerOverGameObject()) Scroll();
 
-        _targetPosition.y = _body ? _bodyYOffset : _headYOffset;
+        _targetPosition.y = _character.position.y + (_body ? _bodyYOffset : _headYOffset);
 
         transform.position = Vector3.Lerp(transform.position, _targetPosition, _lerpFactor * Time.deltaTime);
     }
