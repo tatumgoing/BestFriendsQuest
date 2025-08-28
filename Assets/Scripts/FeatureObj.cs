@@ -6,7 +6,7 @@ using UnityEngine;
 
 public abstract class FeatureObj : MonoBehaviour
 {
-    [SerializeField] protected FeatureSOData Data;
+    [SerializeField, DisplayInspector] protected FeatureSOData Data;
 
     [SerializeField, ReadOnly] protected FeatureObjSettings Settings = new FeatureObjSettings();
 
@@ -17,6 +17,7 @@ public abstract class FeatureObj : MonoBehaviour
 
     public FeatureObjSettings GetSettings() => Settings;
     public FeatureSOData GetData() => Data;
+    public FeatureObjSettings GetDefaults() => Data.DefaultSettings;
 
     public virtual void ConfigureFromString(string inputString)
     {

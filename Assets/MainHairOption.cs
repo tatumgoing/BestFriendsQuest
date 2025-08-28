@@ -7,19 +7,19 @@ public class MainHairOption : MonoBehaviour
 {
     [SerializeField] private Image _image;
 
-    private Sprite _sprite;
+    private FeatureSOData _feature;
     private MainHairController _controller;
 
-    public void Initialize(Sprite sprite, MainHairController controller)
+    public void Initialize(FeatureSOData feature, MainHairController controller)
     {
-        _sprite = sprite;
-        _image.sprite = sprite;
+        _feature = feature;
+        _image.sprite = feature.Icon;
         _controller = controller;
     }
 
     public void Select()
     {
-        _controller.Select(_sprite, this);
+        _controller.Select(_feature, this);
     }
 
 }
