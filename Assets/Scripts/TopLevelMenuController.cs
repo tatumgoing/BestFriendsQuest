@@ -10,19 +10,25 @@ public class TopLevelMenuController : MonoBehaviour
 
     private void OnEnable()
     {
-        _tabButtons[0].Select();
         if (_layersMenu) _layersMenu.Initialize();
+
+        if (_tabButtons[0]) _tabButtons[0].Select();
+        else SelectTab(0);
     }
 
     public void SelectTab(int tab)
     {
-        if (tab > 0 && _layersMenu && !_layersMenu.HasCurrent) {
-            _tabButtons[tab].Deselect();
+        //print(gameObject.name + " selecting tab " + tab);
+
+        if (_tabButtons[0] && tab > 0 && _layersMenu && !_layersMenu.HasCurrent) {
+            var button = _tabButtons[tab];
+            if (button) button.Deselect();
             return;
         }
 
         for (int i = 0; i < _tabButtons.Count; i++) {
-            if (i != tab) _tabButtons[i].Deselect();
+            var button = _tabButtons[i];
+            if (i != tab && button) button.Deselect();
             _menus[i].SetActive(i == tab);
         }
     }

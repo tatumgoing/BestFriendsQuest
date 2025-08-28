@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
 
 public enum FavoriteColor {RED, ORANGE, YELLOW, KIWI, FOREST, NAVY, BLUE, PINK, PURPLE, BROWN, WHITE, BLACK}
 public enum ProfileDataType {NAME, GENDER, PRONOUN, ATTRACTION, DAY, MONTH, YEAR, COLOR}
@@ -52,8 +51,7 @@ public class CharacterProfileData
         };
 
         var joined = string.Join(seperator, list);
-        Debug.Log("Jioned: " + joined);
-
+        
         return joined;
     }
 
@@ -79,12 +77,18 @@ public class DataPanelController : MonoBehaviour
     [SerializeField] private List<CheckBox> _attractionOptions = new List<CheckBox>();
     [SerializeField] private List<TMP_Dropdown> _birthdayDropdowns = new List<TMP_Dropdown>();
     [SerializeField] private TMP_Dropdown _colorDropdown;
+    [SerializeField] private Animator _mainPanel;
 
     private CharacterProfileData _currentData = new CharacterProfileData();
 
     private void Awake()
     {
         //_currentData = new CharacterProfileData();
+    }
+
+    private void OnEnable()
+    {
+        _mainPanel.SetTrigger("Right");
     }
 
     public void LoadFromString(string inputString)

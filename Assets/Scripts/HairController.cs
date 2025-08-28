@@ -8,23 +8,29 @@ public class HairController : MonoBehaviour, IFeatureController
     [SerializeField] private GameObject _featurePrefab;
     [SerializeField] private Transform _featureListParent;
     [SerializeField] private List<HairPiece> _currentPieces = new List<HairPiece>();
-    [SerializeField] private List<FeatureData> _allOptions = new List<FeatureData>();
     [SerializeField] private int _currentIndex;
     [SerializeField] private Vector2 _limits;
     [SerializeField] private Vector2 _scaleLimits = new Vector2(0.2f, 1.8f);
     [SerializeField] private Transform _target;
+    [SerializeField] private ColorMenuController _color;
+
+    private List<FeatureSOData> _allOptions = new List<FeatureSOData>();
 
     public Color HairColor { get; private set; }
-
     public bool HasCurrent() => _currentPieces.Count > 0;
     public FeatureObj Current => _currentPieces[_currentIndex];
     public FeatureObj GetCurrent() => Current;
-    public List<FeatureData> GetAllOptions() => _allOptions;
+    public List<FeatureSOData> GetAllOptions() => _allOptions;
     public List<FeatureObj> GetCurrentFeatures() => _currentPieces.Cast<FeatureObj>().ToList();
+
+    private void Awake()
+    {
+        _allOptions = Resources.LoadAll<FeatureSOData>("HairFeatures").ToList();
+    }
 
     private void Start()
     {
-        HairColor = Color.green;
+        HairColor = _color.GetDefaultColor();
         _currentPieces = GetComponentsInChildren<HairPiece>().Where(x => !x.IsMirroredVersion).ToList();
         foreach (var c in _currentPieces) c.Initialize(this);
         foreach (var c in _currentPieces) if (c.GetSettings().MatchColor) c.SetColor(HairColor);
@@ -45,7 +51,7 @@ public class HairController : MonoBehaviour, IFeatureController
     private void AddFeatureFromString(string featureString)
     {
         var parts = featureString.Split("~");
-        FeatureData selected = null;
+        FeatureSOData selected = null;
         foreach (var f in _allOptions) if (f.Icon.name == parts[0]) selected = f;
         var newFeature = AddFeature(selected);
         newFeature.ConfigureFromString(parts[1]);
@@ -113,13 +119,18 @@ public class HairController : MonoBehaviour, IFeatureController
         original.CopyTo(Current);
     }
 
-    public FeatureObj AddFeature(FeatureData data)
+    public FeatureObj AddFeature(FeatureSOData data)
     {
+        for (int i = _currentPieces.Count-1; i >= 0; i--) {
+            Delete(_currentPieces[i]);
+        }
+
         var newFeature = Instantiate(_featurePrefab, _featureListParent).GetComponent<HairPiece>();
         newFeature.Initialize(data, this);
         _currentPieces.Add(newFeature);
         _currentIndex = _currentPieces.Count - 1;
         if (newFeature.GetSettings().MatchColor) newFeature.SetColor(HairColor);
+        newFeature.SetAll(newFeature.GetDefaults());
         return newFeature;
     }
 
@@ -137,7 +148,7 @@ public class HairController : MonoBehaviour, IFeatureController
         }
     }
 
-    public void Save(FeatureData data)
+    public void Save(FeatureSOData data)
     {
         for (int i = 0; i < _allOptions.Count; i++) {
             if (data.Mesh == _allOptions[i].Mesh) {
@@ -147,5 +158,10 @@ public class HairController : MonoBehaviour, IFeatureController
         }
         _allOptions.Add(data);
         Utils.SetDirty(this);
+    }
+
+    public void SetCategory(FeatureCategory category)
+    {
+        throw new System.NotImplementedException();
     }
 }

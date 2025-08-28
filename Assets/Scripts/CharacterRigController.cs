@@ -5,65 +5,112 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Analytics;
+using UnityEngine.Rendering;
 
-public enum BoneName { CORE, CHEST, SHOULDER, UPPER_ARM, FOREARM, HAND, NECK, HEAD, THIGH, SHIN, FOOT, TOES}
+public enum BoneName { CORE, CHEST, SHOULDER, UPPER_ARM, FOREARM, HAND, NECK, HEAD, THIGH, SHIN, FOOT, TOES, BELLY, HEEL}
 
 [System.Serializable]
-public class  BoneData
+public class BoneData
 {
+    [HideInInspector] public string DisplayName;
     [SearchableEnum] public BoneName Name;
-    [SerializeField] private Transform _guideBone; //scaling affects this bone and all children
-    [SerializeField] private Transform _bone; //scaling only affects this bone
+    public Transform Bone;
+    public Dictionary<BoneSliderName, Vector3> _normalScaleMults = new Dictionary<BoneSliderName, Vector3>();
+    public Dictionary<BoneSliderName, Vector3> _independentScaleMults = new Dictionary<BoneSliderName, Vector3>();
 
-    public void SetScale(Vector3 localScale, bool guide)
+    public void UpdateValues(BoneSliderName sliderName, Vector3 scale, bool independent)
     {
-        var selected = guide ? _guideBone : _bone;
-        var scale = selected.localScale;
-
-        if (localScale.x > 0) scale.x = localScale.x;
-        if (localScale.y > 0) scale.y = localScale.y;
-        if (localScale.z > 0) scale.z = localScale.z;
-
-        selected.localScale = scale;
+        if (independent) _independentScaleMults[sliderName] = scale;
+        else _normalScaleMults[sliderName] = scale;
     }
-}
 
-[System.Serializable]
-public class BoneSliderData
-{
-    [SearchableEnum] public BoneName Bone;
-    [SerializeField] private bool _horizontal;
-    [SerializeField, ConditionalField(nameof(_horizontal))] private Vector2 _horizontalLimits;
-    [SerializeField] private bool _vertical;
-    [SerializeField, ConditionalField(nameof(_vertical))] private Vector2 _verticalLimits;
-    public bool UseGuideBone;
-
-    public Vector3 GetScale(float t)
+    public Vector3 CurrentNormal()
     {
-        var scale = Vector3.one * -1;
-        if (_horizontal) {
-            var _xz = Mathf.Lerp(_horizontalLimits.x, _horizontalLimits.y, t);
-            scale.x = scale.z = _xz;
-        }
-        if (_vertical) {
-            scale.y = Mathf.Lerp(_verticalLimits.x, _verticalLimits.y, t);
-        }
-        return scale;
+        var normal = Vector3.one;
+        foreach (var mult in _normalScaleMults) normal.Scale(mult.Value);
+        return normal;
+    }
+
+    public Vector3 CurrentIndependent()
+    {
+        var independent = Vector3.one;
+        foreach (var mult in _independentScaleMults) independent.Scale(mult.Value);
+        return independent;
     }
 }
 
 public class CharacterRigController : MonoBehaviour
 {
     [SerializeField] private List<BoneData> _bones;
+    [SerializeField] private Transform _rootBone;
+    [SerializeField] float _localScaleMultiplier = 1f;
+
+    private void OnValidate()
+    {
+        foreach (var data in _bones) {
+            data.DisplayName = data.Name.ToString();
+            if (data.Bone) data.DisplayName += ": " + data.Bone.gameObject.name;
+        }
+    }
 
     public string GetSaveString()
     {
         return "";
     }
 
-    public void ModifyBone(BoneName name, Vector3 localScale, bool guideBone)
+    public void ModifyBone(BoneName name, BoneSliderName sliderName, Vector3 localScale, bool independentScale)
     {
         var selected = _bones.Where(x => x.Name == name).ToList();
-        foreach (var b in selected) b.SetScale(localScale, guideBone);
+        foreach (var b in selected) b.UpdateValues(sliderName, localScale, independentScale);
+
+        ScaleModel();
+    }
+
+    private void ScaleModel()
+    {
+        _rootBone.localScale = Vector3.one * _localScaleMultiplier;
+        ScaleBoneRecursive(_rootBone);
+    }
+
+    private void ScaleBoneRecursive(Transform current)
+    {
+        BoneData foundData = null;
+        var independent = Vector3.one;
+        foreach (var b in _bones) {
+            if (b.Bone != current) continue;
+            
+            foundData = b;
+            break;
+        }
+
+        if (foundData != null) {
+            independent = ScaleBoneWithData(foundData);
+        }
+
+        foreach (Transform child in current) {
+            var scale = Vector3.one;
+            scale.x /= independent.x;
+            scale.y /= independent.y;
+            scale.z /= independent.z;
+            child.localScale = scale;
+
+            ScaleBoneRecursive(child);
+        }
+    }
+
+    private Vector3 ScaleBoneWithData(BoneData data)
+    {
+        var independant = data.CurrentIndependent();
+        var normal = data.CurrentNormal();
+        var newScale = data.Bone.localScale;
+        newScale.Scale(normal);
+        newScale.Scale(independant);
+
+        //print("setting " + data.Bone.gameObject.name + " scale: " + data.Bone.localScale + " * " + normal + " * " + independant + " = " + newScale);
+
+        data.Bone.localScale = newScale;
+
+        return independant;        
     }
 }

@@ -9,7 +9,12 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
     public static UIManager i;
-    private void Awake() { i = this; }
+
+    [SerializeField] private Fade _fade;
+
+    public Fade Fade => _fade;
+
+    private void Awake() => i = this;
 
     private string GetTimeString(int seconds)
     {

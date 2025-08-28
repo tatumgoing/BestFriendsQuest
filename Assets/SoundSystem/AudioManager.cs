@@ -7,16 +7,20 @@ using UnityEngine.Audio;
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager i;
-    private void Awake() { i = this; }
 
-    [SerializeField] GameObject coordinatorPrefab;
-    List<SoundCoordinator> soundCoordinators = new List<SoundCoordinator>();
+    [SerializeField] private GameObject coordinatorPrefab;
 
     [Header("Mixers & Volume")]
-    [SerializeField] AudioMixer mixer;
-    [SerializeField] float masterVolume, musicVolume, ambientVolume, sfxVolume;
+    [SerializeField] private AudioMixer mixer;
+    [SerializeField] private float masterVolume;
+    [SerializeField] private float musicVolume;
+    [SerializeField] private float ambientVolume;
+    [SerializeField] private float sfxVolume;
 
-    public Vector4 Volumes { get { return new Vector4(masterVolume, musicVolume, ambientVolume, sfxVolume); } }
+    private List<SoundCoordinator> soundCoordinators = new List<SoundCoordinator>();
+
+    public Vector4 Volumes => new Vector4(masterVolume, musicVolume, ambientVolume, sfxVolume); 
+    private void Awake() => i = this;
 
     public void FadeOutMaster(float time)
     {
@@ -102,19 +106,20 @@ public class AudioManager : MonoBehaviour
         SetMixerVolumes();
     }
 
+    public void SetAmbientVolume(float vol)
+    {
+        ambientVolume = vol;
+        SetMixerVolumes();
+    }
+
     void SetMixerVolumes()
     {
         mixer.SetFloat("masterVolume", Mathf.Log10(masterVolume) * 20);
         mixer.SetFloat("sfxVolume", Mathf.Log10(sfxVolume) * 20);
         mixer.SetFloat("musicVolume", Mathf.Log10(musicVolume) * 20);
+        mixer.SetFloat("ambientVolume", Mathf.Log10(ambientVolume) * 20);
 
         SaveVolume();
-    }
-
-    public void SetAmbientVolume(float vol)
-    {
-        ambientVolume = vol;
-        mixer.SetFloat("ambientVolume", Mathf.Log10(ambientVolume) * 20);
     }
 
     public void PlaySound(Sound sound, Transform caller, bool restart = true)

@@ -13,6 +13,12 @@ public static class Utils
 
     public static float Rand(Vector2 range) => Random.Range(range.x, range.y);
 
+    public static string CapitalFirst(string input)
+    {
+        var firstLetter = input[0].ToString().ToUpper();
+        return firstLetter + input[1..].ToLower();
+    }
+
     public static string EnumInt<T>(T enumValue) {
         return (System.Convert.ToInt32(enumValue)).ToString();
     }

@@ -11,9 +11,14 @@ public class SingleChildActiveSelector : MonoBehaviour
     {
         foreach (Transform child in transform) {
             if (child.GetSiblingIndex() != index) {
-                if (child.gameObject.activeInHierarchy) child.GetComponent<Animator>().SetTrigger("Exit");
+                if (child.gameObject.activeInHierarchy) {
+                    var animator = child.GetComponent<Animator>();
+                    if (animator) animator.SetTrigger("Exit");
+                }
             }
-            else child.gameObject.SetActive(true);
+            else {
+                child.gameObject.SetActive(true);
+            }
         }
 
         OnSelect.Invoke();

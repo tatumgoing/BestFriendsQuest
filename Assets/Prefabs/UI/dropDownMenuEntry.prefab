@@ -69,10 +69,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 3286429159968095257}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 95.319, y: 50}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0.000015258789, y: -21.3}
+  m_SizeDelta: {x: 74.005, y: 31.287003}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &5249955058860841655
 CanvasRenderer:
@@ -102,17 +102,17 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'pronouns:'
+  m_text: Gender
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: aa9f7c565b0868140b85dfe577056bf9, type: 2}
-  m_sharedMaterial: {fileID: 3357722467367768000, guid: aa9f7c565b0868140b85dfe577056bf9, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 91c4647c8c96fbb45bfa32eb253e8458, type: 2}
+  m_sharedMaterial: {fileID: 152713942140518569, guid: 91c4647c8c96fbb45bfa32eb253e8458, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278988906
-  m_fontColor: {r: 0.4156863, g: 0.18823531, b: 0.04705883, a: 1}
+    rgba: 4292998655
+  m_fontColor: {r: 1, g: 0.9607844, b: 0.882353, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -135,7 +135,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 4096
   m_textAlignment: 65535
@@ -145,7 +145,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_enableWordWrapping: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
@@ -181,7 +181,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 550339971889663352, guid: 74219bbddf5291d44a746fcd2638e985, type: 3}
       propertyPath: m_Name
-      value: Dropdown
+      value: pronoun
       objectReference: {fileID: 0}
     - target: {fileID: 5014948388562615650, guid: 74219bbddf5291d44a746fcd2638e985, type: 3}
       propertyPath: m_Pivot.x
@@ -197,7 +197,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5014948388562615650, guid: 74219bbddf5291d44a746fcd2638e985, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5014948388562615650, guid: 74219bbddf5291d44a746fcd2638e985, type: 3}
       propertyPath: m_AnchorMin.x
@@ -205,11 +205,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5014948388562615650, guid: 74219bbddf5291d44a746fcd2638e985, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5014948388562615650, guid: 74219bbddf5291d44a746fcd2638e985, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 121.89
+      value: 168.9651
       objectReference: {fileID: 0}
     - target: {fileID: 5014948388562615650, guid: 74219bbddf5291d44a746fcd2638e985, type: 3}
       propertyPath: m_SizeDelta.y
@@ -245,11 +245,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5014948388562615650, guid: 74219bbddf5291d44a746fcd2638e985, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 88.171
+      value: 44.878506
       objectReference: {fileID: 0}
     - target: {fileID: 5014948388562615650, guid: 74219bbddf5291d44a746fcd2638e985, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -67.9
       objectReference: {fileID: 0}
     - target: {fileID: 5014948388562615650, guid: 74219bbddf5291d44a746fcd2638e985, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

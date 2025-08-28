@@ -7,6 +7,9 @@ using UnityEngine.EventSystems;
 public class DragToSpin : MonoBehaviour
 {
     [SerializeField] private float _dragSpeed = 10;
+    [SerializeField] private float _lerpFactor = 10;
+
+    private float rotDelta = 0;
 
     private bool _beingDragged;
     private bool _hovered;
@@ -17,6 +20,9 @@ public class DragToSpin : MonoBehaviour
         if (_hovered && Input.GetMouseButtonDown(0)) StartDrag();
         if (Input.GetMouseButtonUp(0) && _beingDragged) EndDrag();
         if (_beingDragged) Drag();
+        else rotDelta = Mathf.Lerp(rotDelta, 0, _lerpFactor * Time.deltaTime);
+
+        transform.Rotate(Vector3.up * -rotDelta * 10 * Time.deltaTime * _dragSpeed);
     }
 
     private void EndDrag()
@@ -36,7 +42,7 @@ public class DragToSpin : MonoBehaviour
     private void Drag()
     {
         var mouseDelta = Input.GetAxis("Mouse X");
-        transform.Rotate(Vector3.up * -mouseDelta * 10 * Time.deltaTime * _dragSpeed);
+        rotDelta = Mathf.Lerp(rotDelta, mouseDelta, _lerpFactor * Time.deltaTime);
     }
 
     private void UpdateHovered()

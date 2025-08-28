@@ -21,4 +21,9 @@ public class Test : MonoBehaviour
     {
         _character.LoadFromString(_input);
     }
+
+    private void OnDisable()
+    {
+        //print("Disabled");
+    }
 }

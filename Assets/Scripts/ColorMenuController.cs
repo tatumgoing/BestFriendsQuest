@@ -1,103 +1,124 @@
 using MyBox;
 using System.Collections;
 using System.Collections.Generic;
-using System.Net.Sockets;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
+[System.Serializable]
+public class BasicColorData
+{
+    public string Name;
+    public Color Color;
+}
+
 public class ColorMenuController : MonoBehaviour
 {
+    [Header("General")]
+    [SerializeField] private Color _defaultColor;
+    [SerializeField] private UnityEvent<Color> _onChangeColor;
+
+    [Header("Modes")]
+    [SerializeField] private Animator _basicParent;
+    [SerializeField] private Animator _advancedParent;
+
+    [Header("Basic mode")]
+    [SerializeField] private List<BasicColorData> _basicColors;
+    [SerializeField] private Transform _basicGridParent;
+
+    [Header("Advanced Mode")]
     [SerializeField] private RawImage _satValImg;
     [SerializeField] private RawImage _hueImg;
     [SerializeField] private Image _currentColorImg;
     [SerializeField] private Slider _hueSlider;
     [SerializeField] private HexColorInputField _hexInput;
-    [SerializeField, Range(0, 1)] private float _hueValue = 0.5f;
-    [SerializeField] private Color _defaultColor;
-    [SerializeField] private UnityEvent<Color> _onChangeColor;
-
-    [Header("Modes")]
-    [SerializeField] private float _gridResolution = 6;
-    [SerializeField] private Transform _squaresParent;
-    [SerializeField] private Material _unselectedSquare;
-    [SerializeField] private Material _selectedSquare;
-    [SerializeField] private GameObject _gridParent;
-    [SerializeField] private GameObject _fieldOutline;
     [SerializeField] private GameObject _hexSectionParent;
     [SerializeField] private FollowMouseInRectBounds _advancedSelector;
-    [SerializeField] private FollowMouseInRectBounds _basicSelector;
 
+    private List<BasicColorOption> _basicOptions = new List<BasicColorOption>();
     private float _hue = 0.5f;
     private float _sat = 0.5f;
     private float _val = 0.5f;
-    private float _currentHue { get { return _hue; } set { _hue = Mathf.Abs(value); } }
-    private float _currentSat { get { return _sat; } set { _sat = Mathf.Abs(value); } }
-    private float _currentVal { get { return _val; } set { _val = Mathf.Abs(value); } }
-
     private bool _inputingHex;
-
-    private Color _currentColor => Color.HSVToRGB(_currentHue, _currentSat, _currentVal);
-
-
     private Texture2D _hueTex;
     private Texture2D _satValTex;
     private bool _invoke;
     private bool _advanced;
+    private Color _basicColor;
+
+    private float _currentHue { get { return _hue; } set { _hue = Mathf.Abs(value); } }
+    private float _currentSat { get { return _sat; } set { _sat = Mathf.Abs(value); } }
+    private float _currentVal { get { return _val; } set { _val = Mathf.Abs(value); } }
+    private Color _currentColor => Color.HSVToRGB(_currentHue, _currentSat, _currentVal);
 
     private void OnEnable()
     {
         _advancedSelector.FollowMouse = _advanced;
-        _basicSelector.FollowMouse = !_advanced;
     }
 
     private void Start()
     {
+        _basicOptions = _basicGridParent.GetComponentsInChildren<BasicColorOption>().ToList();
+        for (int i = 0; i < _basicOptions.Count; i++) {
+            if (i >= _basicColors.Count) break;
+
+            _basicOptions[i].Initialize(_basicColors[i], this);
+        }
+
+        _basicOptions[0].SelectButton();
+
         CreateTextures();
         _advancedSelector.enabled = false;
-        _basicSelector.enabled = false;
         _invoke = false;
         UpdateHue();
         _invoke = true;
 
         SetFromHexCode(_defaultColor.ToHex());
         UpdateCurrentColor();
+
+        SetMode(false);
     }
 
     private void Update()
     {
-        if (_advancedSelector.enabled || _basicSelector.enabled) {
+        if (_advancedSelector.enabled) {
             if (Input.GetMouseButtonUp(0)) StopSelecting();
             else UpdateCurrentColor();
         } 
     }
 
-    private float ClampToGrid(float inputValue)
+    public Color GetDefaultColor()
     {
-        if (_advanced) return inputValue;
-        float fraction = 1f / _gridResolution;
-        var output = Mathf.Round(inputValue / fraction) * fraction;
-        return output;
+        return _basicColors[0].Color;
+    }
+
+    public void SelectBasicColor(Color color, BasicColorOption selected)
+    {
+        foreach (var o in _basicOptions) if (o != selected) o.Deselect();
+        _basicColor = color;
+        SetFromHexCode(color.ToHex());
     }
 
     public void SetMode(bool advanced)
     {
+        if (advanced) {
+            _basicParent.transform.SetAsFirstSibling();
+            _advancedParent.gameObject.SetActive(true);
+            _basicParent.SetTrigger("Exit");
+        }
+        else {
+            _advancedParent.transform.SetAsFirstSibling();
+            _basicParent.gameObject.SetActive(true);
+            _advancedParent.SetTrigger("Exit");
+            SetFromHexCode(_basicColor.ToHex());
+        }
+
         _advancedSelector.FollowMouse = advanced;
-        _basicSelector.FollowMouse = !advanced;
         _hexSectionParent.SetActive(advanced);
-        _fieldOutline.SetActive(advanced);
-        _gridParent.SetActive(!advanced);
         _advanced = advanced;
 
         _advancedSelector.GetComponent<Image>().enabled = advanced;
-        _basicSelector.GetComponent<Image>().enabled = !advanced;
-
-        if (advanced) {
-            _advancedSelector.transform.position = _basicSelector.transform.position;
-        }
-        else {
-            _basicSelector.transform.position = _advancedSelector.transform.position;
-        }
 
         UpdateCurrentColor();
     }
@@ -121,7 +142,6 @@ public class ColorMenuController : MonoBehaviour
 
     private void UpdateCurrentColor()
     {
-        print("Updating color: " + _currentColor);
 
         if (!_inputingHex) {
             bool updateSatVal = true;
@@ -130,63 +150,27 @@ public class ColorMenuController : MonoBehaviour
             var pos = _advancedSelector.GetNormalizedPositionFromCenter();
             if (pos.x > 1 || pos.x < 0 || pos.y > 1 || pos.y < 0) updateColor = false;
 
-            if (!_advanced) {
-                pos.x = ClampToGrid(pos.x); 
-                pos.y = ClampToGrid(pos.y);
-                updateSatVal = SelectClosestGridSquare();
-            }
-
             if (updateColor && updateSatVal) {
                 _currentSat = pos.x;
                 _currentVal = pos.y;
             }
 
-            _hexInput.UpdateText(_currentColor.ToHex());
+            _hexInput.UpdateText(_currentColor.ToHex().ToUpper());
         }
 
         _currentColorImg.color = _currentColor;
         if (_invoke) _onChangeColor.Invoke(_currentColor);
     }
 
-    private bool SelectClosestGridSquare()
-    {
-        var selectorRTransform = _basicSelector.GetComponent<RectTransform>();
-
-        var shortestDist = Mathf.Infinity;
-        RectTransform bestSquare = null;
-        foreach (RectTransform child in _squaresParent) {
-            var dist = Vector2.Distance(child.anchoredPosition, selectorRTransform.anchoredPosition);
-            if (dist < shortestDist) {
-                bestSquare = child;
-                shortestDist = dist;
-            }
-        }
-        if (shortestDist > 500) return false;
-
-        foreach (Transform child in _squaresParent) child.GetComponent<SelectableItem>().Deselect();
-        bestSquare.GetComponent<SelectableItem>().Select();
-
-        return true;
-    }
-
-    private Vector3 UIToWorldPos(RectTransform rTransform)
-    {
-        Vector3[] worldCorners = new Vector3[4];
-        rTransform.GetWorldCorners(worldCorners);
-        return (worldCorners[0] + worldCorners[2]) / 2f;
-    }
-
     private void StopSelecting()
     {
         _advancedSelector.enabled = false;
-        _basicSelector.enabled = false;
     }
 
     public void StartSelecting()
     {
         _inputingHex = false;
         if (_advanced) _advancedSelector.enabled = true;
-        else _basicSelector.enabled = true;
     }
 
     private void CreateTextures()
@@ -211,7 +195,7 @@ public class ColorMenuController : MonoBehaviour
         _hueTex.name = "HueText";
 
         for (int i = 0; i < height; i++) {
-            var col = Color.HSVToRGB(i / height, 1, _hueValue);
+            var col = Color.HSVToRGB(i / height, 1, 1);
             _hueTex.SetPixel(0, i, col);
         }
 

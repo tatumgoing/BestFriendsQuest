@@ -19,7 +19,7 @@ public class EarShapeMenu : MonoBehaviour
         }
     }
 
-    public void SelectShape(FeatureData data)
+    public void SelectShape(FeatureSOData data)
     {
         _controller.UpdateCurrentEar(data);
         foreach (var o in _spawnedOptions) if (o.GetData() != data) o.GetComponent<SelectableItem>().Deselect();
@@ -34,7 +34,7 @@ public class EarShapeMenu : MonoBehaviour
         foreach (var o in options) SpawnOption(o);
     }
 
-    private void SpawnOption(FeatureData option)
+    private void SpawnOption(FeatureSOData option)
     {
         var newOption = Instantiate(_optionPrefab, _listParent).GetComponent<AddOption>();
         newOption.Initialize(option);
