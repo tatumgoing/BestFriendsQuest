@@ -10,6 +10,8 @@ public class MainHairOption : MonoBehaviour
     private FeatureSOData _feature;
     private MainHairController _controller;
 
+    public FeatureSOData Feature => _feature;
+
     public void Initialize(FeatureSOData feature, MainHairController controller)
     {
         _feature = feature;

@@ -66,10 +66,19 @@ public class MainHairController : MonoBehaviour
         _currentlySelectedImage.sprite = _hairData[_currentlySelectedIndex].Icon;
         _previousButton.SetDisabled(_currentlySelectedIndex == 0);
         _nextButton.SetDisabled(_currentlySelectedIndex >= _hairData.Count-1);
+
+        foreach (var option in _spawnedOptions) {
+            if (option && option.Feature != _hairData[_currentlySelectedIndex]) option.GetComponent<SelectableItem>().Deselect(false);
+            else option.GetComponent<SelectableItem>().Select(false);
+        }
     }
 
     public void Select(FeatureSOData data, MainHairOption selectedOption)
     {
+        for (int i = 0; i < _hairData.Count; i++) {
+            if (data == _hairData[_currentlySelectedIndex]) return;
+        }
+
         foreach (var option in _spawnedOptions) if (option && option != selectedOption) option.GetComponent<SelectableItem>().Deselect();
 
         for (int i = 0; i < _hairData.Count; i++) {

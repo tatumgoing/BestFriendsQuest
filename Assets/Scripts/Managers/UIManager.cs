@@ -11,8 +11,10 @@ public class UIManager : MonoBehaviour
     public static UIManager i;
 
     [SerializeField] private Fade _fade;
+    [SerializeField] private GameObject _cameraFlash; 
 
     public Fade Fade => _fade;
+    public void FlashCamera() => _cameraFlash.SetActive(true);
 
     private void Awake() => i = this;
 

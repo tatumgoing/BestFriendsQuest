@@ -2,6 +2,7 @@ using MyBox;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 using UnityEngine.EventSystems;
 
 public class DragToSpin : MonoBehaviour
@@ -14,6 +15,13 @@ public class DragToSpin : MonoBehaviour
     private bool _beingDragged;
     private bool _hovered;
 
+    private Quaternion _originalRot;
+
+    private void Start()
+    {
+        _originalRot = transform.localRotation;
+    }
+
     private void Update()
     {
         UpdateHovered();
@@ -23,6 +31,12 @@ public class DragToSpin : MonoBehaviour
         else rotDelta = Mathf.Lerp(rotDelta, 0, _lerpFactor * Time.deltaTime);
 
         transform.Rotate(Vector3.up * -rotDelta * 10 * Time.deltaTime * _dragSpeed);
+    }
+
+    public void Reset()
+    {
+        transform.localRotation = _originalRot;
+        rotDelta = 0;
     }
 
     private void EndDrag()
