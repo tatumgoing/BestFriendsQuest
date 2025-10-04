@@ -149,6 +149,7 @@ public class SelectableItem : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     [SerializeField, ConditionalField(nameof(_hasHoverCooldown))] private float _hoverCooldown = 0.05f;
     [SerializeField] private bool _hoverWhenSelected = true;
     [SerializeField] private bool _deHoverOnEnable = false; 
+    [SerializeField] private bool _deHoverOnRenable = false; 
 
     [Header("Appearance")]
     [SerializeField] private List<SelectableItemData> _data = new List<SelectableItemData>();
@@ -268,6 +269,7 @@ public class SelectableItem : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
         if (disabled) SetVisuals(ButtonState.DISABLED);
         else {
+            if (_deHoverOnRenable) _hovered = false;
             if (Selected) SetVisuals(ButtonState.SELECTED);
             if (_hovered) SetVisuals(ButtonState.HOVERED);
             else SetVisuals(ButtonState.NORMAL);
@@ -345,6 +347,8 @@ public class SelectableItem : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     public void SetVisuals(ButtonState state)
     {
         if (_debugStateChange) print(gameObject.name + "Changing visuals: " + state);
+
+        if (_visualState == state || (_visualState == ButtonState.DISABLED && _disabled)) return;
 
         _visualState = state;
         foreach (var d in _data) d.Update(_visualState);

@@ -12,6 +12,7 @@ public class HairController : MonoBehaviour, IFeatureController
     [SerializeField] private Vector2 _limits;
     [SerializeField] private Vector2 _scaleLimits = new Vector2(0.2f, 1.8f);
     [SerializeField] private Transform _target;
+    [SerializeField] private ColorMenuController _color;
 
     private List<FeatureSOData> _allOptions = new List<FeatureSOData>();
 
@@ -29,7 +30,7 @@ public class HairController : MonoBehaviour, IFeatureController
 
     private void Start()
     {
-        HairColor = Color.green;
+        HairColor = _color.GetDefaultColor();
         _currentPieces = GetComponentsInChildren<HairPiece>().Where(x => !x.IsMirroredVersion).ToList();
         foreach (var c in _currentPieces) c.Initialize(this);
         foreach (var c in _currentPieces) if (c.GetSettings().MatchColor) c.SetColor(HairColor);
@@ -120,11 +121,16 @@ public class HairController : MonoBehaviour, IFeatureController
 
     public FeatureObj AddFeature(FeatureSOData data)
     {
+        for (int i = _currentPieces.Count-1; i >= 0; i--) {
+            Delete(_currentPieces[i]);
+        }
+
         var newFeature = Instantiate(_featurePrefab, _featureListParent).GetComponent<HairPiece>();
         newFeature.Initialize(data, this);
         _currentPieces.Add(newFeature);
         _currentIndex = _currentPieces.Count - 1;
         if (newFeature.GetSettings().MatchColor) newFeature.SetColor(HairColor);
+        newFeature.SetAll(newFeature.GetDefaults());
         return newFeature;
     }
 

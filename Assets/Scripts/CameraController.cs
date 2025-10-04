@@ -41,7 +41,7 @@ public class CameraController : MonoBehaviour
     {
         if (!EventSystem.current.IsPointerOverGameObject()) Scroll();
 
-        _targetPosition.y = _body ? _bodyYOffset : _headYOffset;
+        _targetPosition.y = _character.position.y + (_body ? _bodyYOffset : _headYOffset);
 
         transform.position = Vector3.Lerp(transform.position, _targetPosition, _lerpFactor * Time.deltaTime);
     }
@@ -65,9 +65,13 @@ public class CameraController : MonoBehaviour
         _targetPosition += _getCurrentDir() * -zoomAmount;
     }
 
-    public void ResetZoom()
+    public void ResetZoom(bool instant = false)
     {
         _targetPosition = _character.position + (_getCurrentDir() * _currentBaseZoom);
+        if (instant) {
+            _targetPosition.y = _character.position.y + (_body ? _bodyYOffset : _headYOffset);
+            transform.position = _targetPosition;
+        }
     }
 
     private void OnDrawGizmosSelected()
