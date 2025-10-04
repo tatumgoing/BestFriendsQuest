@@ -7,12 +7,10 @@ using UnityEngine.UI;
 public class MainHairController : MonoBehaviour
 {
     [SerializeField] private List<FeatureSOData> _hairData;
-    [SerializeField] private Image _currentlySelectedImage;
     [SerializeField] private SelectableItem _previousButton;
     [SerializeField] private SelectableItem _nextButton;
     [SerializeField] private GameObject _optionPrefab;
     [SerializeField] private Transform _listParent;
-    [SerializeField] private Scrollbar _listScrollbar;
     [SerializeField] private HairController _controller;
 
     private int _currentlySelectedIndex;
@@ -62,11 +60,11 @@ public class MainHairController : MonoBehaviour
     {
         _controller.AddFeature(_hairData[_currentlySelectedIndex]);
 
-        _listScrollbar.value = (float) _currentlySelectedIndex / (_hairData.Count - 1);
+        /*_listScrollbar.value = (float) _currentlySelectedIndex / (_hairData.Count - 1);
         _currentlySelectedImage.sprite = _hairData[_currentlySelectedIndex].Icon;
         _previousButton.SetDisabled(_currentlySelectedIndex == 0);
         _nextButton.SetDisabled(_currentlySelectedIndex >= _hairData.Count-1);
-
+        */
         foreach (var option in _spawnedOptions) {
             if (option && option.Feature != _hairData[_currentlySelectedIndex]) option.GetComponent<SelectableItem>().Deselect(false);
             else option.GetComponent<SelectableItem>().Select(false);
