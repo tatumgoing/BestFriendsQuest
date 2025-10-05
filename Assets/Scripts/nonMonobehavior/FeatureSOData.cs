@@ -18,13 +18,20 @@ public class FeatureSOData : ScriptableObject
     [ConditionalField(nameof(Type), false, FeatureType.FACE)] public Texture2D Texture;
     [ConditionalField(nameof(Type), false, FeatureType.FACE)] public Texture2D ColorMask;
 
-    [ConditionalField(nameof(Type), false, FeatureType.HAIR)] public Mesh Mesh;
+    [ConditionalField(nameof(Type), false, FeatureType.HAIR)] public GameObject MainhairPrefab;
+
+    [ConditionalField(nameof(Type), true, FeatureType.HAIR), SerializeField] private float _horiLimit;
+    [ConditionalField(nameof(Type), true, FeatureType.HAIR)] public Vector2 VertLimits;
+
+    [ConditionalField(nameof(Type), false, FeatureType.HAIR)] public bool IsMainHair;
+    [ConditionalField(nameof(Type), false, FeatureType.HAIR)] public Vector3 MainHairLocalPosition;
+    [ConditionalField(nameof(Type), false, FeatureType.HAIR)] public Quaternion MainHairLocalRotation;
+    [ConditionalField(nameof(Type), false, FeatureType.HAIR)] public Vector3 MainHairLocalScale;
 
     [ConditionalField(nameof(Type), false, FeatureType.EAR)] public GameObject EarPrefab;
     [ConditionalField(nameof(Type), false, FeatureType.EAR)] public Vector2 AngleLimits;
 
-    [ConditionalField(nameof(Type), true, FeatureType.HAIR), SerializeField] private float _horiLimit;
-    [ConditionalField(nameof(Type), true, FeatureType.HAIR)] public Vector2 VertLimits;
+
     public Vector2 SizeLimits;
 
     [Header("Defaults")]

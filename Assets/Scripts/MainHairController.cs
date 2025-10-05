@@ -12,13 +12,26 @@ public class MainHairController : MonoBehaviour
     [SerializeField] private GameObject _optionPrefab;
     [SerializeField] private Transform _listParent;
     [SerializeField] private HairController _controller;
+    [SerializeField] private FeatureSOData _defaultHair;
+    [SerializeField] private ColorMenuController _color;
 
     private int _currentlySelectedIndex;
     private List<MainHairOption> _spawnedOptions = new List<MainHairOption>();
+    private bool _initialized;
 
     private void Awake()
     {
-        _hairData = Resources.LoadAll<FeatureSOData>("HairFeatures").ToList();
+        if (!_initialized) Initialize();
+    }
+
+    private void Initialize()
+    {
+        if (_initialized) return;
+        _initialized = true;
+        _hairData = Resources.LoadAll<FeatureSOData>("HairFeatures").Where(x => x.IsMainHair).ToList();
+        for (int i = 0; i < _hairData.Count; i++) {
+            if (_hairData[i] == _defaultHair) _currentlySelectedIndex = i;
+        }
     }
 
     private void OnEnable()
@@ -41,6 +54,10 @@ public class MainHairController : MonoBehaviour
         newOption.transform.SetSiblingIndex(_listParent.transform.childCount - 2);
         newOption.Initialize(hairData, this);
 
+        if (_spawnedOptions.Count == _currentlySelectedIndex) {
+            newOption.GetComponent<SelectableItem>().Select(true, false);
+        }
+
         _spawnedOptions.Add(newOption);
     }
 
@@ -56,18 +73,16 @@ public class MainHairController : MonoBehaviour
         UpdateVisuals();
     }
 
-    private void UpdateVisuals()
+    public void UpdateVisuals()
     {
-        _controller.AddFeature(_hairData[_currentlySelectedIndex]);
+        if (!_initialized) Initialize();
 
-        /*_listScrollbar.value = (float) _currentlySelectedIndex / (_hairData.Count - 1);
-        _currentlySelectedImage.sprite = _hairData[_currentlySelectedIndex].Icon;
-        _previousButton.SetDisabled(_currentlySelectedIndex == 0);
-        _nextButton.SetDisabled(_currentlySelectedIndex >= _hairData.Count-1);
-        */
+        _controller.AddFeature(_hairData[_currentlySelectedIndex]);
+        _controller.SetCurrentColor(_color.GetColor());
+
         foreach (var option in _spawnedOptions) {
             if (option && option.Feature != _hairData[_currentlySelectedIndex]) option.GetComponent<SelectableItem>().Deselect(false);
-            else option.GetComponent<SelectableItem>().Select(false);
+            else option.GetComponent<SelectableItem>().Select(true, false);
         }
     }
 
