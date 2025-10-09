@@ -46,11 +46,13 @@ public class ColorMenuController : MonoBehaviour
     private bool _invoke;
     private bool _advanced;
     private Color _basicColor;
+    private bool _initialized;
 
     private float _currentHue { get { return _hue; } set { _hue = Mathf.Abs(value); } }
     private float _currentSat { get { return _sat; } set { _sat = Mathf.Abs(value); } }
     private float _currentVal { get { return _val; } set { _val = Mathf.Abs(value); } }
     private Color _currentColor => Color.HSVToRGB(_currentHue, _currentSat, _currentVal);
+
 
     private void OnEnable()
     {
@@ -59,6 +61,7 @@ public class ColorMenuController : MonoBehaviour
 
     private void Start()
     {
+        _initialized = true;
         _basicOptions = _basicGridParent.GetComponentsInChildren<BasicColorOption>().ToList();
         for (int i = 0; i < _basicOptions.Count; i++) {
             if (i >= _basicColors.Count) break;
@@ -86,6 +89,12 @@ public class ColorMenuController : MonoBehaviour
             if (Input.GetMouseButtonUp(0)) StopSelecting();
             else UpdateCurrentColor();
         } 
+    }
+
+    public Color GetColor()
+    {
+        if (_initialized) return _currentColor;
+        return _defaultColor;
     }
 
     public Color GetDefaultColor()

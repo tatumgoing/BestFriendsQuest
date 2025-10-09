@@ -19,7 +19,13 @@ public class HairPiece : FeatureObj
     public void Initialize(HairController controller)
     {
         _controller = controller;
-        _modelParent.GetComponentInChildren<MeshFilter>().mesh = Data.Mesh;
+        _modelParent = Instantiate(Data.MainhairPrefab, transform).transform;
+
+        _modelParent.localPosition = Data.MainHairLocalPosition;
+        _modelParent.localRotation = Data.MainHairLocalRotation;
+        _modelParent.localScale = Data.MainHairLocalScale;
+
+        //_modelParent.GetComponentInChildren<MeshFilter>().mesh = Data.Mesh;
         UpdateDisplay();
     }
 
@@ -37,10 +43,12 @@ public class HairPiece : FeatureObj
 
     protected override void UpdateDisplay()
     {
-        _modelParent.transform.localScale = Vector3.one * Mathf.Lerp(Data.SizeLimits.x, Data.SizeLimits.y, Settings.Size);
+        //_modelParent.transform.localScale = Vector3.one * Mathf.Lerp(Data.SizeLimits.x, Data.SizeLimits.y, Settings.Size);
         UpdateColors();
 
         base.UpdateDisplay();
+
+        return;
 
         if (!IsMirroredVersion) {
             AlignWithTarget();
@@ -66,28 +74,30 @@ public class HairPiece : FeatureObj
         eulers.y *= -1;
         transform.localEulerAngles = eulers;
 
-        _modelParent.localPosition = modelParent.localPosition;
+        //_modelParent.localPosition = modelParent.localPosition;
         
         eulers = modelParent.localEulerAngles;
         eulers.y *= -1;
         eulers.z *= -1;
-        _modelParent.localEulerAngles = eulers;
+        //_modelParent.localEulerAngles = eulers;
 
         var scale = _modelParent.localScale;
         scale.x *= -1;
-        _modelParent.localScale = scale;
+        //_modelParent.localScale = scale;
 
-        _modelParent.GetChild(0).transform.localEulerAngles = modelParent.GetChild(0).transform.localEulerAngles;
+        //_modelParent.GetChild(0).transform.localEulerAngles = modelParent.GetChild(0).transform.localEulerAngles;
     }
 
     private void AlignWithTarget()
     {
+        return;
         var targetPos =  _controller.GetTargetPosition(Settings.Hori, Settings.Vert);
         transform.LookAt(targetPos);
     }
 
     private void AlignToHeadNormal()
     {
+        return;
         _modelParent.localPosition = Vector3.forward * 2.5f;
         var dir = transform.forward * -1;
         bool hit = Physics.Raycast(_modelParent.position, dir, out var hitData, 100);
