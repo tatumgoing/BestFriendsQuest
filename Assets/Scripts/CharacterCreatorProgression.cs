@@ -1,3 +1,4 @@
+using MyBox;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ public class CharacterCreatorProgression : MonoBehaviour
     [SerializeField] private GameObject _facialOptions;
     [SerializeField] private GameObject _bodyOptions;
     [SerializeField] private GameObject _profileOptions;
+    [SerializeField] private MainHairController _hairController;
 
     private void Start()
     {
@@ -21,11 +23,14 @@ public class CharacterCreatorProgression : MonoBehaviour
         _titleOptions.gameObject.SetActive(true);
     }
 
-    public void StartNew()
+    public async void StartNew()
     {
         _characterController.MakeNewID();
         _facialFeaturesTabButton.Select(true);
         FocusFace();
+
+        await Task.Delay(100);
+        _hairController.UpdateVisuals();
     }
 
     public void FocusFace()

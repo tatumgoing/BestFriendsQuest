@@ -6,6 +6,7 @@ public class HairMenu : MonoBehaviour
 {
     [SerializeField] private List<Animator> _tabAnimtors = new List<Animator>();
     [SerializeField] private List<SelectableItem> _tabButtons = new List<SelectableItem>();
+    [SerializeField] private GameObject _mainHairParent;
 
     int _currentIndex = 0;
 
@@ -26,4 +27,10 @@ public class HairMenu : MonoBehaviour
 
         _currentIndex = newIndex;
     }
+
+    private void Update()
+    {
+        _tabButtons[1].SetDisabled(_mainHairParent.gameObject.activeInHierarchy);
+    }
+
 }

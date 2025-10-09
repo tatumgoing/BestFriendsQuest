@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class HairController : MonoBehaviour, IFeatureController
@@ -151,7 +152,7 @@ public class HairController : MonoBehaviour, IFeatureController
     public void Save(FeatureSOData data)
     {
         for (int i = 0; i < _allOptions.Count; i++) {
-            if (data.Mesh == _allOptions[i].Mesh) {
+            if (data.EarPrefab == _allOptions[i].EarPrefab) {
                 _allOptions[i] = data;
                 return;
             }
