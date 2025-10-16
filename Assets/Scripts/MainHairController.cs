@@ -19,7 +19,7 @@ public class MainHairController : MonoBehaviour
     private List<MainHairOption> _spawnedOptions = new List<MainHairOption>();
     private bool _initialized;
 
-    private int currentPage = 0;
+    private int _currentPage = 0;
 
     private void Awake()
     {
@@ -45,16 +45,38 @@ public class MainHairController : MonoBehaviour
 
     private void BuildList()
     {
+        _previousButton.SetDisabled(_currentPage == 0);
+
         foreach (var spawned in _spawnedOptions) if (spawned) Destroy(spawned.gameObject);
         _spawnedOptions.Clear();
 
         for (int i = 0; i < _hairData.Count; i++) {
-            if (i < currentPage * 9 && i > (currentPage - 1) * 9) {
+            if (i < (_currentPage +1) * 9 && i+1 > (_currentPage) * 9) {
                 SpawnOption(_hairData[i]);
             }
         }
+    }
 
-        //foreach (var data in _hairData) 
+    public void NextPage()
+    {
+        if ((_currentPage + 1)* 9 > _hairData.Count) return;
+
+        _currentPage += 1;
+        BuildList();
+
+        _previousButton.SetDisabled(false);
+        if ((_currentPage + 1) * 9 > _hairData.Count) _nextButton.SetDisabled(true);
+    }
+
+    public void PreviousPage()
+    {
+        if (_currentPage == 0) return;
+
+        _currentPage -= 1;
+        BuildList();
+
+        _nextButton.SetDisabled(false);
+        if (_currentPage == 0) _previousButton.SetDisabled(true);
     }
 
     private void SpawnOption(FeatureSOData hairData)
