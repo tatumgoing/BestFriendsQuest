@@ -11,7 +11,11 @@ public enum ProfileDataEnum { GENDER, PRONOUN, ATTRACTION}
 public enum MonthAbrev { Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec}
 
 [System.Serializable] public class ListWrapper<T> { public List<T> List = new List<T>();  }
-[System.Serializable] public class ColorData { public FavoriteColor Color; public Sprite Sprite; }
+[System.Serializable] public class ColorData { 
+    public FavoriteColor Color; 
+    public Sprite Sprite;
+    public Color UseColor;
+}
 
 public class SetDropdownOptions : MonoBehaviour
 {
@@ -31,6 +35,8 @@ public class SetDropdownOptions : MonoBehaviour
 
     private List<string> _current = new List<string>();
     private DataPanelController _controller;
+
+    public Color GetColor(int selection) => _colors.List[selection].UseColor;
 
     private void Start()
     {
