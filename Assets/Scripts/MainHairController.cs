@@ -19,6 +19,8 @@ public class MainHairController : MonoBehaviour
     private List<MainHairOption> _spawnedOptions = new List<MainHairOption>();
     private bool _initialized;
 
+    private int currentPage = 0;
+
     private void Awake()
     {
         if (!_initialized) Initialize();
@@ -45,7 +47,14 @@ public class MainHairController : MonoBehaviour
     {
         foreach (var spawned in _spawnedOptions) if (spawned) Destroy(spawned.gameObject);
         _spawnedOptions.Clear();
-        foreach (var data in _hairData) SpawnOption(data);
+
+        for (int i = 0; i < _hairData.Count; i++) {
+            if (i < currentPage * 9 && i > (currentPage - 1) * 9) {
+                SpawnOption(_hairData[i]);
+            }
+        }
+
+        //foreach (var data in _hairData) 
     }
 
     private void SpawnOption(FeatureSOData hairData)
