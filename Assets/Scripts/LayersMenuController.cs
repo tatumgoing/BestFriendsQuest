@@ -20,7 +20,9 @@ public class LayersMenuController : MonoBehaviour
 
     private List<Layer> _spawnedLayers = new List<Layer>();
     private FeatureTier _currentTier;
+    private FeatureSubType _currentSubType;
     private IFeatureController _featureController;
+
     public bool HasCurrent => _featureController.HasCurrent();
     public FeatureObj GetCurrent() => _featureController.GetCurrent();
     public void OpenAddMenuBase() => OpenAddMenu(FeatureTier.BASE);
@@ -39,7 +41,13 @@ public class LayersMenuController : MonoBehaviour
             _featureController.As<FaceFeatureController>().SetPriority(tier);
         }
         _currentTier = tier;
-        _addMenu.gameObject.SetActive(true);
+        if (tier == FeatureTier.BASE) {
+            _addMenu.GetComponent<AddMenuController>().ChangeCategory(_currentSubType);
+        }
+        else {
+            _addMenu.GetComponent<AddMenuController>().ChangeCategory(FeatureSubType.MISC);
+        }
+            _addMenu.gameObject.SetActive(true);
     }
 
     public void SwitchTier(Layer layer, FeatureTier oldTier)
@@ -88,8 +96,9 @@ public class LayersMenuController : MonoBehaviour
 
     }
 
-    public void Initialize()
+    public void Initialize(FeatureSubType category = FeatureSubType.ALL)
     {
+        _currentSubType = category;
         _featureController = _featureControllerMB.GetComponent<IFeatureController>();
         BuildLayerList();
         _addMenu.BuildAddList(_featureController);

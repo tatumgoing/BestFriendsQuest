@@ -1,10 +1,14 @@
+using MyBox;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.ExceptionServices;
 using UnityEngine;
 
 public class AddMenuController : MonoBehaviour
 {
     [SerializeField] private Transform _categoryParent;
+
+    [ReadOnly] public FeatureSubType Category;
 
     [Header("Add")]
     [SerializeField] private GameObject _addPrefab;
@@ -18,6 +22,8 @@ public class AddMenuController : MonoBehaviour
         _spawnedAddOptions.Clear();
 
         foreach (var feature in faceController.GetAllOptions()) AddOption(feature);
+
+        //ChangeCategory(Category);
     }
 
     private void AddOption(FeatureSOData feature)
@@ -38,5 +44,8 @@ public class AddMenuController : MonoBehaviour
         foreach (var option in _spawnedAddOptions) {
             option.gameObject.SetActive(type == FeatureSubType.ALL || option.Type == type);
         }
+
+        //Category = type;
+        //BuildAddList();
     }
 }
