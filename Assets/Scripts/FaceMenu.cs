@@ -47,7 +47,7 @@ public class FaceMenu : MonoBehaviour
         _featureController.SetCategory(category);
         _categoryText.text = Utils.CapitalFirst(category.ToString());
 
-        print("category: " + category);
+        //print("category: " + category);
 
         if (category == FeatureCategory.NOSE) _layers.Initialize(FeatureSubType.NOSE);
         else if (category == FeatureCategory.EYEBROWS) _layers.Initialize(FeatureSubType.BROWS);
