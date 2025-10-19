@@ -1,7 +1,7 @@
 using MyBox;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Collections.LowLevel.Unsafe;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -14,11 +14,18 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float _headYOffset = 0;
     [SerializeField] private float _bodyYOffset = -2;
     [SerializeField] private float _buttonZoomAmount = 2;
-
     [SerializeField] private Vector2 _minMaxZoomHead;
     [SerializeField] private Vector2 _minMaxZoomBody;
     [SerializeField] private float _zoomSpeed;
     [SerializeField] private Transform _character;
+
+    [Header("Free Look")]
+    [SerializeField] private Transform _freelookParent;
+    [SerializeField] private bool _freeLook;
+    [SerializeField] private Vector2 _freeLookSpeed = Vector2.one;
+    [SerializeField] private Vector3 _freelookTargetOffset;
+
+    private Vector3 _freeLookOffset;
 
     private bool _body;
     private Vector3 _targetPosition;
@@ -34,16 +41,40 @@ public class CameraController : MonoBehaviour
 
     private void Start()
     {
+        _freeLookOffset = _freelookParent.InverseTransformPoint(transform.position);
         _targetPosition = transform.position;
     }
 
     private void Update()
     {
+        if (_freeLook) {
+            if (Input.GetMouseButton(1)) {
+                FreeLook();
+            }
+            return;
+        }
+
         if (!EventSystem.current.IsPointerOverGameObject()) Scroll();
 
         _targetPosition.y = _character.position.y + (_body ? _bodyYOffset : _headYOffset);
 
         transform.position = Vector3.Lerp(transform.position, _targetPosition, _lerpFactor * Time.deltaTime);
+    }
+
+    private void FreeLook()
+    {
+        var mouseX = Input.GetAxis("Mouse X");
+        var mouseY = Input.GetAxis("Mouse Y");
+
+        var rot = new Vector2 (mouseX * _freeLookSpeed.x, mouseY * _freeLookSpeed.y) * Time.deltaTime;
+
+        //_freelookParent.localEulerAngles += Vector3.right * rot.y;
+        _freelookParent.localEulerAngles += Vector3.up * rot.x;
+
+        transform.position = _freelookParent.TransformPoint(_freeLookOffset);
+        transform.LookAt(_freelookParent.position + _freelookTargetOffset);
+
+        Debug.DrawLine(transform.position, _freelookParent.position + _freelookTargetOffset);
     }
 
     private Vector3 _getCurrentDir()
