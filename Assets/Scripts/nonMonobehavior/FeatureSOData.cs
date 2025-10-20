@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using MyBox;
 
-public enum FeatureSubType { BROWS, EYES, NOSE, LIPS, MISC, BANGS, BIG, STRANDS, ALL }
+public enum FeatureSubType { BROWS, EYES, NOSE, LIPS, MISC, BANGS, BIG, STRANDS, ALL, ADDONS }
 public enum FeatureType { FACE, HAIR, EAR }
 public enum MirrorType { LEFT, BOTH, RIGHT }
 

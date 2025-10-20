@@ -10,19 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 35683d4604012d84aad21cdd9d7164ce, type: 3}
-  m_Name: hairDetailSpike
+  m_Name: hair_addon_SimpleSpike
   m_EditorClassIdentifier: 
   Name: 
   Type: 1
-  SubType: 4
+  SubType: 9
   Icon: {fileID: 21300000, guid: 01bbbe5751e51314486083ec2750869e, type: 3}
   Texture: {fileID: 2800000, guid: 8406345db51b84d43991e43225861f6a, type: 3}
   ColorMask: {fileID: 0}
-  Mesh: {fileID: -7010378030965793764, guid: 4188af6dd416c2b4f9054a06a696e4ba, type: 3}
+  MainhairPrefab: {fileID: 6417639152515902170, guid: 50753932008dd794685ed97ca46d4f9e, type: 3}
+  _horiLimit: 0
+  VertLimits: {x: -0.6, y: 0.75}
+  IsMainHair: 0
+  MainHairLocalPosition: {x: 0, y: 0, z: 0}
+  MainHairLocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  MainHairLocalScale: {x: 2.359983, y: 2.8821096, z: 2.6817806}
   EarPrefab: {fileID: 5928310046696817692, guid: b4c722822acae224db949601ad785419, type: 3}
   AngleLimits: {x: 0, y: 0}
-  HoriLimits: {x: -0.5, y: 0.5}
-  VertLimits: {x: -0.6, y: 0.75}
   SizeLimits: {x: 0.3, y: 1.5}
   _defaultSettings:
     Mirror: 1
@@ -32,4 +36,3 @@ MonoBehaviour:
     Size: 0.5
     Angle: 0.5
     Color: {r: 0, g: 0, b: 0, a: 0}
-  Category: 0
