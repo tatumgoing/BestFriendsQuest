@@ -3,10 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.ExceptionServices;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AddMenuController : MonoBehaviour
 {
     [SerializeField] private Transform _categoryParent;
+    [SerializeField] private Scrollbar _slider;
 
     [ReadOnly] public FeatureSubType Category;
 
@@ -15,6 +17,12 @@ public class AddMenuController : MonoBehaviour
     [SerializeField] private Transform _addListParent;
 
     private List<AddOption> _spawnedAddOptions = new List<AddOption>();
+
+    private void OnEnable()
+    {
+        _slider.value = 0;
+        _slider.onValueChanged.Invoke(0);
+    }
 
     public void BuildAddList(IFeatureController faceController)
     {

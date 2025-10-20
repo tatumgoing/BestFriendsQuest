@@ -6,24 +6,34 @@ using UnityEngine;
 
 public class Test : MonoBehaviour
 {
-    [SerializeField] private CharacterMetaController _character;
-    [SerializeField, TextArea(3, 10)] private string _output;
-    [SerializeField, TextArea(3, 10)] private string _input;
+    [SerializeField] private LayerMask _hitLayers;
+    [SerializeField] private LayerMask _hoverLayers;
 
-    [ButtonMethod]
-    private void GetSaveString()
-    {
-        _output = _character.GetSaveString();
-    }
+    private bool _dragging;
+    private Vector3 _targetUp;
 
-    [ButtonMethod]
-    private void LoadString()
+    private void Update()
     {
-        _character.LoadFromString(_input);
-    }
+        if (!_dragging) {
+            var didHover = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out var hoverInfo, 1000, _hoverLayers);
+            if (!didHover || hoverInfo.collider.gameObject != gameObject) return;
 
-    private void OnDisable()
-    {
-        //print("Disabled");
+            if (Input.GetMouseButtonDown(0)) _dragging = true;
+        }
+        else {
+
+            if (Input.GetMouseButtonUp(0)) _dragging = false;
+
+            var didHit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out var hitInfo, 1000, _hitLayers);
+
+            if (!didHit) return;
+
+            _targetUp = hitInfo.normal;
+
+            transform.position = hitInfo.point;
+        }
+
+        transform.up = Vector3.Lerp(transform.up, _targetUp, 15 * Time.deltaTime);
+
     }
 }

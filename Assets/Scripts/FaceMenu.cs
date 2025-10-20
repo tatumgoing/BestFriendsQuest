@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public enum FeatureCategory { EYES, EYEBROWS, NOSE, MOUTH, OTHER }
+public enum FeatureCategory { EYES, EYEBROWS, NOSE, MOUTH, EXTRAS }
 public enum TabButtonType { LAYER, POSITION, COLOR }
 
 public class FaceMenu : MonoBehaviour

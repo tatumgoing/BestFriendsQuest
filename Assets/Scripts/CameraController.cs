@@ -2,8 +2,10 @@ using MyBox;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 using UnityEngine.EventSystems;
 
 public class CameraController : MonoBehaviour
@@ -20,13 +22,23 @@ public class CameraController : MonoBehaviour
     [SerializeField] private Transform _character;
 
     [Header("Free Look")]
+    [SerializeField] private Transform _camera;
     [SerializeField] private Transform _freelookParent;
+    [SerializeField] private float _freelookLerpFactor = 10;
+    [SerializeField] private float _freelookZoomLerpFactor = 8;
+    [SerializeField] private float _freelookZoomSpeed = 5;
+    [SerializeField] private Vector2 _freelookZoomLimits = new Vector2(0.1f, 2);
     [SerializeField] private bool _freeLook;
     [SerializeField] private Vector2 _freeLookSpeed = Vector2.one;
-    [SerializeField] private Vector3 _freelookTargetOffset;
+    [SerializeField] private Vector3 _freelookCamEuler;
 
+    private float _freeLookZoomTarget = 10;
+    private float _currentFreelookZoom = 2;
+    private Quaternion _freelookTargetRot;
+    private float _freeLookPitch;
+    private float _freeLookYaw;
+    private Vector3 _originalCamEuler;
     private Vector3 _freeLookOffset;
-
     private bool _body;
     private Vector3 _targetPosition;
 
@@ -41,6 +53,8 @@ public class CameraController : MonoBehaviour
 
     private void Start()
     {
+        _freelookTargetRot = _freelookParent.rotation;
+        _originalCamEuler = _camera.localEulerAngles;
         _freeLookOffset = _freelookParent.InverseTransformPoint(transform.position);
         _targetPosition = transform.position;
     }
@@ -48,33 +62,68 @@ public class CameraController : MonoBehaviour
     private void Update()
     {
         if (_freeLook) {
-            if (Input.GetMouseButton(1)) {
-                FreeLook();
+            if (!EventSystem.current.IsPointerOverGameObject()) { 
+                if (Input.GetMouseButton(1)) {
+                    FreeLook();
+                }
+                else if (Cursor.lockState == CursorLockMode.Locked) {
+                    Cursor.lockState = CursorLockMode.Confined;
+                }
+
+                var scrollDelta = -Input.mouseScrollDelta.y;
+                _freeLookZoomTarget += scrollDelta;
+                _freeLookZoomTarget = Mathf.Clamp(_freeLookZoomTarget, _freelookZoomLimits.x, _freelookZoomLimits.y);
             }
+
+            _currentFreelookZoom = Mathf.Lerp(_currentFreelookZoom, _freeLookZoomTarget, _freelookZoomLerpFactor * Time.deltaTime);
+
+            _freelookParent.rotation = Quaternion.Lerp(_freelookParent.rotation, _freelookTargetRot, _lerpFactor * Time.deltaTime);
+
+            transform.position = _freelookParent.TransformPoint(_freeLookOffset);
+            var dir = (transform.position - _freelookParent.position).normalized;
+            transform.position = _freelookParent.position + (dir * _currentFreelookZoom);
+
+
+            transform.LookAt(_freelookParent.position);
+
             return;
         }
+        else _camera.localEulerAngles = _originalCamEuler;
 
         if (!EventSystem.current.IsPointerOverGameObject()) Scroll();
 
         _targetPosition.y = _character.position.y + (_body ? _bodyYOffset : _headYOffset);
 
-        transform.position = Vector3.Lerp(transform.position, _targetPosition, _lerpFactor * Time.deltaTime);
+        transform.position = Vector3.Lerp(transform.position, _targetPosition, _freelookLerpFactor * Time.deltaTime);
     }
 
+    [ButtonMethod]
+    public void SwitchToFreeLook() {
+        _freeLook = true;
+        FreeLook();
+    }
+
+    public void SwtichToStatic()
+    {
+        _freeLook = false;
+        _camera.localEulerAngles = _originalCamEuler;
+        transform.localEulerAngles = Vector3.zero;
+    }
+       
     private void FreeLook()
     {
+        Cursor.lockState = CursorLockMode.Locked;
+
+        _camera.localEulerAngles = _freelookCamEuler;
+
         var mouseX = Input.GetAxis("Mouse X");
         var mouseY = Input.GetAxis("Mouse Y");
 
-        var rot = new Vector2 (mouseX * _freeLookSpeed.x, mouseY * _freeLookSpeed.y) * Time.deltaTime;
+        _freeLookPitch -= mouseY * _freeLookSpeed.y;
+        _freeLookYaw += mouseX * _freeLookSpeed.x;
 
-        //_freelookParent.localEulerAngles += Vector3.right * rot.y;
-        _freelookParent.localEulerAngles += Vector3.up * rot.x;
-
-        transform.position = _freelookParent.TransformPoint(_freeLookOffset);
-        transform.LookAt(_freelookParent.position + _freelookTargetOffset);
-
-        Debug.DrawLine(transform.position, _freelookParent.position + _freelookTargetOffset);
+        _freeLookPitch = Mathf.Clamp(_freeLookPitch, 0, 80f);
+        _freelookTargetRot = Quaternion.Euler(_freeLookPitch, _freeLookYaw, 0);
     }
 
     private Vector3 _getCurrentDir()

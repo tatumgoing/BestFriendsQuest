@@ -1,6 +1,7 @@
 using MyBox;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.NetworkInformation;
 using UnityEngine;
 
@@ -17,6 +18,7 @@ public class LayersMenuController : MonoBehaviour
     [SerializeField] private Transform _detailLayerListParent;
     [SerializeField] private FaceMenu _faceMenu;
     [SerializeField] private ColorMenuController _colorMenu;
+    [SerializeField] private bool _hairAddonLayers;
 
     private List<Layer> _spawnedLayers = new List<Layer>();
     private FeatureTier _currentTier;
@@ -47,7 +49,7 @@ public class LayersMenuController : MonoBehaviour
         else {
             _addMenu.GetComponent<AddMenuController>().ChangeCategory(FeatureSubType.MISC);
         }
-            _addMenu.gameObject.SetActive(true);
+        _addMenu.gameObject.SetActive(true);
     }
 
     public void SwitchTier(Layer layer, FeatureTier oldTier)
@@ -77,6 +79,8 @@ public class LayersMenuController : MonoBehaviour
 
     public void AddFeature(FeatureSOData data, bool duplicate = false)
     {
+        if (_featureController == null) Initialize();
+
         var added = _featureController.AddFeature(data);
         AddLayer(added);
         _spawnedLayers[^1].GetComponent<SelectableItem>().Select();
@@ -100,6 +104,7 @@ public class LayersMenuController : MonoBehaviour
     {
         _currentSubType = category;
         _featureController = _featureControllerMB.GetComponent<IFeatureController>();
+
         BuildLayerList();
         _addMenu.BuildAddList(_featureController);
         UpdateTabButtons();
@@ -140,13 +145,15 @@ public class LayersMenuController : MonoBehaviour
 
         foreach (var feature in _featureController.GetCurrentFeatures()) {
             var facialFeature = feature.As<FacialFeature>();
-            _currentTier = facialFeature.Tier;
+            if (facialFeature) _currentTier = facialFeature.Tier;
             AddLayer(feature);
         }
     }
 
     private void AddLayer(FeatureObj feature)
     {
+        if (_hairAddonLayers && feature.GetData().SubType != FeatureSubType.ADDONS) return;
+
         var parent = _currentTier == FeatureTier.BASE ? _baseLayerListParent : _detailLayerListParent;
         var newLayer = Instantiate(_layerPrefab, parent).GetComponent<Layer>();
 

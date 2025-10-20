@@ -33,6 +33,6 @@ public class MainHairPrefab : MonoBehaviour
 
     private void Update()
     {
-        Load();
+        if (_data.SubType != FeatureSubType.ADDONS) Load();
     }
 }
