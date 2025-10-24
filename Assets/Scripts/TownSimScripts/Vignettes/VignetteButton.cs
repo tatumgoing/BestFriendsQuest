@@ -7,24 +7,26 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine.EventSystems;
 
-public class VignetteButton : MonoBehaviour
+public class VignetteButton : MonoBehaviour, IPointerClickHandler
 {
     public VignetteManager manager;
     public Vignette vignetteImport;
     //public GameObject cameraTarget;
-    public void Start()
-    {
-    }
-
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        manager.StartVignette(vignetteImport);
+        Debug.Log("Clicky!");
+        if (!manager.isPlaying)
+        {
+            manager.StartVignette(vignetteImport);
+        }
 
     }
     void Update()
     {
         transform.LookAt(Camera.main.transform);
+
+        GetComponent<SpriteRenderer>().enabled= !manager.isPlaying;
     }
 
 }

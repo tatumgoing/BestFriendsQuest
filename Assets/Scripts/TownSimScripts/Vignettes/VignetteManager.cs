@@ -8,7 +8,7 @@ public class VignetteManager : MonoBehaviour
 {
     public VignetteCameras cameraManager;
 
-    bool isPlaying= false; 
+    public bool isPlaying= false; 
     public VignetteUI vignetteUI;
 
     Vignette currentVignette;
