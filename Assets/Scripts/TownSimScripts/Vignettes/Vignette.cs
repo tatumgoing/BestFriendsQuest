@@ -23,4 +23,5 @@ public class DialogueT
     public int FocusedCharacter;
 
     public int CamIndex = -1;
+
 }

@@ -6,6 +6,8 @@ using Cinemachine;
 
 public class VignetteManager : MonoBehaviour
 {
+    public VignetteCameras cameraManager;
+
     bool isPlaying= false; 
     public VignetteUI vignetteUI;
 
@@ -14,8 +16,12 @@ public class VignetteManager : MonoBehaviour
 
     int currentDialogueIndex;
 
-    List<CinemachineVirtualCamera> cameras= new List<CinemachineVirtualCamera>();
     bool textScrollComplete=false;
+
+    //Camera Controls
+
+    CinemachineVirtualCamera currentCamera;
+    List<CinemachineVirtualCamera> currentVignetteCameras = new List<CinemachineVirtualCamera>();
 
     [Header("Text Controls")]
 
@@ -26,22 +32,25 @@ public class VignetteManager : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && isPlaying)
         {
             VignetteClicked();
+
         }
 
     }
-    public void StartVignette(Vignette vignetteImport, List<CinemachineVirtualCamera> cameraImport)
+    public void StartVignette(Vignette vignetteImport)
     {
         vignetteUI.ShowTextBox();
         isPlaying = true;
 
+        currentVignetteCameras = cameraManager.vignetteCameras[vignetteImport.Location.ToString()];
+
+        Debug.Log(vignetteImport.Location.ToString());
+
         currentVignette = vignetteImport;
         currentDialogue = currentVignette.VignetteDialogues[currentDialogueIndex];
 
-        cameras.AddRange(cameraImport);
-
         vignetteUI.ClearText();
         DisplayText();
-
+        StartCamera();
     }
 
     void DisplayText()
@@ -101,7 +110,50 @@ public class VignetteManager : MonoBehaviour
 
         textScrollComplete = false;
         vignetteUI.ClearText();
+        
+        ChangeCamera();
         DisplayText();
+    }
+
+    void StartCamera()
+    {
+        for (int i = 0; i < currentVignetteCameras.Count; i++)
+        {
+
+            if (currentVignette.StartingCamIndex == i)
+            {
+                currentVignetteCameras[i].Priority = 100;
+            }
+            else
+            {
+                currentVignetteCameras[i].Priority = 0;
+            }
+
+        }
+    }
+    void ChangeCamera()
+    {
+
+        //if the cam index is not -1, change the camera
+        if (currentDialogue.CamIndex >= 0)
+        {
+
+            for (int i = 0; i < currentVignetteCameras.Count; i++)
+            {
+
+                if (currentDialogue.CamIndex == i)
+                {
+                    currentVignetteCameras[i].Priority = 100;
+                }
+                else
+                {
+                    currentVignetteCameras[i].Priority = 0;
+                }
+
+
+            }
+        }
+
 
     }
 
@@ -114,13 +166,28 @@ public class VignetteManager : MonoBehaviour
 
     public void EndVignette()
     {
+        //set priorities back to 0 for vignette cameras
+        foreach (CinemachineVirtualCamera v in currentVignetteCameras) { 
+        
+            v.Priority = 0;
+
+        }
+
+        //reset manager
+        ResetVignetteManager();
+    }
+
+    public void ResetVignetteManager()
+    {
         currentVignette = null;
         vignetteUI.ClearText();
         vignetteUI.HideTextBox();
 
+        currentVignetteCameras = new List<CinemachineVirtualCamera>();
+
         currentDialogueIndex = 0;
 
-        textScrollComplete= false;
+        textScrollComplete = false;
         isPlaying = false;
     }
 }

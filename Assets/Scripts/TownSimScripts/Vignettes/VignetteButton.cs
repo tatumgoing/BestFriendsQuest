@@ -4,15 +4,27 @@ using UnityEngine;
 using Cinemachine;
 using UnityEngine.UI;
 using TMPro;
+using Unity.VisualScripting;
+using UnityEngine.EventSystems;
 
 public class VignetteButton : MonoBehaviour
 {
     public VignetteManager manager;
     public Vignette vignetteImport;
-    public List<CinemachineVirtualCamera> cameraImport;
-
+    //public GameObject cameraTarget;
     public void Start()
     {
-        GetComponent<Button>().onClick.AddListener(() => manager.StartVignette(vignetteImport, cameraImport));
     }
+
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        manager.StartVignette(vignetteImport);
+
+    }
+    void Update()
+    {
+        transform.LookAt(Camera.main.transform);
+    }
+
 }
