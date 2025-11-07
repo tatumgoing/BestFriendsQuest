@@ -14,7 +14,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject _cameraFlash; 
 
     public Fade Fade => _fade;
-    public void FlashCamera() => _cameraFlash.SetActive(true);
 
     private void Awake() => i = this;
 
@@ -24,5 +23,10 @@ public class UIManager : MonoBehaviour
         TimeSpan timeSpan = TimeSpan.FromSeconds(seconds);
         string timeString = string.Format("{0:D2}:{1:D2}", timeSpan.Minutes, timeSpan.Seconds);
         return timeString;
+    }
+    public void FlashCamera()
+    {
+        _cameraFlash.SetActive(false);
+        _cameraFlash.SetActive(true);
     }
 }

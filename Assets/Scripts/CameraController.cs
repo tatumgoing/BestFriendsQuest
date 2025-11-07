@@ -107,7 +107,7 @@ public class CameraController : MonoBehaviour
     {
         _freeLook = false;
         _camera.localEulerAngles = _originalCamEuler;
-        transform.localEulerAngles = Vector3.zero;
+        //transform.localEulerAngles = Vector3.zero;
     }
        
     private void FreeLook()

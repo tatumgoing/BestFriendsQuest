@@ -11,12 +11,14 @@ public class IDCamera : MonoBehaviour
     [SerializeField] private DragToSpin _characterSpinner;
     [SerializeField] private Sound _cameraSound;
     [SerializeField] private GameObject _greenScreen;
+    [SerializeField] private Vector3 _idPicAngle;
 
     private void Start()
     {
         _cameraSound = Instantiate(_cameraSound);   
     }
 
+    [ButtonMethod]
     public async void TakePicture()
     {
         _cameraSound.Play();
@@ -26,6 +28,8 @@ public class IDCamera : MonoBehaviour
 
         await Task.Delay(100);
 
+        var beforeRot = _photoCamera.transform.rotation;
+        _photoCamera.transform.localEulerAngles = _idPicAngle;
 
         _greenScreen.SetActive(true);
 
@@ -81,6 +85,8 @@ public class IDCamera : MonoBehaviour
         File.WriteAllBytes(path + "/IDimage.png", btyes);
 
         FindFirstObjectByType<IdPhotoController>(FindObjectsInactive.Include).ShowPicture(idPicture);
+
+        _photoCamera.transform.rotation = beforeRot;
 
         //if (Application.isPlaying) Destroy(idPicture);
         //else DestroyImmediate(idPicture);
