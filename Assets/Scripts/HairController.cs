@@ -122,8 +122,10 @@ public class HairController : MonoBehaviour, IFeatureController
 
     public FeatureObj AddFeature(FeatureSOData data)
     {
-        for (int i = _currentPieces.Count-1; i >= 0; i--) {
-            Delete(_currentPieces[i]);
+        if (data.IsMainHair) {
+            for (int i = _currentPieces.Count - 1; i >= 0; i--) {
+                if (_currentPieces[i].GetData().IsMainHair) Delete(_currentPieces[i]);
+            }
         }
 
         var newFeature = Instantiate(_featurePrefab, _featureListParent).GetComponent<HairPiece>();

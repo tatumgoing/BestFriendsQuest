@@ -16,7 +16,7 @@ public class Test : MonoBehaviour
     {
         if (!_dragging) {
             var didHover = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out var hoverInfo, 1000, _hoverLayers);
-            if (!didHover || hoverInfo.collider.gameObject != gameObject) return;
+            if (!didHover || hoverInfo.collider.transform.parent != transform) return;
 
             if (Input.GetMouseButtonDown(0)) _dragging = true;
         }
