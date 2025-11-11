@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
 using System.Threading.Tasks;
+using System;
 
 
 public class TownGameManager : MonoBehaviour
@@ -15,11 +16,15 @@ public class TownGameManager : MonoBehaviour
 
     public CharacterManager characterManager;
 
+    [Header("CharacterHouses")]
+
     public GameObject houseGrid;
     public GameObject houseButtonPrefab;
 
     public GameObject houseMenuUI;
     public GameObject houseMenuPrefab;
+
+    public GameObject houseSelectionMenu;
 
     [Header ("Inventory")]
     public float currency;
@@ -139,8 +144,9 @@ public class TownGameManager : MonoBehaviour
             {
                 j.SetActive(false);
             }
-            
         }
+
+        ToggleHouseSelection(true);
 
         newSceneUI.SetActive(true);
 
@@ -151,7 +157,7 @@ public class TownGameManager : MonoBehaviour
 
     }
 
-    public void ChangeCurrency(float curChange)
+        public void ChangeCurrency(float curChange)
     {
         currency += curChange;
 
@@ -328,9 +334,9 @@ public class TownGameManager : MonoBehaviour
             
             
             newHouseButton.GetComponent<Button>().onClick.AddListener(() => OpenHouse(character));
+            newHouseButton.GetComponent<Button>().onClick.AddListener(() => ToggleHouseSelection());
 
-
-            // make dictionary for houses and buttons maybe
+             // make dictionary for houses and buttons maybe
 
             GameObject newHouse = Instantiate(houseMenuPrefab, houseMenuUI.transform);
             newHouse.SetActive(false);
@@ -352,12 +358,17 @@ public class TownGameManager : MonoBehaviour
 
     private void OpenHouse(CharacterData character)
     {
+        // disable the navigation UI, set active the house game object
+
         Debug.Log(character.characterName);
 
         character.house.gameObject.SetActive(true);
     }
 
-
+    private void ToggleHouseSelection(bool activated= false)
+    {
+        houseSelectionMenu.SetActive(activated);
+    }
 
     public void GenerateProblem(CharacterData lastCharacter)
     {
