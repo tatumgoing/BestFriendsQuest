@@ -95,9 +95,9 @@ public class LayersMenuController : MonoBehaviour
         }
 
         if (_colorMenu) {
-            added.SetColor(_colorMenu.GetDefaultColor());
+            added.SetColor(_colorMenu.GetColor());
+            //added.SetColor(_colorMenu.GetDefaultColor());
         }
-
     }
 
     public void Initialize(FeatureSubType category = FeatureSubType.ALL)
