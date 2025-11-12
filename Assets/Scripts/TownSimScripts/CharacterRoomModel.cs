@@ -1,10 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class CharacterRoomModel : MonoBehaviour
 {
-    // Start is called before the first frame update
+
+    [SerializeField] CharacterData associatedCharacter;
+
+    [SerializeField] GameObject characterTracker;
+
+    [SerializeField] CinemachineVirtualCamera roomCamera;
+
+
     void Start()
     {
         
