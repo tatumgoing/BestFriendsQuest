@@ -75,14 +75,14 @@ public class LayersMenuController : MonoBehaviour
         if (newParent.transform.childCount > oldSiblingIndex) layer.transform.SetSiblingIndex(oldSiblingIndex);
     }
 
-    public void EnableMirror()
+    public void EnableMirror(FeatureObj feature)
     {
-        _featureController.GetCurrent().SetMirrorTpe(MirrorType.BOTH);
+        feature.SetMirrorTpe(MirrorType.BOTH);
     }
 
-    public void DisableMirror()
+    public void DisableMirror(FeatureObj feature)
     {
-        _featureController.GetCurrent().SetMirrorTpe(MirrorType.LEFT);
+        feature.SetMirrorTpe(MirrorType.LEFT);
     }
 
     public void Duplicate(FeatureObj original)
@@ -131,8 +131,14 @@ public class LayersMenuController : MonoBehaviour
     private void SelectInitial()
     {
         if (_featureController == null) return;
-        foreach (var layer in _spawnedLayers) {
-            if (layer.GetFeature() == _featureController.GetCurrent()) layer.GetComponent<SelectableItem>().Select();
+
+        if (_hairAddonLayers && _spawnedLayers.Count > 0) {
+            _spawnedLayers[0].GetComponent<SelectableItem>().Select();
+        }
+        else {
+            foreach (var layer in _spawnedLayers) {
+                if (layer.GetFeature() == _featureController.GetCurrent()) layer.GetComponent<SelectableItem>().Select();
+            }
         }
     }
 

@@ -17,6 +17,15 @@ public class AddonsUIHelper : MonoBehaviour
     [HideInInspector] public bool Rotating;
     private bool _addons = false;
 
+    private void Start()
+    {
+        UIManager.i.OnTabSwitch.AddListener(() =>
+        {
+            Rotating = false;
+            SwitchToMain();
+        });
+    }
+
     private void Update()
     {
         UpdateVisuals();

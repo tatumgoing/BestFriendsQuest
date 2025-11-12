@@ -55,6 +55,8 @@ public class CameraController : MonoBehaviour
 
     private void Start()
     {
+        UIManager.i.OnTabSwitch.AddListener(SwitchToStatic);
+
         _freelookTargetRot = _freelookParent.rotation;
         _originalCamEuler = _camera.localEulerAngles;
         _freeLookOffset = _freelookParent.InverseTransformPoint(transform.position);
@@ -105,7 +107,7 @@ public class CameraController : MonoBehaviour
         FreeLook();
     }
 
-    public void SwtichToStatic()
+    public void SwitchToStatic()
     {
         _freeLook = false;
         _camera.localEulerAngles = _originalCamEuler;

@@ -32,10 +32,19 @@ public class HairController : MonoBehaviour, IFeatureController
 
     private void Start()
     {
+        UIManager.i.OnTabSwitch.AddListener(DeselectAllAddons);
         HairColor = _color.GetDefaultColor();
         _currentPieces = GetComponentsInChildren<HairPiece>().Where(x => !x.IsMirroredVersion).ToList();
         foreach (var c in _currentPieces) c.Initialize(this);
         foreach (var c in _currentPieces) if (c.GetSettings().MatchColor) c.SetColor(HairColor);
+    }
+
+    private void DeselectAllAddons()
+    {
+        foreach (var i in _currentPieces) {
+            var addon = i.GetComponentInChildren<MovableAddon>();
+            if (addon) addon.Selected = false;
+        }
     }
 
     public void LoadFromString(string saveString)

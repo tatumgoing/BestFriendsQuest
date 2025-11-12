@@ -50,12 +50,12 @@ public class Layer : MonoBehaviour
 
     public void EnableMirror()
     {
-        _controller.EnableMirror();
+        _controller.EnableMirror(_feature);
     }
 
     public void DisableMirror()
     {
-        _controller.DisableMirror();
+        _controller.DisableMirror(_feature);
     }
 
     public void SwitchTier()
