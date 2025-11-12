@@ -10,7 +10,7 @@ public class DragToSpin : MonoBehaviour
     [SerializeField] private float _dragSpeed = 10;
     [SerializeField] private float _lerpFactor = 10;
 
-    private float rotDelta = 0;
+    private float _rotDelta = 0;
 
     private bool _beingDragged;
     private bool _hovered;
@@ -19,6 +19,7 @@ public class DragToSpin : MonoBehaviour
 
     private void Start()
     {
+        UIManager.i.OnTabSwitch.AddListener(() => enabled = true);
         _originalRot = transform.localRotation;
     }
 
@@ -28,15 +29,15 @@ public class DragToSpin : MonoBehaviour
         if (_hovered && Input.GetMouseButtonDown(0)) StartDrag();
         if (Input.GetMouseButtonUp(0) && _beingDragged) EndDrag();
         if (_beingDragged) Drag();
-        else rotDelta = Mathf.Lerp(rotDelta, 0, _lerpFactor * Time.deltaTime);
+        else _rotDelta = Mathf.Lerp(_rotDelta, 0, _lerpFactor * Time.deltaTime);
 
-        transform.Rotate(Vector3.up * -rotDelta * 10 * Time.deltaTime * _dragSpeed);
+        transform.Rotate(Vector3.up * -_rotDelta * 10 * Time.deltaTime * _dragSpeed);
     }
 
     public void Reset()
     {
         transform.localRotation = _originalRot;
-        rotDelta = 0;
+        _rotDelta = 0;
     }
 
     private void EndDrag()
@@ -56,7 +57,7 @@ public class DragToSpin : MonoBehaviour
     private void Drag()
     {
         var mouseDelta = Input.GetAxis("Mouse X");
-        rotDelta = Mathf.Lerp(rotDelta, mouseDelta, _lerpFactor * Time.deltaTime);
+        _rotDelta = Mathf.Lerp(_rotDelta, mouseDelta, _lerpFactor * Time.deltaTime);
     }
 
     private void UpdateHovered()

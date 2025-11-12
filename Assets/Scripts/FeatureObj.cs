@@ -69,6 +69,7 @@ public abstract class FeatureObj : MonoBehaviour
 
     public virtual void SetColor(Color color)
     {
+        //print("set color: " + color);
         color.a = 1;
         Settings.Color = color;
         UpdateDisplay();

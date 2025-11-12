@@ -42,6 +42,8 @@ public class CameraController : MonoBehaviour
     private bool _body;
     private Vector3 _targetPosition;
 
+    [HideInInspector] public bool UsingRotateControls;
+
     private Vector2 _minMaxZoom => _body ? _minMaxZoomBody : _minMaxZoomHead;
     private float _currentBaseZoom => _body ? _bodyZoom : _headZoom;
     private float _currentDist => Vector3.Distance(_targetPosition, _character.position);
@@ -53,6 +55,8 @@ public class CameraController : MonoBehaviour
 
     private void Start()
     {
+        UIManager.i.OnTabSwitch.AddListener(SwitchToStatic);
+
         _freelookTargetRot = _freelookParent.rotation;
         _originalCamEuler = _camera.localEulerAngles;
         _freeLookOffset = _freelookParent.InverseTransformPoint(transform.position);
@@ -66,7 +70,7 @@ public class CameraController : MonoBehaviour
                 if (Input.GetMouseButton(1)) {
                     FreeLook();
                 }
-                else if (Cursor.lockState == CursorLockMode.Locked) {
+                else if (Cursor.lockState == CursorLockMode.Locked && !UsingRotateControls) {
                     Cursor.lockState = CursorLockMode.Confined;
                 }
 
@@ -103,10 +107,11 @@ public class CameraController : MonoBehaviour
         FreeLook();
     }
 
-    public void SwtichToStatic()
+    public void SwitchToStatic()
     {
         _freeLook = false;
         _camera.localEulerAngles = _originalCamEuler;
+        transform.localEulerAngles = new Vector3(0, -25, 0);
         //transform.localEulerAngles = Vector3.zero;
     }
        

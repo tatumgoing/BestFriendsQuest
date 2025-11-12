@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
@@ -13,8 +14,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Fade _fade;
     [SerializeField] private GameObject _cameraFlash; 
 
-    public Fade Fade => _fade;
+    public UnityEvent OnTabSwitch = new UnityEvent();
 
+    public Fade Fade => _fade;
+    public void SwitchTab() => OnTabSwitch.Invoke();
     private void Awake() => i = this;
 
     private string GetTimeString(int seconds)
@@ -24,6 +27,7 @@ public class UIManager : MonoBehaviour
         string timeString = string.Format("{0:D2}:{1:D2}", timeSpan.Minutes, timeSpan.Seconds);
         return timeString;
     }
+
     public void FlashCamera()
     {
         _cameraFlash.SetActive(false);

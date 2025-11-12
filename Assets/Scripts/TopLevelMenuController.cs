@@ -20,7 +20,7 @@ public class TopLevelMenuController : MonoBehaviour
     {
         //print(gameObject.name + " selecting tab " + tab);
 
-        if (_tabButtons[0] && tab > 0 && _layersMenu && !_layersMenu.HasCurrent) {
+        if (_tabButtons[0] && tab > 0 && _layersMenu && !_layersMenu.HasCurrent()) {
             var button = _tabButtons[tab];
             if (button) button.Deselect();
             return;

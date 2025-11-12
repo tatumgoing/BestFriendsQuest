@@ -41,7 +41,7 @@ public class Fade : MonoBehaviour
             float progress = timePassed / FadeTime;
             if (reverse) progress = 1 - progress;
 
-            _img.color = _fadeGradient.Evaluate(progress);
+            if (_img) _img.color = _fadeGradient.Evaluate(progress);
 
             timePassed += Time.deltaTime;
             await Task.Yield();

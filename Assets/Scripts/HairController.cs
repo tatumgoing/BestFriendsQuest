@@ -1,3 +1,4 @@
+using MyBox;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,10 +32,19 @@ public class HairController : MonoBehaviour, IFeatureController
 
     private void Start()
     {
+        UIManager.i.OnTabSwitch.AddListener(DeselectAllAddons);
         HairColor = _color.GetDefaultColor();
         _currentPieces = GetComponentsInChildren<HairPiece>().Where(x => !x.IsMirroredVersion).ToList();
         foreach (var c in _currentPieces) c.Initialize(this);
         foreach (var c in _currentPieces) if (c.GetSettings().MatchColor) c.SetColor(HairColor);
+    }
+
+    private void DeselectAllAddons()
+    {
+        foreach (var i in _currentPieces) {
+            var addon = i.GetComponentInChildren<MovableAddon>();
+            if (addon) addon.Selected = false;
+        }
     }
 
     public void LoadFromString(string saveString)
@@ -122,8 +132,10 @@ public class HairController : MonoBehaviour, IFeatureController
 
     public FeatureObj AddFeature(FeatureSOData data)
     {
-        for (int i = _currentPieces.Count-1; i >= 0; i--) {
-            Delete(_currentPieces[i]);
+        if (data.IsMainHair) {
+            for (int i = _currentPieces.Count - 1; i >= 0; i--) {
+                if (_currentPieces[i].GetData().IsMainHair) Delete(_currentPieces[i]);
+            }
         }
 
         var newFeature = Instantiate(_featurePrefab, _featureListParent).GetComponent<HairPiece>();
@@ -132,6 +144,13 @@ public class HairController : MonoBehaviour, IFeatureController
         _currentIndex = _currentPieces.Count - 1;
         if (newFeature.GetSettings().MatchColor) newFeature.SetColor(HairColor);
         newFeature.SetAll(newFeature.GetDefaults());
+
+        if (!data.IsMainHair) {
+            var originalMirrorType = newFeature.GetDefaults().Mirror;
+            newFeature.SetMirrorTpe(MirrorType.BOTH);
+            newFeature.SetMirrorTpe(originalMirrorType);
+        }
+
         return newFeature;
     }
 
@@ -145,7 +164,11 @@ public class HairController : MonoBehaviour, IFeatureController
     public void Select(FeatureObj feature)
     {
         for (int i = 0; i < _currentPieces.Count; i++) {
-            if (feature == _currentPieces[i]) _currentIndex = i;
+            if (feature == _currentPieces[i]) {
+                _currentIndex = i;
+                _currentPieces[i].SetSelected(true);
+            }
+            else _currentPieces[i].SetSelected(false);
         }
     }
 

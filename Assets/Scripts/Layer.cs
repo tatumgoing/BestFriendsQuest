@@ -48,6 +48,16 @@ public class Layer : MonoBehaviour
         _controller.Duplicate(_feature);
     }
 
+    public void EnableMirror()
+    {
+        _controller.EnableMirror(_feature);
+    }
+
+    public void DisableMirror()
+    {
+        _controller.DisableMirror(_feature);
+    }
+
     public void SwitchTier()
     {
         _controller.SwitchTier(this, _tier);
