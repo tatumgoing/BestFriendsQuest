@@ -6,9 +6,26 @@ using UnityEngine;
 
 public class HairPiece : FeatureObj
 {
-    [SerializeField] private Transform _modelParent;
+    [SerializeField] private Transform _modelParent = null;
     private HairController _controller;
     private HairPiece _mirroredFeature;
+
+    public void SetSelected(bool selected)
+    {
+        //print("setting selected: " + selected + ", isMirrored: " + IsMirroredVersion + ", mirroredFeature == null: " + (MirroredFeature == null));
+
+        if (!IsMirroredVersion && MirroredFeature != null) MirroredFeature.As<HairPiece>().SetSelected(selected);
+
+        var addOn = GetComponentInChildren<MovableAddon>();
+        if (!addOn) return;
+
+        if (!IsMirroredVersion) {
+            addOn.Initialize(MirroredFeature.GetComponentInChildren<MovableAddon>());
+            MirroredFeature.GetComponentInChildren<MovableAddon>().Initialize(addOn);
+        } 
+
+        addOn.Selected = selected; 
+    }
 
     public void Initialize(FeatureSOData newData, HairController controller)
     {
@@ -19,7 +36,7 @@ public class HairPiece : FeatureObj
     public void Initialize(HairController controller)
     {
         _controller = controller;
-        _modelParent = Instantiate(Data.MainhairPrefab, transform).transform;
+        if (_modelParent == null)_modelParent = Instantiate(Data.MainhairPrefab, transform).transform;
 
         _modelParent.localPosition = Data.MainHairLocalPosition;
         _modelParent.localRotation = Data.MainHairLocalRotation;
@@ -64,7 +81,7 @@ public class HairPiece : FeatureObj
     private void UpdateColors()
     {
         var renderers = _modelParent.GetComponentsInChildren<MeshRenderer>();
-        foreach (var r in renderers) r.material.color = Settings.Color;
+        foreach (var r in renderers) if (!r.gameObject.CompareTag("RotationControls")) r.material.color = Settings.Color;
     }
 
     public void SetMirrorRot(Transform _nonMirroredPiece, Transform modelParent)

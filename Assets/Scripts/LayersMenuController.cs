@@ -25,7 +25,8 @@ public class LayersMenuController : MonoBehaviour
     private FeatureSubType _currentSubType;
     private IFeatureController _featureController;
 
-    public bool HasCurrent => _featureController.HasCurrent();
+    public int NumLayers => _spawnedLayers.Count;
+
     public FeatureObj GetCurrent() => _featureController.GetCurrent();
     public void OpenAddMenuBase() => OpenAddMenu(FeatureTier.BASE);
     public void OpenAddMenuDetails() => OpenAddMenu(FeatureTier.DETAIL);
@@ -35,6 +36,12 @@ public class LayersMenuController : MonoBehaviour
         _main.SetActive(true);
         _addMenu.gameObject.SetActive(false);
         SelectInitial();
+    }
+
+    public bool HasCurrent()
+    {
+        if (_featureController == null) Initialize();
+        return _featureController.HasCurrent();
     }
 
     private void OpenAddMenu(FeatureTier tier)
@@ -68,10 +75,20 @@ public class LayersMenuController : MonoBehaviour
         if (newParent.transform.childCount > oldSiblingIndex) layer.transform.SetSiblingIndex(oldSiblingIndex);
     }
 
+    public void EnableMirror()
+    {
+        _featureController.GetCurrent().SetMirrorTpe(MirrorType.BOTH);
+    }
+
+    public void DisableMirror()
+    {
+        _featureController.GetCurrent().SetMirrorTpe(MirrorType.LEFT);
+    }
+
     public void Duplicate(FeatureObj original)
     {
         _currentTier = original.Tier;
-        print("duplicated a " +  original.Tier);
+        //print("duplicated a " +  original.Tier);
 
         AddFeature(original.GetData(), true);
         _featureController.CopySettingsToCurrent(original);
@@ -163,6 +180,9 @@ public class LayersMenuController : MonoBehaviour
         UpdateTabButtons();
     }
 
+    /// <summary>
+    /// called when the layer is clicked 
+    /// </summary>
     public void Select(Layer layerObj, FeatureObj feature)
     {
         foreach (var l in _spawnedLayers) {

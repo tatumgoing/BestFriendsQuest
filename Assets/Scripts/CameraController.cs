@@ -42,6 +42,8 @@ public class CameraController : MonoBehaviour
     private bool _body;
     private Vector3 _targetPosition;
 
+    [HideInInspector] public bool UsingRotateControls;
+
     private Vector2 _minMaxZoom => _body ? _minMaxZoomBody : _minMaxZoomHead;
     private float _currentBaseZoom => _body ? _bodyZoom : _headZoom;
     private float _currentDist => Vector3.Distance(_targetPosition, _character.position);
@@ -66,7 +68,7 @@ public class CameraController : MonoBehaviour
                 if (Input.GetMouseButton(1)) {
                     FreeLook();
                 }
-                else if (Cursor.lockState == CursorLockMode.Locked) {
+                else if (Cursor.lockState == CursorLockMode.Locked && !UsingRotateControls) {
                     Cursor.lockState = CursorLockMode.Confined;
                 }
 
