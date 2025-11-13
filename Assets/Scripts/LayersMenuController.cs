@@ -18,10 +18,13 @@ public class LayersMenuController : MonoBehaviour
     [SerializeField] private Transform _detailLayerListParent;
     [SerializeField] private FaceMenu _faceMenu;
     [SerializeField] private ColorMenuController _colorMenu;
+
+    [Header("Options")]
+    [SerializeField] private GameObject _detailsParent;
     [SerializeField] private bool _hairAddonLayers;
     [SerializeField] private bool _transitionToMoveAutomatically;
     [SerializeField, ConditionalField(nameof(_transitionToMoveAutomatically))] private SelectableItem _moveMenuButton;
- 
+
     private List<Layer> _spawnedLayers = new List<Layer>();
     private FeatureTier _currentTier;
     private FeatureSubType _currentSubType;
@@ -38,6 +41,11 @@ public class LayersMenuController : MonoBehaviour
         _main.SetActive(true);
         _addMenu.gameObject.SetActive(false);
         SelectInitial();
+    }
+
+    public void SetShowDetails(bool showDetails = true)
+    {
+        _detailsParent.SetActive(showDetails);
     }
 
     public void SetScale(float scale)
