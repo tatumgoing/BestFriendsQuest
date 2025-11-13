@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class HairMenu : MonoBehaviour
@@ -7,11 +8,13 @@ public class HairMenu : MonoBehaviour
     [SerializeField] private List<Animator> _tabAnimtors = new List<Animator>();
     [SerializeField] private List<SelectableItem> _tabButtons = new List<SelectableItem>();
     [SerializeField] private GameObject _mainHairParent;
+    [SerializeField] private TextMeshProUGUI _subTitleText;
 
     int _currentIndex = 0;
 
     public void SwitchToTab(int newIndex)
     {
+        _subTitleText.text = newIndex == 0 ? "Style" : "Color";
         //if (newIndex == _currentIndex) return;
 
         for (int i = 0; i < _tabButtons.Count; i++) {
@@ -30,7 +33,7 @@ public class HairMenu : MonoBehaviour
 
     private void Update()
     {
-        _tabButtons[1].SetDisabled(_mainHairParent.gameObject.activeInHierarchy);
+        //_tabButtons[1].SetDisabled(!_mainHairParent_mainHairParent.gameObject.activeInHierarchy);
     }
 
 }

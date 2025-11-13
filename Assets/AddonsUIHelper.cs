@@ -6,11 +6,12 @@ using UnityEngine;
 
 public class AddonsUIHelper : MonoBehaviour
 {
-    [SerializeField] private GameObject _expressionsParent;
-    [SerializeField] private GameObject _nextButtonParent;
+    [SerializeField] private Animator _expressionsParent;
+    [SerializeField] private Animator _lmbRotParent;
+    [SerializeField] private Animator _nextButtonParent;
+
+    [SerializeField] private Animator _rmbPanParent;
     [SerializeField] private GameObject _moveRotButonParent;
-    [SerializeField] private GameObject _rmbPanParent;
-    [SerializeField] private GameObject _lmbRotParent;
     [SerializeField] private LayersMenuController _layerMenu;
 
     [HideInInspector] public bool Rotating;
@@ -50,12 +51,22 @@ public class AddonsUIHelper : MonoBehaviour
 
     private void UpdateVisuals()
     {
-        _expressionsParent.SetActive(!_addons);
-        _nextButtonParent.SetActive(!_addons);
-        _lmbRotParent.SetActive(!_addons);
+        if (_addons) {
+            _expressionsParent.SetTrigger("Exit");
+            _lmbRotParent.SetTrigger("Exit");
+            _nextButtonParent.SetTrigger("Exit");
+
+            _rmbPanParent.gameObject.SetActive(true);
+        }
+        else {
+            _expressionsParent.gameObject.SetActive(true);
+            _lmbRotParent.gameObject.SetActive(true);
+            _nextButtonParent.gameObject.SetActive(true);
+
+            _rmbPanParent.SetTrigger("Exit");
+        }
 
         _moveRotButonParent.SetActive(_addons && _layerMenu.NumLayers > 0);
-        _rmbPanParent.SetActive(_addons);
     }
 
     public void SwitchToRotate() => Rotating = true;

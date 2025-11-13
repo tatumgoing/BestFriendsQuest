@@ -1,6 +1,7 @@
 using MyBox;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEditor;
@@ -32,6 +33,8 @@ public class CameraController : MonoBehaviour
     [SerializeField] private Vector2 _freeLookSpeed = Vector2.one;
     [SerializeField] private Vector3 _freelookCamEuler;
 
+
+    private float _freelookLerpFactorTransition = 10;
     private float _freeLookZoomTarget = 10;
     private float _currentFreelookZoom = 2;
     private Quaternion _freelookTargetRot;
@@ -66,7 +69,7 @@ public class CameraController : MonoBehaviour
     private void Update()
     {
         if (_freeLook) {
-            if (!EventSystem.current.IsPointerOverGameObject()) { 
+            if (!EventSystem.current.IsPointerOverGameObject()) {
                 if (Input.GetMouseButton(1)) {
                     FreeLook();
                 }
@@ -80,19 +83,25 @@ public class CameraController : MonoBehaviour
             }
 
             _currentFreelookZoom = Mathf.Lerp(_currentFreelookZoom, _freeLookZoomTarget, _freelookZoomLerpFactor * Time.deltaTime);
+            _freelookParent.rotation = Quaternion.Slerp(_freelookParent.rotation, _freelookTargetRot, _lerpFactor * Time.deltaTime);
 
-            _freelookParent.rotation = Quaternion.Lerp(_freelookParent.rotation, _freelookTargetRot, _lerpFactor * Time.deltaTime);
-
+            var originalPos = transform.position;
             transform.position = _freelookParent.TransformPoint(_freeLookOffset);
             var dir = (transform.position - _freelookParent.position).normalized;
-            transform.position = _freelookParent.position + (dir * _currentFreelookZoom);
+            transform.position = Vector3.Lerp(originalPos, _freelookParent.position + (dir * _currentFreelookZoom), _freelookLerpFactorTransition * Time.deltaTime);
 
-
+            var originalRot = transform.localRotation;
             transform.LookAt(_freelookParent.position);
+            transform.localRotation = Quaternion.Slerp(originalRot, transform.localRotation, _freelookLerpFactorTransition * Time.deltaTime);
+
+            _freelookLerpFactorTransition = Mathf.Lerp(_freelookLerpFactorTransition, 100, 0.75f * Time.deltaTime);
 
             return;
         }
-        else _camera.localEulerAngles = _originalCamEuler;
+        else {
+            _camera.localRotation = Quaternion.Slerp(_camera.localRotation, Quaternion.Euler(_originalCamEuler), 5 * Time.deltaTime);
+            transform.localRotation = Quaternion.Slerp(transform.localRotation, Quaternion.Euler(new Vector3(0, -25, 0)), 5 * Time.deltaTime);
+        }
 
         if (!EventSystem.current.IsPointerOverGameObject()) Scroll();
 
@@ -104,15 +113,19 @@ public class CameraController : MonoBehaviour
     [ButtonMethod]
     public void SwitchToFreeLook() {
         _freeLook = true;
+        _freelookLerpFactorTransition = 5;
+
+        _freelookTargetRot = Quaternion.identity;
+        _freelookParent.localEulerAngles = Vector3.zero;
+        _freeLookPitch = 0;
+        _freeLookYaw = 0;
+
         FreeLook();
     }
 
     public void SwitchToStatic()
     {
         _freeLook = false;
-        _camera.localEulerAngles = _originalCamEuler;
-        transform.localEulerAngles = new Vector3(0, -25, 0);
-        //transform.localEulerAngles = Vector3.zero;
     }
        
     private void FreeLook()

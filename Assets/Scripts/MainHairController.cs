@@ -1,19 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MainHairController : MonoBehaviour
 {
     [SerializeField] private List<FeatureSOData> _hairData;
-    [SerializeField] private SelectableItem _previousButton;
-    [SerializeField] private SelectableItem _nextButton;
     [SerializeField] private GameObject _optionPrefab;
     [SerializeField] private Transform _listParent;
     [SerializeField] private HairController _controller;
     [SerializeField] private FeatureSOData _defaultHair;
     [SerializeField] private ColorMenuController _color;
+
+    [Header("Page Buttons")]
+    [SerializeField] private TextMeshProUGUI _pageText;
+    [SerializeField] private SelectableItem _previousButton;
+    [SerializeField] private SelectableItem _nextButton;
 
     private int _currentlySelectedIndex;
     private List<MainHairOption> _spawnedOptions = new List<MainHairOption>();
@@ -55,17 +59,19 @@ public class MainHairController : MonoBehaviour
                 SpawnOption(_hairData[i]);
             }
         }
+
+        _pageText.text = (_currentPage + 1) + "/" + Mathf.CeilToInt(_hairData.Count / 9);
     }
 
     public void NextPage()
     {
-        if ((_currentPage + 1)* 9 > _hairData.Count) return;
+        if ((_currentPage + 1)* 9 >= _hairData.Count) return;
 
         _currentPage += 1;
         BuildList();
 
         _previousButton.SetDisabled(false);
-        if ((_currentPage + 1) * 9 > _hairData.Count) _nextButton.SetDisabled(true);
+        if ((_currentPage + 1) * 9 >= _hairData.Count) _nextButton.SetDisabled(true);
     }
 
     public void PreviousPage()

@@ -19,7 +19,9 @@ public class LayersMenuController : MonoBehaviour
     [SerializeField] private FaceMenu _faceMenu;
     [SerializeField] private ColorMenuController _colorMenu;
     [SerializeField] private bool _hairAddonLayers;
-
+    [SerializeField] private bool _transitionToMoveAutomatically;
+    [SerializeField, ConditionalField(nameof(_transitionToMoveAutomatically))] private SelectableItem _moveMenuButton;
+ 
     private List<Layer> _spawnedLayers = new List<Layer>();
     private FeatureTier _currentTier;
     private FeatureSubType _currentSubType;
@@ -119,6 +121,10 @@ public class LayersMenuController : MonoBehaviour
         if (_colorMenu) {
             added.SetColor(_colorMenu.GetColor());
             //added.SetColor(_colorMenu.GetDefaultColor());
+        }
+
+        if (_transitionToMoveAutomatically) {
+            _moveMenuButton.Select();
         }
     }
 
