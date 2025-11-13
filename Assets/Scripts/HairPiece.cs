@@ -60,7 +60,7 @@ public class HairPiece : FeatureObj
 
     protected override void UpdateDisplay()
     {
-        //_modelParent.transform.localScale = Vector3.one * Mathf.Lerp(Data.SizeLimits.x, Data.SizeLimits.y, Settings.Size);
+        if (!Data.IsMainHair) _modelParent.transform.localScale = Vector3.one * Mathf.Lerp(Data.SizeLimits.x, Data.SizeLimits.y, Settings.Size);
         UpdateColors();
 
         base.UpdateDisplay();

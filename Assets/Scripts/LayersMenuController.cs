@@ -38,6 +38,11 @@ public class LayersMenuController : MonoBehaviour
         SelectInitial();
     }
 
+    public void SetScale(float scale)
+    {
+        _featureController.GetCurrent().SetSize(scale);
+    }
+
     public bool HasCurrent()
     {
         if (_featureController == null) Initialize();

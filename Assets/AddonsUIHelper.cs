@@ -9,7 +9,6 @@ public class AddonsUIHelper : MonoBehaviour
     [SerializeField] private GameObject _expressionsParent;
     [SerializeField] private GameObject _nextButtonParent;
     [SerializeField] private GameObject _moveRotButonParent;
-    [SerializeField] private GameObject _sliderParent;
     [SerializeField] private GameObject _rmbPanParent;
     [SerializeField] private GameObject _lmbRotParent;
     [SerializeField] private LayersMenuController _layerMenu;
@@ -29,6 +28,11 @@ public class AddonsUIHelper : MonoBehaviour
     private void Update()
     {
         UpdateVisuals();
+    }
+
+    public void SetSize(float size)
+    {
+        _layerMenu.SetScale(size);
     }
 
     public void SwitchToMain()
