@@ -6,7 +6,7 @@ public class FeatureCategoryMenu : MonoBehaviour
 {
     [SerializeField] private GameObject _tabs;
     [SerializeField] private FaceMenu _faceMenuController;
-    [SerializeField] 
+    [SerializeField] private Animator _animator;
 
     private void OnEnable()
     {
@@ -15,8 +15,8 @@ public class FeatureCategoryMenu : MonoBehaviour
 
     public void SelectCategory(int category)
     {
-        _tabs.SetActive(true);  
-        gameObject.SetActive(false);
+        _tabs.SetActive(true);
+        _animator.SetTrigger("Exit");
 
         _faceMenuController.OpenCategory((FeatureCategory) category);
     }
