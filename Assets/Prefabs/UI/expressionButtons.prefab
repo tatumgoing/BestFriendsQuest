@@ -58,7 +58,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: 7160d7804104cf449b264aa9a7a0d415, type: 2}
+  m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -149,6 +149,7 @@ MonoBehaviour:
   _hoverCooldown: 0.05
   _hoverWhenSelected: 1
   _deHoverOnEnable: 0
+  _deHoverOnRenable: 0
   _data:
   - Name: shadow
     _type: 1
@@ -185,6 +186,43 @@ MonoBehaviour:
     _showGraphicSettings: 0
     _showGraphicColorSettings: 0
     _showGOSettings: 1
+    _showGroupSettings: 0
+    _showSpriteSettings: 0
+  - Name: backing
+    _type: 0
+    _graphic: {fileID: 2528746465533989771}
+    _useMaterials: 0
+    _colors:
+      _normal: {r: 0.6497864, g: 0.8558428, b: 0.9245283, a: 1}
+      _hovered: {r: 0.33882165, g: 0.7505564, b: 0.8867924, a: 1}
+      _selected: {r: 0.16470589, g: 0.69803923, b: 0.8745099, a: 1}
+      _disabled: {r: 1, g: 1, b: 1, a: 1}
+    _materials:
+      _normal: {fileID: 0}
+      _hovered: {fileID: 0}
+      _selected: {fileID: 0}
+      _disabled: {fileID: 0}
+    _gameObjectTarget: {fileID: 4371824413606648827}
+    _activeStates:
+      _normal: 1
+      _hovered: 1
+      _selected: 0
+      _disabled: 0
+    _canvasGroup: {fileID: 0}
+    _alphaValues:
+      _normal: 1
+      _hovered: 1
+      _selected: 1
+      _disabled: 1
+    _spriteTarget: {fileID: 0}
+    _sprites:
+      _normal: {fileID: 0}
+      _hovered: {fileID: 0}
+      _selected: {fileID: 0}
+      _disabled: {fileID: 0}
+    _showGraphicSettings: 1
+    _showGraphicColorSettings: 1
+    _showGOSettings: 0
     _showGroupSettings: 0
     _showSpriteSettings: 0
   _hasAnimation: 0
