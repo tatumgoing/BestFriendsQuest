@@ -52,22 +52,19 @@ public class IDCamera : MonoBehaviour
         idPicture.ReadPixels(captureRect, 0, 0);
         idPicture.Apply();
 
-        Color target = Utils.HexToColor("#83E221");
+        Color targetColor = Utils.HexToColor("#83E221");
+        var target = new Vector3(targetColor.r, targetColor.g, targetColor.b);
         Color[] pixels = idPicture.GetPixels();
 
+        int numReplaced = 0;
         for (int i = 0; i < pixels.Length; i++) {
-            // exact match
-            /*if (pixels[i].Equals(target)) {
-                pixels[i].a = 0f; // make transparent
-            }*/
-            
-            // OPTIONAL: fuzzy match (tolerance)
-            if (Vector3.Distance(new Vector3(pixels[i].r, pixels[i].g, pixels[i].b),
-                                 new Vector3(target.r, target.g, target.b)) < 0.05f)
+            if (Vector3.Distance(new Vector3(pixels[i].r, pixels[i].g, pixels[i].b), target) < 0.10f)
             {
+                numReplaced += 1;
                  pixels[i].a = 0f;
             }
         }
+        print("replaced " +  numReplaced + " pixels");
 
         idPicture.SetPixels(pixels);
         idPicture.Apply();
