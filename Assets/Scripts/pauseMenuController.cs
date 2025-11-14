@@ -5,7 +5,14 @@ using UnityEngine;
 public class pauseMenuController : MonoBehaviour
 {
     [SerializeField] private Sound _clickSound;
+    [SerializeField] private Sound _pauseSound;
     [SerializeField] private GameObject _settings;
+
+    private void OnEnable()
+    {
+        if (!_pauseSound.Instantialized) _pauseSound = Instantiate(_pauseSound);
+        _pauseSound.Play();
+    }
 
     private void Start()
     {
