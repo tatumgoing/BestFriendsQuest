@@ -70,6 +70,7 @@ public class AddMenuController : MonoBehaviour
 
     public void ChangeCategory(FeatureSubType type)
     {
+
         _currentDisplayType = type;
 
         foreach (var button in _categoryParent.GetComponentsInChildren<AddMenuCategoryButton>()) {

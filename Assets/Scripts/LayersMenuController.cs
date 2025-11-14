@@ -43,6 +43,11 @@ public class LayersMenuController : MonoBehaviour
         SelectInitial();
     }
 
+    private void Start()
+    {
+        if (_hairAddonLayers) Initialize(FeatureSubType.ADDONS);
+    }
+
     public void SetShowDetails(bool showDetails = true)
     {
         _detailsParent.SetActive(showDetails);
