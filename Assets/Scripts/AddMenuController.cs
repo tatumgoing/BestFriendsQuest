@@ -25,6 +25,7 @@ public class AddMenuController : MonoBehaviour
     private int _currentPage = 0;
     private FeatureSubType _currentDisplayType = FeatureSubType.MISC;
 
+
     private void OnEnable()
     {
         _currentPage = 0;
