@@ -41,6 +41,9 @@ public class LayersMenuController : MonoBehaviour
         _main.SetActive(true);
         _addMenu.gameObject.SetActive(false);
         SelectInitial();
+
+        if (_featureController == null) Initialize(_currentSubType);
+        print("Layers onEnable. hasCurrent: " + _featureController.HasCurrent() + ", currentType: ");
     }
 
     private void Start()
@@ -154,15 +157,28 @@ public class LayersMenuController : MonoBehaviour
 
     private void SelectInitial()
     {
-        if (_featureController == null) return;
+        if (_featureController == null) {
+            Initialize(_currentSubType);
+            if (_featureController == null) return;
+        }
 
         if (_hairAddonLayers && _spawnedLayers.Count > 0) {
             _spawnedLayers[0].GetComponent<SelectableItem>().Select();
         }
         else {
-            foreach (var layer in _spawnedLayers) {
-                if (layer.GetFeature() == _featureController.GetCurrent()) layer.GetComponent<SelectableItem>().Select();
+            for (int i = _spawnedLayers.Count-1; i >= 0; i--) {
+                if (_spawnedLayers[i].GetFeature().GetData().SubType == _currentSubType) {
+                    _spawnedLayers[i].GetComponent<SelectableItem>().Select();
+                    break;
+                }
             }
+
+            /*
+            foreach (var layer in _spawnedLayers) {
+                if (layer.GetFeature() == _featureController.GetCurrent()) {
+                    layer.GetComponent<SelectableItem>().Select();
+                }
+            }*/
         }
     }
 
@@ -195,6 +211,8 @@ public class LayersMenuController : MonoBehaviour
             if (facialFeature) _currentTier = facialFeature.Tier;
             AddLayer(feature);
         }
+
+        SelectInitial();
     }
 
     private void AddLayer(FeatureObj feature)

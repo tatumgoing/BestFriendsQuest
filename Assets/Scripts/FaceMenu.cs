@@ -49,9 +49,9 @@ public class FaceMenu : MonoBehaviour
 
         //print("category: " + category);
 
-        if (category == FeatureCategory.NOSE) _layers.Initialize(FeatureSubType.NOSE);
+        if (category == FeatureCategory.EYES) _layers.Initialize(FeatureSubType.EYES);
         else if (category == FeatureCategory.EYEBROWS) _layers.Initialize(FeatureSubType.BROWS);
-        else if (category == FeatureCategory.EYES) _layers.Initialize(FeatureSubType.EYES);
+        else if (category == FeatureCategory.NOSE) _layers.Initialize(FeatureSubType.NOSE);
         else if (category == FeatureCategory.MOUTH) _layers.Initialize(FeatureSubType.LIPS);
         else _layers.Initialize(FeatureSubType.LIPS);
 

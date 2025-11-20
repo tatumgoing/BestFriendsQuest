@@ -16,7 +16,7 @@ public class FaceFeatureController : MonoBehaviour, IFeatureController
     private FeatureCategory _currentCategory;
     private FeatureTier _currentPriority;
 
-    public bool HasCurrent() => CurrentFeatures.Count > 0;
+    public bool HasCurrent() => GetCurrentFeatures().Count > 0;
     public FacialFeature Current => _selected < CurrentFeatures.Count ? CurrentFeatures[_selected] : CurrentFeatures[0];
     public List<FeatureObj> GetCurrentFeatures() => CurrentFeatures.Where(x => x.Category == _currentCategory).Cast<FeatureObj>().ToList();
     public List<FeatureSOData> GetAllOptions() => _allFeatures;
