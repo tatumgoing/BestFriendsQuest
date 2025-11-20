@@ -21,7 +21,7 @@ public class FeatureSOData : ScriptableObject
     [ConditionalField(nameof(Type), false, FeatureType.HAIR)] public GameObject MainhairPrefab;
 
     [ConditionalField(nameof(Type), true, FeatureType.HAIR), SerializeField] private float _horiLimit;
-    //[ConditionalField(nameof(Type), false, FeatureType.Ear), SerializeField] private float _horiLimit;
+    [ConditionalField(nameof(Type), false, FeatureType.EAR), SerializeField] private float _earOffset;
     [ConditionalField(nameof(Type), true, FeatureType.HAIR)] public Vector2 VertLimits;
 
     [ConditionalField(nameof(Type), false, FeatureType.HAIR)] public bool IsMainHair;
@@ -38,5 +38,11 @@ public class FeatureSOData : ScriptableObject
     [Header("Defaults")]
     [SerializeField] private FeatureObjSettings _defaultSettings;
     public FeatureObjSettings DefaultSettings => _defaultSettings;
-    public Vector2 HoriLimits => new Vector2(-_horiLimit, _horiLimit);
+    public Vector2 HoriLimits => GetHoriLimits();
+
+    private Vector2 GetHoriLimits()
+    {
+        if (Type == FeatureType.EAR) return  new Vector2(_earOffset - _horiLimit, _earOffset+ _horiLimit);
+        else return new Vector2(-_horiLimit, _horiLimit);
+    }
 }

@@ -16,13 +16,7 @@ public class MovableAddon : MonoBehaviour
     private HairPiece _controller;
 
     public Transform Mirror => _mirror.transform;
-
-    private void Awake()
-    {
-        //gameObject.name = "hair: " + Random.Range(0, 1f);
-        //print(gameObject.name + " created");
-    }
-
+    
     private void Start()
     {
         _uiController = FindObjectOfType<AddonsUIHelper>();
