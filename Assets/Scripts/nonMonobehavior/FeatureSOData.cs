@@ -21,6 +21,7 @@ public class FeatureSOData : ScriptableObject
     [ConditionalField(nameof(Type), false, FeatureType.HAIR)] public GameObject MainhairPrefab;
 
     [ConditionalField(nameof(Type), true, FeatureType.HAIR), SerializeField] private float _horiLimit;
+    //[ConditionalField(nameof(Type), false, FeatureType.Ear), SerializeField] private float _horiLimit;
     [ConditionalField(nameof(Type), true, FeatureType.HAIR)] public Vector2 VertLimits;
 
     [ConditionalField(nameof(Type), false, FeatureType.HAIR)] public bool IsMainHair;
