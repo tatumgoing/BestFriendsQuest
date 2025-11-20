@@ -22,7 +22,7 @@ public class HairPiece : FeatureObj
         if (!IsMirroredVersion) {
             addOn.Initialize(MirroredFeature.GetComponentInChildren<MovableAddon>());
             MirroredFeature.GetComponentInChildren<MovableAddon>().Initialize(addOn);
-        } 
+        }
 
         addOn.Selected = selected; 
     }

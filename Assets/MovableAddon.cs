@@ -13,6 +13,7 @@ public class MovableAddon : MonoBehaviour
     [HideInInspector] private Vector3 TargetUp;
     private AddonsUIHelper _uiController;
     private MovableAddon _mirror;
+    private HairPiece _controller;
 
     public Transform Mirror => _mirror.transform;
 
@@ -25,6 +26,7 @@ public class MovableAddon : MonoBehaviour
     private void Start()
     {
         _uiController = FindObjectOfType<AddonsUIHelper>();
+        _controller = GetComponentInParent<HairPiece>();
     }
 
     public void Initialize(MovableAddon mirror)
@@ -34,6 +36,12 @@ public class MovableAddon : MonoBehaviour
 
     private void Update()
     {
+        if (_controller.IsMirroredVersion) {
+            var scale = transform.localScale;
+            scale.x = -Mathf.Abs(scale.x);
+            transform.localScale = scale;
+        }
+
         _rotationControls.SetActive(_uiController.Rotating && Selected);
         if (!Selected) return;
 
@@ -67,7 +75,8 @@ public class MovableAddon : MonoBehaviour
 
             if (_mirror) {
 
-                _mirror.TargetUp = Vector3.Scale(transform.parent.InverseTransformDirection(hitInfo.normal), new Vector3(-1, 1, 1));
+                var mirrorUp = Vector3.Scale(transform.parent.InverseTransformDirection(hitInfo.normal), new Vector3(-1, 1, 1));
+                _mirror.TargetUp = Quaternion.AngleAxis(180f, mirrorUp) * mirrorUp;
 
                 Vector3 localPos = transform.parent.InverseTransformPoint(hitInfo.point);
                 localPos.x = -localPos.x;
