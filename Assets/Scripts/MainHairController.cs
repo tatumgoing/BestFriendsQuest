@@ -60,7 +60,7 @@ public class MainHairController : MonoBehaviour
             }
         }
 
-        _pageText.text = (_currentPage + 1) + "/" + Mathf.CeilToInt(_hairData.Count / 9);
+        _pageText.text = (_currentPage + 1) + "/" + (Mathf.CeilToInt(_hairData.Count / 9) + 1);
     }
 
     public void NextPage()
