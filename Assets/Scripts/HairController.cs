@@ -41,9 +41,10 @@ public class HairController : MonoBehaviour, IFeatureController
 
     private void DeselectAllAddons()
     {
+        //print("deselect all addons");
         foreach (var i in _currentPieces) {
             var addon = i.GetComponentInChildren<MovableAddon>();
-            if (addon) addon.Selected = false;
+            if (addon) addon.SetSelected(false);
         }
     }
 
@@ -167,6 +168,7 @@ public class HairController : MonoBehaviour, IFeatureController
             if (feature == _currentPieces[i]) {
                 _currentIndex = i;
                 _currentPieces[i].SetSelected(true);
+                //print("Selected: " + _currentIndex + ", Name: " + feature.GetData().Name + ", name: " + feature.GetData().name);
             }
             else _currentPieces[i].SetSelected(false);
         }
