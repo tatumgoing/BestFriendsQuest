@@ -43,7 +43,7 @@ public class LayersMenuController : MonoBehaviour
         SelectInitial();
 
         if (_featureController == null) Initialize(_currentSubType);
-        print("Layers onEnable. hasCurrent: " + _featureController.HasCurrent() + ", currentType: ");
+        //print("Layers onEnable. hasCurrent: " + _featureController.HasCurrent() + ", currentType: ");
     }
 
     private void Start()
@@ -163,12 +163,13 @@ public class LayersMenuController : MonoBehaviour
         }
 
         if (_hairAddonLayers && _spawnedLayers.Count > 0) {
-            _spawnedLayers[0].GetComponent<SelectableItem>().Select();
+            _spawnedLayers[0].GetComponent<Layer>().Select();
         }
         else {
             for (int i = _spawnedLayers.Count-1; i >= 0; i--) {
                 if (_spawnedLayers[i].GetFeature().GetData().SubType == _currentSubType) {
-                    _spawnedLayers[i].GetComponent<SelectableItem>().Select();
+                    
+                    _spawnedLayers[i].GetComponent<SelectableItem>().Select(true);
                     break;
                 }
             }
