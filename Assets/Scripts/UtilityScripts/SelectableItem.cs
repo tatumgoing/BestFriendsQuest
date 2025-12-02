@@ -357,7 +357,7 @@ public class SelectableItem : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     private void UpdateAnimator()
     {
-        if (!_hasAnimation) return;
+        if (!_hasAnimation || !_animator) return;
         _animator.SetBool(_animationSelectedBool, _visualState == ButtonState.SELECTED);
         _animator.SetBool(_animationHoveredBool, _visualState == ButtonState.HOVERED);
         _animator.SetBool(_animationDisabledBool, _visualState == ButtonState.DISABLED);

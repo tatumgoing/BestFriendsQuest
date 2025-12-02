@@ -16,7 +16,7 @@ public class MovableAddon : MonoBehaviour
     private HairPiece _controller;
 
     public Transform Mirror => _mirror.transform;
-    
+
     private void Start()
     {
         _uiController = FindObjectOfType<AddonsUIHelper>();
@@ -41,13 +41,16 @@ public class MovableAddon : MonoBehaviour
             transform.localScale = scale;
         }
 
-        _rotationControls.SetActive(_uiController.Rotating && Selected);
+
+        //_rotationControls.SetActive(_uiController.Rotating && Selected);
+        _rotationControls.SetActive(true);
         if (!Selected) return;
 
         Quaternion targetLocalRot = Quaternion.FromToRotation(Vector3.up, TargetUp) * Quaternion.identity;
         transform.localRotation = Quaternion.Slerp(transform.localRotation, targetLocalRot, 15 * Time.deltaTime);
 
-        if (_rotationControls.activeInHierarchy) {
+
+        if (_uiController.Rotating) {
             _dragging = false;
             return;
         }

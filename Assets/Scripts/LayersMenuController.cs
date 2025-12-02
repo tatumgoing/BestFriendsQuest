@@ -142,6 +142,11 @@ public class LayersMenuController : MonoBehaviour
         if (_transitionToMoveAutomatically) {
             _moveMenuButton.Select();
         }
+
+        if (_hairAddonLayers && data.DefaultSettings.Mirror != MirrorType.BOTH) {
+            EnableMirror(added);
+            DisableMirror(added);
+        }
     }
 
     public void Initialize(FeatureSubType category = FeatureSubType.ALL)
