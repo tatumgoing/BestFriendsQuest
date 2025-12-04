@@ -1,3 +1,4 @@
+using MyBox;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,9 +8,16 @@ public class AnimationEventCoordinator : MonoBehaviour
 {
     [SerializeField] private List<UnityEvent> _events = new List<UnityEvent>();
     [SerializeField] private List<Sound> _sounds = new List<Sound>();
+    [SerializeField] private bool _randomStart;
+    [SerializeField, ConditionalField(nameof(_randomStart))] private Animator _animator;
 
     private void Start()
     {
+        if (_randomStart && _animator != null) {
+            _animator.Play(0, -1, Random.Range(0, 1f));
+            _animator.speed *= Random.Range(0.95f, 1.05f);
+        }
+
         for (int i = 0; i < _sounds.Count; i++) {
             _sounds[i] = Instantiate(_sounds[i]);
         }
