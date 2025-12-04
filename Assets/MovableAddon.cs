@@ -42,8 +42,7 @@ public class MovableAddon : MonoBehaviour
         }
 
 
-        //_rotationControls.SetActive(_uiController.Rotating && Selected);
-        _rotationControls.SetActive(true);
+        _rotationControls.SetActive(_uiController.Rotating && Selected);
         if (!Selected) return;
 
         Quaternion targetLocalRot = Quaternion.FromToRotation(Vector3.up, TargetUp) * Quaternion.identity;
