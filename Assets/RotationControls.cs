@@ -14,6 +14,7 @@ public class RotationControls : MonoBehaviour
     [SerializeField] private Vector3 _alphaRange = new Vector3(0.2f, 0.5f, 0.9f);
     [SerializeField] private LayerMask _hoverLayers;
     [SerializeField] private float _rotationSpeed = 1;
+    private AddonsUIHelper _uiController;
 
     private MovableAddon _controller;
     private bool _spinning;
@@ -27,13 +28,14 @@ public class RotationControls : MonoBehaviour
 
     private void Start()
     {
+        _uiController = FindObjectOfType<AddonsUIHelper>();
         _controller = GetComponentInParent<MovableAddon>();
         SetAllAlphas(_alphaRange.x);
     }
 
     private void Update()
     {
-        if (!_controller.Selected) return;
+        if (!_controller.Selected || !_uiController.Rotating) return;
 
         if (_spinning) {
 
@@ -47,7 +49,9 @@ public class RotationControls : MonoBehaviour
                 _mirror.rotation = _mirrorStartRot * Quaternion.AngleAxis(-_rotAngle, _rotAxis);
             }
 
-            //_controller.Mirror.transform.GetChild(0).localRotation = transform.parent.localRotation;
+            if (!_mirror.gameObject.activeInHierarchy && _currentAxis == Axis.Z) {
+                _mirror.rotation = _mirrorStartRot * Quaternion.AngleAxis(_rotAngle, _rotAxis);
+            }
 
             if (Input.GetMouseButtonUp(0)) {
                 Cursor.lockState = CursorLockMode.Confined;

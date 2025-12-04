@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MovableAddon : MonoBehaviour
 {
-    public bool Selected;
+    public bool Selected { get; private set;}
     [SerializeField] private LayerMask _hitLayers;
     [SerializeField] private LayerMask _hoverLayers;
     [SerializeField] private GameObject _rotationControls;
@@ -16,11 +16,16 @@ public class MovableAddon : MonoBehaviour
     private HairPiece _controller;
 
     public Transform Mirror => _mirror.transform;
-    
+
     private void Start()
     {
         _uiController = FindObjectOfType<AddonsUIHelper>();
         _controller = GetComponentInParent<HairPiece>();
+    }
+
+    public void SetSelected(bool selected)
+    {
+        Selected = selected;
     }
 
     public void Initialize(MovableAddon mirror)
@@ -36,28 +41,31 @@ public class MovableAddon : MonoBehaviour
             transform.localScale = scale;
         }
 
+
         _rotationControls.SetActive(_uiController.Rotating && Selected);
         if (!Selected) return;
 
         Quaternion targetLocalRot = Quaternion.FromToRotation(Vector3.up, TargetUp) * Quaternion.identity;
         transform.localRotation = Quaternion.Slerp(transform.localRotation, targetLocalRot, 15 * Time.deltaTime);
 
-        if (_rotationControls.activeInHierarchy) {
+
+        if (_uiController.Rotating) {
             _dragging = false;
             return;
-        }
-        else {
-            //Quaternion targetLocalRot = Quaternion.FromToRotation(Vector3.up, TargetUp) * Quaternion.identity;
-            //transform.localRotation = Quaternion.Slerp(transform.localRotation, targetLocalRot, 15 * Time.deltaTime);
         }
 
         if (!_dragging) {
             var didHover = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out var hoverInfo, 1000, _hoverLayers);
+
+            /*if (didHover) {
+                print("collider: " + hoverInfo.collider.gameObject.name);
+            }*/
+
             if (!didHover || hoverInfo.collider.GetComponentInParent<MovableAddon>() != this) return;
 
             if (Input.GetMouseButtonDown(0)) _dragging = true;
         }
-        else {
+        else {  
 
             if (Input.GetMouseButtonUp(0)) _dragging = false;
 

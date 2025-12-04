@@ -12,6 +12,7 @@ public class HairPiece : FeatureObj
 
     public void SetSelected(bool selected)
     {
+        //print("trying to set selected for " + Data.name);
         //print("setting selected: " + selected + ", isMirrored: " + IsMirroredVersion + ", mirroredFeature == null: " + (MirroredFeature == null));
 
         if (!IsMirroredVersion && MirroredFeature != null) MirroredFeature.As<HairPiece>().SetSelected(selected);
@@ -24,7 +25,8 @@ public class HairPiece : FeatureObj
             MirroredFeature.GetComponentInChildren<MovableAddon>().Initialize(addOn);
         }
 
-        addOn.Selected = selected; 
+        // print("Set selected: " + selected + ", name: " + Data.name);
+        addOn.SetSelected(selected); 
     }
 
     public void Initialize(FeatureSOData newData, HairController controller)
