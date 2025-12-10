@@ -221,6 +221,7 @@ GameObject:
   - component: {fileID: 268784782261423809}
   - component: {fileID: 5104345438566990072}
   - component: {fileID: 5400947386845818284}
+  - component: {fileID: 5602541016607209730}
   m_Layer: 5
   m_Name: characterCreatorTitleButton
   m_TagString: Untagged
@@ -269,6 +270,7 @@ MonoBehaviour:
   _hoverCooldown: 0.05
   _hoverWhenSelected: 1
   _deHoverOnEnable: 0
+  _deHoverOnRenable: 0
   _data:
   - Name: backing
     _type: 0
@@ -406,6 +408,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _message: Create a character from scratch
+--- !u!95 &5602541016607209730
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2998532877825990620}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 5f24632d2391a6a4bba06ba92e8932ae, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &3224155613444683706
 GameObject:
   m_ObjectHideFlags: 0
