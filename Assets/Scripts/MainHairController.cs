@@ -34,7 +34,7 @@ public class MainHairController : MonoBehaviour
     {
         if (_initialized) return;
         _initialized = true;
-        _hairData = Resources.LoadAll<FeatureSOData>("HairFeatures").Where(x => x.IsMainHair).ToList();
+        _hairData = Resources.LoadAll<FeatureSOData>("HairFeatures").Where(x => x.IsMainHair).OrderByDescending(x => x.Priority).ToList();
         for (int i = 0; i < _hairData.Count; i++) {
             if (_hairData[i] == _defaultHair) _currentlySelectedIndex = i;
         }

@@ -14,7 +14,7 @@ public class EarController : MonoBehaviour, IFeatureController
 
     private void Start()
     {
-        _allOptions = Resources.LoadAll<FeatureSOData>("earFeatures").ToList();
+        _allOptions = Resources.LoadAll<FeatureSOData>("earFeatures").OrderByDescending(x => x.Priority).ToList();
 
         _currentEar = GetComponentInChildren<Ear>();
         _currentEar.initilize();

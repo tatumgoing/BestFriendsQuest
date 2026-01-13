@@ -27,7 +27,7 @@ public class HairController : MonoBehaviour, IFeatureController
 
     private void Awake()
     {
-        _allOptions = Resources.LoadAll<FeatureSOData>("HairFeatures").ToList();
+        _allOptions = Resources.LoadAll<FeatureSOData>("HairFeatures").OrderByDescending(x => x.Priority).ToList();
     }
 
     private void Start()

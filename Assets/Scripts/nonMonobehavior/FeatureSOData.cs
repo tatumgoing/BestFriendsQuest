@@ -15,6 +15,9 @@ public class FeatureSOData : ScriptableObject
     [ConditionalField(nameof(Type), true, FeatureType.EAR)] public FeatureSubType SubType;
     public Sprite Icon;
 
+    [Tooltip("Higher priority features are shown at the beginning of the list. Ties are sorted alphabetically.")]
+    public int Priority;
+
     [ConditionalField(nameof(Type), false, FeatureType.FACE)] public Texture2D Texture;
     [ConditionalField(nameof(Type), false, FeatureType.FACE)] public Texture2D ColorMask;
 

@@ -12,7 +12,7 @@ public class AddonHairController : MonoBehaviour
 
     private void Start()
     {
-        _hairData = Resources.LoadAll<FeatureSOData>("HairFeatures").Where(x => !x.IsMainHair).ToList();
+        _hairData = Resources.LoadAll<FeatureSOData>("HairFeatures").Where(x => !x.IsMainHair).OrderByDescending(x => x.Priority).ToList();
     }
 
     public void OpenAddMenu()

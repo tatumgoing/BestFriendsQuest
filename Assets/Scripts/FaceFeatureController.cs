@@ -32,7 +32,7 @@ public class FaceFeatureController : MonoBehaviour, IFeatureController
 
     private void Awake()
     {
-        _allFeatures = Resources.LoadAll<FeatureSOData>("FacialFeatures").ToList();
+        _allFeatures = Resources.LoadAll<FeatureSOData>("FacialFeatures").OrderByDescending(x => x.Priority).ToList();
     }
 
     private void Start()
