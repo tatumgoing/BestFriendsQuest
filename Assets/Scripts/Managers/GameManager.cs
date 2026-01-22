@@ -5,7 +5,10 @@ using System.IO;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
+
+public enum GameMode { SIMPLE, ADVANCED}
 
 [RequireComponent(typeof(InputController))]
 public class GameManager : MonoBehaviour
@@ -14,6 +17,7 @@ public class GameManager : MonoBehaviour
     public const int idLength = 4;
     private void Awake() { i = this; }
 
+    [SerializeField] private GameMode _mode;
     [SerializeField] GameObject _pauseMenu;
     [SerializeField] Fade _fade;
     [SerializeField] MusicPlayer _music;
@@ -25,6 +29,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextAsset _wordsFile;
     [HideInInspector] public Dictionary<int, string> IntToWord = new Dictionary<int, string>();
     [HideInInspector] public Dictionary<string, int> WordToInt = new Dictionary<string, int>();
+ 
+    public bool Advanced => _mode == GameMode.ADVANCED;
+    [HideInInspector] public UnityEvent OnModeChange;
+    private List<ModeExlusiveItem> _modeExlusiveItems = new List<ModeExlusiveItem>();
 
     public string Path => System.IO.Path.Combine(Application.streamingAssetsPath, _saveFileName);
 
@@ -37,6 +45,15 @@ public class GameManager : MonoBehaviour
         }
 
         _fade.Disappear();
+
+        _modeExlusiveItems = FindObjectsByType<ModeExlusiveItem>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList();
+        UpdateMode();
+    }
+
+    private void UpdateMode()
+    {
+        _modeExlusiveItems.ForEach(item => item.UpdateMode(_mode));
+        OnModeChange.Invoke();
     }
 
     private void Update()

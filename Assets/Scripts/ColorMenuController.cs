@@ -22,6 +22,7 @@ public class ColorMenuController : MonoBehaviour
     [Header("Modes")]
     [SerializeField] private Animator _basicParent;
     [SerializeField] private Animator _advancedParent;
+    [SerializeField] private GameObject _advancedModeParentToggle;
 
     [Header("Basic mode")]
     [SerializeField] private List<BasicColorData> _basicColors;
@@ -89,6 +90,12 @@ public class ColorMenuController : MonoBehaviour
             if (Input.GetMouseButtonUp(0)) StopSelecting();
             else UpdateCurrentColor();
         } 
+    }
+
+    public void SetAdvancedMode(GameMode advanced)
+    { 
+        _advancedModeParentToggle.SetActive(advanced == GameMode.ADVANCED);
+        if (advanced == GameMode.SIMPLE) SetMode(false);
     }
 
     public Color GetColor()
