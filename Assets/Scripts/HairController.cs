@@ -56,6 +56,7 @@ public class HairController : MonoBehaviour, IFeatureController
 
         var parts = saveString.Split("&");
         foreach (var p in parts) {
+            print("adding hair feature: " + p);
             AddFeatureFromString(p);
         }
     }
@@ -64,7 +65,7 @@ public class HairController : MonoBehaviour, IFeatureController
     {
         var parts = featureString.Split("~");
         FeatureSOData selected = null;
-        foreach (var f in _allOptions) if (f.Icon.name == parts[0]) selected = f;
+        foreach (var f in _allOptions) if (f.name == parts[0]) selected = f;
         var newFeature = AddFeature(selected);
         newFeature.ConfigureFromString(parts[1]);
     }
@@ -133,6 +134,7 @@ public class HairController : MonoBehaviour, IFeatureController
 
     public FeatureObj AddFeature(FeatureSOData data)
     {
+        //print("adding hair. isMain: " + data.IsMainHair + ", name: " +  data.name);
         if (data.IsMainHair) {
             for (int i = _currentPieces.Count - 1; i >= 0; i--) {
                 if (_currentPieces[i].GetData().IsMainHair) Delete(_currentPieces[i]);

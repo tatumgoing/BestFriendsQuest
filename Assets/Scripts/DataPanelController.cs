@@ -51,7 +51,9 @@ public class CharacterProfileData
         };
 
         var joined = string.Join(seperator, list);
-        
+
+        if (Name == "" || Name == null || Name.Length < 1) return "___" + joined; 
+
         return joined;
     }
 
@@ -110,7 +112,7 @@ public class DataPanelController : MonoBehaviour
         _birthdayDropdowns[1].SetValueWithoutNotify(_currentData.Birthday.Day - 1);
         _birthdayDropdowns[2].SetValueWithoutNotify(2025 - _currentData.Birthday.Year);
 
-        _colorDropdown.SetValueWithoutNotify((int)_currentData.FavColor);
+        _colorDropdown.value = (int)_currentData.FavColor;
     }
 
     public void UpdateAttraction(Attraction gender, bool state)

@@ -62,7 +62,11 @@ public class ColorMenuController : MonoBehaviour
 
     private void Start()
     {
-        _initialized = true;
+        Initialize();
+    }
+
+    public void Initialize()
+    {
         _basicOptions = _basicGridParent.GetComponentsInChildren<BasicColorOption>().ToList();
         for (int i = 0; i < _basicOptions.Count; i++) {
             if (i >= _basicColors.Count) break;
@@ -70,18 +74,19 @@ public class ColorMenuController : MonoBehaviour
             _basicOptions[i].Initialize(_basicColors[i], this);
         }
 
-        _basicOptions[0].SelectButton();
-
         CreateTextures();
         _advancedSelector.enabled = false;
         _invoke = false;
         UpdateHue();
         _invoke = true;
 
-        SetFromHexCode(_defaultColor.ToHex());
-        UpdateCurrentColor();
+        if (!_initialized) _basicOptions[0].SelectButton();
+        if (!_initialized) SetFromHexCode(_defaultColor.ToHex());
 
+        UpdateCurrentColor();
         SetMode(false);
+
+        _initialized = true;
     }
 
     private void Update()
@@ -139,6 +144,16 @@ public class ColorMenuController : MonoBehaviour
         UpdateCurrentColor();
     }
 
+    public void SetColor(Color color)
+    {
+        SetFromHexCode(color.ToHex());
+        _basicColor = color;
+        foreach (var b in _basicOptions) {
+            if (b.Color == color) b.Select();
+            else b.Deselect();
+        }
+    }
+
     public void SetFromHexCode(string hex)
     {
         _inputingHex = true;
@@ -158,7 +173,6 @@ public class ColorMenuController : MonoBehaviour
 
     private void UpdateCurrentColor()
     {
-
         if (!_inputingHex) {
             bool updateSatVal = true;
             bool updateColor = true;
@@ -176,6 +190,8 @@ public class ColorMenuController : MonoBehaviour
 
         _currentColorImg.color = _currentColor;
         if (_invoke) _onChangeColor.Invoke(_currentColor);
+
+        //print("Updated current color: " + _currentColor.ToHex());
     }
 
     private void StopSelecting()

@@ -24,7 +24,7 @@ public class EarController : MonoBehaviour, IFeatureController
     {
         var parts = saveString.Split("~");
         FeatureSOData selected = null;
-        foreach (var f in _allOptions) if (f.Icon.name == parts[0]) selected = f;
+        foreach (var f in _allOptions) if (f.name == parts[0]) selected = f;
         _currentEar.SetData(selected);
         _currentEar.ConfigureFromString(parts[1]);
     }

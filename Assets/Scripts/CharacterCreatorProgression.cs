@@ -29,7 +29,7 @@ public class CharacterCreatorProgression : MonoBehaviour
         _facialFeaturesTabButton.Select(true);
         FocusFace();
 
-        await Task.Delay(100);
+        //await Task.Delay(100);
         _hairController.UpdateVisuals();
     }
 

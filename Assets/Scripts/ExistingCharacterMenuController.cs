@@ -11,6 +11,8 @@ public class ExistingCharacterMenuController : MonoBehaviour
     [SerializeField] private CharacterMetaController _characterController;
     [SerializeField] private CharacterCreatorProgression _progression;
     [SerializeField] private Transform _buttonListParent;
+    [SerializeField] private MainHairController _mainHairController;
+    [SerializeField] private ColorMenuController _skinColorController;
 
     [ReadOnly, SerializeField] private List<string> _saveStrings;
 
@@ -31,7 +33,7 @@ public class ExistingCharacterMenuController : MonoBehaviour
         }
 
         var savedText = File.ReadAllText(GameManager.i.Path);
-        _saveStrings = savedText.Split('\n').ToList();
+        _saveStrings = savedText.Split('\n').Where(x => x.Length > 0).ToList();
         var IDs = _saveStrings.Select(x => x.Substring(0, GameManager.idLength)).ToList();
 
         for (int i = 0; i < _saveStrings.Count; i++) {
@@ -57,9 +59,11 @@ public class ExistingCharacterMenuController : MonoBehaviour
 
     public void LoadCharacter(int index)
     {
-        print("loading character " + index);
-
         _progression.StartNew();
+        _skinColorController.Initialize();
         _characterController.LoadFromString(_saveStrings[index]);
+        _mainHairController.SetHair(_saveStrings[index]);
+        _skinColorController.SetColor(_characterController.SkinColor);
+
     }
 }

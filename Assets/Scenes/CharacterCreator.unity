@@ -17893,6 +17893,8 @@ MonoBehaviour:
   _characterController: {fileID: 386316190}
   _progression: {fileID: 2053537679}
   _buttonListParent: {fileID: 1479147480}
+  _mainHairController: {fileID: 247497124}
+  _skinColorController: {fileID: 1252040731}
   _saveStrings: []
 --- !u!1 &851367946 stripped
 GameObject:
@@ -19572,15 +19574,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3973643080318979529, guid: 640dbe6ea0bc5954886862c67c639947, type: 3}
       propertyPath: _colors.List.Array.data[3].UseColor.b
-      value: 0.1254902
+      value: 0.08677464
       objectReference: {fileID: 0}
     - target: {fileID: 3973643080318979529, guid: 640dbe6ea0bc5954886862c67c639947, type: 3}
       propertyPath: _colors.List.Array.data[3].UseColor.g
-      value: 0.8235295
+      value: 0.735849
       objectReference: {fileID: 0}
     - target: {fileID: 3973643080318979529, guid: 640dbe6ea0bc5954886862c67c639947, type: 3}
       propertyPath: _colors.List.Array.data[3].UseColor.r
-      value: 0.47058827
+      value: 0.5450026
       objectReference: {fileID: 0}
     - target: {fileID: 3973643080318979529, guid: 640dbe6ea0bc5954886862c67c639947, type: 3}
       propertyPath: _colors.List.Array.data[4].UseColor.a
@@ -28866,6 +28868,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 408139774439914567, guid: c092382393a2b4443b1ed8cafef71907, type: 3}
   m_PrefabInstance: {fileID: 1252040729}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1252040731 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3925489662723602751, guid: c092382393a2b4443b1ed8cafef71907, type: 3}
+  m_PrefabInstance: {fileID: 1252040729}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cba1b87494dc3e247b6a3867a8267352, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1254423233
 GameObject:
   m_ObjectHideFlags: 0
@@ -44596,14 +44609,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e44d7ef2bdf6f15448286ada8073beff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mode: 0
+  _mode: 1
   _pauseMenu: {fileID: 851367946}
   _fade: {fileID: 1850353632}
   _music: {fileID: 1696069545}
   Camera: {fileID: 331635238}
   _character: {fileID: 386316190}
   _saveFileName: characters.txt
-  _wordsFile: {fileID: 4900000, guid: 22d25a1e4088e0744a0a3a9ca75739ea, type: 3}
   OnModeChange:
     m_PersistentCalls:
       m_Calls: []

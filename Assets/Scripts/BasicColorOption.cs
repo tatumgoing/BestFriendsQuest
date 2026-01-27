@@ -10,6 +10,7 @@ public class BasicColorOption : MonoBehaviour
     [SerializeField] private Tooltip _toolTip;
 
     private ColorMenuController _controller;
+    public Color Color => _color.color;
 
     public void SelectButton() => _button.Select();
 

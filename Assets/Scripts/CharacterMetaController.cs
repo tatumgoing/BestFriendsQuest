@@ -145,6 +145,8 @@ public class CharacterMetaController : MonoBehaviour
 
     public string GetSaveString()
     {
+        var dataSaveString = Data.ToString().Replace("___", ID);
+
         var list = new List<string>
         {
             _face.GetSaveString(),
@@ -152,7 +154,7 @@ public class CharacterMetaController : MonoBehaviour
             _ears.GetSaveString(),
             _skinColor.ToHex(),
             _bodyCustomizer.GetSaveString(),
-            Data.ToString(),
+            dataSaveString,
         };
 
         return ID + string.Join("|", list);

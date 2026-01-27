@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Windows;
 
 public class MainHairController : MonoBehaviour
 {
@@ -28,6 +30,18 @@ public class MainHairController : MonoBehaviour
     private void Awake()
     {
         if (!_initialized) Initialize();
+    }
+
+    public void SetHair(string saveString)
+    {
+        Initialize();
+        var data = saveString.Split('|')[1].Split('~')[0];
+        //print("hairData: " + data);
+
+        for (int i = 0; i < _hairData.Count; i++) {
+            //print("name: " +  _hairData[i].Icon.name + ", equals data: " + (_hairData[i].Icon.name == data));
+            if (_hairData[i].name == data) _currentlySelectedIndex = i;
+        }
     }
 
     private void Initialize()
@@ -114,6 +128,7 @@ public class MainHairController : MonoBehaviour
     {
         if (!_initialized) Initialize();
 
+        //print("initializing hair to " + _hairData[_currentlySelectedIndex].name);
         _controller.AddFeature(_hairData[_currentlySelectedIndex]);
         _controller.SetCurrentColor(_color.GetColor());
 
