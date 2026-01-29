@@ -1,7 +1,8 @@
- using UnityEngine;
+﻿ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using System.IO;
+using System.Runtime.CompilerServices;
 
 public static class Utils
 {
@@ -13,6 +14,9 @@ public static class Utils
 
     public static float Rand(Vector2 range) => Random.Range(range.x, range.y);
 
+    private static int AXIS_BITS = 6;
+    private static int AXIS_STEPS = 1 << AXIS_BITS;
+
     public static Color HexToColor(string hex)
     {
         if (hex.StartsWith("#")) hex = hex.Substring(1);
@@ -22,6 +26,78 @@ public static class Utils
         return new Color32(r, g, b, 255);
     }
 
+    public static int QuantizeAngle(float degrees)
+    {
+        degrees = Mathf.Repeat(degrees, 360f);
+
+        int q = Mathf.RoundToInt( degrees / 360f * (AXIS_STEPS - 1) );
+        
+        // prevent negative or overflow:
+        return Mathf.Clamp(q, 0, AXIS_STEPS - 1);
+    }
+
+    public static float DequantizeAngle(int q)
+    {
+        return q / (float) (AXIS_STEPS - 1) * 360f;
+    }
+
+    public static string EncodeQuaternions12(Quaternion a, Quaternion b)
+    {
+        Vector3 eulerA = a.eulerAngles;
+        Vector3 EuerlB = b.eulerAngles;
+
+        ulong packed = 0;
+        int shift = 0;
+
+        void Pack(float angle)
+        {
+            if (shift >= 36)
+                throw new System.Exception("Quaternion pack overflow");
+
+            ulong q = (ulong)QuantizeAngle(angle); // 0–63
+            packed |= q << shift;
+            shift += 6;
+        }
+
+        Pack(eulerA.x);
+        Pack(eulerA.y);
+        Pack(eulerA.z);
+        Pack(EuerlB.x);
+        Pack(EuerlB.y);
+        Pack(EuerlB.z);
+
+        // This value is guaranteed < 2^36 ≈ 6.87e10
+        // Which fits comfortably in 12 digits
+        return packed.ToString("D12");
+    }
+
+    public static void DecodeQuaternions12(string inputString, out Quaternion QuaternionA, out Quaternion QuaternionB)
+    {
+        ulong packed = ulong.Parse(inputString);
+        int shift = 0;
+
+        float UnpackAxis()
+        {
+            int q = (int)((packed >> shift) & (ulong)(AXIS_STEPS - 1));
+            shift += AXIS_BITS;
+            return DequantizeAngle(q);
+        }
+
+        Vector3 eulerA = new Vector3(
+            UnpackAxis(),
+            UnpackAxis(),
+            UnpackAxis()
+        );
+
+        Vector3 eulerB = new Vector3(
+            UnpackAxis(),
+            UnpackAxis(),
+            UnpackAxis()
+        );
+
+        QuaternionA = Quaternion.Euler(eulerA);
+        QuaternionB = Quaternion.Euler(eulerB);
+    }
 
     public static string CapitalFirst(string input)
     {

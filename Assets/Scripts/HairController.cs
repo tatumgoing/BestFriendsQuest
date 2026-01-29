@@ -56,7 +56,7 @@ public class HairController : MonoBehaviour, IFeatureController
 
         var parts = saveString.Split("&");
         foreach (var p in parts) {
-            print("adding hair feature: " + p);
+            //print("adding hair feature: " + p);
             AddFeatureFromString(p);
         }
     }
@@ -68,6 +68,8 @@ public class HairController : MonoBehaviour, IFeatureController
         foreach (var f in _allOptions) if (f.name == parts[0]) selected = f;
         var newFeature = AddFeature(selected);
         newFeature.ConfigureFromString(parts[1]);
+
+        print("Adding hair feature from string. name: " + selected.name + ", featureString: " + featureString + ", number part: " + parts[1]);
     }
 
     public string GetSaveString()

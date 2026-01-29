@@ -64,22 +64,16 @@ public class GameManager : MonoBehaviour
         var characters = File.ReadAllText(Path).Split("\n").ToList();
         bool found = false;
         for (int i = 0; i < characters.Count; i++) {
-            print("found character: " + characters[i]);
-
-            if (characters[i].Length > 0) print("Looking for : " + _character.ID + ", foundID: " + characters[i][..idLength]);
-
+            
             if (characters[i].Length > 0 && characters[i][..idLength] == _character.ID) {
-                print("FOUND ID MATCHED");
+                //print("FOUND ID MATCHED");
                 characters[i] = newData;
                 found = true;
                 break;
             }
-            else {
-                print("found ID didn't match search ID");
-            }
         }
         if (!found) {
-            print("target ID not found, adding new character");
+            //print("target ID not found, adding new character");
             characters.Add(newData);
         }
 
@@ -93,7 +87,6 @@ public class GameManager : MonoBehaviour
 
         var saveString = File.ReadAllText(Path);
         _character.LoadFromString(saveString);
-        print("loaded sucessfully from: " + Path);
     }
 
     void TogglePause()

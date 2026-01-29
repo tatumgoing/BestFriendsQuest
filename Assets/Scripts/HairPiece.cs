@@ -33,7 +33,7 @@ public class HairPiece : FeatureObj
 
     public void Initialize(HairController controller)
     {
-        print("initialize called on: " + Data.name);
+        //print("initialize called on: " + Data.name);
         _controller = controller;
 
         if (_modelParent == null) _modelParent = Instantiate(Data.MainhairPrefab, transform).transform;
