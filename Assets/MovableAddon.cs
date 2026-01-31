@@ -1,5 +1,7 @@
+using MyBox;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.PackageManager;
 using UnityEngine;
 
 public class MovableAddon : MonoBehaviour
@@ -10,7 +12,8 @@ public class MovableAddon : MonoBehaviour
     [SerializeField] private GameObject _rotationControls;
 
     private bool _dragging;
-    [HideInInspector] private Vector3 TargetUp;
+    [ReadOnly, SerializeField] private Vector3 _targetUp;
+    [ReadOnly, SerializeField] private Vector3 _currentUp;
     private AddonsUIHelper _uiController;
     private MovableAddon _mirror;
     private HairPiece _controller;
@@ -31,7 +34,7 @@ public class MovableAddon : MonoBehaviour
         var parentRot = transform.localRotation;
         var childRot = transform.GetChild(0).localRotation;
         var returnString = Utils.EncodeQuaternions12(parentRot, childRot);
-        print("generated return quatString. rotA: " + parentRot + ", childRot: " + childRot + ", returnString: " + returnString);
+        //print("generated return quatString. rotA: " + parentRot + ", childRot: " + childRot + ", returnString: " + returnString);
 
         return returnString;
     }
@@ -40,10 +43,18 @@ public class MovableAddon : MonoBehaviour
     {
         Utils.DecodeQuaternions12(inputString, out var parentRot, out var childRot);
 
-        print("decoded quatString. rotA: " + parentRot + ", childRot: " + childRot + ", inputString: " + inputString);
+        //print("decoded quatString. rotA: " + parentRot + ", childRot: " + childRot + ", inputString: " + inputString);
 
         transform.localRotation = parentRot;
-        transform.GetChild(0).localRotation = childRot; 
+        transform.GetChild(0).localRotation = childRot;
+
+        _currentUp = transform.up;
+        _targetUp = transform.localRotation * Vector3.up;
+
+        if (_mirror) {
+            Vector3 mirrorUp = Vector3.Scale(_targetUp, new Vector3(-1f, 1f, 1f));
+            _mirror._targetUp = Quaternion.AngleAxis(180f, mirrorUp) * mirrorUp;
+        }
     }
 
     /// <summary>
@@ -65,7 +76,7 @@ public class MovableAddon : MonoBehaviour
         var y = Format(pos.y);
         var z = Format(pos.z);
         var returnString = x + y + z;
-        print("generated pos string: " + returnString);
+        //print("generated pos string: " + returnString);
 
         return returnString;
     }
@@ -85,8 +96,12 @@ public class MovableAddon : MonoBehaviour
         float y = Decode(inputString, 3);
         float z = Decode(inputString, 6);
 
-        print("decoded pos string. x: " + x + ", y: " + y + ", z: " + z + ", posString: " + inputString);
+        //print("decoded pos string. x: " + x + ", y: " + y + ", z: " + z + ", posString: " + inputString);
         transform.localPosition = new Vector3(x, y, z);
+
+        /*Vector3 localPos = transform.parent.InverseTransformPoint(hitInfo.point);
+        localPos.x = -localPos.x;
+        _mirror.transform.position = transform.parent.TransformPoint(localPos);*/
     }
 
     public void SetSelected(bool selected)
@@ -107,13 +122,12 @@ public class MovableAddon : MonoBehaviour
             transform.localScale = scale;
         }
 
-
         _rotationControls.SetActive(_uiController.Rotating && Selected);
         if (!Selected) return;
 
-        Quaternion targetLocalRot = Quaternion.FromToRotation(Vector3.up, TargetUp) * Quaternion.identity;
+        _currentUp = transform.up;
+        Quaternion targetLocalRot = Quaternion.FromToRotation(Vector3.up, _targetUp) * Quaternion.identity;
         transform.localRotation = Quaternion.Slerp(transform.localRotation, targetLocalRot, 15 * Time.deltaTime);
-
 
         if (_uiController.Rotating) {
             _dragging = false;
@@ -138,13 +152,13 @@ public class MovableAddon : MonoBehaviour
             var didHit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out var hitInfo, 1000, _hitLayers);
             if (!didHit) return;
 
-            TargetUp = transform.parent.InverseTransformDirection(hitInfo.normal);
+            _targetUp = transform.parent.InverseTransformDirection(hitInfo.normal);
             transform.position = hitInfo.point;
 
             if (_mirror) {
 
                 var mirrorUp = Vector3.Scale(transform.parent.InverseTransformDirection(hitInfo.normal), new Vector3(-1, 1, 1));
-                _mirror.TargetUp = Quaternion.AngleAxis(180f, mirrorUp) * mirrorUp;
+                _mirror._targetUp = Quaternion.AngleAxis(180f, mirrorUp) * mirrorUp;
 
                 Vector3 localPos = transform.parent.InverseTransformPoint(hitInfo.point);
                 localPos.x = -localPos.x;

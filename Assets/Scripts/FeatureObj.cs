@@ -23,7 +23,7 @@ public abstract class FeatureObj : MonoBehaviour
     {
         var numString = inputString.Substring(1);
 
-        print("total inputString = " + inputString + ", numString: " + numString);
+        //print("total inputString = " + inputString + ", numString: " + numString);
 
         int mirrorMatchNum = int.Parse(inputString[0].ToString());
         Settings.MatchColor = (mirrorMatchNum / 3) == 1;

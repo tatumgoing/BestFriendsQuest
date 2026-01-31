@@ -69,7 +69,7 @@ public class HairController : MonoBehaviour, IFeatureController
         var newFeature = AddFeature(selected);
         newFeature.ConfigureFromString(parts[1]);
 
-        print("Adding hair feature from string. name: " + selected.name + ", featureString: " + featureString + ", number part: " + parts[1]);
+       // print("Adding hair feature from string. name: " + selected.name + ", featureString: " + featureString + ", number part: " + parts[1]);
     }
 
     public string GetSaveString()
