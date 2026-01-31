@@ -1,26 +1,37 @@
 using MyBox;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class CharacterMetaController : MonoBehaviour
 {
     [ReadOnly] public string ID;
-    [SerializeField] private SetMaterialColor _skin;
+
+    [Header("Mode")]
+    [SerializeField, Tooltip("Check yes in character creator scene, leave unchecked everywhere else")] private bool _isCharacterCreator = false;
+
+    [SerializeField, ConditionalField(nameof(_isCharacterCreator))] private BodyCustomizer _bodyCustomizer;
+    [SerializeField, ConditionalField(nameof(_isCharacterCreator))] private DataPanelController _dataPanel;
+    [SerializeField, ConditionalField(nameof(_isCharacterCreator), inverse:true)] private FavoriteColorClothingInterface _clothingInterface;
+
+    [Header("Rig")]
+    [SerializeField] private CharacterRigController _rigController;
+    [SerializeField] private List<BoneSliderGroupData> _rigGroups = new List<BoneSliderGroupData>();
+
+    [Header("Misc")]
     [SerializeField] private FaceFeatureController _face;
     [SerializeField] private HairController _hair;
     [SerializeField] private EarController _ears;
-    [SerializeField] private BodyCustomizer _bodyCustomizer;
-    [SerializeField] private DataPanelController _dataPanel;
     [SerializeField] private Color _skinColor;
-
+    [SerializeField] private SetMaterialColor _skin;
 
     [Header("Expressions")]
     [SerializeField, DisplayInspector] private ExpressionSetData _expressionSet;
     public bool Blinking;
     public bool Talking;
 
-    [HideInInspector] public CharacterProfileData Data;
+    [ReadOnly] public CharacterProfileData Data;
 
     private float _blinkCooldown = -Mathf.Infinity;
     private float _blinkDuratingCooldown = 0;
@@ -138,9 +149,39 @@ public class CharacterMetaController : MonoBehaviour
         ColorUtility.TryParseHtmlString(parts[3], out _skinColor);
         SetSkinColor(_skinColor);
 
-        _bodyCustomizer.LoadFromString(parts[4]);
+        Data = new CharacterProfileData();
+        Data.FromString(parts[5]);
 
-        _dataPanel.LoadFromString(parts[5]);
+        if (_isCharacterCreator) {
+            _bodyCustomizer.LoadFromString(parts[4]);
+            _dataPanel.Load(Data);
+        }
+        else {
+            LoadRigInGame(parts[4]);
+            _clothingInterface.SetColor(Data.FavColor);
+        }
+
+        print("LOADED CHARACTER");
+        gameObject.SetActive(true);
+    }
+
+    private void LoadRigInGame(string rigSaveString)
+    {
+        var loadedSliderValues = rigSaveString.Split('%').Select(x => float.Parse(x)).ToList();
+
+        void AffectRig(BoneSliderName sliderGroupName, float value)
+        {
+            var data = _rigGroups.Where(x => x.Type == sliderGroupName).FirstOrDefault();
+            if (data == default) return;
+            foreach (var bone in data.Bones) _rigController.ModifyBone(bone.Name, sliderGroupName, bone.GetCurrent(value), bone.IndependentScale);
+        }
+
+        AffectRig(BoneSliderName.HEIGHT, loadedSliderValues[0]);
+        AffectRig(BoneSliderName.WEIGHT, loadedSliderValues[1]);
+        AffectRig(BoneSliderName.ARMS, loadedSliderValues[2]);
+        AffectRig(BoneSliderName.TORSO, loadedSliderValues[3]);
+        AffectRig(BoneSliderName.WAIST, loadedSliderValues[4]);
+        AffectRig(BoneSliderName.LEGS, loadedSliderValues[5]);
     }
 
     public string GetSaveString()

@@ -24,13 +24,13 @@ public class GameManager : MonoBehaviour
 
     [Header("saving")]
     [SerializeField] private CharacterMetaController _character;
-    [SerializeField] private string _saveFileName = "saves.txt";
+    [SerializeField] private string _saveFileName = "characters.txt";
  
     public bool Advanced => _mode == GameMode.ADVANCED;
     [HideInInspector] public UnityEvent OnModeChange;
     private List<ModeExlusiveItem> _modeExlusiveItems = new List<ModeExlusiveItem>();
 
-    public string Path => System.IO.Path.Combine(Application.streamingAssetsPath, _saveFileName);
+    public string CharactersSavePath => System.IO.Path.Combine(Application.streamingAssetsPath, _saveFileName);
 
     private void Start()
     {
@@ -55,13 +55,13 @@ public class GameManager : MonoBehaviour
     {
         var newData = _character.GetSaveString();
 
-        Directory.CreateDirectory(System.IO.Path.GetDirectoryName(Path));
-        if (!File.Exists(Path)) {
-            File.WriteAllText(Path, newData);
+        Directory.CreateDirectory(System.IO.Path.GetDirectoryName(CharactersSavePath));
+        if (!File.Exists(CharactersSavePath)) {
+            File.WriteAllText(CharactersSavePath, newData);
             return;
         }
         
-        var characters = File.ReadAllText(Path).Split("\n").ToList();
+        var characters = File.ReadAllText(CharactersSavePath).Split("\n").ToList();
         bool found = false;
         for (int i = 0; i < characters.Count; i++) {
             
@@ -77,15 +77,20 @@ public class GameManager : MonoBehaviour
             characters.Add(newData);
         }
 
-        File.WriteAllText(Path, string.Join("\n", characters));
+        File.WriteAllText(CharactersSavePath, string.Join("\n", characters));
         //print("saved sucessfully to: " + Path);
+    }
+
+    public void LoadCharacterByID()
+    {
+
     }
 
     public void LoadFromSave()
     {
-        if (!File.Exists(Path)) return;
+        if (!File.Exists(CharactersSavePath)) return;
 
-        var saveString = File.ReadAllText(Path);
+        var saveString = File.ReadAllText(CharactersSavePath);
         _character.LoadFromString(saveString);
     }
 

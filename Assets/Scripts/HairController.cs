@@ -27,13 +27,21 @@ public class HairController : MonoBehaviour, IFeatureController
 
     private void Awake()
     {
+        if (_allOptions.Count == 0) Initialize();
+    }
+
+    private void Initialize()
+    {
         _allOptions = Resources.LoadAll<FeatureSOData>("HairFeatures").OrderByDescending(x => x.Priority).ToList();
     }
 
     private void Start()
     {
-        UIManager.i.OnTabSwitch.AddListener(DeselectAllAddons);
-        HairColor = _color.GetDefaultColor();
+        if (UIManager.i != null) UIManager.i.OnTabSwitch.AddListener(DeselectAllAddons);
+        
+        if (_color) HairColor = _color.GetDefaultColor();
+        //else HairColor = Color.red;
+
         _currentPieces = GetComponentsInChildren<HairPiece>().Where(x => !x.IsMirroredVersion).ToList();
         foreach (var c in _currentPieces) c.Initialize(this);
         foreach (var c in _currentPieces) if (c.GetSettings().MatchColor) c.SetColor(HairColor);
@@ -63,13 +71,23 @@ public class HairController : MonoBehaviour, IFeatureController
 
     private void AddFeatureFromString(string featureString)
     {
+        if (_allOptions.Count == 0) Initialize();
+
         var parts = featureString.Split("~");
         FeatureSOData selected = null;
         foreach (var f in _allOptions) if (f.name == parts[0]) selected = f;
+
+        //foreach (var f in _allOptions) if (f.Icon.name != parts[0]) print("|" + f.Icon.name + " != " + parts[0]);
+        //if (selected == null) print("couln't find " + parts[0] + " feature. count: " + _allFeatures.Count);
+
         var newFeature = AddFeature(selected);
         newFeature.ConfigureFromString(parts[1]);
 
-       // print("Adding hair feature from string. name: " + selected.name + ", featureString: " + featureString + ", number part: " + parts[1]);
+        if (newFeature.GetSettings().MatchColor || _currentPieces.Count == 1) {
+            HairColor = newFeature.GetSettings().Color;
+        }
+
+        // print("Adding hair feature from string. name: " + selected.name + ", featureString: " + featureString + ", number part: " + parts[1]);
     }
 
     public string GetSaveString()

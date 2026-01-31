@@ -12,6 +12,7 @@ public class IDCamera : MonoBehaviour
     [SerializeField] private Sound _cameraSound;
     [SerializeField] private GameObject _greenScreen;
     [SerializeField] private Vector3 _idPicAngle;
+    [SerializeField] private CharacterMetaController _characterController;
 
     private void Start()
     {
@@ -76,7 +77,7 @@ public class IDCamera : MonoBehaviour
             Directory.CreateDirectory(path);
         }
 
-        File.WriteAllBytes(path + "/IDimage.png", btyes);
+        File.WriteAllBytes(path + "/" + _characterController.ID + "_portrait.png", btyes);
 
         FindFirstObjectByType<IdPhotoController>(FindObjectsInactive.Include).ShowPicture(idPicture);
 

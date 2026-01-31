@@ -1,39 +1,39 @@
 using MyBox;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class Test : MonoBehaviour
 {
-    [SerializeField] private LayerMask _hitLayers;
-    [SerializeField] private LayerMask _hoverLayers;
+    [SerializeField, ReadOnly] private List<int> _validIDs = new List<int>(); 
+    [SerializeField] private int _toLoadID;
+    [SerializeField] private CharacterMetaController _characterController;
 
-    private bool _dragging;
-    private Vector3 _targetUp;
+    private List<string> _saveStrings = new List<string>();
 
-    private void Update()
+    [ButtonMethod]
+    public void RefreshIDList()
     {
-        if (!_dragging) {
-            var didHover = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out var hoverInfo, 1000, _hoverLayers);
-            if (!didHover || hoverInfo.collider.transform.parent != transform) return;
+        var savedText = File.ReadAllText(GameManager.i.CharactersSavePath);
+        _saveStrings = savedText.Split('\n').Where(x => x.Length > 0).ToList();
+        _validIDs = _saveStrings.Select(x => int.Parse(x.Substring(0, GameManager.idLength))).ToList();
+    }
 
-            if (Input.GetMouseButtonDown(0)) _dragging = true;
+    [ButtonMethod]
+    public void LoadCharacter()
+    {
+        var saveString = GetSaveStringByID(_toLoadID);
+        if (saveString != "")_characterController.LoadFromString(saveString);
+    }
+
+    private string GetSaveStringByID(int id) {
+        var selected = _saveStrings.Where(x => int.Parse(x.Substring(0, GameManager.idLength)) == id);
+        if (selected.Count() == 0) {
+            return "";
         }
-        else {
-
-            if (Input.GetMouseButtonUp(0)) _dragging = false;
-
-            var didHit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out var hitInfo, 1000, _hitLayers);
-
-            if (!didHit) return;
-
-            _targetUp = hitInfo.normal;
-
-            transform.position = hitInfo.point;
-        }
-
-        transform.up = Vector3.Lerp(transform.up, _targetUp, 15 * Time.deltaTime);
-
+        return selected.First();
     }
 }

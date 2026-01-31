@@ -32,6 +32,11 @@ public class FaceFeatureController : MonoBehaviour, IFeatureController
 
     private void Awake()
     {
+        if (_allFeatures.Count == 0) Initialize();
+    }
+
+    private void Initialize()
+    {
         _allFeatures = Resources.LoadAll<FeatureSOData>("FacialFeatures").OrderByDescending(x => x.Priority).ToList();
     }
 
@@ -75,9 +80,15 @@ public class FaceFeatureController : MonoBehaviour, IFeatureController
 
     private void AddFeatureFromString(string featureString)
     {
+        if (_allFeatures.Count == 0) Initialize();
+
         var parts = featureString.Split("~");
         FeatureSOData selected = null;
         foreach (var f in _allFeatures) if (f.Icon.name == parts[0]) selected = f;
+
+        //foreach (var f in _allFeatures) if (f.Icon.name != parts[0]) print("|" + f.Icon.name + " != " + parts[0]);
+        //if (selected == null) print("couln't find " + parts[0] + " feature. count: " + _allFeatures.Count);
+
         var newFeature = AddFeature(selected);
         newFeature.ConfigureFromString(parts[1]);
     }
@@ -96,6 +107,7 @@ public class FaceFeatureController : MonoBehaviour, IFeatureController
 
     public FeatureObj AddFeature(FeatureSOData data)
     {
+        print("trying to add feature. data == null: " + (data == null));
         var newFeature = Instantiate(_featurePrefab, _featureParent).GetComponent<FacialFeature>();
         newFeature.transform.SetAsFirstSibling();
         newFeature.Set(data, _currentCategory, _currentPriority);

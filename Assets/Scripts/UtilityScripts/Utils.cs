@@ -1,8 +1,10 @@
-﻿ using UnityEngine;
+﻿using MyBox;
 using System.Collections.Generic;
-using UnityEngine.SceneManagement;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
+ using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public static class Utils
 {
@@ -16,6 +18,22 @@ public static class Utils
 
     private static int AXIS_BITS = 6;
     private static int AXIS_STEPS = 1 << AXIS_BITS;
+
+    public static string GetRandomCharacter()
+    {
+        var savedText = File.ReadAllText(System.IO.Path.Combine(Application.streamingAssetsPath, "characters.txt"));
+        var saveStrings = savedText.Split('\n').Where(x => x.Length > 0).ToList();
+        return saveStrings[Random.Range(0, saveStrings.Count)];
+    }
+
+    public static List<string> GetRandomCharacters(int quantity)
+    {
+        var savedText = File.ReadAllText(System.IO.Path.Combine(Application.streamingAssetsPath, "characters.txt"));
+        var saveStrings = savedText.Split('\n').Where(x => x.Length > 0).ToList().Shuffle();
+
+        quantity = Mathf.Min(quantity, saveStrings.Count);
+        return saveStrings.Take(quantity).ToList();
+    }
 
     public static Color HexToColor(string hex)
     {

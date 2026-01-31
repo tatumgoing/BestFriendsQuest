@@ -11,7 +11,7 @@ public enum ProfileDataType {NAME, GENDER, PRONOUN, ATTRACTION, DAY, MONTH, YEAR
 public enum Gender { MALE, FEMALE, NONBINARY}
 public enum Pronoun { HE, SHE, THEY}
 
-[System.Flags]
+[System.Flags, System.Serializable]
 public enum Attraction
 {
     NONE = 0,
@@ -93,11 +93,9 @@ public class DataPanelController : MonoBehaviour
         _mainPanel.SetTrigger("Right");
     }
 
-    public void LoadFromString(string inputString)
+    public void Load(CharacterProfileData inputData)
     {
-        _currentData = new CharacterProfileData();
-        _currentData.FromString(inputString);
-        _characterController.Data = _currentData;
+        _currentData = inputData;
 
         _nameField.text = _currentData.Name;
 
