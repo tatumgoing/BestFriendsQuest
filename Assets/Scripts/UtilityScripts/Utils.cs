@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
- using UnityEngine;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public static class Utils
@@ -11,29 +11,11 @@ public static class Utils
     private static int sceneToLoad;
 
     public static readonly float fadeTime = 1f;
-    private static readonly string saveFolder = "/SaveData/";
-    private static readonly string savePath = Application.dataPath + saveFolder;
 
     public static float Rand(Vector2 range) => Random.Range(range.x, range.y);
 
     private static int AXIS_BITS = 6;
     private static int AXIS_STEPS = 1 << AXIS_BITS;
-
-    public static string GetRandomCharacter()
-    {
-        var savedText = File.ReadAllText(System.IO.Path.Combine(Application.streamingAssetsPath, "characters.txt"));
-        var saveStrings = savedText.Split('\n').Where(x => x.Length > 0).ToList();
-        return saveStrings[Random.Range(0, saveStrings.Count)];
-    }
-
-    public static List<string> GetRandomCharacters(int quantity)
-    {
-        var savedText = File.ReadAllText(System.IO.Path.Combine(Application.streamingAssetsPath, "characters.txt"));
-        var saveStrings = savedText.Split('\n').Where(x => x.Length > 0).ToList().Shuffle();
-
-        quantity = Mathf.Min(quantity, saveStrings.Count);
-        return saveStrings.Take(quantity).ToList();
-    }
 
     public static Color HexToColor(string hex)
     {
@@ -141,21 +123,7 @@ public static class Utils
         return list;
     }
 
-    public static void SaveToFile(string fileName, string text)
-    {
-        if (!Directory.Exists(savePath)) Directory.CreateDirectory(savePath);
-
-        var file = File.CreateText(savePath + fileName);
-        file.Write(text);
-        file.Close();
-    }
-
-    public static string ReadFromFile(string fileName)
-    {
-        var completePath = savePath + fileName;
-        if (File.Exists(completePath)) return File.ReadAllText(completePath);
-        return "";
-    }
+    
 
     public static string GetTimeString(int seconds)
     {
@@ -176,7 +144,6 @@ public static class Utils
         UnityEditor.EditorUtility.SetDirty(obj);
 #endif
     }
-
 
     public static string Vec2String(Vector2 v) => v.x + ":" + v.y;
 }

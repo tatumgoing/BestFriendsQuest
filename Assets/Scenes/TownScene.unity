@@ -1630,16 +1630,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c595689aa577ebd4c81c4f5ba29ff5db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameManager: {fileID: 0}
-  minigameManager: {fileID: 0}
   associatedCharacter:
-    characterName: Sally
-    age: 0
-    happiness: 75
-    house: {fileID: 85862161}
-    characterIcon: {fileID: 21300000, guid: 98e5c6bb4e2d9924ba50bea827682b63, type: 3}
-    hasProblem: 0
-    currentProblem: {fileID: 0}
+    _staticData:
+      ID:
+        Value: 7549
+      Name: 
+      Gender: 0
+      Pronouns: 0
+      Attraction: 0
+      FavColor: 0
+      Icon: {fileID: 0}
+    _dynamicData:
+      CharacterName: 
+      Age: 0
+      Happiness: 50
+      CurrentProblem: {fileID: 0}
+      House: {fileID: 0}
   tempIcon: {fileID: 0}
   dialogueBox: {fileID: 0}
   minigameNavMenu: {fileID: 0}
@@ -2234,13 +2240,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   associatedCharacter:
-    characterName: 
-    age: 0
-    happiness: 0
-    house: {fileID: 0}
-    characterIcon: {fileID: 0}
-    hasProblem: 0
-    currentProblem: {fileID: 0}
+    _staticData:
+      ID:
+        Value: 4882
+      Name: 
+      Gender: 0
+      Pronouns: 0
+      Attraction: 0
+      FavColor: 0
+      Icon: {fileID: 0}
+    _dynamicData:
+      CharacterName: 
+      Age: 0
+      Happiness: 50
+      CurrentProblem: {fileID: 0}
+      House: {fileID: 0}
   dialogues: []
   dialogueBox: {fileID: 422310599}
   textBox: {fileID: 1641651198}
@@ -3301,9 +3315,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 917571447}
-  - {fileID: 1464621018}
-  - {fileID: 991571242}
+  - {fileID: 1053188650}
+  - {fileID: 879565581}
+  - {fileID: 263481333}
   m_Father: {fileID: 2074531007}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &157004217
@@ -3781,13 +3795,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   associatedCharacter:
-    characterName: 
-    age: 0
-    happiness: 0
-    house: {fileID: 0}
-    characterIcon: {fileID: 0}
-    hasProblem: 0
-    currentProblem: {fileID: 0}
+    _staticData:
+      ID:
+        Value: 9347
+      Name: 
+      Gender: 0
+      Pronouns: 0
+      Attraction: 0
+      FavColor: 0
+      Icon: {fileID: 0}
+    _dynamicData:
+      CharacterName: 
+      Age: 0
+      Happiness: 50
+      CurrentProblem: {fileID: 0}
+      House: {fileID: 0}
   dialogues: []
   dialogueBox: {fileID: 666771256}
   textBox: {fileID: 1168936042}
@@ -5783,6 +5805,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 262111418}
   m_CullTransparentMesh: 1
+--- !u!1 &263481332
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 263481333}
+  m_Layer: 0
+  m_Name: characterSpawnLocation
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &263481333
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 263481332}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.19373167, z: -0, w: 0.98105454}
+  m_LocalPosition: {x: -27.09999, y: 0.08999634, z: -0.099998474}
+  m_LocalScale: {x: 0.49619004, y: 0.49619, z: 0.49619004}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 155243487}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &271477453
 GameObject:
   m_ObjectHideFlags: 0
@@ -9130,13 +9183,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   associatedCharacter:
-    characterName: 
-    age: 0
-    happiness: 0
-    house: {fileID: 0}
-    characterIcon: {fileID: 0}
-    hasProblem: 0
-    currentProblem: {fileID: 0}
+    _staticData:
+      ID:
+        Value: 2582
+      Name: 
+      Gender: 0
+      Pronouns: 0
+      Attraction: 0
+      FavColor: 0
+      Icon: {fileID: 0}
+    _dynamicData:
+      CharacterName: 
+      Age: 0
+      Happiness: 50
+      CurrentProblem: {fileID: 0}
+      House: {fileID: 0}
   happinessBackground: {fileID: 1459514663}
   happinessProgress: {fileID: 561385089}
 --- !u!114 &411805374
@@ -12332,7 +12393,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1017273745}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &558422469
 MonoBehaviour:
@@ -14583,7 +14644,7 @@ GameObject:
   - component: {fileID: 638591774}
   - component: {fileID: 638591775}
   m_Layer: 0
-  m_Name: MiniGameManager
+  m_Name: MinigameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14602,7 +14663,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1017273745}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &638591775
 MonoBehaviour:
@@ -15955,7 +16016,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &674658953
 RectTransform:
   m_ObjectHideFlags: 0
@@ -17461,21 +17522,37 @@ MonoBehaviour:
   selectedQuest: {fileID: 0}
   inProgressScreen: {fileID: 488660007}
   charOne:
-    characterName: 
-    age: 0
-    happiness: 0
-    house: {fileID: 0}
-    characterIcon: {fileID: 0}
-    hasProblem: 0
-    currentProblem: {fileID: 0}
+    _staticData:
+      ID:
+        Value: 5675
+      Name: 
+      Gender: 0
+      Pronouns: 0
+      Attraction: 0
+      FavColor: 0
+      Icon: {fileID: 0}
+    _dynamicData:
+      CharacterName: 
+      Age: 0
+      Happiness: 50
+      CurrentProblem: {fileID: 0}
+      House: {fileID: 0}
   charTwo:
-    characterName: 
-    age: 0
-    happiness: 0
-    house: {fileID: 0}
-    characterIcon: {fileID: 0}
-    hasProblem: 0
-    currentProblem: {fileID: 0}
+    _staticData:
+      ID:
+        Value: 8554
+      Name: 
+      Gender: 0
+      Pronouns: 0
+      Attraction: 0
+      FavColor: 0
+      Icon: {fileID: 0}
+    _dynamicData:
+      CharacterName: 
+      Age: 0
+      Happiness: 50
+      CurrentProblem: {fileID: 0}
+      House: {fileID: 0}
   resultsScreen: {fileID: 1088369678}
   questSuccess: 0
 --- !u!1 &741371901
@@ -19269,13 +19346,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   associatedCharacter:
-    characterName: 
-    age: 0
-    happiness: 0
-    house: {fileID: 0}
-    characterIcon: {fileID: 0}
-    hasProblem: 0
-    currentProblem: {fileID: 0}
+    _staticData:
+      ID:
+        Value: 3723
+      Name: 
+      Gender: 0
+      Pronouns: 0
+      Attraction: 0
+      FavColor: 0
+      Icon: {fileID: 0}
+    _dynamicData:
+      CharacterName: 
+      Age: 0
+      Happiness: 50
+      CurrentProblem: {fileID: 0}
+      House: {fileID: 0}
   happinessBackground: {fileID: 694023541}
   happinessProgress: {fileID: 1408708211}
 --- !u!224 &810065464
@@ -20913,6 +20998,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 874368617}
   m_CullTransparentMesh: 1
+--- !u!1 &879565580
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 879565581}
+  m_Layer: 0
+  m_Name: characterSpawnLocation
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &879565581
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 879565580}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.5897322, z: -0, w: 0.8075988}
+  m_LocalPosition: {x: -6.800003, y: 0.08999634, z: -16.599998}
+  m_LocalScale: {x: 0.49619, y: 0.49619, z: 0.49619}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 155243487}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &879689018
 GameObject:
   m_ObjectHideFlags: 0
@@ -22228,11 +22344,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 913119882}
   m_CullTransparentMesh: 1
---- !u!4 &917571447 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8614003353711132865, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-  m_PrefabInstance: {fileID: 6102185064398069754}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &924524524
 GameObject:
   m_ObjectHideFlags: 0
@@ -23001,9 +23112,9 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 10
+  near clip plane: 1.4
   far clip plane: 1000
-  field of view: 60.000004
+  field of view: 30
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -23029,8 +23140,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.20197447, y: 0, z: 0, w: 0.9793908}
-  m_LocalPosition: {x: 123.99928, y: 14.02507, z: 94.734024}
+  m_LocalRotation: {x: 0.08803495, y: 0.025257774, z: -0.002232956, w: 0.99579465}
+  m_LocalPosition: {x: -0.97, y: 5.85, z: -20.45}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -23060,7 +23171,7 @@ MonoBehaviour:
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
   m_RenderPostProcessing: 0
-  m_Antialiasing: 0
+  m_Antialiasing: 3
   m_AntialiasingQuality: 2
   m_StopNaN: 0
   m_Dithering: 0
@@ -23866,108 +23977,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 988595636}
   m_CullTransparentMesh: 1
---- !u!1001 &991571241
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 155243487}
-    m_Modifications:
-    - target: {fileID: 3035577401360136947, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8200072468975677627, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: m_Name
-      value: loadedCharacter (2)
-      objectReference: {fileID: 0}
-    - target: {fileID: 8200072468975677627, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8614003353711132865, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8614003353711132865, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8614003353711132865, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8614003353711132865, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -27.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8614003353711132865, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.09
-      objectReference: {fileID: 0}
-    - target: {fileID: 8614003353711132865, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8614003353711132865, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.98105454
-      objectReference: {fileID: 0}
-    - target: {fileID: 8614003353711132865, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8614003353711132865, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0.19373167
-      objectReference: {fileID: 0}
-    - target: {fileID: 8614003353711132865, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8614003353711132865, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8614003353711132865, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: -22.341
-      objectReference: {fileID: 0}
-    - target: {fileID: 8614003353711132865, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3035577401360136947, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 991571244}
-  m_SourcePrefab: {fileID: 100100000, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
---- !u!4 &991571242 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8614003353711132865, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-  m_PrefabInstance: {fileID: 991571241}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &991571243 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3035577401360136947, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-  m_PrefabInstance: {fileID: 991571241}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &991571244
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 991571243}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8d05a001901f844993365681e9496d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &992018381
 GameObject:
   m_ObjectHideFlags: 0
@@ -24432,6 +24441,42 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1014085112}
   m_CullTransparentMesh: 1
+--- !u!1 &1017273744
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1017273745}
+  m_Layer: 0
+  m_Name: managers
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1017273745
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1017273744}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1141014258}
+  - {fileID: 1816880362}
+  - {fileID: 1287727945}
+  - {fileID: 638591774}
+  - {fileID: 558422468}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1029944438
 GameObject:
   m_ObjectHideFlags: 0
@@ -24929,16 +24974,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c595689aa577ebd4c81c4f5ba29ff5db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameManager: {fileID: 0}
-  minigameManager: {fileID: 0}
   associatedCharacter:
-    characterName: Johnny
-    age: 0
-    happiness: 100
-    house: {fileID: 1051886477}
-    characterIcon: {fileID: 21300000, guid: 192b11df779b88f42b79869733fb0682, type: 3}
-    hasProblem: 0
-    currentProblem: {fileID: 0}
+    _staticData:
+      ID:
+        Value: 4725
+      Name: 
+      Gender: 0
+      Pronouns: 0
+      Attraction: 0
+      FavColor: 0
+      Icon: {fileID: 0}
+    _dynamicData:
+      CharacterName: 
+      Age: 0
+      Happiness: 50
+      CurrentProblem: {fileID: 0}
+      House: {fileID: 0}
   tempIcon: {fileID: 1354359188}
   dialogueBox: {fileID: 1690557366}
   minigameNavMenu: {fileID: 1232076985}
@@ -24955,6 +25006,37 @@ MonoBehaviour:
   relationshipContainer: {fileID: 1486365338}
   rewardsHappinessMeter: {fileID: 1312336795}
   currencyDisplay: {fileID: 197474980}
+--- !u!1 &1053188649
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1053188650}
+  m_Layer: 0
+  m_Name: characterSpawnLocation
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1053188650
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1053188649}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.1776209, z: -0, w: 0.98409903}
+  m_LocalPosition: {x: 9.050003, y: 0.08999634, z: -7.840004}
+  m_LocalScale: {x: 0.49619, y: 0.49619, z: 0.49619}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 155243487}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1056235107
 GameObject:
   m_ObjectHideFlags: 0
@@ -25533,7 +25615,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1088369677
 RectTransform:
   m_ObjectHideFlags: 0
@@ -25571,21 +25653,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   charOne:
-    characterName: 
-    age: 0
-    happiness: 0
-    house: {fileID: 0}
-    characterIcon: {fileID: 0}
-    hasProblem: 0
-    currentProblem: {fileID: 0}
+    _staticData:
+      ID:
+        Value: 4819
+      Name: 
+      Gender: 0
+      Pronouns: 0
+      Attraction: 0
+      FavColor: 0
+      Icon: {fileID: 0}
+    _dynamicData:
+      CharacterName: 
+      Age: 0
+      Happiness: 50
+      CurrentProblem: {fileID: 0}
+      House: {fileID: 0}
   charTwo:
-    characterName: 
-    age: 0
-    happiness: 0
-    house: {fileID: 0}
-    characterIcon: {fileID: 0}
-    hasProblem: 0
-    currentProblem: {fileID: 0}
+    _staticData:
+      ID:
+        Value: 2737
+      Name: 
+      Gender: 0
+      Pronouns: 0
+      Attraction: 0
+      FavColor: 0
+      Icon: {fileID: 0}
+    _dynamicData:
+      CharacterName: 
+      Age: 0
+      Happiness: 50
+      CurrentProblem: {fileID: 0}
+      House: {fileID: 0}
   charDisplayOne: {fileID: 841850345}
   charDisplayTwo: {fileID: 172563611}
   treasureChest: {fileID: 1368745216}
@@ -27250,13 +27348,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1141014257}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 369.79242, y: 228.5053, z: 1.2990316}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1816880362}
-  m_Father: {fileID: 0}
+  m_Children: []
+  m_Father: {fileID: 1017273745}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1141014259
 MonoBehaviour:
@@ -27270,7 +27367,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f552a97fe52643428253dd0edf18ba7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterManager: {fileID: 1287727944}
+  _characterManager: {fileID: 1287727944}
   houseGrid: {fileID: 124150836}
   houseButtonPrefab: {fileID: 3589728259081976890, guid: 3375ed162482ada4bb45e6ef5833d7f2, type: 3}
   houseMenuUI: {fileID: 453845417}
@@ -30460,11 +30557,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a6c46677a2745a4284ec1b78dc5651f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _characterControllerPrefab: {fileID: 8200072468975677627, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
   allCharacters: []
-  characterSprites:
-  - {fileID: 21300000, guid: 192b11df779b88f42b79869733fb0682, type: 3}
-  - {fileID: 21300000, guid: 98e5c6bb4e2d9924ba50bea827682b63, type: 3}
-  - {fileID: 21300000, guid: 9d5d57a3737560d44b949812115f99e6, type: 3}
+  _relationships: []
 --- !u!4 &1287727945
 Transform:
   m_ObjectHideFlags: 0
@@ -30473,12 +30568,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1287727943}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 398.95712, y: 210.36467, z: 1.7263324}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1017273745}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1295912121
 GameObject:
@@ -30827,13 +30922,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   associatedCharacter:
-    characterName: 
-    age: 0
-    happiness: 0
-    house: {fileID: 0}
-    characterIcon: {fileID: 0}
-    hasProblem: 0
-    currentProblem: {fileID: 0}
+    _staticData:
+      ID:
+        Value: 7826
+      Name: 
+      Gender: 0
+      Pronouns: 0
+      Attraction: 0
+      FavColor: 0
+      Icon: {fileID: 0}
+    _dynamicData:
+      CharacterName: 
+      Age: 0
+      Happiness: 50
+      CurrentProblem: {fileID: 0}
+      House: {fileID: 0}
   happinessBackground: {fileID: 544129957}
   happinessProgress: {fileID: 1152885679}
 --- !u!114 &1312336796
@@ -31243,13 +31346,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   associatedCharacter:
-    characterName: 
-    age: 0
-    happiness: 0
-    house: {fileID: 0}
-    characterIcon: {fileID: 0}
-    hasProblem: 0
-    currentProblem: {fileID: 0}
+    _staticData:
+      ID:
+        Value: 9219
+      Name: 
+      Gender: 0
+      Pronouns: 0
+      Attraction: 0
+      FavColor: 0
+      Icon: {fileID: 0}
+    _dynamicData:
+      CharacterName: 
+      Age: 0
+      Happiness: 50
+      CurrentProblem: {fileID: 0}
+      House: {fileID: 0}
   dialogues: []
   dialogueBox: {fileID: 233274419}
   textBox: {fileID: 279637204}
@@ -33781,108 +33892,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 50}
   m_SizeDelta: {x: -200, y: 500}
   m_Pivot: {x: 0.5, y: 0}
---- !u!1001 &1464621017
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 155243487}
-    m_Modifications:
-    - target: {fileID: 3035577401360136947, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8200072468975677627, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: m_Name
-      value: loadedCharacter (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 8200072468975677627, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8614003353711132865, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8614003353711132865, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8614003353711132865, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8614003353711132865, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -6.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 8614003353711132865, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.09
-      objectReference: {fileID: 0}
-    - target: {fileID: 8614003353711132865, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -16.6
-      objectReference: {fileID: 0}
-    - target: {fileID: 8614003353711132865, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.8075988
-      objectReference: {fileID: 0}
-    - target: {fileID: 8614003353711132865, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8614003353711132865, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0.5897322
-      objectReference: {fileID: 0}
-    - target: {fileID: 8614003353711132865, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8614003353711132865, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8614003353711132865, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: -72.276
-      objectReference: {fileID: 0}
-    - target: {fileID: 8614003353711132865, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3035577401360136947, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1464621020}
-  m_SourcePrefab: {fileID: 100100000, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
---- !u!4 &1464621018 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8614003353711132865, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-  m_PrefabInstance: {fileID: 1464621017}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1464621019 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3035577401360136947, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-  m_PrefabInstance: {fileID: 1464621017}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1464621020
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1464621019}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8d05a001901f844993365681e9496d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1469257174
 GameObject:
   m_ObjectHideFlags: 0
@@ -34359,16 +34368,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c595689aa577ebd4c81c4f5ba29ff5db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameManager: {fileID: 0}
-  minigameManager: {fileID: 0}
   associatedCharacter:
-    characterName: Goobert
-    age: 0
-    happiness: 0
-    house: {fileID: 1477681652}
-    characterIcon: {fileID: 21300000, guid: 9d5d57a3737560d44b949812115f99e6, type: 3}
-    hasProblem: 0
-    currentProblem: {fileID: 0}
+    _staticData:
+      ID:
+        Value: 2685
+      Name: 
+      Gender: 0
+      Pronouns: 0
+      Attraction: 0
+      FavColor: 0
+      Icon: {fileID: 0}
+    _dynamicData:
+      CharacterName: 
+      Age: 0
+      Happiness: 50
+      CurrentProblem: {fileID: 0}
+      House: {fileID: 0}
   tempIcon: {fileID: 0}
   dialogueBox: {fileID: 0}
   minigameNavMenu: {fileID: 0}
@@ -36032,13 +36047,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   associatedCharacter:
-    characterName: 
-    age: 0
-    happiness: 0
-    house: {fileID: 0}
-    characterIcon: {fileID: 0}
-    hasProblem: 0
-    currentProblem: {fileID: 0}
+    _staticData:
+      ID:
+        Value: 5324
+      Name: 
+      Gender: 0
+      Pronouns: 0
+      Attraction: 0
+      FavColor: 0
+      Icon: {fileID: 0}
+    _dynamicData:
+      CharacterName: 
+      Age: 0
+      Happiness: 50
+      CurrentProblem: {fileID: 0}
+      House: {fileID: 0}
   happinessBackground: {fileID: 1042669240}
   happinessProgress: {fileID: 230597689}
 --- !u!224 &1567403607
@@ -38283,16 +38306,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c595689aa577ebd4c81c4f5ba29ff5db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameManager: {fileID: 0}
-  minigameManager: {fileID: 0}
   associatedCharacter:
-    characterName: Johnny
-    age: 0
-    happiness: 25
-    house: {fileID: 1665547063}
-    characterIcon: {fileID: 21300000, guid: 192b11df779b88f42b79869733fb0682, type: 3}
-    hasProblem: 0
-    currentProblem: {fileID: 0}
+    _staticData:
+      ID:
+        Value: 4588
+      Name: 
+      Gender: 0
+      Pronouns: 0
+      Attraction: 0
+      FavColor: 0
+      Icon: {fileID: 0}
+    _dynamicData:
+      CharacterName: 
+      Age: 0
+      Happiness: 50
+      CurrentProblem: {fileID: 0}
+      House: {fileID: 0}
   tempIcon: {fileID: 0}
   dialogueBox: {fileID: 0}
   minigameNavMenu: {fileID: 0}
@@ -38678,13 +38707,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   associatedCharacter:
-    characterName: 
-    age: 0
-    happiness: 0
-    house: {fileID: 0}
-    characterIcon: {fileID: 0}
-    hasProblem: 0
-    currentProblem: {fileID: 0}
+    _staticData:
+      ID:
+        Value: 3671
+      Name: 
+      Gender: 0
+      Pronouns: 0
+      Attraction: 0
+      FavColor: 0
+      Icon: {fileID: 0}
+    _dynamicData:
+      CharacterName: 
+      Age: 0
+      Happiness: 50
+      CurrentProblem: {fileID: 0}
+      House: {fileID: 0}
   dialogues: []
   dialogueBox: {fileID: 899998495}
   textBox: {fileID: 1287558615}
@@ -41921,11 +41958,11 @@ Transform:
   m_GameObject: {fileID: 1816880359}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -369.79242, y: -228.5053, z: -1.2990316}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1141014258}
+  m_Father: {fileID: 1017273745}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1816880363
 MonoBehaviour:
@@ -42768,13 +42805,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   associatedCharacter:
-    characterName: 
-    age: 0
-    happiness: 0
-    house: {fileID: 0}
-    characterIcon: {fileID: 0}
-    hasProblem: 0
-    currentProblem: {fileID: 0}
+    _staticData:
+      ID:
+        Value: 9812
+      Name: 
+      Gender: 0
+      Pronouns: 0
+      Attraction: 0
+      FavColor: 0
+      Icon: {fileID: 0}
+    _dynamicData:
+      CharacterName: 
+      Age: 0
+      Happiness: 50
+      CurrentProblem: {fileID: 0}
+      House: {fileID: 0}
   happinessBackground: {fileID: 2099278131}
   happinessProgress: {fileID: 1116065261}
 --- !u!224 &1863001968
@@ -46377,13 +46422,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   associatedCharacter:
-    characterName: 
-    age: 0
-    happiness: 0
-    house: {fileID: 0}
-    characterIcon: {fileID: 0}
-    hasProblem: 0
-    currentProblem: {fileID: 0}
+    _staticData:
+      ID:
+        Value: 2839
+      Name: 
+      Gender: 0
+      Pronouns: 0
+      Attraction: 0
+      FavColor: 0
+      Icon: {fileID: 0}
+    _dynamicData:
+      CharacterName: 
+      Age: 0
+      Happiness: 50
+      CurrentProblem: {fileID: 0}
+      House: {fileID: 0}
   happinessBackground: {fileID: 1523288391}
   happinessProgress: {fileID: 924524524}
 --- !u!114 &1966967555
@@ -47448,13 +47501,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   associatedCharacter:
-    characterName: 
-    age: 0
-    happiness: 0
-    house: {fileID: 0}
-    characterIcon: {fileID: 0}
-    hasProblem: 0
-    currentProblem: {fileID: 0}
+    _staticData:
+      ID:
+        Value: 4773
+      Name: 
+      Gender: 0
+      Pronouns: 0
+      Attraction: 0
+      FavColor: 0
+      Icon: {fileID: 0}
+    _dynamicData:
+      CharacterName: 
+      Age: 0
+      Happiness: 50
+      CurrentProblem: {fileID: 0}
+      House: {fileID: 0}
   dialogues: []
   dialogueBox: {fileID: 1614539052}
   textBox: {fileID: 1462649617}
@@ -48732,13 +48793,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   associatedCharacter:
-    characterName: 
-    age: 0
-    happiness: 0
-    house: {fileID: 0}
-    characterIcon: {fileID: 0}
-    hasProblem: 0
-    currentProblem: {fileID: 0}
+    _staticData:
+      ID:
+        Value: 1447
+      Name: 
+      Gender: 0
+      Pronouns: 0
+      Attraction: 0
+      FavColor: 0
+      Icon: {fileID: 0}
+    _dynamicData:
+      CharacterName: 
+      Age: 0
+      Happiness: 50
+      CurrentProblem: {fileID: 0}
+      House: {fileID: 0}
   dialogues: []
   dialogueBox: {fileID: 1932404749}
   textBox: {fileID: 1390411267}
@@ -49050,7 +49119,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2074531007
 Transform:
   m_ObjectHideFlags: 0
@@ -49082,13 +49151,15 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2074531006}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fedbf879420ffeb49934ed268d19f908, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _characters:
-  - {fileID: 6102185064398069755}
+  _spawnSpots:
+  - {fileID: 1053188650}
+  - {fileID: 879565581}
+  - {fileID: 263481333}
 --- !u!114 &2074531009
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -49430,16 +49501,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c595689aa577ebd4c81c4f5ba29ff5db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameManager: {fileID: 0}
-  minigameManager: {fileID: 0}
   associatedCharacter:
-    characterName: Sally
-    age: 0
-    happiness: 100
-    house: {fileID: 2094210505}
-    characterIcon: {fileID: 21300000, guid: 98e5c6bb4e2d9924ba50bea827682b63, type: 3}
-    hasProblem: 0
-    currentProblem: {fileID: 0}
+    _staticData:
+      ID:
+        Value: 1455
+      Name: 
+      Gender: 0
+      Pronouns: 0
+      Attraction: 0
+      FavColor: 0
+      Icon: {fileID: 0}
+    _dynamicData:
+      CharacterName: 
+      Age: 0
+      Happiness: 50
+      CurrentProblem: {fileID: 0}
+      House: {fileID: 0}
   tempIcon: {fileID: 1162581725}
   dialogueBox: {fileID: 179420725}
   minigameNavMenu: {fileID: 1861601184}
@@ -49665,16 +49742,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c595689aa577ebd4c81c4f5ba29ff5db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameManager: {fileID: 0}
-  minigameManager: {fileID: 0}
   associatedCharacter:
-    characterName: Goobert
-    age: 0
-    happiness: 0
-    house: {fileID: 2106725877}
-    characterIcon: {fileID: 21300000, guid: 9d5d57a3737560d44b949812115f99e6, type: 3}
-    hasProblem: 1
-    currentProblem: {fileID: 11400000, guid: 3264bf2440549174e9f5c86bdc09a737, type: 2}
+    _staticData:
+      ID:
+        Value: 7117
+      Name: 
+      Gender: 0
+      Pronouns: 0
+      Attraction: 0
+      FavColor: 0
+      Icon: {fileID: 0}
+    _dynamicData:
+      CharacterName: 
+      Age: 0
+      Happiness: 50
+      CurrentProblem: {fileID: 0}
+      House: {fileID: 0}
   tempIcon: {fileID: 1323113413}
   dialogueBox: {fileID: 2035424991}
   minigameNavMenu: {fileID: 1584759287}
@@ -50869,25 +50952,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 389786751601786536, guid: b2ffd259e73baeb4fb5d757cff80a0c5, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 1252.5
+      value: 1050
       objectReference: {fileID: 0}
     - target: {fileID: 389786751601786536, guid: b2ffd259e73baeb4fb5d757cff80a0c5, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -100
-      objectReference: {fileID: 0}
-    - target: {fileID: 1009996703778744175, guid: b2ffd259e73baeb4fb5d757cff80a0c5, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1009996703778744175, guid: b2ffd259e73baeb4fb5d757cff80a0c5, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1009996703778744175, guid: b2ffd259e73baeb4fb5d757cff80a0c5, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 292.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1009996703778744175, guid: b2ffd259e73baeb4fb5d757cff80a0c5, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -100
       objectReference: {fileID: 0}
@@ -51197,145 +51264,6 @@ RectTransform:
   m_AnchoredPosition: {x: 560.21466, y: -100}
   m_SizeDelta: {x: 416.04114, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1001 &6102185064398069754
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 155243487}
-    m_Modifications:
-    - target: {fileID: 3035577401360136947, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4415654048845412073, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: _lossy
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4415654048845412073, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: _scale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4415654048845412073, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: _scale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4415654048845412073, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: _scale.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8200072468975677627, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: m_Name
-      value: loadedCharacter
-      objectReference: {fileID: 0}
-    - target: {fileID: 8200072468975677627, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8238044332879971181, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: _lossy
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8238044332879971181, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: _scale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8238044332879971181, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: _scale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8238044332879971181, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: _scale.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8614003353711132865, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8614003353711132865, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8614003353711132865, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8614003353711132865, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 9.05
-      objectReference: {fileID: 0}
-    - target: {fileID: 8614003353711132865, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.09
-      objectReference: {fileID: 0}
-    - target: {fileID: 8614003353711132865, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -7.84
-      objectReference: {fileID: 0}
-    - target: {fileID: 8614003353711132865, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.98409903
-      objectReference: {fileID: 0}
-    - target: {fileID: 8614003353711132865, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8614003353711132865, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.1776209
-      objectReference: {fileID: 0}
-    - target: {fileID: 8614003353711132865, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8614003353711132865, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8614003353711132865, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 20.462
-      objectReference: {fileID: 0}
-    - target: {fileID: 8614003353711132865, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9213555233369531193, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: _lossy
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9213555233369531193, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: _scale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9213555233369531193, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: _scale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9213555233369531193, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      propertyPath: _scale.z
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3035577401360136947, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 8614003353801297026}
-  m_SourcePrefab: {fileID: 100100000, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
---- !u!114 &6102185064398069755 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3252265020742894948, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-  m_PrefabInstance: {fileID: 6102185064398069754}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef3c4c981b9746e4a8c5e77227d7b4a4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &6102271198293088841
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -51581,23 +51509,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 150}
   m_Pivot: {x: 0, y: 0.5}
---- !u!1 &8200072469137145083 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3035577401360136947, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
-  m_PrefabInstance: {fileID: 6102185064398069754}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &8614003353801297026
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8200072469137145083}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8d05a001901f844993365681e9496d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &9210918019785920663
 GameObject:
   m_ObjectHideFlags: 0
@@ -51620,10 +51531,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 963194228}
-  - {fileID: 1141014258}
-  - {fileID: 1287727945}
-  - {fileID: 638591774}
-  - {fileID: 558422468}
+  - {fileID: 1017273745}
   - {fileID: 809776423}
   - {fileID: 635968985}
   - {fileID: 1991988565}

@@ -13,7 +13,6 @@ public enum GameMode { SIMPLE, ADVANCED}
 public class GameManager : MonoBehaviour
 {
     public static GameManager i;
-    public const int idLength = 4;
     private void Awake() { i = this; }
 
     [SerializeField] private GameMode _mode;
@@ -65,7 +64,7 @@ public class GameManager : MonoBehaviour
         bool found = false;
         for (int i = 0; i < characters.Count; i++) {
             
-            if (characters[i].Length > 0 && characters[i][..idLength] == _character.ID) {
+            if (characters[i].Length > 1 && characters[i][..SaveSystem.IDLength] == _character.ID) {
                 //print("FOUND ID MATCHED");
                 characters[i] = newData;
                 found = true;

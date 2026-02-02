@@ -2,34 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class RelationshipBar : MonoBehaviour
 {
-    public CharacterData associatedCharacter;
-    public CharacterData secondCharacter;
+    [SerializeField] private TMP_Text _text;
+    [SerializeField] private Slider _slider;
 
-    public GameObject relationshipBackground;
-    public GameObject relationshipProgress;
+    private ID _id1;
+    private ID _id2;
 
-    public TMP_Text relationshipLevel;
     void Update()
     {
-        if(associatedCharacter != null)
-        {
-            UpdateMeter();
-            UpdateText();
-        }
-    }
-    void UpdateMeter()
-    {
-
-        float newWidth = relationshipBackground.GetComponent<RectTransform>().sizeDelta.x * (associatedCharacter.relationships[secondCharacter]%1 / 1);
-        relationshipProgress.GetComponent<RectTransform>().sizeDelta = new Vector2(newWidth, relationshipProgress.GetComponent<RectTransform>().sizeDelta.y);
-
+        var relationshipValue = CharacterManager.i.GetRelationship(_id1, _id2);
+        _text.text = "Relationship Level: " + Mathf.Floor(relationshipValue).ToString();
+        _slider.value = relationshipValue - Mathf.Floor(relationshipValue);
     }
 
-    void UpdateText()
+    public void SetCharacters(ID id1, ID id2)
     {
-        relationshipLevel.text = "Relationship Level: " + Mathf.Floor(associatedCharacter.relationships[secondCharacter]).ToString();
+        _id1 = id1;
+        _id2 = id2;
     }
 }

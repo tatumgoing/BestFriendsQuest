@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class CharacterMetaController : MonoBehaviour
 {
-    [ReadOnly] public string ID;
+    [ReadOnly] public ID ID;
 
     [Header("Mode")]
     [SerializeField, Tooltip("Check yes in character creator scene, leave unchecked everywhere else")] private bool _isCharacterCreator = false;
@@ -31,7 +31,7 @@ public class CharacterMetaController : MonoBehaviour
     public bool Blinking;
     public bool Talking;
 
-    [ReadOnly] public CharacterProfileData Data;
+    [ReadOnly] public StaticCharacterData Data;
 
     private float _blinkCooldown = -Mathf.Infinity;
     private float _blinkDuratingCooldown = 0;
@@ -46,6 +46,11 @@ public class CharacterMetaController : MonoBehaviour
     [ButtonMethod] public void setSurprised() => SetExpression(Expression.SURPRISED);
     [ButtonMethod] public void setAngry() => SetExpression(Expression.ANGRY);
     [ButtonMethod] public void setSad() => SetExpression(Expression.SAD);
+    public void MakeNewID()
+    {
+        ID = new ID();
+        ID.GenerateNew();
+    }
 
     private void Start()
     {
@@ -57,14 +62,6 @@ public class CharacterMetaController : MonoBehaviour
     {
         HandleBlink();
         HandleTalking();
-    }
-
-    public void MakeNewID()
-    {
-        ID = "";
-        for (int i = 0; i < GameManager.idLength; i++) {
-            ID += Random.Range(0, 10);
-        }
     }
 
     private void HandleTalking()
@@ -88,7 +85,6 @@ public class CharacterMetaController : MonoBehaviour
                 SetExpression(_currentExpression, _eyesClosed, true);
             }
         }
-
     }
 
     private void HandleBlink()
@@ -138,8 +134,8 @@ public class CharacterMetaController : MonoBehaviour
     {
         input = input.Replace("\n", "");
 
-        ID = input[..GameManager.idLength];
-        input = input.Substring(GameManager.idLength);
+        ID = new ID(input[..SaveSystem.IDLength]);
+        input = input.Substring(SaveSystem.IDLength);
 
         var parts = input.Split('|');
         _face.LoadFromString(parts[0]);
@@ -149,8 +145,8 @@ public class CharacterMetaController : MonoBehaviour
         ColorUtility.TryParseHtmlString(parts[3], out _skinColor);
         SetSkinColor(_skinColor);
 
-        Data = new CharacterProfileData();
-        Data.FromString(parts[5]);
+        Data = new StaticCharacterData();
+        Data.FromString(ID, parts[5]);
 
         if (_isCharacterCreator) {
             _bodyCustomizer.LoadFromString(parts[4]);
@@ -161,7 +157,7 @@ public class CharacterMetaController : MonoBehaviour
             _clothingInterface.SetColor(Data.FavColor);
         }
 
-        print("LOADED CHARACTER");
+        //print("LOADED CHARACTER");
         gameObject.SetActive(true);
     }
 

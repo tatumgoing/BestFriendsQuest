@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class CharacterDialogue : MonoBehaviour
 {
-    public CharacterData associatedCharacter;
+    public CompleteCharacterData associatedCharacter;
 
     public List<string> dialogues = new List<string>();
     public TMP_Text dialogueBox;
@@ -33,9 +33,9 @@ public class CharacterDialogue : MonoBehaviour
         {
             dialogueBox.text = newDialogue;
         }
-        else if(associatedCharacter.hasProblem)
+        else if(associatedCharacter.CurrentProblem)
         {
-            dialogueBox.text = associatedCharacter.currentProblem.problemDialogue;
+            dialogueBox.text = associatedCharacter.CurrentProblem.problemDialogue;
         }
         else
         {

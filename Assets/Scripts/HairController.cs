@@ -131,22 +131,6 @@ public class HairController : MonoBehaviour, IFeatureController
         _currentPieces[_currentIndex].transform.GetChild(0).GetChild(0).localEulerAngles = Vector3.up * Mathf.Lerp(-180, 180, angle);
     }
 
-    private void OnDrawGizmosSelected()
-    {
-        var center = _target.parent.position;
-        center.y = _target.position.y;
-
-        var size = 0.5f;
-        var leftBottom = center + (Vector3.left * _limits.x) + (Vector3.back * _limits.y);
-        Gizmos.DrawWireSphere(leftBottom, size);
-        var leftTop = center + (Vector3.left * _limits.x) + (Vector3.forward * _limits.y);
-        Gizmos.DrawWireSphere(leftTop, size);
-        var rightBottom = center + (Vector3.right * _limits.x) + (Vector3.back * _limits.y);
-        Gizmos.DrawWireSphere(rightBottom, size);
-        var rightTop = center + (Vector3.right * _limits.x) + (Vector3.forward * _limits.y);
-        Gizmos.DrawWireSphere(rightTop, size);
-    }
-
     public void CopySettingsToCurrent(FeatureObj original)
     {
         original.CopyTo(Current);

@@ -621,8 +621,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f658e70a81fc6f4c86bb319f1a0ad87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _scale: {x: 230, y: 230, z: 230}
-  _lossy: 1
+  _scale: {x: 1, y: 1, z: 1}
+  _lossy: 0
   _lossyScale: {x: 0, y: 0, z: 0}
 --- !u!64 &1563314815679814449
 MeshCollider:
@@ -1018,6 +1018,7 @@ MonoBehaviour:
   _featurePrefab: {fileID: 3708087160728283142, guid: a66098b8cda46304bbb5d4d00864a92f, type: 3}
   _featureParent: {fileID: 7162138824755221952}
   _selected: 0
+  _inCharacterCreator: 0
   CurrentFeatures: []
 --- !u!1 &2066462133225163008
 GameObject:
@@ -1479,7 +1480,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6399167487582150005
 Transform:
   m_ObjectHideFlags: 0
@@ -1509,7 +1510,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8241a6c01e466f5459211b3525f8bad1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ID: 
+  ID:
+    Value: 0000
   _isCharacterCreator: 0
   _bodyCustomizer: {fileID: 0}
   _dataPanel: {fileID: 0}
@@ -1717,11 +1719,14 @@ MonoBehaviour:
   Blinking: 1
   Talking: 0
   Data:
+    ID:
+      Value: 0000
     Name: 
     Gender: 0
     Pronouns: 0
     Attraction: 0
     FavColor: 0
+    Icon: {fileID: 0}
 --- !u!114 &8640389087018615845
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2123,8 +2128,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f658e70a81fc6f4c86bb319f1a0ad87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _scale: {x: 230, y: 230, z: 230}
-  _lossy: 1
+  _scale: {x: 1, y: 1, z: 1}
+  _lossy: 0
   _lossyScale: {x: 0, y: 0, z: 0}
 --- !u!64 &2137526596238376950
 MeshCollider:
@@ -2291,8 +2296,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f658e70a81fc6f4c86bb319f1a0ad87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _scale: {x: 230, y: 230, z: 230}
-  _lossy: 1
+  _scale: {x: 1, y: 1, z: 1}
+  _lossy: 0
   _lossyScale: {x: 0, y: 0, z: 0}
 --- !u!64 &1948664051734656680
 MeshCollider:
@@ -3967,8 +3972,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 10.75, y: 0, z: -3.17}
-  m_LocalScale: {x: 0.55805, y: 0.55805, z: 0.55805}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.49619, y: 0.49619, z: 0.49619}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6399167487582150005}
   m_Father: {fileID: 0}
@@ -3986,6 +3991,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _characterController: {fileID: 6148090371173408357}
+  ID:
+    Value: 0000
 --- !u!1 &8409675556596406931
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,16 +6,14 @@ using UnityEngine;
 public class Problem : ScriptableObject
 {
     public bool isSolved;
-
     public string problemDialogue;
-
     public List<Item> desiredItem = new List<Item>();
 
-    public bool isMinigame;
+    [SerializeField] private bool _isMinigame;
+
+    public bool IsMinigame => _isMinigame;
 
     [Header("Rewards")]
-
     public float rewardHappiness;
     public float rewardCurrency;
-
 }

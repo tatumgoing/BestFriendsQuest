@@ -19,7 +19,7 @@ public class Test : MonoBehaviour
     {
         var savedText = File.ReadAllText(GameManager.i.CharactersSavePath);
         _saveStrings = savedText.Split('\n').Where(x => x.Length > 0).ToList();
-        _validIDs = _saveStrings.Select(x => int.Parse(x.Substring(0, GameManager.idLength))).ToList();
+        _validIDs = _saveStrings.Select(x => int.Parse(x.Substring(0, SaveSystem.IDLength))).ToList();
     }
 
     [ButtonMethod]
@@ -30,7 +30,7 @@ public class Test : MonoBehaviour
     }
 
     private string GetSaveStringByID(int id) {
-        var selected = _saveStrings.Where(x => int.Parse(x.Substring(0, GameManager.idLength)) == id);
+        var selected = _saveStrings.Where(x => int.Parse(x.Substring(0, SaveSystem.IDLength)) == id);
         if (selected.Count() == 0) {
             return "";
         }

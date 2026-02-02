@@ -5,22 +5,16 @@ using Cinemachine;
 
 public class CharacterRoomModel : MonoBehaviour
 {
+    [SerializeField] private Transform _characterSpawnSpot;
 
-    [SerializeField] CharacterData associatedCharacter;
-
-    [SerializeField] GameObject characterTracker;
-
-    [SerializeField] CinemachineVirtualCamera roomCamera;
-
-
-    void Start()
+    public void Show(ID id)
     {
-        
+        gameObject.SetActive(true);
+        SpawnCharacter(id);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SpawnCharacter(ID character)
     {
-        
+        CharacterManager.i.SpawnCharacter(character, _characterSpawnSpot);
     }
 }

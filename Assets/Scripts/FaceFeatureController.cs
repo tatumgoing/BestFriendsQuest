@@ -3,12 +3,14 @@ using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class FaceFeatureController : MonoBehaviour, IFeatureController
 {
     [SerializeField] private GameObject _featurePrefab;
     [SerializeField] private Transform _featureParent;
     [SerializeField] private int _selected;
+    [SerializeField] private bool _inCharacterCreator;
 
     [HideInInspector] public List<FacialFeature> CurrentFeatures = new List<FacialFeature>();
 
@@ -57,7 +59,7 @@ public class FaceFeatureController : MonoBehaviour, IFeatureController
 
     private void ResetExpression()
     {
-        foreach (var feature in CurrentFeatures) feature.SetExpression(new ExpressionPieceData());
+        foreach (var feature in CurrentFeatures) if (feature) feature.SetExpression(new ExpressionPieceData());
     }
 
     private void SetExpressionForCategory(ExpressionPieceData data)
@@ -74,11 +76,11 @@ public class FaceFeatureController : MonoBehaviour, IFeatureController
 
         var parts = saveString.Split("&");
         foreach (var p in parts) {
-            AddFeatureFromString(p);
+            AddFeatureFromString(p, _inCharacterCreator);
         }
     }
 
-    private void AddFeatureFromString(string featureString)
+    private void AddFeatureFromString(string featureString, bool inCharacterCreator = false)
     {
         if (_allFeatures.Count == 0) Initialize();
 
@@ -91,6 +93,8 @@ public class FaceFeatureController : MonoBehaviour, IFeatureController
 
         var newFeature = AddFeature(selected);
         newFeature.ConfigureFromString(parts[1]);
+        newFeature.As<FacialFeature>().SetScaleMode(inCharacterCreator);
+        
     }
 
     public string GetSaveString()
@@ -107,7 +111,7 @@ public class FaceFeatureController : MonoBehaviour, IFeatureController
 
     public FeatureObj AddFeature(FeatureSOData data)
     {
-        print("trying to add feature. data == null: " + (data == null));
+        //print("trying to add feature. data == null: " + (data == null));
         var newFeature = Instantiate(_featurePrefab, _featureParent).GetComponent<FacialFeature>();
         newFeature.transform.SetAsFirstSibling();
         newFeature.Set(data, _currentCategory, _currentPriority);

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class HappinessBar : MonoBehaviour
 {
-    public CharacterData associatedCharacter;
+    public CompleteCharacterData associatedCharacter;
 
     public GameObject happinessBackground;
     public GameObject happinessProgress;
@@ -14,7 +14,7 @@ public class HappinessBar : MonoBehaviour
     }
     void UpdateMeter()
     {
-        float newWidth = happinessBackground.GetComponent<RectTransform>().sizeDelta.x * (associatedCharacter.happiness / 100);
+        float newWidth = happinessBackground.GetComponent<RectTransform>().sizeDelta.x * (associatedCharacter.Happiness / 100);
         happinessProgress.GetComponent<RectTransform>().sizeDelta = new Vector2(newWidth, happinessProgress.GetComponent<RectTransform>().sizeDelta.y);
 
     }

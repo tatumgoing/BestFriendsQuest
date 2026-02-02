@@ -59,7 +59,6 @@ public class CharacterCreatorProgression : MonoBehaviour
     {
         GameManager.i.SaveCurrent();
 
-
         UIManager.i.Fade.Appear();
 
         var fadeTime = Mathf.RoundToInt(UIManager.i.Fade.FadeTime * 1000);

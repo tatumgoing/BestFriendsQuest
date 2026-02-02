@@ -466,13 +466,21 @@ MonoBehaviour:
   gameManager: {fileID: 0}
   minigameManager: {fileID: 0}
   associatedCharacter:
-    characterName: 
-    age: 0
-    happiness: 0
-    house: {fileID: 0}
-    characterIcon: {fileID: 0}
-    hasProblem: 0
-    currentProblem: {fileID: 0}
+    _staticData:
+      ID:
+        Value: 0000
+      Name: 
+      Gender: 0
+      Pronouns: 0
+      Attraction: 0
+      FavColor: 0
+      Icon: {fileID: 0}
+    _dynamicData:
+      CharacterName: 
+      Age: 0
+      Happiness: 50
+      CurrentProblem: {fileID: 0}
+      House: {fileID: 0}
   tempIcon: {fileID: 3792857069301586942}
   dialogueBox: {fileID: 6641658734369697980}
   minigameNavMenu: {fileID: 8003017366582878470}
@@ -1728,13 +1736,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   associatedCharacter:
-    characterName: 
-    age: 0
-    happiness: 0
-    house: {fileID: 0}
-    characterIcon: {fileID: 0}
-    hasProblem: 0
-    currentProblem: {fileID: 0}
+    _staticData:
+      ID:
+        Value: 0000
+      Name: 
+      Gender: 0
+      Pronouns: 0
+      Attraction: 0
+      FavColor: 0
+      Icon: {fileID: 0}
+    _dynamicData:
+      CharacterName: 
+      Age: 0
+      Happiness: 50
+      CurrentProblem: {fileID: 0}
+      House: {fileID: 0}
   dialogues: []
   dialogueBox: {fileID: 9176913410895840423}
   textBox: {fileID: 3239207339164783438}
@@ -2342,11 +2358,27 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3247774407906558814, guid: 6153e7fa27e50454196817f3c4ba499e, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3294799608165869178, guid: 6153e7fa27e50454196817f3c4ba499e, type: 3}
       propertyPath: m_Name
       value: CharacterRoomModel
       objectReference: {fileID: 0}
+    - target: {fileID: 3409864948623494637, guid: 6153e7fa27e50454196817f3c4ba499e, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3638639798137030705, guid: 6153e7fa27e50454196817f3c4ba499e, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3965562860888834007, guid: 6153e7fa27e50454196817f3c4ba499e, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4551464542484702099, guid: 6153e7fa27e50454196817f3c4ba499e, type: 3}
       propertyPath: m_SortingLayer
       value: 0
       objectReference: {fileID: 0}
@@ -2354,29 +2386,19 @@ PrefabInstance:
       propertyPath: m_SortingLayer
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6169567761921216846, guid: 6153e7fa27e50454196817f3c4ba499e, type: 3}
-      propertyPath: m_Priority
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 6169567761921216846, guid: 6153e7fa27e50454196817f3c4ba499e, type: 3}
-      propertyPath: m_Transitions.m_BlendHint
+    - target: {fileID: 5622454853375768228, guid: 6153e7fa27e50454196817f3c4ba499e, type: 3}
+      propertyPath: m_SortingLayer
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6643203598203988261, guid: 6153e7fa27e50454196817f3c4ba499e, type: 3}
       propertyPath: m_SortingLayer
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8094466242044320968, guid: 6153e7fa27e50454196817f3c4ba499e, type: 3}
-      propertyPath: roomCamera
-      value: 
-      objectReference: {fileID: 5906342863325454010}
-    - target: {fileID: 8094466242044320968, guid: 6153e7fa27e50454196817f3c4ba499e, type: 3}
-      propertyPath: characterTracker
-      value: 
-      objectReference: {fileID: 3630085031668792645}
-    m_RemovedComponents:
-    - {fileID: 6794234599724499102, guid: 6153e7fa27e50454196817f3c4ba499e, type: 3}
-    - {fileID: 4025449685665405571, guid: 6153e7fa27e50454196817f3c4ba499e, type: 3}
+    - target: {fileID: 8261951060087458406, guid: 6153e7fa27e50454196817f3c4ba499e, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -2386,22 +2408,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 715430278360946738, guid: 6153e7fa27e50454196817f3c4ba499e, type: 3}
   m_PrefabInstance: {fileID: 317854224021540852}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &3630085031668792645 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3893812273369445041, guid: 6153e7fa27e50454196817f3c4ba499e, type: 3}
-  m_PrefabInstance: {fileID: 317854224021540852}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &5906342863325454010 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6169567761921216846, guid: 6153e7fa27e50454196817f3c4ba499e, type: 3}
-  m_PrefabInstance: {fileID: 317854224021540852}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45e653bab7fb20e499bda25e1b646fea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1650917320535680314
 PrefabInstance:
   m_ObjectHideFlags: 0

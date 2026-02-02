@@ -20,56 +20,6 @@ public enum Attraction
     NONBINARY = 1 << 2
 }
 
-[System.Serializable]
-public class CharacterProfileData
-{
-    public string Name;
-    public Gender Gender;
-    public Pronoun Pronouns;
-    public Attraction Attraction;
-    public DateTime Birthday;
-    public FavoriteColor FavColor;
-
-    private const string seperator = "%";
-    private const string dateTimeFormat = "MMddyyyy";
-
-    public CharacterProfileData()
-    {
-        Birthday = new DateTime();
-    }
-
-    public override string ToString()
-    {
-        var list = new List<string>
-        {
-            Name,
-            Utils.EnumInt(Gender),
-            Utils.EnumInt(Pronouns),
-            Utils.EnumInt(Attraction),
-            Birthday.ToString(dateTimeFormat),
-            Utils.EnumInt(FavColor)
-        };
-
-        var joined = string.Join(seperator, list);
-
-        if (Name == "" || Name == null || Name.Length < 1) return "___" + joined; 
-
-        return joined;
-    }
-
-    public void FromString(string inputString)
-    {
-        var parts = inputString.Split(seperator);
-        Name = parts[0];
-        Gender = Utils.IntEnum<Gender>(parts[1]);
-        Pronouns = Utils.IntEnum<Pronoun>(parts[2]);
-        Attraction = Utils.IntEnum<Attraction>(parts[3]);
-        Birthday = DateTime.ParseExact(parts[4], dateTimeFormat, CultureInfo.InvariantCulture);
-        FavColor = Utils.IntEnum<FavoriteColor>(parts[5]);
-    }
-
-}
-
 public class DataPanelController : MonoBehaviour
 {
     [SerializeField] private CharacterMetaController _characterController;
@@ -81,7 +31,7 @@ public class DataPanelController : MonoBehaviour
     [SerializeField] private TMP_Dropdown _colorDropdown;
     [SerializeField] private Animator _mainPanel;
 
-    private CharacterProfileData _currentData = new CharacterProfileData();
+    private StaticCharacterData _currentData = new StaticCharacterData();
 
     private void Awake()
     {
@@ -93,7 +43,7 @@ public class DataPanelController : MonoBehaviour
         _mainPanel.SetTrigger("Right");
     }
 
-    public void Load(CharacterProfileData inputData)
+    public void Load(StaticCharacterData inputData)
     {
         _currentData = inputData;
 
