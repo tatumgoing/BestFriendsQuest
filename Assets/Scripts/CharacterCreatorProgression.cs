@@ -15,6 +15,7 @@ public class CharacterCreatorProgression : MonoBehaviour
     [SerializeField] private GameObject _bodyOptions;
     [SerializeField] private GameObject _profileOptions;
     [SerializeField] private MainHairController _hairController;
+    [SerializeField] private ExpressionButtonsController _expressionButtons;
 
     private void Start()
     {
@@ -28,6 +29,7 @@ public class CharacterCreatorProgression : MonoBehaviour
         _characterController.MakeNewID();
         _facialFeaturesTabButton.Select(true);
         FocusFace();
+        _expressionButtons.Show();
 
         //await Task.Delay(100);
         _hairController.UpdateVisuals();

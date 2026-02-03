@@ -38,5 +38,10 @@ public class pauseMenuController : MonoBehaviour
         Click();
     }
 
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
+
     public void Click() => _clickSound.Play();
 }

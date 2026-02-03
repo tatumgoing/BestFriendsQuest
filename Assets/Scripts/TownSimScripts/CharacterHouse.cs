@@ -9,7 +9,6 @@ public class CharacterHouse : MonoBehaviour
 {
     [Header("Character Info")]
     public CompleteCharacterData associatedCharacter;
-    public Image tempIcon;
 
     [Header("Dialogue Box")]
 
@@ -57,7 +56,6 @@ public class CharacterHouse : MonoBehaviour
         statusHappinessMeter.associatedCharacter = associatedCharacter;
 
         dialogueBox.associatedCharacter = associatedCharacter;
-        tempIcon.sprite = associatedCharacter.Icon;
 
         giftMenu.SetActive(false);
         houseStatusMenu.SetActive(false);
@@ -68,6 +66,7 @@ public class CharacterHouse : MonoBehaviour
 
     private void OnEnable()
     {
+        print("enableHouseButton");
         statusEnabled = false;
         houseStatusMenu.SetActive(false);
 

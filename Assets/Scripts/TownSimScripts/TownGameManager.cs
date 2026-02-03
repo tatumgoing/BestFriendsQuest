@@ -327,7 +327,6 @@ public class TownGameManager : MonoBehaviour
             
             newHouseButtonScript.problemAlert.SetActive(character.HasProblem);
             
-            
             newHouseButton.GetComponent<Button>().onClick.AddListener(() => OpenHouse(character));
             newHouseButton.GetComponent<Button>().onClick.AddListener(() => ToggleHouseSelection());
 
@@ -352,7 +351,7 @@ public class TownGameManager : MonoBehaviour
     private void OpenHouse(CompleteCharacterData character)
     {
         // disable the navigation UI, set active the house game object
-
+        print("openHouse: " + character.Name);
         character.RoomScript.Show(character.ID);
     }
 
