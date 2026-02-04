@@ -10,8 +10,8 @@ public class BFQResultsScreen : MonoBehaviour
     Quest associatedQuest;
 
     [Header("Characters")]
-    public CharacterData charOne;
-    public CharacterData charTwo;
+    public CompleteCharacterData charOne;
+    public CompleteCharacterData charTwo;
 
     [Header("Sprites")]
     public Image charDisplayOne;
@@ -48,18 +48,17 @@ public class BFQResultsScreen : MonoBehaviour
         failWindow.SetActive(false);
         statsWindow.SetActive(false);
     }
-    public IEnumerator ResultsAnimation(bool succeeded, Quest newQuest, CharacterData cOne, CharacterData cTwo)
+    public IEnumerator ResultsAnimation(bool succeeded, Quest newQuest, CompleteCharacterData cOne, CompleteCharacterData cTwo)
     {
         associatedQuest = newQuest;
 
         charOne = cOne;
         charTwo = cTwo;
 
-        charDisplayOne.sprite = charOne.characterIcon;
-        charDisplayTwo.sprite = charTwo.characterIcon;
+        charDisplayOne.sprite = charOne.Icon;
+        charDisplayTwo.sprite = charTwo.Icon;
 
-        relationBar.associatedCharacter = charOne;
-        relationBar.secondCharacter = charTwo;
+        relationBar.SetCharacters(charOne.ID, charTwo.ID);
 
         FunAnimator anim = treasureChest.gameObject.GetComponent<FunAnimator>();
         anim.doesRot = false;
@@ -78,15 +77,8 @@ public class BFQResultsScreen : MonoBehaviour
         yield return new WaitForSeconds(2f);
 
 
-        if (succeeded)
-        {
-            StartCoroutine(SuccessAnimation());
-        }
-        else
-        {
-            StartCoroutine(FailAnimation());
-        }
-
+        if (succeeded) StartCoroutine(SuccessAnimation());
+        else StartCoroutine(FailAnimation());
     }
 
     public IEnumerator SuccessAnimation()
@@ -129,27 +121,15 @@ public class BFQResultsScreen : MonoBehaviour
 
         statsText.text = displayText;
             
-        resCharOne.sprite= charOne.characterIcon;
-        resCharTwo.sprite= charTwo.characterIcon;
+        resCharOne.sprite= charOne.Icon;
+        resCharTwo.sprite= charTwo.Icon;
 
         yield return new WaitForSeconds(3f);
 
-        if (success)
-        {
-            charOne.UpdateRelationship(charTwo, associatedQuest.relationshipGain);
-            charTwo.UpdateRelationship(charOne, associatedQuest.relationshipGain);
-        }
-        else
-        {
-            charOne.UpdateRelationship(charTwo, associatedQuest.relationshipLoss);
-            charTwo.UpdateRelationship(charOne, associatedQuest.relationshipLoss);
-        }
+        var relationshipChange = success ? associatedQuest.relationshipGain : associatedQuest.relationshipLoss;
+        CharacterManager.i.IncreaseRelationship(charOne.ID, charTwo.ID, relationshipChange);
 
-        charOne.happiness = 0;
-        charTwo.happiness = 0;
-
-
+        charOne.SetHappiness(0);
+        charTwo.SetHappiness(0);
     }
-
-
 }

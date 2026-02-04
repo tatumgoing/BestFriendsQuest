@@ -59,7 +59,7 @@ public class MinigameManager : MonoBehaviour
         GenerateRecipeSelect();
     }
 
-    public void StartProblemMinigame(CharacterData problemCharacter)
+    public void StartProblemMinigame(CompleteCharacterData problemCharacter)
     {
         isProblemRun = true;
 
@@ -136,9 +136,9 @@ public class MinigameManager : MonoBehaviour
                 confirmWindow.SetActive(false);
                 confirmWindowVisible = !confirmWindowVisible;
             }
-            else if (!confirmWindowVisible && characterSelectionMenu.selectedCharacter.characterName != "")
+            else if (!confirmWindowVisible && characterSelectionMenu.selectedCharacter.Name != "")
             {
-                windowText.text = "Start cooking with " + characterSelectionMenu.selectedCharacter.characterName + "?";
+                windowText.text = "Start cooking with " + characterSelectionMenu.selectedCharacter.Name + "?";
 
                 confirmWindow.SetActive(true);
                 confirmWindowVisible = !confirmWindowVisible;
@@ -191,19 +191,17 @@ public class MinigameManager : MonoBehaviour
         minigameScores.Clear();
 
         isProblemRun = false;
-
     }
 
     public void UpdateHappinessDisplay(float finalScore)
     {
-        endScreenIcon.sprite= characterSelectionMenu.selectedCharacter.characterIcon;
+        endScreenIcon.sprite= characterSelectionMenu.selectedCharacter.Icon;
 
-        float newWidth = happinessMeter.transform.parent.GetComponent<RectTransform>().sizeDelta.x * (characterSelectionMenu.selectedCharacter.happiness / 100);
+        float newWidth = happinessMeter.transform.parent.GetComponent<RectTransform>().sizeDelta.x * (characterSelectionMenu.selectedCharacter.Happiness / 100);
         happinessMeter.GetComponent<RectTransform>().sizeDelta = new Vector2(newWidth, happinessMeter.GetComponent<RectTransform>().sizeDelta.y);
 
-        characterSelectionMenu.selectedCharacter.happiness += (maxHappiness * (finalScore / 100));
-        characterSelectionMenu.selectedCharacter.happiness= Mathf.Clamp(characterSelectionMenu.selectedCharacter.happiness, 0, 100);
-
+        var happinessToAdd = maxHappiness * (finalScore / 100);
+        CharacterManager.i.IncreaseHappiness(characterSelectionMenu.selectedCharacter.ID, happinessToAdd);
     }
 
     public void UpdateCurrencyDisplay(float finalScore)
@@ -223,7 +221,7 @@ public class MinigameManager : MonoBehaviour
 
         yield return new WaitForSeconds(2);
 
-        float newWidth = happinessMeter.transform.parent.GetComponent<RectTransform>().sizeDelta.x * (characterSelectionMenu.selectedCharacter.happiness / 100);
+        float newWidth = happinessMeter.transform.parent.GetComponent<RectTransform>().sizeDelta.x * (characterSelectionMenu.selectedCharacter.Happiness / 100);
         happinessMeter.GetComponent<RectTransform>().sizeDelta = new Vector2(newWidth, happinessMeter.GetComponent<RectTransform>().sizeDelta.y);
 
     }

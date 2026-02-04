@@ -27,13 +27,21 @@ public class HairController : MonoBehaviour, IFeatureController
 
     private void Awake()
     {
+        if (_allOptions.Count == 0) Initialize();
+    }
+
+    private void Initialize()
+    {
         _allOptions = Resources.LoadAll<FeatureSOData>("HairFeatures").OrderByDescending(x => x.Priority).ToList();
     }
 
     private void Start()
     {
-        UIManager.i.OnTabSwitch.AddListener(DeselectAllAddons);
-        HairColor = _color.GetDefaultColor();
+        if (UIManager.i != null) UIManager.i.OnTabSwitch.AddListener(DeselectAllAddons);
+        
+        if (_color) HairColor = _color.GetDefaultColor();
+        //else HairColor = Color.red;
+
         _currentPieces = GetComponentsInChildren<HairPiece>().Where(x => !x.IsMirroredVersion).ToList();
         foreach (var c in _currentPieces) c.Initialize(this);
         foreach (var c in _currentPieces) if (c.GetSettings().MatchColor) c.SetColor(HairColor);
@@ -56,18 +64,30 @@ public class HairController : MonoBehaviour, IFeatureController
 
         var parts = saveString.Split("&");
         foreach (var p in parts) {
-            print("adding hair feature: " + p);
+            //print("adding hair feature: " + p);
             AddFeatureFromString(p);
         }
     }
 
     private void AddFeatureFromString(string featureString)
     {
+        if (_allOptions.Count == 0) Initialize();
+
         var parts = featureString.Split("~");
         FeatureSOData selected = null;
         foreach (var f in _allOptions) if (f.name == parts[0]) selected = f;
+
+        //foreach (var f in _allOptions) if (f.Icon.name != parts[0]) print("|" + f.Icon.name + " != " + parts[0]);
+        //if (selected == null) print("couln't find " + parts[0] + " feature. count: " + _allFeatures.Count);
+
         var newFeature = AddFeature(selected);
         newFeature.ConfigureFromString(parts[1]);
+
+        if (newFeature.GetSettings().MatchColor || _currentPieces.Count == 1) {
+            HairColor = newFeature.GetSettings().Color;
+        }
+
+        // print("Adding hair feature from string. name: " + selected.name + ", featureString: " + featureString + ", number part: " + parts[1]);
     }
 
     public string GetSaveString()
@@ -109,22 +129,6 @@ public class HairController : MonoBehaviour, IFeatureController
     public void SetAngle(float angle)
     {
         _currentPieces[_currentIndex].transform.GetChild(0).GetChild(0).localEulerAngles = Vector3.up * Mathf.Lerp(-180, 180, angle);
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        var center = _target.parent.position;
-        center.y = _target.position.y;
-
-        var size = 0.5f;
-        var leftBottom = center + (Vector3.left * _limits.x) + (Vector3.back * _limits.y);
-        Gizmos.DrawWireSphere(leftBottom, size);
-        var leftTop = center + (Vector3.left * _limits.x) + (Vector3.forward * _limits.y);
-        Gizmos.DrawWireSphere(leftTop, size);
-        var rightBottom = center + (Vector3.right * _limits.x) + (Vector3.back * _limits.y);
-        Gizmos.DrawWireSphere(rightBottom, size);
-        var rightTop = center + (Vector3.right * _limits.x) + (Vector3.forward * _limits.y);
-        Gizmos.DrawWireSphere(rightTop, size);
     }
 
     public void CopySettingsToCurrent(FeatureObj original)

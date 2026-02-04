@@ -13,7 +13,6 @@ public enum GameMode { SIMPLE, ADVANCED}
 public class GameManager : MonoBehaviour
 {
     public static GameManager i;
-    public const int idLength = 4;
     private void Awake() { i = this; }
 
     [SerializeField] private GameMode _mode;
@@ -24,13 +23,13 @@ public class GameManager : MonoBehaviour
 
     [Header("saving")]
     [SerializeField] private CharacterMetaController _character;
-    [SerializeField] private string _saveFileName = "saves.txt";
+    [SerializeField] private string _saveFileName = "characters.txt";
  
     public bool Advanced => _mode == GameMode.ADVANCED;
     [HideInInspector] public UnityEvent OnModeChange;
     private List<ModeExlusiveItem> _modeExlusiveItems = new List<ModeExlusiveItem>();
 
-    public string Path => System.IO.Path.Combine(Application.streamingAssetsPath, _saveFileName);
+    public string CharactersSavePath => System.IO.Path.Combine(Application.streamingAssetsPath, _saveFileName);
 
     private void Start()
     {
@@ -55,45 +54,43 @@ public class GameManager : MonoBehaviour
     {
         var newData = _character.GetSaveString();
 
-        Directory.CreateDirectory(System.IO.Path.GetDirectoryName(Path));
-        if (!File.Exists(Path)) {
-            File.WriteAllText(Path, newData);
+        Directory.CreateDirectory(System.IO.Path.GetDirectoryName(CharactersSavePath));
+        if (!File.Exists(CharactersSavePath)) {
+            File.WriteAllText(CharactersSavePath, newData);
             return;
         }
         
-        var characters = File.ReadAllText(Path).Split("\n").ToList();
+        var characters = File.ReadAllText(CharactersSavePath).Split("\n").ToList();
         bool found = false;
         for (int i = 0; i < characters.Count; i++) {
-            print("found character: " + characters[i]);
-
-            if (characters[i].Length > 0) print("Looking for : " + _character.ID + ", foundID: " + characters[i][..idLength]);
-
-            if (characters[i].Length > 0 && characters[i][..idLength] == _character.ID) {
-                print("FOUND ID MATCHED");
+            
+            if (characters[i].Length > 1 && characters[i][..SaveSystem.IDLength] == _character.ID) {
+                //print("FOUND ID MATCHED");
                 characters[i] = newData;
                 found = true;
                 break;
             }
-            else {
-                print("found ID didn't match search ID");
-            }
         }
         if (!found) {
-            print("target ID not found, adding new character");
+            //print("target ID not found, adding new character");
             characters.Add(newData);
         }
 
-        File.WriteAllText(Path, string.Join("\n", characters));
+        File.WriteAllText(CharactersSavePath, string.Join("\n", characters));
         //print("saved sucessfully to: " + Path);
+    }
+
+    public void LoadCharacterByID()
+    {
+
     }
 
     public void LoadFromSave()
     {
-        if (!File.Exists(Path)) return;
+        if (!File.Exists(CharactersSavePath)) return;
 
-        var saveString = File.ReadAllText(Path);
+        var saveString = File.ReadAllText(CharactersSavePath);
         _character.LoadFromString(saveString);
-        print("loaded sucessfully from: " + Path);
     }
 
     void TogglePause()

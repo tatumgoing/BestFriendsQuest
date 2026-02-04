@@ -65,7 +65,7 @@ public class BoilMinigame : MonoBehaviour
         lowerBound = cookingBar.GetComponent<RectTransform>().anchoredPosition.x - cookingBar.GetComponent<RectTransform>().sizeDelta.x / 2;
 
 
-        tempIcon.GetComponent<Image>().sprite = manager.characterSelectionMenu.selectedCharacter.characterIcon;
+        tempIcon.GetComponent<Image>().sprite = manager.characterSelectionMenu.selectedCharacter.Icon;
 
     }
 

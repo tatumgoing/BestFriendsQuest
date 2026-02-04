@@ -2,19 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
-using TMPro;
 using System.Threading.Tasks;
-using System;
-
+using System.Linq;
 
 public class TownGameManager : MonoBehaviour
 {
     public static TownGameManager i;
 
-    [Header("Character Manager")]
-
-    public CharacterManager characterManager;
+    [SerializeField] private CharacterManager _characterManager;
 
     [Header("CharacterHouses")]
 
@@ -70,7 +65,7 @@ public class TownGameManager : MonoBehaviour
 
         LoadInventory();
 
-        GenerateProblem(null);
+        GenerateProblem(new ID());
 
         //bad liine of temp code
         ChangeScene(sceneUIList[sceneUIList.Count -1], true);
@@ -319,7 +314,7 @@ public class TownGameManager : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        foreach (CharacterData character in characterManager.allCharacters)
+        foreach (CompleteCharacterData character in _characterManager.allCharacters)
         {
             //make their house dawg
 
@@ -327,11 +322,10 @@ public class TownGameManager : MonoBehaviour
 
             CharacterHouseButton newHouseButtonScript = newHouseButton.GetComponent<CharacterHouseButton>();
             //set parent, label, and sprite
-            newHouseButtonScript.SetHouseLabel(character.characterName);
-            newHouseButtonScript.SetHouseSprite(character.characterIcon);
+            newHouseButtonScript.SetHouseLabel(character.Name);
+            newHouseButtonScript.SetHouseSprite(character.Icon);
             
-            newHouseButtonScript.problemAlert.SetActive(character.hasProblem);
-            
+            newHouseButtonScript.problemAlert.SetActive(character.HasProblem);
             
             newHouseButton.GetComponent<Button>().onClick.AddListener(() => OpenHouse(character));
             newHouseButton.GetComponent<Button>().onClick.AddListener(() => ToggleHouseSelection());
@@ -346,23 +340,19 @@ public class TownGameManager : MonoBehaviour
             //now they reference each other yay
 
             newHouseScript.SetHouseCharacter(character);
-            character.house = newHouse;
+            character.SetRoomScript(newHouseScript.GetComponentInChildren<CharacterRoomModel>());
 
             //sets back button
             newHouse.GetComponentInChildren<NavigationButton>().newSceneUI = neighborhoodUI;
             newHouse.GetComponentInChildren<NavigationButton>().gameManager = this;
-
         }
-
     }
 
-    private void OpenHouse(CharacterData character)
+    private void OpenHouse(CompleteCharacterData character)
     {
         // disable the navigation UI, set active the house game object
-
-        Debug.Log(character.characterName);
-
-        character.house.gameObject.SetActive(true);
+        print("openHouse: " + character.Name);
+        character.RoomScript.Show(character.ID);
     }
 
     private void ToggleHouseSelection(bool activated= false)
@@ -370,25 +360,13 @@ public class TownGameManager : MonoBehaviour
         houseSelectionMenu.SetActive(activated);
     }
 
-    public void GenerateProblem(CharacterData lastCharacter)
+    public void GenerateProblem(ID prevID)
     {
-        CharacterData newProblemCharacter = characterManager.allCharacters[UnityEngine.Random.Range(0, characterManager.allCharacters.Count)];
+        var validOptions = _characterManager.AllCharacters.Where(x => x.ID != prevID).ToList();
 
-        if(newProblemCharacter != lastCharacter)
-        {
+        var selectedCharacter = validOptions[Random.Range(0, validOptions.Count())];
+        var selectedProblem = allProblems[Random.Range(0, allProblems.Count)];
 
-            newProblemCharacter.hasProblem = true;
-            newProblemCharacter.currentProblem = allProblems[UnityEngine.Random.Range(0, allProblems.Count)];
-
-            //Debug.Log("New Problem Character: " + newProblemCharacter.characterName + "Problem:" + newProblemCharacter.currentProblem);
-
-
-        }
-        else
-        {
-            GenerateProblem(lastCharacter);
-        }
+        CharacterManager.i.AssignProblem(selectedCharacter.ID, selectedProblem);
     }
-
-
 }

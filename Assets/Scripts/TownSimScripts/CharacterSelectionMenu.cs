@@ -13,7 +13,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 
     [Header("Selected Character")]
 
-    public CharacterData selectedCharacter;
+    public CompleteCharacterData selectedCharacter;
 
     [Header("Layout")]
     public GameObject characterButtonPrefab;
@@ -43,13 +43,13 @@ public class CharacterSelectionMenu : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        foreach (CharacterData character in gameManager.characterManager.allCharacters)
+        foreach (CompleteCharacterData character in CharacterManager.i.AllCharacters)
         {
             if (!isQuest)
             {
                 MakeIcon(character);
             }
-            else if(character.happiness>= 100)
+            else if(character.Happiness>= 100)
             {
                 MakeIcon(character);
             }
@@ -61,7 +61,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 
     }
 
-    public void MakeIcon(CharacterData character)
+    public void MakeIcon(CompleteCharacterData character)
     {
         GameObject newIcon = Instantiate(characterButtonPrefab, characterSelectionGrid.transform);
 
@@ -69,23 +69,23 @@ public class CharacterSelectionMenu : MonoBehaviour
 
         newIcon.GetComponent<Button>().onClick.AddListener(() => SelectButton(newIcon, character));
 
-        newIcon.GetComponent<Image>().sprite = character.characterIcon;
+        newIcon.GetComponent<Image>().sprite = character.Icon;
 
         characterSelectionButtons.Add(newIcon);
     }
 
-    public void MakeUnselectableIcon(CharacterData character)
+    public void MakeUnselectableIcon(CompleteCharacterData character)
     {
         GameObject newIcon = Instantiate(characterButtonPrefab, characterSelectionGrid.transform);
 
         newIcon.GetComponent<Button>().interactable= false;
 
-        newIcon.GetComponent<Image>().sprite = character.characterIcon;
+        newIcon.GetComponent<Image>().sprite = character.Icon;
 
         characterSelectionButtons.Add(newIcon);
     }
 
-    private void SelectCharacter(CharacterData character)
+    private void SelectCharacter(CompleteCharacterData character)
     {
         if(otherSelection != null && otherSelection.selectedCharacter != character || !isQuest)
         {
@@ -93,7 +93,7 @@ public class CharacterSelectionMenu : MonoBehaviour
         }
     }
 
-    public void SelectButton(GameObject button, CharacterData character)
+    public void SelectButton(GameObject button, CompleteCharacterData character)
     {
         if (otherSelection != null && otherSelection.selectedCharacter != character || !isQuest)
         {

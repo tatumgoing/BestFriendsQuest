@@ -23,7 +23,7 @@ public class ExistingCharacterMenuController : MonoBehaviour
 
     private void DisplayExistingCharacters()
     {   
-        if (!File.Exists(GameManager.i.Path) || string.IsNullOrEmpty(File.ReadAllText(GameManager.i.Path))) {
+        if (!File.Exists(GameManager.i.CharactersSavePath) || string.IsNullOrEmpty(File.ReadAllText(GameManager.i.CharactersSavePath))) {
             _saveStrings.Clear();
             foreach (Transform child in _buttonListParent) {
                 child.GetComponent<SelectableItem>().SetDisabled(true);
@@ -32,15 +32,16 @@ public class ExistingCharacterMenuController : MonoBehaviour
             return;
         }
 
-        var savedText = File.ReadAllText(GameManager.i.Path);
+        var savedText = File.ReadAllText(GameManager.i.CharactersSavePath);
         _saveStrings = savedText.Split('\n').Where(x => x.Length > 0).ToList();
-        var IDs = _saveStrings.Select(x => x.Substring(0, GameManager.idLength)).ToList();
+        var IDs = _saveStrings.Where(x => x.Length > 1).Select(x => x.Substring(0, SaveSystem.IDLength)).ToList();
 
         for (int i = 0; i < _saveStrings.Count; i++) {
             var button = _buttonListParent.GetChild(i);
 
-            var profileData = new CharacterProfileData();
-            profileData.FromString(_saveStrings[i].Split("|")[5]);
+            var profileData = new StaticCharacterData();
+            //print("saveString[i]: " + _saveStrings[i]);
+            profileData.FromString(_saveStrings[i][..SaveSystem.IDLength], _saveStrings[i].Split("|")[5]);
 
             button.GetComponentInChildren<TextMeshProUGUI>().text = profileData.Name;
         }
@@ -64,6 +65,5 @@ public class ExistingCharacterMenuController : MonoBehaviour
         _characterController.LoadFromString(_saveStrings[index]);
         _mainHairController.SetHair(_saveStrings[index]);
         _skinColorController.SetColor(_characterController.SkinColor);
-
     }
 }

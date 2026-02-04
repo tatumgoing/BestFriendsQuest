@@ -44,7 +44,7 @@ public class StirMinigame : MonoBehaviour
 
         InvokeRepeating("GenerateNewSpeed", 5.0f, 4.0f);
 
-        tempIcon.GetComponent<Image>().sprite = manager.characterSelectionMenu.selectedCharacter.characterIcon;
+        tempIcon.GetComponent<Image>().sprite = manager.characterSelectionMenu.selectedCharacter.Icon;
 
 
     }

@@ -59,7 +59,7 @@ public class AddonsUIHelper : MonoBehaviour
             _rmbPanParent.gameObject.SetActive(true);
         }
         else {
-            _expressionsParent.gameObject.SetActive(true);
+            _expressionsParent.GetComponent<ExpressionButtonsController>().Show();
             _lmbRotParent.gameObject.SetActive(true);
             _nextButtonParent.gameObject.SetActive(true);
 
