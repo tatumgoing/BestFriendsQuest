@@ -116,12 +116,13 @@ public class TownGameManager : MonoBehaviour
 
         }
     }
+
     public async void ChangeScene(GameObject newSceneUI, bool firstLaunch = false)
     {
         //fades out track and fades in load screen
 
         TownMusicPlayer i = TownMusicPlayer.i;
-        if(i.currentTrack != null && i.currentTrack.TrackName != newSceneUI.GetComponent<Area>().associatedTrack.TrackName )
+        if(newSceneUI && i.currentTrack != null && i.currentTrack.TrackName != newSceneUI.GetComponent<Area>().associatedTrack.TrackName )
         {
             i.StartCoroutine(i.FadeTrackOut(i.currentTrack));
         }
@@ -137,13 +138,13 @@ public class TownGameManager : MonoBehaviour
         {
             if(newSceneUI != j)
             {
-                j.SetActive(false);
+                if (j) j.SetActive(false);
             }
         }
 
         ToggleHouseSelection(true);
 
-        newSceneUI.SetActive(true);
+        if (newSceneUI && newSceneUI != neighborhoodUI) newSceneUI.SetActive(true);
 
         //delete later
         MakeCharacterHouses();
@@ -351,7 +352,6 @@ public class TownGameManager : MonoBehaviour
     private void OpenHouse(CompleteCharacterData character)
     {
         // disable the navigation UI, set active the house game object
-        print("openHouse: " + character.Name);
         character.RoomScript.Show(character.ID);
     }
 

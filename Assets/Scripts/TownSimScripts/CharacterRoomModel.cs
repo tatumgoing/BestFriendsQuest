@@ -11,8 +11,6 @@ public class CharacterRoomModel : MonoBehaviour
 
     public void Show(ID id)
     {
-        print("showing room");
-
         transform.parent.gameObject.SetActive(true);
         gameObject.SetActive(true);
         SpawnCharacter(id);

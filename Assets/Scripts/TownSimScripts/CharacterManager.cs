@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class CharacterManager : MonoBehaviour
@@ -17,6 +18,17 @@ public class CharacterManager : MonoBehaviour
     {
         i = this;
         LoadCharactersFromFile();
+    }
+
+    public List<ID> AllIDs()
+    {
+        return allCharacters.Select(x => x.ID).ToList();
+    }
+
+    public Sprite GetIcon(ID id)
+    {
+        var characterData = allCharacters.Find(c => c.ID == id);
+        return characterData != null ? characterData.Icon : null;
     }
 
     public SpawnedCharacter SpawnCharacter(ID id, Transform spawnSpot) => SpawnCharacter(id, spawnSpot.position, spawnSpot.lossyScale);

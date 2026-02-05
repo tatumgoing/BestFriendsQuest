@@ -18,7 +18,7 @@ public class CompleteCharacterData
         _staticData = new StaticCharacterData();
         _staticData.FromStaticSaveString(staticSaveString);
 
-        _dynamicData = new CharacterData(_staticData);
+        _dynamicData = new CharacterData(_staticData.ID);
     }
 
     /// <summary>
@@ -29,7 +29,7 @@ public class CompleteCharacterData
     public CompleteCharacterData(StaticCharacterData staticData)
     {
         _staticData = staticData;
-        _dynamicData = new CharacterData(_staticData);
+        _dynamicData = new CharacterData(_staticData.ID);
     }
 
     public ID ID => _staticData.ID;
@@ -39,7 +39,7 @@ public class CompleteCharacterData
     public Attraction Attraction => _staticData.Attraction;
     public DateTime Birthday => _staticData.Birthday;
     public FavoriteColor FavColor => _staticData.FavColor;
-    public int Age => _dynamicData.Age;
+    public int Age => SaveSystem.GetAge(_staticData.Birthday);
     public Sprite Icon => _staticData.Icon;
 
     //House

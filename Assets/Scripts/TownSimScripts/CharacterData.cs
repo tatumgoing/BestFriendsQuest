@@ -8,12 +8,6 @@ using System.Linq;
 [System.Serializable]
 public class CharacterData 
 {
-    TownGameManager gameManager;
-
-    [Header("Profile")]
-    public string CharacterName;
-    public int Age;
-
     [Range(0,100) ]public float Happiness = 50;
     public Problem CurrentProblem;
 
@@ -27,7 +21,6 @@ public class CharacterData
         CurrentProblem = null;
     }
 
-
     /// <summary>
     ///  Saves the dynamic data of this character to a file.
     ///  because Icon, Name, Age, etc are all generated from static data, we don't need to save them here.
@@ -38,10 +31,14 @@ public class CharacterData
         var resultString = ID + "~" + Happiness.ToString();
         SaveSystem.SaveDynamicData(resultString);
     }
+    private void SaveToFile() => SaveToFile(ID);
 
+    /// <summary>
+    /// Given an ID, load character's dynamic data from file.
+    /// </summary>
     public void LoadFromFile(ID ID)
     {
-        var saveStrings = SaveSystem.ReadFromFile(SaveSystem.DynamicDataFileName).Split('\n');
+        var saveStrings = SaveSystem.ReadFromFile(SaveSystem.dynamicDataFileName).Split('\n');
         foreach (var  s in saveStrings) {
             if (s.Split('~')[0] == ID) LoadFromString(s);
         }
@@ -50,26 +47,28 @@ public class CharacterData
         this.ID = ID;
     }
 
+    /// <summary>
+    /// After loading the string for this character from the file,
+    /// this method parses the string and loads the data into this instance.
+    /// eventually will load in inventory, preferences, and other dynamic data.
+    /// relationships are handled via characterManager.
+    /// </summary>
     private void LoadFromString(string saveString)
     {
         var parts = saveString.Split("~");
         if (parts.Length < 2) return;
 
         // Load Happiness
-        Happiness = float.Parse(parts[2]);
+        Happiness = float.Parse(parts[1]);
     }
-
 
     /// <summary>
     /// Creates a new instance of CharacterData based on the 'static' data generated in the character creator or loaded from a savefile.
     /// </summary>
-    public CharacterData(StaticCharacterData staticData)
+    public CharacterData(ID id)
     {
-        CharacterName = staticData.Name;
-        Age = SaveSystem.GetAge(staticData.Birthday);
-        LoadFromFile(staticData.ID);
+        LoadFromFile(id);
     }
-
 
     /// <summary>
     /// Creates a new instance of CharacterData with default values.
@@ -78,5 +77,6 @@ public class CharacterData
 
     public void UpdateHappiness(float newHappiness) {
         Happiness= Mathf.Clamp(Happiness + newHappiness, 0f, 100f);
+        SaveToFile();
     }
 }

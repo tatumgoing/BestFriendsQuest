@@ -3,20 +3,36 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Rendering;
 /// <summary>
 /// Handles saving and loading data to and from files, as well as loading save strings by ID for characters.
 /// </summary>
 public static class SaveSystem
 {
     private static readonly string saveFolder = "/SaveData/";
-    public static readonly string DynamicDataFileName = "dynamicData.txt";
-    public static readonly string StaticDataFileName = "characters.txt";
-    private static readonly string savePath = Application.dataPath + saveFolder;
+    public static readonly string dynamicDataFileName = "dynamicData.txt";
+    public static readonly string staticDataFileName = "characters.txt";
+    public static readonly string relationshipsFileName = "relationships.txt";
+    private static readonly string savePath = Application.streamingAssetsPath + saveFolder;
     public static int IDLength = 4;
 
     public static void SaveDynamicData(string dynamicData)
     {
-        Debug.Log("Dynamic data saving not implemented yet");
+        var targetID = dynamicData.Split('~')[0];
+
+        var saveStrings = ReadFromFile(dynamicDataFileName).Split('\n').Where(x => x.Length > 1).ToList();
+        for (int i = 0; i < saveStrings.Count; i++) {
+
+            var ID = saveStrings[i].Split('~')[0];
+            if (ID == targetID) {
+                saveStrings[i] = dynamicData;
+                SaveToFile(dynamicDataFileName, string.Join("\n", saveStrings));
+                return;
+            }
+        }
+
+        saveStrings.Add(dynamicData);
+        SaveToFile(dynamicDataFileName, string.Join("\n", saveStrings));
     }
 
     /// <summary>
@@ -30,6 +46,8 @@ public static class SaveSystem
         var file = File.CreateText(savePath + fileName);
         file.Write(text);
         file.Close();
+
+        Debug.Log("successfully wrote to " + savePath + fileName);
     }
 
     /// <summary>
@@ -63,7 +81,7 @@ public static class SaveSystem
     /// </summary>
     public static string GetRandomStaticSaveString()
     {
-        var savedText = File.ReadAllText(System.IO.Path.Combine(Application.streamingAssetsPath, StaticDataFileName));
+        var savedText = File.ReadAllText(System.IO.Path.Combine(Application.streamingAssetsPath, staticDataFileName));
         var saveStrings = savedText.Split('\n').Where(x => x.Length > 0).ToList();
         return saveStrings[Random.Range(0, saveStrings.Count)];
     }
@@ -83,7 +101,7 @@ public static class SaveSystem
     /// </summary>
     public static List<string> LoadAllStaticSaveStrings()
     {
-        var savedText = File.ReadAllText(System.IO.Path.Combine(Application.streamingAssetsPath, StaticDataFileName));
+        var savedText = File.ReadAllText(System.IO.Path.Combine(Application.streamingAssetsPath, staticDataFileName));
         var saveStrings = savedText.Split('\n').Where(x => x.Length > IDLength).ToList();
 
         return saveStrings;
