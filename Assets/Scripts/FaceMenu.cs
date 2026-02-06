@@ -53,6 +53,7 @@ public class FaceMenu : MonoBehaviour
         else if (category == FeatureCategory.EYEBROWS) _layers.Initialize(FeatureSubType.BROWS);
         else if (category == FeatureCategory.NOSE) _layers.Initialize(FeatureSubType.NOSE);
         else if (category == FeatureCategory.MOUTH) _layers.Initialize(FeatureSubType.LIPS);
+        else if (category == FeatureCategory.EXTRAS) _layers.Initialize(FeatureSubType.MISC);
         else _layers.Initialize(FeatureSubType.LIPS);
 
         SwitchToTab(0);

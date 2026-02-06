@@ -9,6 +9,12 @@ public class HouseController : MonoBehaviour
     
     private ID _id;
     private NeighborhoodController _controller;
+    private float timeWhenEnabled = 0;
+
+    private void OnEnable()
+    {
+        timeWhenEnabled = Time.time;
+    }
 
     private void Update()
     {
@@ -40,6 +46,8 @@ public class HouseController : MonoBehaviour
 
     private bool IsHovered()
     {
+        if (Time.time - timeWhenEnabled < 1) return false;
+
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         var didHit = Physics.Raycast(ray, out var hitInfo);
         if (!didHit) return false;
