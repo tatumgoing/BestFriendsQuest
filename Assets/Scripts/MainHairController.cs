@@ -70,7 +70,6 @@ public class MainHairController : MonoBehaviour
 
         for (int i = 0; i < _hairData.Count; i++) {
             if (i < (_currentPage + 1) * 9 && i+1 > (_currentPage) * 9) {
-                print("current page: " + _currentPage + ", spawning: " +  _hairData[i].name);
                 SpawnOption(_hairData[i]);
             }
         }
@@ -109,11 +108,9 @@ public class MainHairController : MonoBehaviour
         newOption.transform.SetAsLastSibling();
         newOption.Initialize(hairData, this);
 
-        if (_spawnedOptions.Count == _currentlySelectedIndex) {
+        if (_spawnedOptions.Count + (_currentPage * 9) == _currentlySelectedIndex) {
             newOption.GetComponent<SelectableItem>().Select(true, false);
         }
-
-        print("spawned new hair option: " + hairData.name + ", siblingIndex: " + newOption.transform.GetSiblingIndex());
 
         _spawnedOptions.Add(newOption);
     }
