@@ -26,7 +26,7 @@ public class FaceMenu : MonoBehaviour
 
     public void AddToHistory(TabButtonType TabButtonType)
     {
-        if (TabButtonType ==0) _buttonHistory.Clear();
+        if (TabButtonType == 0) _buttonHistory.Clear();
         else if (!_buttonHistory.Contains(TabButtonType)) _buttonHistory.Add(TabButtonType);
     }
 

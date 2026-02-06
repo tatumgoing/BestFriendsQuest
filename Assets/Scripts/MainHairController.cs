@@ -69,7 +69,8 @@ public class MainHairController : MonoBehaviour
         _spawnedOptions.Clear();
 
         for (int i = 0; i < _hairData.Count; i++) {
-            if (i < (_currentPage +1) * 9 && i+1 > (_currentPage) * 9) {
+            if (i < (_currentPage + 1) * 9 && i+1 > (_currentPage) * 9) {
+                print("current page: " + _currentPage + ", spawning: " +  _hairData[i].name);
                 SpawnOption(_hairData[i]);
             }
         }
@@ -102,12 +103,17 @@ public class MainHairController : MonoBehaviour
     private void SpawnOption(FeatureSOData hairData)
     {
         var newOption = Instantiate(_optionPrefab, _listParent).GetComponent<MainHairOption>();
-        newOption.transform.SetSiblingIndex(_listParent.transform.childCount - 2);
+
+        newOption.gameObject.name = hairData.name;
+
+        newOption.transform.SetAsLastSibling();
         newOption.Initialize(hairData, this);
 
         if (_spawnedOptions.Count == _currentlySelectedIndex) {
             newOption.GetComponent<SelectableItem>().Select(true, false);
         }
+
+        print("spawned new hair option: " + hairData.name + ", siblingIndex: " + newOption.transform.GetSiblingIndex());
 
         _spawnedOptions.Add(newOption);
     }
