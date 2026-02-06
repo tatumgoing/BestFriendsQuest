@@ -4,11 +4,107 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Threading.Tasks;
 using System.Linq;
+using MyBox;
+
+public enum AreaName {MAP, PARK, TOWN, SHOP, RESTURAUNT, TOWN_HALL, PORT }
+
+[System.Serializable]
+public class AreaData
+{
+    [HideInInspector] public string DisplayName;
+    [HideInInspector] public AreaName Type;
+
+    public GameObject UI;
+    public GameObject Environment;
+
+    public void Show() => SetActiveState(true);
+    public void Hide() => SetActiveState(false);
+
+    public void SetActiveState(bool active)
+    {
+        if (UI) UI.SetActive(active);
+        if (Environment) Environment.SetActive(active);
+    }
+}
 
 public class TownGameManager : MonoBehaviour
 {
     public static TownGameManager i;
 
+    [SerializeField] private List<AreaData> _areas = new List<AreaData>();
+
+    public void GoToMap() => ChangeArea(AreaName.MAP);
+    public void GoToPark() => ChangeArea(AreaName.PARK);
+    public void GoToTown() => ChangeArea(AreaName.TOWN);
+    public void GoToShop() => ChangeArea(AreaName.SHOP);
+    public void GoToResturaunt() => ChangeArea(AreaName.RESTURAUNT);
+    public void GoToTownHall() => ChangeArea(AreaName.TOWN_HALL);
+    public void GoToPort() => ChangeArea(AreaName.PORT);
+
+    private void OnValidate()
+    {
+        var options = Utils.EnumToList<AreaName>();
+        for (int i = 0; i < options.Count; i++) {
+            if (i < _areas.Count) {
+                _areas[i].Type = options[i];
+                _areas[i].DisplayName = options[i].ToString();
+            }
+        }
+    }
+
+    private void Awake()
+    {
+        i = this;
+
+        //load items from Resources
+        foreach (Item item in Resources.LoadAll("Items", typeof(Item))) {
+            allItems.Add(item);
+        }
+    }
+
+    void Start()
+    {
+        currency = PlayerPrefs.GetFloat("PlayerCurrency", 100);
+        ChangeCurrency(0);
+
+        LoadInventory();
+
+        GenerateProblem(new ID());
+
+        //bad liine of temp code
+        ChangeScene(sceneUIList[sceneUIList.Count - 1], true);
+
+        //MakeCharacterHouses();
+
+    }
+
+    public async void ChangeArea(AreaName targetArea)
+    {
+        await FadeScreen(true);
+        foreach (var a in _areas) a.SetActiveState(a.Type == targetArea);
+        await FadeScreen(false);        
+    }
+
+    public async void ChangeScene(GameObject newSceneUI, bool firstLaunch = false)
+    {
+        //fades out track
+        var musicPlayer = TownMusicPlayer.i;
+        if (newSceneUI && musicPlayer.currentTrack != null && musicPlayer.currentTrack.TrackName != newSceneUI.GetComponent<Area>().associatedTrack.TrackName) {
+            musicPlayer.StartCoroutine(musicPlayer.FadeTrackOut(musicPlayer.currentTrack));
+        }
+
+        //fades in load screen
+        if (!firstLaunch) await FadeScreen(true);
+
+        //enable the correct UI object
+        foreach (var s in sceneUIList) {
+            if (s) s.SetActive(newSceneUI == s);
+        }
+
+        await FadeScreen(false);
+    }
+
+    [Header(":::::::::")]
     [SerializeField] private CharacterManager _characterManager;
 
     [Header ("Inventory")]
@@ -32,39 +128,15 @@ public class TownGameManager : MonoBehaviour
     public List<GameObject> sceneList = new List<GameObject>();
     public List<GameObject> sceneUIList = new List<GameObject>();
 
+    [SerializeField] private GameObject _townMapUI;
     public GameObject neighborhoodUI;
     public GameObject minigameUI;
     //public GameObject neighborhood;
 
     public GameObject fadeScreen;
 
-    private void Awake()
-    {
-        i = this;
 
-        //load items from Resources
-        foreach (Item item in Resources.LoadAll("Items", typeof(Item))) { 
-        
-            allItems.Add(item);
-        }
-    }
-    void Start()
-    {
-        currency = PlayerPrefs.GetFloat("PlayerCurrency", 100);
-        ChangeCurrency(0);
-
-        LoadInventory();
-
-        GenerateProblem(new ID());
-
-        //bad liine of temp code
-        ChangeScene(sceneUIList[sceneUIList.Count -1], true);
-
-        //MakeCharacterHouses();
-
-    }
-
-    async Task FadeScreen(bool fadeIn)
+    public async Task FadeScreen(bool fadeIn)
     {
         if (fadeIn) 
         {
@@ -107,36 +179,7 @@ public class TownGameManager : MonoBehaviour
         }
     }
 
-    public async void ChangeScene(GameObject newSceneUI, bool firstLaunch = false)
-    {
-        //fades out track and fades in load screen
-
-        TownMusicPlayer i = TownMusicPlayer.i;
-        if(newSceneUI && i.currentTrack != null && i.currentTrack.TrackName != newSceneUI.GetComponent<Area>().associatedTrack.TrackName )
-        {
-            i.StartCoroutine(i.FadeTrackOut(i.currentTrack));
-        }
-
-        if(!firstLaunch)
-        {
-            await FadeScreen(true);
-        }
-
-        //iterates over all UIs, disabling. then, enables selected UI
-
-        foreach (GameObject j in sceneUIList)
-        {
-            if(newSceneUI != j)
-            {
-                if (j) j.SetActive(false);
-            }
-        }
-
-        if (newSceneUI && newSceneUI != neighborhoodUI) newSceneUI.SetActive(true);
-
-        await FadeScreen(false);
-
-    }
+    
 
     public void ChangeCurrency(float curChange)
     {

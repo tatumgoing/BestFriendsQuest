@@ -1,6 +1,7 @@
 using MyBox;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class NeighborhoodController : MonoBehaviour
@@ -11,6 +12,7 @@ public class NeighborhoodController : MonoBehaviour
     private void OnEnable()
     {
         HouseCharacters();
+        TownUIManager.i.ShowNeighborhoodUI();
     }
 
     public void LeaveRoom()

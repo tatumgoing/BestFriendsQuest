@@ -18,9 +18,11 @@ public class HouseController : MonoBehaviour
         if (hovered && Input.GetMouseButtonDown(0)) ShowRoom();
     }
 
-    private void ShowRoom()
+    private async void ShowRoom()
     {
+        await TownGameManager.i.FadeScreen(true);
         _controller.ShowRoom(_id);
+        await TownGameManager.i.FadeScreen(false);
     }
 
     public void Hide()

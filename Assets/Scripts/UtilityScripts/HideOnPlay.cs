@@ -6,6 +6,6 @@ public class HideOnPlay : MonoBehaviour
 {
     private void Awake()
     {
-        gameObject.SetActive(GameManager.i);
+        gameObject.SetActive(GameManager.i || TownGameManager.i);
     }
 }
