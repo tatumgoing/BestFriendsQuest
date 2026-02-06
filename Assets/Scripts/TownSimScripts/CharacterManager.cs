@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class CharacterManager : MonoBehaviour
@@ -19,14 +20,26 @@ public class CharacterManager : MonoBehaviour
         LoadCharactersFromFile();
     }
 
+    public List<ID> AllIDs()
+    {
+        return allCharacters.Select(x => x.ID).ToList();
+    }
+
+    public Sprite GetIcon(ID id)
+    {
+        var characterData = allCharacters.Find(c => c.ID == id);
+        return characterData != null ? characterData.Icon : null;
+    }
+
     public SpawnedCharacter SpawnCharacter(ID id, Transform spawnSpot) => SpawnCharacter(id, spawnSpot.position, spawnSpot.lossyScale);
     private SpawnedCharacter SpawnCharacter(ID id, Vector3 position, Vector3 scale)
     {
         var characterData = allCharacters.Find(c => c.ID == id);
         if (characterData == null) return null;
-
+        
         var spawnedCharacter = Instantiate(_characterControllerPrefab, position, Quaternion.identity).GetComponent<SpawnedCharacter>();
         spawnedCharacter.transform.localScale = scale;
+        
         spawnedCharacter.LoadFromString(SaveSystem.GetStaticSaveString(id));
 
         return spawnedCharacter;

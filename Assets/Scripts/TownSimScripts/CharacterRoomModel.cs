@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Cinemachine;
 
 public class CharacterRoomModel : MonoBehaviour
 {
@@ -9,11 +7,10 @@ public class CharacterRoomModel : MonoBehaviour
 
     private GameObject _spawnedCharacter;
 
+    public void Hide() => gameObject.SetActive(false);
+
     public void Show(ID id)
     {
-        print("showing room");
-
-        transform.parent.gameObject.SetActive(true);
         gameObject.SetActive(true);
         SpawnCharacter(id);
     }

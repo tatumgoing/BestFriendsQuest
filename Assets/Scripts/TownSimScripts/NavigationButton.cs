@@ -9,19 +9,12 @@ public class NavigationButton : MonoBehaviour
 
     public TownGameManager gameManager;
 
-    public void Start()
-    {
-        //Debug.Log(this + ": " + newScene + newSceneUI);
-
-    }
     public void ClickNavigation()
     {
         if (newSceneUI != null)
         {
             gameManager.ChangeScene(newSceneUI);
         }
-
-        //Debug.Log("Going to: " + newScene + newSceneUI);
     }
 
     public void LoadCharacterCreator()
