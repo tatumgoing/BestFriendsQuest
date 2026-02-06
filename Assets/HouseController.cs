@@ -6,12 +6,21 @@ using UnityEngine.UI;
 public class HouseController : MonoBehaviour
 {
     [SerializeField] private Image _characterIcon;
+    
     private ID _id;
+    private NeighborhoodController _controller;
 
     private void Update()
     {
         bool hovered = IsHovered();
         _characterIcon.gameObject.SetActive(hovered);
+
+        if (hovered && Input.GetMouseButtonDown(0)) ShowRoom();
+    }
+
+    private void ShowRoom()
+    {
+        _controller.ShowRoom(_id);
     }
 
     public void Hide()
@@ -19,8 +28,9 @@ public class HouseController : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void Initialize(ID id)
+    public void Initialize(ID id, NeighborhoodController controller)
     {
+        _controller = controller;
         gameObject.SetActive(true);
         _id = id;
         _characterIcon.sprite = CharacterManager.i.GetIcon(id);

@@ -36,9 +36,10 @@ public class CharacterManager : MonoBehaviour
     {
         var characterData = allCharacters.Find(c => c.ID == id);
         if (characterData == null) return null;
-
+        
         var spawnedCharacter = Instantiate(_characterControllerPrefab, position, Quaternion.identity).GetComponent<SpawnedCharacter>();
         spawnedCharacter.transform.localScale = scale;
+        
         spawnedCharacter.LoadFromString(SaveSystem.GetStaticSaveString(id));
 
         return spawnedCharacter;

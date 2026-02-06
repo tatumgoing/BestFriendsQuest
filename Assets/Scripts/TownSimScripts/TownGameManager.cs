@@ -11,16 +11,6 @@ public class TownGameManager : MonoBehaviour
 
     [SerializeField] private CharacterManager _characterManager;
 
-    [Header("CharacterHouses")]
-
-    public GameObject houseGrid;
-    public GameObject houseButtonPrefab;
-
-    public GameObject houseMenuUI;
-    public GameObject houseMenuPrefab;
-
-    public GameObject houseSelectionMenu;
-
     [Header ("Inventory")]
     public float currency;
     
@@ -142,18 +132,13 @@ public class TownGameManager : MonoBehaviour
             }
         }
 
-        ToggleHouseSelection(true);
-
         if (newSceneUI && newSceneUI != neighborhoodUI) newSceneUI.SetActive(true);
-
-        //delete later
-        MakeCharacterHouses();
 
         await FadeScreen(false);
 
     }
 
-        public void ChangeCurrency(float curChange)
+    public void ChangeCurrency(float curChange)
     {
         currency += curChange;
 
@@ -302,62 +287,11 @@ public class TownGameManager : MonoBehaviour
         rManager.UpdateRecordSync();
 
     }
-    private void MakeCharacterHouses()
-    {
-        //get rid of old house list, then make new one
-
-        foreach (Transform child in houseGrid.transform)
-        {
-            Destroy(child.gameObject);
-        }
-        foreach (Transform child in houseMenuUI.transform)
-        {
-            Destroy(child.gameObject);
-        }
-
-        foreach (CompleteCharacterData character in _characterManager.allCharacters)
-        {
-            //make their house dawg
-
-            GameObject newHouseButton = Instantiate(houseButtonPrefab, houseGrid.transform);
-
-            CharacterHouseButton newHouseButtonScript = newHouseButton.GetComponent<CharacterHouseButton>();
-            //set parent, label, and sprite
-            newHouseButtonScript.SetHouseLabel(character.Name);
-            newHouseButtonScript.SetHouseSprite(character.Icon);
-            
-            newHouseButtonScript.problemAlert.SetActive(character.HasProblem);
-            
-            newHouseButton.GetComponent<Button>().onClick.AddListener(() => OpenHouse(character));
-            newHouseButton.GetComponent<Button>().onClick.AddListener(() => ToggleHouseSelection());
-
-             // make dictionary for houses and buttons maybe
-
-            GameObject newHouse = Instantiate(houseMenuPrefab, houseMenuUI.transform);
-            newHouse.SetActive(false);
-
-            CharacterHouse newHouseScript = newHouse.GetComponent<CharacterHouse>();
-
-            //now they reference each other yay
-
-            newHouseScript.SetHouseCharacter(character);
-            character.SetRoomScript(newHouseScript.GetComponentInChildren<CharacterRoomModel>());
-
-            //sets back button
-            newHouse.GetComponentInChildren<NavigationButton>().newSceneUI = neighborhoodUI;
-            newHouse.GetComponentInChildren<NavigationButton>().gameManager = this;
-        }
-    }
 
     private void OpenHouse(CompleteCharacterData character)
     {
         // disable the navigation UI, set active the house game object
         character.RoomScript.Show(character.ID);
-    }
-
-    private void ToggleHouseSelection(bool activated= false)
-    {
-        houseSelectionMenu.SetActive(activated);
     }
 
     public void GenerateProblem(ID prevID)

@@ -5,9 +5,29 @@ using UnityEngine;
 
 public class NeighborhoodController : MonoBehaviour
 {
+    [SerializeField] private CharacterRoomModel _room;
+    [SerializeField] private GameObject _neighborhoodCamera;
+
     private void OnEnable()
     {
         HouseCharacters();
+    }
+
+    public void LeaveRoom()
+    {
+        _room.Hide();
+        _neighborhoodCamera.SetActive(true);
+    }
+
+    public void ShowRoom(ID id)
+    {
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.Confined;
+
+        _room.Show(id);
+        _neighborhoodCamera.SetActive(false);
+
+        TownUIManager.i.ShowRoomUI();
     }
 
     private void HouseCharacters()
@@ -19,7 +39,10 @@ public class NeighborhoodController : MonoBehaviour
 
         for (int i = 0; i < houses.Length; i++) {
             if (i >= characters.Count) houses[i].Hide();
-            else houses[i].Initialize(characters[i]);
+            else houses[i].Initialize(characters[i], this);
         }
+
+        _room.Hide();
+        _neighborhoodCamera.SetActive(true);
     }
 }
