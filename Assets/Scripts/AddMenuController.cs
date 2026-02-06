@@ -89,7 +89,7 @@ public class AddMenuController : MonoBehaviour
         }
 
         if (_usePages) {
-            _numPages = Mathf.CeilToInt(validOptions.Count / _numPerPage)+1;
+            _numPages = Mathf.CeilToInt((validOptions.Count -1) / _numPerPage) + 1;
             _pageNumText.text = (_currentPage + 1) + "/" + _numPages; 
 
             for (int i = _currentPage * _numPerPage; i < Mathf.Min((_currentPage+1) * _numPerPage, validOptions.Count); i++) {
