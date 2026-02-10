@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class NeighborhoodUI : MonoBehaviour
 {
-    [SerializeField] private GameObject _roomUI;
+    [SerializeField] private RoomUIController _roomUI;
     [SerializeField] private GameObject _neighborhoodUI;
     [SerializeField] private NeighborhoodController _controller;
 
@@ -13,25 +13,25 @@ public class NeighborhoodUI : MonoBehaviour
         TownGameManager.i.GoToMap();
     }
 
-    public void ShowRoomUI()
+    public void ShowRoomUI(ID id)
     {
         gameObject.SetActive(true);
 
-        _roomUI.SetActive(true);
+        _roomUI.Show(id);
         _neighborhoodUI.SetActive(false);
     }
 
     public void ShowNeighborhoodUI()
     {
         _neighborhoodUI.SetActive(true);
-        _roomUI.SetActive(false);
+        _roomUI.gameObject.SetActive(false);
         gameObject.SetActive(true);
     }
 
     public async void HideRoomUI()
     {
         await TownGameManager.i.FadeScreen(true);
-        _roomUI.SetActive(false);
+        _roomUI.gameObject.SetActive(false);
         _controller.LeaveRoom();
         ShowNeighborhoodUI();
         await TownGameManager.i.FadeScreen(false);

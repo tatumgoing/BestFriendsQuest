@@ -14,5 +14,5 @@ public class TownUIManager : MonoBehaviour
     }
 
     public void ShowNeighborhoodUI() => _neighborhood.ShowNeighborhoodUI();
-    public void ShowRoomUI() => _neighborhood.ShowRoomUI();
+    public void ShowRoomUI(ID id) => _neighborhood.ShowRoomUI(id);
 }

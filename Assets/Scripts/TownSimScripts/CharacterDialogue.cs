@@ -21,7 +21,6 @@ public class CharacterDialogue : MonoBehaviour
         dialogues.Add("Whats the weather like in your world?");
         dialogues.Add("It's good having so many neighbors in this town. Maybe we ought to have a party soon.");
         dialogues.Add("Thanks for checking in on me!");
-
     }
 
     public void DisplayDialogue(string newDialogue="")

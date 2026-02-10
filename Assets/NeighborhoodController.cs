@@ -29,7 +29,7 @@ public class NeighborhoodController : MonoBehaviour
         _room.Show(id);
         _neighborhoodCamera.SetActive(false);
 
-        TownUIManager.i.ShowRoomUI();
+        TownUIManager.i.ShowRoomUI(id);
     }
 
     private void HouseCharacters()

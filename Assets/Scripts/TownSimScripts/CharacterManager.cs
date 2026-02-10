@@ -25,6 +25,11 @@ public class CharacterManager : MonoBehaviour
         return allCharacters.Select(x => x.ID).ToList();
     }
 
+    public CompleteCharacterData GetCharacter(ID id)
+    {
+        return allCharacters.Find(x =>  x.ID == id);
+    }
+
     public Sprite GetIcon(ID id)
     {
         var characterData = allCharacters.Find(c => c.ID == id);
