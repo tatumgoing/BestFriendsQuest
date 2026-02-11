@@ -10,11 +10,6 @@ public class ExpressionButtonsController : MonoBehaviour
     private bool _clicking;
     private bool _showing;
 
-    private void OnEnable()
-    {
-        print("enabled expression buttons");
-    }
-
     public async void Show()
     {
         if (_showing || gameObject.activeInHierarchy) return;

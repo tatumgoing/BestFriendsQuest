@@ -52,6 +52,8 @@ public class GameManager : MonoBehaviour
 
     public void SaveCurrent()
     {
+        if (!Advanced) return; 
+
         var newData = _character.GetSaveString();
 
         Directory.CreateDirectory(System.IO.Path.GetDirectoryName(CharactersSavePath));

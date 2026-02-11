@@ -7,6 +7,7 @@ public class MovableAddon : MonoBehaviour
     [SerializeField] private LayerMask _hitLayers;
     [SerializeField] private LayerMask _hoverLayers;
     [SerializeField] private GameObject _rotationControls;
+    [SerializeField] private GameObject _moveGizmo;
 
     private bool _dragging;
     [ReadOnly, SerializeField] private Vector3 _targetUp;
@@ -120,6 +121,7 @@ public class MovableAddon : MonoBehaviour
         }
 
         _rotationControls.SetActive(_uiController.Rotating && Selected);
+        _moveGizmo.SetActive(Selected && !_rotationControls.activeInHierarchy);
         if (!Selected) return;
 
         _currentUp = transform.up;
