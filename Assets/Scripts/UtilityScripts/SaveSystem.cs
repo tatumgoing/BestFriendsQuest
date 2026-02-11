@@ -47,7 +47,7 @@ public static class SaveSystem
         file.Write(text);
         file.Close();
 
-        Debug.Log("successfully wrote to " + savePath + fileName);
+        //Debug.Log("successfully wrote to " + savePath + fileName);
     }
 
     /// <summary>

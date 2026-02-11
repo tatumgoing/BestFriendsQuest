@@ -37,4 +37,10 @@ public class ParkController : MonoBehaviour
             _spawnedCharacters.Add(newCharacter);
         }
     }
+
+    private void OnDisable()
+    {
+        foreach (var s in _spawnedCharacters) if (s) Destroy(s.gameObject);
+        _spawnedCharacters.Clear();
+    }
 }
