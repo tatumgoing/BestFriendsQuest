@@ -579,6 +579,7 @@ MonoBehaviour:
   _hoverCooldown: 0.05
   _hoverWhenSelected: 1
   _deHoverOnEnable: 0
+  _deHoverOnRenable: 0
   _data: []
   _hasAnimation: 0
   _animator: {fileID: 0}
@@ -1177,6 +1178,7 @@ GameObject:
   - component: {fileID: 3925489662723602751}
   - component: {fileID: 6428023519242038321}
   - component: {fileID: 1565334271432924993}
+  - component: {fileID: 4783141080678278247}
   m_Layer: 5
   m_Name: colorMenu
   m_TagString: Untagged
@@ -1236,6 +1238,7 @@ MonoBehaviour:
         m_CallState: 2
   _basicParent: {fileID: 8365644310530203255}
   _advancedParent: {fileID: 6163574344092230800}
+  _advancedModeParentToggle: {fileID: 8713728289465531535}
   _basicColors:
   - Name: Red
     Color: {r: 0.7924528, g: 0, b: 0, a: 1}
@@ -1302,6 +1305,41 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &4783141080678278247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4143076641736682994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a15a1c85ffe967d42a261d6d967c4a78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _setActiveState: 0
+  _activeMode: 1
+  _onStartAdvancedMode:
+    m_PersistentCalls:
+      m_Calls: []
+  _onStartSimpleMode:
+    m_PersistentCalls:
+      m_Calls: []
+  _onChangeMode:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3925489662723602751}
+        m_TargetAssemblyTypeName: ColorMenuController, Assembly-CSharp
+        m_MethodName: SetAdvancedMode
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &4149628891519985189
 GameObject:
   m_ObjectHideFlags: 0
@@ -1454,6 +1492,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _events: []
   _sounds: []
+  _randomStart: 0
+  _animator: {fileID: 0}
 --- !u!225 &2426505075108468815
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -2226,6 +2266,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _events: []
   _sounds: []
+  _randomStart: 0
+  _animator: {fileID: 0}
 --- !u!225 &7743645714835252255
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -3090,6 +3132,11 @@ PrefabInstance:
 --- !u!224 &4759855230962134552 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8460680141424334853, guid: 2b1c5001edea37a49be4835095c5be6a, type: 3}
+  m_PrefabInstance: {fileID: 3991377696092648989}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8713728289465531535 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5731210305340017298, guid: 2b1c5001edea37a49be4835095c5be6a, type: 3}
   m_PrefabInstance: {fileID: 3991377696092648989}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4942144542402342221

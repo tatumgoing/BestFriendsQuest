@@ -2,29 +2,110 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
-using TMPro;
 using System.Threading.Tasks;
-using System;
+using System.Linq;
+using MyBox;
 
+public enum AreaName {MAP, PARK, TOWN, SHOP, RESTURAUNT, TOWN_HALL, PORT }
+
+[System.Serializable]
+public class AreaData
+{
+    [HideInInspector] public string DisplayName;
+    [HideInInspector] public AreaName Type;
+
+    public GameObject UI;
+    public GameObject Environment;
+
+    public void Show() => SetActiveState(true);
+    public void Hide() => SetActiveState(false);
+
+    public void SetActiveState(bool active)
+    {
+        if (UI) UI.SetActive(active);
+        if (Environment) Environment.SetActive(active);
+    }
+}
 
 public class TownGameManager : MonoBehaviour
 {
     public static TownGameManager i;
 
-    [Header("Character Manager")]
+    [SerializeField] private List<AreaData> _areas = new List<AreaData>();
 
-    public CharacterManager characterManager;
+    public void GoToMap() => ChangeArea(AreaName.MAP);
+    public void GoToPark() => ChangeArea(AreaName.PARK);
+    public void GoToTown() => ChangeArea(AreaName.TOWN);
+    public void GoToShop() => ChangeArea(AreaName.SHOP);
+    public void GoToResturaunt() => ChangeArea(AreaName.RESTURAUNT);
+    public void GoToTownHall() => ChangeArea(AreaName.TOWN_HALL);
+    public void GoToPort() => ChangeArea(AreaName.PORT);
 
-    [Header("CharacterHouses")]
+    private void OnValidate()
+    {
+        var options = Utils.EnumToList<AreaName>();
+        for (int i = 0; i < options.Count; i++) {
+            if (i < _areas.Count) {
+                _areas[i].Type = options[i];
+                _areas[i].DisplayName = options[i].ToString();
+            }
+        }
+    }
 
-    public GameObject houseGrid;
-    public GameObject houseButtonPrefab;
+    private void Awake()
+    {
+        i = this;
 
-    public GameObject houseMenuUI;
-    public GameObject houseMenuPrefab;
+        //load items from Resources
+        foreach (Item item in Resources.LoadAll("Items", typeof(Item))) {
+            allItems.Add(item);
+        }
+    }
 
-    public GameObject houseSelectionMenu;
+    void Start()
+    {
+        currency = PlayerPrefs.GetFloat("PlayerCurrency", 100);
+        ChangeCurrency(0);
+
+        LoadInventory();
+
+        GenerateProblem(new ID());
+
+        //bad liine of temp code
+        ChangeScene(sceneUIList[sceneUIList.Count - 1], true);
+
+        //MakeCharacterHouses();
+
+    }
+
+    public async void ChangeArea(AreaName targetArea)
+    {
+        await FadeScreen(true);
+        foreach (var a in _areas) a.SetActiveState(a.Type == targetArea);
+        await FadeScreen(false);        
+    }
+
+    public async void ChangeScene(GameObject newSceneUI, bool firstLaunch = false)
+    {
+        //fades out track
+        var musicPlayer = TownMusicPlayer.i;
+        if (newSceneUI && musicPlayer.currentTrack != null && musicPlayer.currentTrack.TrackName != newSceneUI.GetComponent<Area>().associatedTrack.TrackName) {
+            musicPlayer.StartCoroutine(musicPlayer.FadeTrackOut(musicPlayer.currentTrack));
+        }
+
+        //fades in load screen
+        if (!firstLaunch) await FadeScreen(true);
+
+        //enable the correct UI object
+        foreach (var s in sceneUIList) {
+            if (s) s.SetActive(newSceneUI == s);
+        }
+
+        await FadeScreen(false);
+    }
+
+    [Header(":::::::::")]
+    [SerializeField] private CharacterManager _characterManager;
 
     [Header ("Inventory")]
     public float currency;
@@ -47,39 +128,15 @@ public class TownGameManager : MonoBehaviour
     public List<GameObject> sceneList = new List<GameObject>();
     public List<GameObject> sceneUIList = new List<GameObject>();
 
+    [SerializeField] private GameObject _townMapUI;
     public GameObject neighborhoodUI;
     public GameObject minigameUI;
     //public GameObject neighborhood;
 
     public GameObject fadeScreen;
 
-    private void Awake()
-    {
-        i = this;
 
-        //load items from Resources
-        foreach (Item item in Resources.LoadAll("Items", typeof(Item))) { 
-        
-            allItems.Add(item);
-        }
-    }
-    void Start()
-    {
-        currency = PlayerPrefs.GetFloat("PlayerCurrency", 100);
-        ChangeCurrency(0);
-
-        LoadInventory();
-
-        GenerateProblem(null);
-
-        //bad liine of temp code
-        ChangeScene(sceneUIList[sceneUIList.Count -1], true);
-
-        //MakeCharacterHouses();
-
-    }
-
-    async Task FadeScreen(bool fadeIn)
+    public async Task FadeScreen(bool fadeIn)
     {
         if (fadeIn) 
         {
@@ -121,43 +178,10 @@ public class TownGameManager : MonoBehaviour
 
         }
     }
-    public async void ChangeScene(GameObject newSceneUI, bool firstLaunch = false)
-    {
-        //fades out track and fades in load screen
 
-        TownMusicPlayer i = TownMusicPlayer.i;
-        if(i.currentTrack != null && i.currentTrack.TrackName != newSceneUI.GetComponent<Area>().associatedTrack.TrackName )
-        {
-            i.StartCoroutine(i.FadeTrackOut(i.currentTrack));
-        }
+    
 
-        if(!firstLaunch)
-        {
-            await FadeScreen(true);
-        }
-
-        //iterates over all UIs, disabling. then, enables selected UI
-
-        foreach (GameObject j in sceneUIList)
-        {
-            if(newSceneUI != j)
-            {
-                j.SetActive(false);
-            }
-        }
-
-        ToggleHouseSelection(true);
-
-        newSceneUI.SetActive(true);
-
-        //delete later
-        MakeCharacterHouses();
-
-        await FadeScreen(false);
-
-    }
-
-        public void ChangeCurrency(float curChange)
+    public void ChangeCurrency(float curChange)
     {
         currency += curChange;
 
@@ -306,89 +330,20 @@ public class TownGameManager : MonoBehaviour
         rManager.UpdateRecordSync();
 
     }
-    private void MakeCharacterHouses()
-    {
-        //get rid of old house list, then make new one
 
-        foreach (Transform child in houseGrid.transform)
-        {
-            Destroy(child.gameObject);
-        }
-        foreach (Transform child in houseMenuUI.transform)
-        {
-            Destroy(child.gameObject);
-        }
-
-        foreach (CharacterData character in characterManager.allCharacters)
-        {
-            //make their house dawg
-
-            GameObject newHouseButton = Instantiate(houseButtonPrefab, houseGrid.transform);
-
-            CharacterHouseButton newHouseButtonScript = newHouseButton.GetComponent<CharacterHouseButton>();
-            //set parent, label, and sprite
-            newHouseButtonScript.SetHouseLabel(character.characterName);
-            newHouseButtonScript.SetHouseSprite(character.characterIcon);
-            
-            newHouseButtonScript.problemAlert.SetActive(character.hasProblem);
-            
-            
-            newHouseButton.GetComponent<Button>().onClick.AddListener(() => OpenHouse(character));
-            newHouseButton.GetComponent<Button>().onClick.AddListener(() => ToggleHouseSelection());
-
-             // make dictionary for houses and buttons maybe
-
-            GameObject newHouse = Instantiate(houseMenuPrefab, houseMenuUI.transform);
-            newHouse.SetActive(false);
-
-            CharacterHouse newHouseScript = newHouse.GetComponent<CharacterHouse>();
-
-            //now they reference each other yay
-
-            newHouseScript.SetHouseCharacter(character);
-            character.house = newHouse;
-
-            //sets back button
-            newHouse.GetComponentInChildren<NavigationButton>().newSceneUI = neighborhoodUI;
-            newHouse.GetComponentInChildren<NavigationButton>().gameManager = this;
-
-        }
-
-    }
-
-    private void OpenHouse(CharacterData character)
+    private void OpenHouse(CompleteCharacterData character)
     {
         // disable the navigation UI, set active the house game object
-
-        Debug.Log(character.characterName);
-
-        character.house.gameObject.SetActive(true);
+        character.RoomScript.Show(character.ID);
     }
 
-    private void ToggleHouseSelection(bool activated= false)
+    public void GenerateProblem(ID prevID)
     {
-        houseSelectionMenu.SetActive(activated);
+        var validOptions = _characterManager.AllCharacters.Where(x => x.ID != prevID).ToList();
+
+        var selectedCharacter = validOptions[Random.Range(0, validOptions.Count())];
+        var selectedProblem = allProblems[Random.Range(0, allProblems.Count)];
+
+        CharacterManager.i.AssignProblem(selectedCharacter.ID, selectedProblem);
     }
-
-    public void GenerateProblem(CharacterData lastCharacter)
-    {
-        CharacterData newProblemCharacter = characterManager.allCharacters[UnityEngine.Random.Range(0, characterManager.allCharacters.Count)];
-
-        if(newProblemCharacter != lastCharacter)
-        {
-
-            newProblemCharacter.hasProblem = true;
-            newProblemCharacter.currentProblem = allProblems[UnityEngine.Random.Range(0, allProblems.Count)];
-
-            //Debug.Log("New Problem Character: " + newProblemCharacter.characterName + "Problem:" + newProblemCharacter.currentProblem);
-
-
-        }
-        else
-        {
-            GenerateProblem(lastCharacter);
-        }
-    }
-
-
 }

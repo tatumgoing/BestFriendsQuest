@@ -12,9 +12,6 @@ public class HairPiece : FeatureObj
 
     public void SetSelected(bool selected)
     {
-        //print("trying to set selected for " + Data.name);
-        //print("setting selected: " + selected + ", isMirrored: " + IsMirroredVersion + ", mirroredFeature == null: " + (MirroredFeature == null));
-
         if (!IsMirroredVersion && MirroredFeature != null) MirroredFeature.As<HairPiece>().SetSelected(selected);
 
         var addOn = GetComponentInChildren<MovableAddon>();
@@ -25,7 +22,6 @@ public class HairPiece : FeatureObj
             MirroredFeature.GetComponentInChildren<MovableAddon>().Initialize(addOn);
         }
 
-        // print("Set selected: " + selected + ", name: " + Data.name);
         addOn.SetSelected(selected); 
     }
 
@@ -37,14 +33,16 @@ public class HairPiece : FeatureObj
 
     public void Initialize(HairController controller)
     {
+        //print("initialize called on: " + Data.name);
         _controller = controller;
-        if (_modelParent == null)_modelParent = Instantiate(Data.MainhairPrefab, transform).transform;
+
+        if (_modelParent == null) _modelParent = Instantiate(Data.MainhairPrefab, transform).transform;
 
         _modelParent.localPosition = Data.MainHairLocalPosition;
         _modelParent.localRotation = Data.MainHairLocalRotation;
         _modelParent.localScale = Data.MainHairLocalScale;
+        
 
-        //_modelParent.GetComponentInChildren<MeshFilter>().mesh = Data.Mesh;
         UpdateDisplay();
     }
 

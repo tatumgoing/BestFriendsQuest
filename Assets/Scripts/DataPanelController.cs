@@ -11,61 +11,13 @@ public enum ProfileDataType {NAME, GENDER, PRONOUN, ATTRACTION, DAY, MONTH, YEAR
 public enum Gender { MALE, FEMALE, NONBINARY}
 public enum Pronoun { HE, SHE, THEY}
 
-[System.Flags]
+[System.Flags, System.Serializable]
 public enum Attraction
 {
     NONE = 0,
     MALE = 1 << 0,
     FEMALE = 1 << 1,
     NONBINARY = 1 << 2
-}
-
-[System.Serializable]
-public class CharacterProfileData
-{
-    public string Name;
-    public Gender Gender;
-    public Pronoun Pronouns;
-    public Attraction Attraction;
-    public DateTime Birthday;
-    public FavoriteColor FavColor;
-
-    private const string seperator = "%";
-    private const string dateTimeFormat = "MMddyyyy";
-
-    public CharacterProfileData()
-    {
-        Birthday = new DateTime();
-    }
-
-    public override string ToString()
-    {
-        var list = new List<string>
-        {
-            Name,
-            Utils.EnumInt(Gender),
-            Utils.EnumInt(Pronouns),
-            Utils.EnumInt(Attraction),
-            Birthday.ToString(dateTimeFormat),
-            Utils.EnumInt(FavColor)
-        };
-
-        var joined = string.Join(seperator, list);
-        
-        return joined;
-    }
-
-    public void FromString(string inputString)
-    {
-        var parts = inputString.Split(seperator);
-        Name = parts[0];
-        Gender = Utils.IntEnum<Gender>(parts[1]);
-        Pronouns = Utils.IntEnum<Pronoun>(parts[2]);
-        Attraction = Utils.IntEnum<Attraction>(parts[3]);
-        Birthday = DateTime.ParseExact(parts[4], dateTimeFormat, CultureInfo.InvariantCulture);
-        FavColor = Utils.IntEnum<FavoriteColor>(parts[5]);
-    }
-
 }
 
 public class DataPanelController : MonoBehaviour
@@ -79,7 +31,7 @@ public class DataPanelController : MonoBehaviour
     [SerializeField] private TMP_Dropdown _colorDropdown;
     [SerializeField] private Animator _mainPanel;
 
-    private CharacterProfileData _currentData = new CharacterProfileData();
+    private StaticCharacterData _currentData = new StaticCharacterData();
 
     private void Awake()
     {
@@ -91,11 +43,9 @@ public class DataPanelController : MonoBehaviour
         _mainPanel.SetTrigger("Right");
     }
 
-    public void LoadFromString(string inputString)
+    public void Load(StaticCharacterData inputData)
     {
-        _currentData = new CharacterProfileData();
-        _currentData.FromString(inputString);
-        _characterController.Data = _currentData;
+        _currentData = inputData;
 
         _nameField.text = _currentData.Name;
 
@@ -110,7 +60,7 @@ public class DataPanelController : MonoBehaviour
         _birthdayDropdowns[1].SetValueWithoutNotify(_currentData.Birthday.Day - 1);
         _birthdayDropdowns[2].SetValueWithoutNotify(2025 - _currentData.Birthday.Year);
 
-        _colorDropdown.SetValueWithoutNotify((int)_currentData.FavColor);
+        _colorDropdown.value = (int)_currentData.FavColor;
     }
 
     public void UpdateAttraction(Attraction gender, bool state)

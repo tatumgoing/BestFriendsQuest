@@ -23,18 +23,35 @@ public abstract class FeatureObj : MonoBehaviour
     {
         var numString = inputString.Substring(1);
 
+        //print("total inputString = " + inputString + ", numString: " + numString);
+
         int mirrorMatchNum = int.Parse(inputString[0].ToString());
         Settings.MatchColor = (mirrorMatchNum / 3) == 1;
         Settings.Mirror = (MirrorType)(mirrorMatchNum % 3);
 
-        Settings.Hori = float.Parse(numString[..3]) / 1000;
-        Settings.Vert = float.Parse(numString.Substring(3, 3)) / 1000;
-        Settings.Size = float.Parse(numString.Substring(6, 3)) / 1000;
-        Settings.Angle = float.Parse(numString.Substring(9, 3)) / 1000;
+        if (Data.Type == FeatureType.HAIR && Data.IsMainHair == false) {
 
-        ColorUtility.TryParseHtmlString("#" + numString.Substring(12, 6), out Settings.Color);
+            var rotString = numString.Substring(0, 12);
+            GetComponentInChildren<MovableAddon>().SetRot(rotString);
 
-        Tier = (FeatureTier)int.Parse(numString.Substring(18, 1));
+            var posString = numString.Substring(12, 9);
+            GetComponentInChildren<MovableAddon>().SetPos(posString);
+
+            Settings.Size = float.Parse(numString.Substring(21, 3)) / 1000;
+
+            ColorUtility.TryParseHtmlString("#" + numString.Substring(24, 6), out Settings.Color);
+            Tier = (FeatureTier)int.Parse(numString.Substring(30, 1));
+        }
+        else {
+
+            Settings.Hori = float.Parse(numString.Substring(0, 3)) / 1000;
+            Settings.Vert = float.Parse(numString.Substring(3, 3)) / 1000;
+            Settings.Size = float.Parse(numString.Substring(6, 3)) / 1000;
+            Settings.Angle = float.Parse(numString.Substring(9, 3)) / 1000;
+
+            ColorUtility.TryParseHtmlString("#" + numString.Substring(12, 6), out Settings.Color);
+            Tier = (FeatureTier)int.Parse(numString.Substring(18, 1));
+        }
 
         UpdateDisplay();
 
@@ -43,23 +60,36 @@ public abstract class FeatureObj : MonoBehaviour
 
     public override string ToString()
     {
-        var result = Data.Icon.name + "~";
+        var result = Data.name + "~";
         result += (Convert.ToInt32(Settings.MatchColor) * 3 + (int)Settings.Mirror);
-        result += RoundToString(Settings.Hori) + RoundToString(Settings.Vert) + RoundToString(Settings.Size) + RoundToString(Settings.Angle);
+
+        if (Data.Type == FeatureType.HAIR && !Data.IsMainHair) {
+
+            var rotString = GetComponentInChildren<MovableAddon>().GetRotString();
+            var posString = GetComponentInChildren<MovableAddon>().GetPosString();
+
+            result += rotString + posString + RoundToString(Settings.Size);
+        }
+        else { 
+            result += RoundToString(Settings.Hori) + RoundToString(Settings.Vert) + RoundToString(Settings.Size) + RoundToString(Settings.Angle);
+        }
+
         result += Settings.Color.ToHex();
         result += (int)Tier;
 
         result = result.Replace("#", "");
-
         return result;
     }
 
+    /// <summary>
+    /// returns a 3 Digit string based on the input number, range 0-1 for input
+    /// </summary>
     protected string RoundToString(float input )
     {
         input = Mathf.Clamp(input, 0.001f, 0.999f);
-        var res = Mathf.FloorToInt(input * 1000).ToString();
-        while (res.Length < 3) res = "0" + res;
-        return res;
+        var output = Mathf.FloorToInt(input * 1000).ToString();
+        while (output.Length < 3) output = "0" + output;
+        return output;
     }
 
     protected virtual void UpdateDisplay()

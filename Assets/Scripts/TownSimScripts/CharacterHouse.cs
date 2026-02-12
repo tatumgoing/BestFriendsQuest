@@ -7,13 +7,8 @@ using System.Threading.Tasks;
 
 public class CharacterHouse : MonoBehaviour
 {
-    public TownGameManager gameManager;
-    public MinigameManager minigameManager;
-
     [Header("Character Info")]
-
-    public CharacterData associatedCharacter;
-    public Image tempIcon;
+    public CompleteCharacterData associatedCharacter;
 
     [Header("Dialogue Box")]
 
@@ -54,10 +49,6 @@ public class CharacterHouse : MonoBehaviour
     public HappinessBar rewardsHappinessMeter;
     public GameObject currencyDisplay;
    
-
-
-
-
     private void Start()
     {
         //set associated character lol
@@ -65,37 +56,33 @@ public class CharacterHouse : MonoBehaviour
         statusHappinessMeter.associatedCharacter = associatedCharacter;
 
         dialogueBox.associatedCharacter = associatedCharacter;
-        tempIcon.sprite = associatedCharacter.characterIcon;
 
         giftMenu.SetActive(false);
         houseStatusMenu.SetActive(false);
         minigameNavMenu.SetActive(false);
 
         rewardsHappinessMeter.gameObject.SetActive(false);
-
-        gameManager = TownGameManager.i;
-        minigameManager = MinigameManager.i;
-
     }
 
     private void OnEnable()
     {
+        print("enableHouseButton");
         statusEnabled = false;
         houseStatusMenu.SetActive(false);
 
         UpdateRelationships();
 
-        displayName.text = associatedCharacter.characterName;
+        displayName.text = associatedCharacter.Name;
     }
 
-    public void SetHouseCharacter(CharacterData character)
+    public void SetHouseCharacter(CompleteCharacterData character)
     {
         associatedCharacter = character;
     }
 
     public async void ShowMinigameOptions()
     {
-        if (associatedCharacter.hasProblem && associatedCharacter.currentProblem.isMinigame)
+        if (associatedCharacter.HasProblem && associatedCharacter.CurrentProblem.IsMinigame)
         {
             await Task.Delay(3000);
 
@@ -112,12 +99,10 @@ public class CharacterHouse : MonoBehaviour
 
     public void StartProblemMinigame()
     {
-        gameManager.ChangeScene(gameManager.minigameUI);
-        minigameManager.StartProblemMinigame(associatedCharacter);
+        TownGameManager.i.ChangeScene(TownGameManager.i.minigameUI);
+        MinigameManager.i.StartProblemMinigame(associatedCharacter);
         SolveProblemInHouse();
-
     }
-
 
     public void ToggleStatusWindow()
     {
@@ -158,24 +143,20 @@ public class CharacterHouse : MonoBehaviour
 
             statusButton.SetActive(false);
         }
-
     }
     
-
     public void UpdateRelationships()
     {
-        foreach (CharacterData reloCharacter in associatedCharacter.relationships.Keys)
+        foreach (var character in CharacterManager.i.AllCharacters)
         {
             RelationshipBanner newBanner = Instantiate(relationshipPrefab, relationshipContainer.transform).GetComponent<RelationshipBanner>();
-            newBanner.icon.sprite = reloCharacter.characterIcon;
-            newBanner.nameRelo.text = reloCharacter.characterName;
-            newBanner.level.associatedCharacter = associatedCharacter;
-            newBanner.level.secondCharacter = reloCharacter;
+            newBanner.icon.sprite = character.Icon;
+            newBanner.nameRelo.text = character.Name;
+            newBanner.slider.SetCharacters(associatedCharacter.ID, character.ID);
             newBanner.status.text = "Testing";
         } 
     }
-
-   
+    
     public void GiveGift()
     {
         if (giftManager.selectedBanner != null && giftManager.selectedBanner.itemCount.text != "0")
@@ -183,28 +164,23 @@ public class CharacterHouse : MonoBehaviour
             ToggleGiftWindow();
             dialogueBox.HideDialogue();
             bool passed = false;
-            if (associatedCharacter.hasProblem && !associatedCharacter.currentProblem.isMinigame)
-            {
-                foreach (Item checkItem in associatedCharacter.currentProblem.desiredItem) {
-                    if (checkItem.Name == giftManager.selectedBanner.itemID.Name)
-                    {
+            if (associatedCharacter.HasProblem && !associatedCharacter.CurrentProblem.IsMinigame) {
+                foreach (Item checkItem in associatedCharacter.CurrentProblem.desiredItem) {
+                    if (checkItem.Name == giftManager.selectedBanner.itemID.Name) {
                         StartCoroutine(SolveProblem());
                         passed = true;
                     }
                 }
-                if(!passed)
-                {
+                if (!passed) {
                     StartCoroutine(FailProblem());
                 }
             }
-            else
-            {
+            else {
                 StartCoroutine(RecieveGift());
             }
 
-            gameManager.SubtractInventory(giftManager.selectedBanner.itemID);
-            gameManager.UpdateRecordDisplay(giftManager, giftManager.currentType);
-
+            TownGameManager.i.SubtractInventory(giftManager.selectedBanner.itemID);
+            TownGameManager.i.UpdateRecordDisplay(giftManager, giftManager.currentType);
         }
     }
 
@@ -217,8 +193,7 @@ public class CharacterHouse : MonoBehaviour
         yield return new WaitForSeconds(4f);
 
         dialogueBox.HideDialogue();
-        StartCoroutine(RewardsAnimation(associatedCharacter.currentProblem.rewardHappiness, associatedCharacter.currentProblem.rewardCurrency));
-
+        StartCoroutine(RewardsAnimation(associatedCharacter.CurrentProblem.rewardHappiness, associatedCharacter.CurrentProblem.rewardCurrency));
     }
 
     public IEnumerator FailProblem()
@@ -247,33 +222,29 @@ public class CharacterHouse : MonoBehaviour
         dialogueBox.HideDialogue();
 
         StartCoroutine(RewardsAnimation(15f, 5f));
-
     }
 
     public IEnumerator RewardsAnimation(float rHappiness, float rCurrency)
     {
-
-        //happiness anim
-
+        //happiness anim:
         yield return new WaitForSeconds(.5f);
 
         rewardsHappinessMeter.gameObject.SetActive(true);
 
         yield return new WaitForSeconds(1f);
 
-        associatedCharacter.happiness += rHappiness;
-        associatedCharacter.happiness = Mathf.Clamp(associatedCharacter.happiness, 0, 100);
+        CharacterManager.i.IncreaseHappiness(associatedCharacter.ID, rHappiness);
 
         yield return new WaitForSeconds(1f);
 
-        //currency anim
+        //currency anim:
 
         rewardsHappinessMeter.gameObject.SetActive(false);
         currencyDisplay.SetActive(true);
 
         yield return new WaitForSeconds(1f);
 
-        gameManager.currency += rCurrency;
+        TownGameManager.i.currency += rCurrency;
 
         yield return new WaitForSeconds(1f);
 
@@ -281,26 +252,19 @@ public class CharacterHouse : MonoBehaviour
 
 
         //stop old problem, make new problem
-
-        if (associatedCharacter.hasProblem && !associatedCharacter.currentProblem.isMinigame)
+        if (associatedCharacter.HasProblem && !associatedCharacter.CurrentProblem.IsMinigame)
         {
-            associatedCharacter.hasProblem = false;
-            associatedCharacter.currentProblem = null;
-
-            gameManager.GenerateProblem(associatedCharacter);
+            CharacterManager.i.SolveProblem(associatedCharacter.ID);
+            TownGameManager.i.GenerateProblem(associatedCharacter.ID);
         }
-
-
     }
 
     private void SolveProblemInHouse()
     {
-        if (associatedCharacter.hasProblem)
+        if (associatedCharacter.HasProblem)
         {
-            associatedCharacter.hasProblem = false;
-            associatedCharacter.currentProblem = null;
-
-            gameManager.GenerateProblem(associatedCharacter);
+            CharacterManager.i.SolveProblem(associatedCharacter.ID);
+            TownGameManager.i.GenerateProblem(associatedCharacter.ID);
         }
     }
 }

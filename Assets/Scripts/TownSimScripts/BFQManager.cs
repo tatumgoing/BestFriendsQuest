@@ -18,8 +18,8 @@ public class BFQManager : MonoBehaviour
     [Header("In Progress Screen")]
 
     public BFQInProgressScreen inProgressScreen;
-    public CharacterData charOne;
-    public CharacterData charTwo;
+    public CompleteCharacterData charOne;
+    public CompleteCharacterData charTwo;
 
     [Header("Results Screen")]
 
@@ -69,8 +69,8 @@ public class BFQManager : MonoBehaviour
             inProgressScreen.SetTime(selectedQuest);
             inProgressScreen.gameObject.SetActive(true);
 
-            inProgressScreen.iconOne.sprite= charOne.characterIcon;
-            inProgressScreen.iconTwo.sprite = charTwo.characterIcon;
+            inProgressScreen.iconOne.sprite= charOne.Icon;
+            inProgressScreen.iconTwo.sprite = charTwo.Icon;
 
         }
     }
@@ -85,7 +85,7 @@ public class BFQManager : MonoBehaviour
 
         resultsScreen.treasureChest.sprite = resultsScreen.chestClosed;
 
-        float successChance = (charOne.relationships[charTwo] / selectedQuest.relationshipRequirement ) * 100;
+        float successChance = (CharacterManager.i.GetRelationship(charOne.ID, charTwo.ID) / selectedQuest.relationshipRequirement ) * 100;
         
         bool succeeded = (Random.Range(0f, 100f) <= successChance);
 

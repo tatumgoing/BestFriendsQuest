@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.NetworkInformation;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum FeatureTier { BASE, DETAIL};
 
@@ -24,6 +25,7 @@ public class LayersMenuController : MonoBehaviour
     [SerializeField] private bool _hairAddonLayers;
     [SerializeField] private bool _transitionToMoveAutomatically;
     [SerializeField, ConditionalField(nameof(_transitionToMoveAutomatically))] private SelectableItem _moveMenuButton;
+    [SerializeField] private Slider _addonSizeSlider;
 
     private List<Layer> _spawnedLayers = new List<Layer>();
     private FeatureTier _currentTier;
@@ -244,6 +246,8 @@ public class LayersMenuController : MonoBehaviour
             if (button.GetComponent<Layer>() != layerObj) button.Deselect(true, false);
         }
         _featureController.Select(feature);
+
+        if (_addonSizeSlider) _addonSizeSlider.value = feature.GetSettings().Size;
 
         if (_faceMenu) _faceMenu.SwitchSelectedLayer(layerObj);
     }

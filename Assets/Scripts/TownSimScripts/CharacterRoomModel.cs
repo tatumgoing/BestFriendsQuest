@@ -1,26 +1,28 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Cinemachine;
 
 public class CharacterRoomModel : MonoBehaviour
 {
+    [SerializeField] private Transform _characterSpawnSpot;
 
-    [SerializeField] CharacterData associatedCharacter;
+    private GameObject _spawnedCharacter;
 
-    [SerializeField] GameObject characterTracker;
+    public void Hide() => gameObject.SetActive(false);
 
-    [SerializeField] CinemachineVirtualCamera roomCamera;
-
-
-    void Start()
+    public void Show(ID id)
     {
-        
+        gameObject.SetActive(true);
+        SpawnCharacter(id);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SpawnCharacter(ID character)
     {
-        
+        if (_spawnedCharacter != null) Destroy(_spawnedCharacter);
+        _spawnedCharacter = CharacterManager.i.SpawnCharacter(character, _characterSpawnSpot).gameObject;
+    }
+    
+    private void OnDisable()
+    {
+        if (_spawnedCharacter != null) Destroy(_spawnedCharacter);
     }
 }

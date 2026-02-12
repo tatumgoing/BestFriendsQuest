@@ -1,78 +1,82 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Experimental.Rendering;
-using UnityEngine.Rendering.VirtualTexturing;
 using UnityEngine.UI;
 using TMPro;
+using System.Linq;
 
 [System.Serializable]
 public class CharacterData 
 {
-    TownGameManager gameManager;
+    [Range(0,100) ]public float Happiness = 50;
+    public Problem CurrentProblem;
 
-    [Header("Profile")]
-    public string characterName;
-    public int age;
+    public CharacterRoomModel RoomScript;
 
-    [Header("Happiness")]
-    public float happiness;
+    [HideInInspector] public ID ID { get; private set; }
 
-    [Header("Relationships")]
-    public Dictionary<CharacterData, float> relationships = new Dictionary<CharacterData, float>();
-
-    [Header("House")]
-    public GameObject house;
-
-    [Header("Icon")]
-    public Sprite characterIcon;
-
-    [Header("Problems")]
-    public bool hasProblem;
-    public Problem currentProblem;
-
-    void Start()
+    public void SolveProblem()
     {
-        gameManager = TownGameManager.i;
+        if (CurrentProblem == null) return;
+        CurrentProblem = null;
     }
-    public void UpdateIcon(Sprite icon)
+
+    /// <summary>
+    ///  Saves the dynamic data of this character to a file.
+    ///  because Icon, Name, Age, etc are all generated from static data, we don't need to save them here.
+    ///  We also don't save problem data because that doesn't get saved between sessions.
+    /// </summary>
+    public void SaveToFile(ID ID)
     {
-        characterIcon = icon;
+        var resultString = ID + "~" + Happiness.ToString();
+        SaveSystem.SaveDynamicData(resultString);
     }
+    private void SaveToFile() => SaveToFile(ID);
+
+    /// <summary>
+    /// Given an ID, load character's dynamic data from file.
+    /// </summary>
+    public void LoadFromFile(ID ID)
+    {
+        var saveStrings = SaveSystem.ReadFromFile(SaveSystem.dynamicDataFileName).Split('\n');
+        foreach (var  s in saveStrings) {
+            if (s.Split('~')[0] == ID) LoadFromString(s);
+        }
+
+        SaveToFile(ID);
+        this.ID = ID;
+    }
+
+    /// <summary>
+    /// After loading the string for this character from the file,
+    /// this method parses the string and loads the data into this instance.
+    /// eventually will load in inventory, preferences, and other dynamic data.
+    /// relationships are handled via characterManager.
+    /// </summary>
+    private void LoadFromString(string saveString)
+    {
+        var parts = saveString.Split("~");
+        if (parts.Length < 2) return;
+
+        // Load Happiness
+        Happiness = float.Parse(parts[1]);
+    }
+
+    /// <summary>
+    /// Creates a new instance of CharacterData based on the 'static' data generated in the character creator or loaded from a savefile.
+    /// </summary>
+    public CharacterData(ID id)
+    {
+        LoadFromFile(id);
+    }
+
+    /// <summary>
+    /// Creates a new instance of CharacterData with default values.
+    /// </summary>
+    public CharacterData() {}
 
     public void UpdateHappiness(float newHappiness) {
-        happiness= Mathf.Clamp(happiness + newHappiness, 0f, 100f);
+        Happiness= Mathf.Clamp(Happiness + newHappiness, 0f, 100f);
+        SaveToFile();
     }
-    public void UpdateRelationship(CharacterData reloCharacter, float newValue)
-    {
-        if (reloCharacter == this)
-        {
-            return;
-        }
-        else if (relationships.ContainsKey(reloCharacter))
-        {
-            relationships[reloCharacter] += newValue;
-            if(relationships[reloCharacter] < 1)
-            {
-                relationships[reloCharacter] = 1;
-            }
-        }
-        else
-        {
-            CreateRelationship(reloCharacter);
-        }
-    }
-
-    public void CreateRelationship(CharacterData reloCharacter)
-    {
-        if (reloCharacter == this)
-        {
-            return;
-        }
-        else
-        {
-            relationships.Add(reloCharacter, 1);
-        }
-    }
-
 }

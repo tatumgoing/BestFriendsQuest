@@ -60,7 +60,7 @@ public class ChopMinigame : MonoBehaviour
             target.SetBounds(target.GetComponent<RectTransform>().anchoredPosition.x);
         }
 
-        tempIcon.GetComponent<Image>().sprite = manager.characterSelectionMenu.selectedCharacter.characterIcon;
+        tempIcon.GetComponent<Image>().sprite = manager.characterSelectionMenu.selectedCharacter.Icon;
 
     }
 

@@ -12,6 +12,7 @@ public class IDCamera : MonoBehaviour
     [SerializeField] private Sound _cameraSound;
     [SerializeField] private GameObject _greenScreen;
     [SerializeField] private Vector3 _idPicAngle;
+    [SerializeField] private CharacterMetaController _characterController;
 
     private void Start()
     {
@@ -56,15 +57,12 @@ public class IDCamera : MonoBehaviour
         var target = new Vector3(targetColor.r, targetColor.g, targetColor.b);
         Color[] pixels = idPicture.GetPixels();
 
-        int numReplaced = 0;
         for (int i = 0; i < pixels.Length; i++) {
             if (Vector3.Distance(new Vector3(pixels[i].r, pixels[i].g, pixels[i].b), target) < 0.10f)
             {
-                numReplaced += 1;
-                 pixels[i].a = 0f;
+                pixels[i].a = 0f;
             }
         }
-        print("replaced " +  numReplaced + " pixels");
 
         idPicture.SetPixels(pixels);
         idPicture.Apply();
@@ -79,7 +77,7 @@ public class IDCamera : MonoBehaviour
             Directory.CreateDirectory(path);
         }
 
-        File.WriteAllBytes(path + "/IDimage.png", btyes);
+        File.WriteAllBytes(path + "/" + _characterController.ID + "_portrait.png", btyes);
 
         FindFirstObjectByType<IdPhotoController>(FindObjectsInactive.Include).ShowPicture(idPicture);
 

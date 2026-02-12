@@ -3,17 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
+
+public enum GameMode { SIMPLE, ADVANCED}
 
 [RequireComponent(typeof(InputController))]
 public class GameManager : MonoBehaviour
 {
     public static GameManager i;
-    public const int idLength = 4;
     private void Awake() { i = this; }
 
+    [SerializeField] private GameMode _mode;
     [SerializeField] GameObject _pauseMenu;
     [SerializeField] Fade _fade;
     [SerializeField] MusicPlayer _music;
@@ -21,22 +23,26 @@ public class GameManager : MonoBehaviour
 
     [Header("saving")]
     [SerializeField] private CharacterMetaController _character;
-    [SerializeField] private string _saveFileName = "saves.txt";
-    [SerializeField] private TextAsset _wordsFile;
-    [HideInInspector] public Dictionary<int, string> IntToWord = new Dictionary<int, string>();
-    [HideInInspector] public Dictionary<string, int> WordToInt = new Dictionary<string, int>();
+    [SerializeField] private string _saveFileName = "characters.txt";
+ 
+    public bool Advanced => _mode == GameMode.ADVANCED;
+    [HideInInspector] public UnityEvent OnModeChange;
+    private List<ModeExlusiveItem> _modeExlusiveItems = new List<ModeExlusiveItem>();
 
-    public string Path => System.IO.Path.Combine(Application.streamingAssetsPath, _saveFileName);
+    public string CharactersSavePath => System.IO.Path.Combine(Application.streamingAssetsPath, _saveFileName);
 
     private void Start()
     {
-        var words = new HashSet<string>(_wordsFile.text.Split("\n")).ToList();
-        for (int i = 0; i < words.Count; i++) {
-            IntToWord[i] = words[i];
-            WordToInt[words[i]] = i;
-        }
-
         _fade.Disappear();
+
+        _modeExlusiveItems = FindObjectsByType<ModeExlusiveItem>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList();
+        UpdateMode();
+    }
+
+    private void UpdateMode()
+    {
+        _modeExlusiveItems.ForEach(item => item.UpdateMode(_mode));
+        OnModeChange.Invoke();
     }
 
     private void Update()
@@ -46,36 +52,47 @@ public class GameManager : MonoBehaviour
 
     public void SaveCurrent()
     {
+        if (!Advanced) return; 
+
         var newData = _character.GetSaveString();
 
-        Directory.CreateDirectory(System.IO.Path.GetDirectoryName(Path));
-        if (!File.Exists(Path)) {
-            File.WriteAllText(Path, newData);
+        Directory.CreateDirectory(System.IO.Path.GetDirectoryName(CharactersSavePath));
+        if (!File.Exists(CharactersSavePath)) {
+            File.WriteAllText(CharactersSavePath, newData);
             return;
         }
         
-        var characters = File.ReadAllText(Path).Split("\n").ToList();
+        var characters = File.ReadAllText(CharactersSavePath).Split("\n").ToList();
         bool found = false;
         for (int i = 0; i < characters.Count; i++) {
-            if (characters[i].Substring(0, idLength) == _character.ID) {
+            
+            if (characters[i].Length > 1 && characters[i][..SaveSystem.IDLength] == _character.ID) {
+                //print("FOUND ID MATCHED");
                 characters[i] = newData;
                 found = true;
                 break;
             }
         }
-        if (!found) characters.Add(newData);
+        if (!found) {
+            //print("target ID not found, adding new character");
+            characters.Add(newData);
+        }
 
-        File.WriteAllText(Path, string.Join("\n", characters));
+        File.WriteAllText(CharactersSavePath, string.Join("\n", characters));
         //print("saved sucessfully to: " + Path);
+    }
+
+    public void LoadCharacterByID()
+    {
+
     }
 
     public void LoadFromSave()
     {
-        if (!File.Exists(Path)) return;
+        if (!File.Exists(CharactersSavePath)) return;
 
-        var saveString = File.ReadAllText(Path);
+        var saveString = File.ReadAllText(CharactersSavePath);
         _character.LoadFromString(saveString);
-        print("loaded sucessfully from: " + Path);
     }
 
     void TogglePause()

@@ -36,10 +36,11 @@ public class SetDropdownOptions : MonoBehaviour
     private List<string> _current = new List<string>();
     private DataPanelController _controller;
 
-    public Color GetColor(int selection) => _colors.List[selection].UseColor;
 
     private void Start()
     {
+        if (!_dropdown) return;
+
         if (_type == DropdownDataType.RANGE) AddRange(_range, true);
         if (_type == DropdownDataType.DAY_MONTH) {
             SetDays(0);
@@ -72,6 +73,16 @@ public class SetDropdownOptions : MonoBehaviour
         UpdateData(0);
     }
 
+    public Color GetColor(int selection) => _colors.List[selection].UseColor;
+    public Color GetColor(FavoriteColor color)
+    {
+        var data = _colors.List.Where(x => x.Color == color).FirstOrDefault();
+        if (data == default) {
+            Debug.LogError("Color not found in dropdown colors list: " + color.ToString());
+        }
+        return data.UseColor;
+    }
+
     private void AddRange(Vector2Int range, bool descending = false)
     {
         var optionList = new List<string>();
@@ -97,6 +108,7 @@ public class SetDropdownOptions : MonoBehaviour
 
     private void UpdateData(int index)
     {
+        if (!_controller) return;
         var selectedValue = _current[index];
         if (_type == DropdownDataType.MONTH_ABR) selectedValue = (index + 1).ToString();
         if (_type == DropdownDataType.ENUM && _enum == ProfileDataEnum.PRONOUN) selectedValue = ((Pronoun) index).ToString();

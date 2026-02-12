@@ -12,19 +12,32 @@ public class EarController : MonoBehaviour, IFeatureController
     public bool HasCurrent() => true;
     public FeatureObj GetCurrent() => _currentEar;
 
+    private bool _initialized;
+
     private void Start()
     {
-        _allOptions = Resources.LoadAll<FeatureSOData>("earFeatures").ToList();
+        Initialize();
 
         _currentEar = GetComponentInChildren<Ear>();
         _currentEar.initilize();
     }
 
+    private void Initialize()
+    {
+        if (_initialized) return;
+
+        _allOptions = Resources.LoadAll<FeatureSOData>("earFeatures").OrderByDescending(x => x.Priority).ToList();
+        _initialized = true;
+    }
+
     public void LoadFromString(string saveString)
     {
+        if (!_initialized) Initialize();
+
         var parts = saveString.Split("~");
         FeatureSOData selected = null;
-        foreach (var f in _allOptions) if (f.Icon.name == parts[0]) selected = f;
+        foreach (var f in _allOptions) if (f.name == parts[0]) selected = f;
+
         _currentEar.SetData(selected);
         _currentEar.ConfigureFromString(parts[1]);
     }

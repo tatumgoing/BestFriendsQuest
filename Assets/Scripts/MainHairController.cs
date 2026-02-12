@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Windows;
 
 public class MainHairController : MonoBehaviour
 {
@@ -30,11 +32,23 @@ public class MainHairController : MonoBehaviour
         if (!_initialized) Initialize();
     }
 
+    public void SetHair(string saveString)
+    {
+        Initialize();
+        var data = saveString.Split('|')[1].Split('~')[0];
+        //print("hairData: " + data);
+
+        for (int i = 0; i < _hairData.Count; i++) {
+            //print("name: " +  _hairData[i].Icon.name + ", equals data: " + (_hairData[i].Icon.name == data));
+            if (_hairData[i].name == data) _currentlySelectedIndex = i;
+        }
+    }
+
     private void Initialize()
     {
         if (_initialized) return;
         _initialized = true;
-        _hairData = Resources.LoadAll<FeatureSOData>("HairFeatures").Where(x => x.IsMainHair).ToList();
+        _hairData = Resources.LoadAll<FeatureSOData>("HairFeatures").Where(x => x.IsMainHair).OrderByDescending(x => x.Priority).ToList();
         for (int i = 0; i < _hairData.Count; i++) {
             if (_hairData[i] == _defaultHair) _currentlySelectedIndex = i;
         }
@@ -55,7 +69,7 @@ public class MainHairController : MonoBehaviour
         _spawnedOptions.Clear();
 
         for (int i = 0; i < _hairData.Count; i++) {
-            if (i < (_currentPage +1) * 9 && i+1 > (_currentPage) * 9) {
+            if (i < (_currentPage + 1) * 9 && i+1 > (_currentPage) * 9) {
                 SpawnOption(_hairData[i]);
             }
         }
@@ -88,10 +102,13 @@ public class MainHairController : MonoBehaviour
     private void SpawnOption(FeatureSOData hairData)
     {
         var newOption = Instantiate(_optionPrefab, _listParent).GetComponent<MainHairOption>();
-        newOption.transform.SetSiblingIndex(_listParent.transform.childCount - 2);
+
+        newOption.gameObject.name = hairData.name;
+
+        newOption.transform.SetAsLastSibling();
         newOption.Initialize(hairData, this);
 
-        if (_spawnedOptions.Count == _currentlySelectedIndex) {
+        if (_spawnedOptions.Count + (_currentPage * 9) == _currentlySelectedIndex) {
             newOption.GetComponent<SelectableItem>().Select(true, false);
         }
 
@@ -114,6 +131,7 @@ public class MainHairController : MonoBehaviour
     {
         if (!_initialized) Initialize();
 
+        //print("initializing hair to " + _hairData[_currentlySelectedIndex].name);
         _controller.AddFeature(_hairData[_currentlySelectedIndex]);
         _controller.SetCurrentColor(_color.GetColor());
 

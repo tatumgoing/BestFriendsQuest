@@ -35,6 +35,16 @@ public class FacialFeature : FeatureObj
         if (MirroredFeature && !MirroredFeature.gameObject.name.Contains("Mirror")) MirroredFeature.gameObject.name += " Mirror";
     }    
 
+    public void SetScaleMode(bool inCharacterCreator)
+    {
+        if (inCharacterCreator) return;
+
+        if (!_projector) _projector = GetComponent<DecalProjector>();
+
+        _projector.scaleMode = DecalScaleMode.InheritFromHierarchy;
+        if (_mirroredFeature != null) _mirroredFeature.SetScaleMode(inCharacterCreator);
+    }
+
     public void SetExpression(ExpressionPieceData data)
     {
         _replacementFeature = data.Replacement;
@@ -65,6 +75,7 @@ public class FacialFeature : FeatureObj
     {
         _projector = GetComponent<DecalProjector>();
     }
+
     public override void ConfigureFromString(string inputString)
     {
         base.ConfigureFromString(inputString);
@@ -102,8 +113,14 @@ public class FacialFeature : FeatureObj
 
     protected override void UpdateDisplay()
     {
+        if (!this || !gameObject) return;
+
         if (_projector == null) {
             _projector = GetComponent<DecalProjector>();
+            if (_projector == null) {
+                Debug.LogError(gameObject.name + " can't find its decal projector");
+            }
+
             _projector.material = null;
         }
         UpdatePos();
@@ -171,6 +188,7 @@ public class FacialFeature : FeatureObj
         base.SpawnMirror();
         _mirroredFeature = MirroredFeature.As<FacialFeature>();
         _mirroredFeature.MakeNewMaterial();
+        _mirroredFeature.SetScaleMode(_projector.scaleMode == DecalScaleMode.ScaleInvariant);
     }
 
     public override void MirroredSet(FeatureObjSettings settings)

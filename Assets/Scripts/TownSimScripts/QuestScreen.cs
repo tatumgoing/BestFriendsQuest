@@ -76,23 +76,23 @@ public class QuestScreen : MonoBehaviour
     {
         if (selectedCharacterOne.selectedCharacter != null)
         {
-            SetIcon(characterDisplayOne, selectedCharacterOne.selectedCharacter.characterIcon);
+            SetIcon(characterDisplayOne, selectedCharacterOne.selectedCharacter.Icon);
         }
         if (selectedCharacterTwo.selectedCharacter != null)
         {
-            SetIcon(characterDisplayTwo, selectedCharacterTwo.selectedCharacter.characterIcon);
+            SetIcon(characterDisplayTwo, selectedCharacterTwo.selectedCharacter.Icon);
         }
 
         //update relationship text
 
         if(selectedCharacterOne.selectedCharacter != null && selectedCharacterTwo.selectedCharacter != null)
         {
-            relationshipLevelText.text = "Relationship Level: " + Mathf.Floor(selectedCharacterOne.selectedCharacter.relationships[selectedCharacterTwo.selectedCharacter]).ToString();
-
-            percentText.text = (Mathf.Floor(selectedCharacterOne.selectedCharacter.relationships[selectedCharacterTwo.selectedCharacter]) / associatedQuest.relationshipRequirement * 100).ToString("F0") + "%";
+            var currentRelationship = Mathf.Floor(CharacterManager.i.GetRelationship(selectedCharacterOne.selectedCharacter.ID, selectedCharacterTwo.selectedCharacter.ID));
+            relationshipLevelText.text = "Relationship Level: " + currentRelationship.ToString();
+            percentText.text = (currentRelationship / associatedQuest.relationshipRequirement * 100).ToString("F0") + "%";
         }
-
     }
+
     public void ToggleCharacterSelect(GameObject toggleWindow, bool isActive)
     {
         toggleWindow.SetActive(isActive);

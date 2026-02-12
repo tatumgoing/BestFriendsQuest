@@ -1,17 +1,21 @@
- using UnityEngine;
+﻿using MyBox;
 using System.Collections.Generic;
-using UnityEngine.SceneManagement;
 using System.IO;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public static class Utils
 {
     private static int sceneToLoad;
 
     public static readonly float fadeTime = 1f;
-    private static readonly string saveFolder = "/SaveData/";
-    private static readonly string savePath = Application.dataPath + saveFolder;
 
     public static float Rand(Vector2 range) => Random.Range(range.x, range.y);
+
+    private static int AXIS_BITS = 6;
+    private static int AXIS_STEPS = 1 << AXIS_BITS;
 
     public static Color HexToColor(string hex)
     {
@@ -22,6 +26,78 @@ public static class Utils
         return new Color32(r, g, b, 255);
     }
 
+    public static int QuantizeAngle(float degrees)
+    {
+        degrees = Mathf.Repeat(degrees, 360f);
+
+        int q = Mathf.RoundToInt( degrees / 360f * (AXIS_STEPS - 1) );
+        
+        // prevent negative or overflow:
+        return Mathf.Clamp(q, 0, AXIS_STEPS - 1);
+    }
+
+    public static float DequantizeAngle(int q)
+    {
+        return q / (float) (AXIS_STEPS - 1) * 360f;
+    }
+
+    public static string EncodeQuaternions12(Quaternion a, Quaternion b)
+    {
+        Vector3 eulerA = a.eulerAngles;
+        Vector3 EuerlB = b.eulerAngles;
+
+        ulong packed = 0;
+        int shift = 0;
+
+        void Pack(float angle)
+        {
+            if (shift >= 36)
+                throw new System.Exception("Quaternion pack overflow");
+
+            ulong q = (ulong)QuantizeAngle(angle); // 0–63
+            packed |= q << shift;
+            shift += 6;
+        }
+
+        Pack(eulerA.x);
+        Pack(eulerA.y);
+        Pack(eulerA.z);
+        Pack(EuerlB.x);
+        Pack(EuerlB.y);
+        Pack(EuerlB.z);
+
+        // This value is guaranteed < 2^36 ≈ 6.87e10
+        // Which fits comfortably in 12 digits
+        return packed.ToString("D12");
+    }
+
+    public static void DecodeQuaternions12(string inputString, out Quaternion QuaternionA, out Quaternion QuaternionB)
+    {
+        ulong packed = ulong.Parse(inputString);
+        int shift = 0;
+
+        float UnpackAxis()
+        {
+            int q = (int)((packed >> shift) & (ulong)(AXIS_STEPS - 1));
+            shift += AXIS_BITS;
+            return DequantizeAngle(q);
+        }
+
+        Vector3 eulerA = new Vector3(
+            UnpackAxis(),
+            UnpackAxis(),
+            UnpackAxis()
+        );
+
+        Vector3 eulerB = new Vector3(
+            UnpackAxis(),
+            UnpackAxis(),
+            UnpackAxis()
+        );
+
+        QuaternionA = Quaternion.Euler(eulerA);
+        QuaternionB = Quaternion.Euler(eulerB);
+    }
 
     public static string CapitalFirst(string input)
     {
@@ -47,21 +123,7 @@ public static class Utils
         return list;
     }
 
-    public static void SaveToFile(string fileName, string text)
-    {
-        if (!Directory.Exists(savePath)) Directory.CreateDirectory(savePath);
-
-        var file = File.CreateText(savePath + fileName);
-        file.Write(text);
-        file.Close();
-    }
-
-    public static string ReadFromFile(string fileName)
-    {
-        var completePath = savePath + fileName;
-        if (File.Exists(completePath)) return File.ReadAllText(completePath);
-        return "";
-    }
+    
 
     public static string GetTimeString(int seconds)
     {
@@ -82,7 +144,6 @@ public static class Utils
         UnityEditor.EditorUtility.SetDirty(obj);
 #endif
     }
-
 
     public static string Vec2String(Vector2 v) => v.x + ":" + v.y;
 }
