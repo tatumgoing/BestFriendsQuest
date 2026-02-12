@@ -17,7 +17,7 @@ public class RotationControls : MonoBehaviour
     private AddonsUIHelper _uiController;
 
     private MovableAddon _controller;
-    private bool _spinning;
+    private bool _rotating;
     private Axis _currentAxis = Axis.NONE;
     private Vector3 _rotAxis;
     private Quaternion _startRot;
@@ -37,32 +37,8 @@ public class RotationControls : MonoBehaviour
     {
         if (!_controller.Selected || !_uiController.Rotating) return;
 
-        if (_spinning) {
-
-            _rotAngle -= Input.GetAxis("Mouse X") * _rotationSpeed;
-            transform.parent.rotation = _startRot * Quaternion.AngleAxis(_rotAngle, _rotAxis);
-
-            if (_currentAxis == Axis.X) {
-                _mirror.rotation = _mirrorStartRot * Quaternion.AngleAxis(_rotAngle, _rotAxis);
-            }
-            else {
-                _mirror.rotation = _mirrorStartRot * Quaternion.AngleAxis(-_rotAngle, _rotAxis);
-            }
-
-            if (!_mirror.gameObject.activeInHierarchy && _currentAxis == Axis.Z) {
-                _mirror.rotation = _mirrorStartRot * Quaternion.AngleAxis(_rotAngle, _rotAxis);
-            }
-
-            if (Input.GetMouseButtonUp(0)) {
-                Cursor.lockState = CursorLockMode.Confined;
-                Cursor.visible = true;
-                SetAllAlphas(_alphaRange.x);
-                FindObjectOfType<CameraController>().UsingRotateControls = false;
-                _spinning = false;
-                _currentAxis = Axis.NONE;
-            }
-            else Cursor.lockState = CursorLockMode.Locked;
-            
+        if (_rotating) {
+            Rotate();
             return;
         }
 
@@ -70,37 +46,68 @@ public class RotationControls : MonoBehaviour
         if (!didHover) return;
 
         _currentAxis = Axis.NONE;
-        if (Input.GetMouseButton(0)) {
-            if (hoverInfo.collider.transform == _xRing) {
-                _currentAxis = Axis.X;
-                _rotAxis = Vector3.right;
-                SetColorAlpha(_xRing, _alphaRange.z);
-            }
-            if (hoverInfo.collider.transform == _yRing) {
-                _currentAxis = Axis.Y;
-                _rotAxis = Vector3.up;
-                SetColorAlpha(_yRing, _alphaRange.z);
-            }
-            if (hoverInfo.collider.transform == _zRing) {
-                _currentAxis = Axis.Z;
-                _rotAxis = Vector3.forward;
-                SetColorAlpha(_zRing, _alphaRange.z);
-            }
-
-            if (_currentAxis != Axis.NONE) {
-                FindObjectOfType<CameraController>().UsingRotateControls = true;
-                Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
-                _startRot = transform.parent.rotation;
-                _mirrorStartRot = _mirror.rotation;
-                _rotAngle = 0;
-                _spinning = true;
-            }
-        }
+        if (Input.GetMouseButton(0)) StartRotate(hoverInfo);
         else {
             SetAllAlphas(_alphaRange.x);
             SetColorAlpha(hoverInfo.collider.transform, _alphaRange.y);
         }
+    }
+
+    private void StartRotate(RaycastHit hoverInfo)
+    {
+        void SetRotStart(Axis currentAxis, Vector3 rotAxis, Transform selectedRing)
+        {
+            _currentAxis = currentAxis;
+            _rotAxis = rotAxis;
+            SetColorAlpha(selectedRing, _alphaRange.z);
+
+            FindObjectOfType<CameraController>().UsingRotateControls = true;
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            _startRot = transform.parent.rotation;
+            _mirrorStartRot = _mirror.rotation;
+            _rotAngle = 0;
+            _rotating = true;
+        }
+
+        if (hoverInfo.collider.transform == _xRing) {
+            SetRotStart(Axis.X, Vector3.right, _xRing);
+        }
+
+        if (hoverInfo.collider.transform == _yRing) {
+            SetRotStart(Axis.Y, Vector3.up, _yRing);
+        }
+
+        if (hoverInfo.collider.transform == _zRing) {
+            SetRotStart(Axis.Z, Vector3.forward, _zRing);
+        }
+    }
+
+    private void Rotate()
+    {
+        _rotAngle -= Input.GetAxis("Mouse X") * _rotationSpeed;
+        transform.parent.rotation = _startRot * Quaternion.AngleAxis(_rotAngle, _rotAxis);
+
+        if (_currentAxis == Axis.X) {
+            _mirror.rotation = _mirrorStartRot * Quaternion.AngleAxis(_rotAngle, _rotAxis);
+        }
+        else {
+            _mirror.rotation = _mirrorStartRot * Quaternion.AngleAxis(-_rotAngle, _rotAxis);
+        }
+
+        if (!_mirror.gameObject.activeInHierarchy && _currentAxis == Axis.Z) {
+            _mirror.rotation = _mirrorStartRot * Quaternion.AngleAxis(_rotAngle, _rotAxis);
+        }
+
+        if (Input.GetMouseButtonUp(0)) {
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = true;
+            SetAllAlphas(_alphaRange.x);
+            FindObjectOfType<CameraController>().UsingRotateControls = false;
+            _rotating = false;
+            _currentAxis = Axis.NONE;
+        }
+        else Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void SetAllAlphas(float alpha)
