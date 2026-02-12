@@ -49,7 +49,8 @@ public class HairController : MonoBehaviour, IFeatureController
 
     private void DeselectAllAddons()
     {
-        //print("deselect all addons");
+        if (!FindObjectOfType<AddonsUIHelper>().Addons) return;
+
         foreach (var i in _currentPieces) {
             var addon = i.GetComponentInChildren<MovableAddon>();
             if (addon) addon.SetSelected(false);

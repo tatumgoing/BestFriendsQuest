@@ -112,8 +112,20 @@ public class MovableAddon : MonoBehaviour
         _mirror = mirror; 
     }
 
+    private void OnDisable()
+    {
+        _rotationControls.SetActive(false);
+        _moveGizmo.SetActive(false);
+    }
+
     private void Update()
     {
+        if (!GameManager.i || !_uiController.Addons) {
+            _rotationControls.SetActive(false); 
+            _moveGizmo.SetActive(false);
+            return;
+        }
+
         if (_controller.IsMirroredVersion) {
             var scale = transform.localScale;
             scale.x = -Mathf.Abs(scale.x);

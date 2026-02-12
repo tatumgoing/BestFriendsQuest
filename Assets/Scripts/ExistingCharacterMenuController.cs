@@ -33,7 +33,7 @@ public class ExistingCharacterMenuController : MonoBehaviour
         }
 
         var savedText = File.ReadAllText(GameManager.i.CharactersSavePath);
-        _saveStrings = savedText.Split('\n').Where(x => x.Length > 0).ToList();
+        _saveStrings = savedText.Split('\n').Where(x => x.Length > 1).ToList();
         var IDs = _saveStrings.Where(x => x.Length > 1).Select(x => x.Substring(0, SaveSystem.IDLength)).ToList();
 
         for (int i = 0; i < _saveStrings.Count; i++) {
