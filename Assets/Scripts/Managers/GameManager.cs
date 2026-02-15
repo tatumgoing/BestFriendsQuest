@@ -50,16 +50,16 @@ public class GameManager : MonoBehaviour
         if (InputController.GetDown(Control.PAUSE)) TogglePause();
     }
 
-    public void SaveCurrent()
+    public string SaveCurrent()
     {
-        if (!Advanced) return; 
-
         var newData = _character.GetSaveString();
+
+        if (!Advanced) return newData;
 
         Directory.CreateDirectory(System.IO.Path.GetDirectoryName(CharactersSavePath));
         if (!File.Exists(CharactersSavePath)) {
             File.WriteAllText(CharactersSavePath, newData);
-            return;
+            return newData;
         }
         
         var characters = File.ReadAllText(CharactersSavePath).Split("\n").ToList();
@@ -80,6 +80,8 @@ public class GameManager : MonoBehaviour
 
         File.WriteAllText(CharactersSavePath, string.Join("\n", characters));
         //print("saved sucessfully to: " + Path);
+
+        return newData;
     }
 
     public void LoadCharacterByID()

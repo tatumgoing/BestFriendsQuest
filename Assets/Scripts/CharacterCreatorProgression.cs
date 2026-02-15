@@ -16,6 +16,7 @@ public class CharacterCreatorProgression : MonoBehaviour
     [SerializeField] private GameObject _profileOptions;
     [SerializeField] private MainHairController _hairController;
     [SerializeField] private ExpressionButtonsController _expressionButtons;
+    [SerializeField] private AnalyticsTracker _analyticsTracker;
 
     private void Start()
     {
@@ -31,7 +32,8 @@ public class CharacterCreatorProgression : MonoBehaviour
         FocusFace();
         _expressionButtons.Show();
 
-        //await Task.Delay(100);
+        _analyticsTracker.StartNew();
+
         _hairController.UpdateVisuals();
     }
 
@@ -59,7 +61,8 @@ public class CharacterCreatorProgression : MonoBehaviour
 
     public async void FinishCharacter()
     {
-        GameManager.i.SaveCurrent();
+        var saveString = GameManager.i.SaveCurrent();
+        _analyticsTracker.FinishCharacter(saveString);
 
         UIManager.i.Fade.Appear();
 
