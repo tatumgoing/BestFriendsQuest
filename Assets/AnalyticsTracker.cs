@@ -1,6 +1,8 @@
+using JetBrains.Annotations;
 using MyBox;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using UnityEngine;
 
@@ -23,6 +25,13 @@ public class ResearchData
     static string _numClicksSkinID = "entry.634606026";
     static string _numClicksDataID = "entry.874449072";
     static string _numClicksBodyID = "entry.1293387308";
+
+    static string _deviationEyesID = "entry.1855584517";
+    static string _deviationNoseID = "entry.1755763105";
+    static string _deviationMouthID = "entry.350863271";
+    static string _deviationEyebrowsID = "entry.378960691";
+    static string _deviationExtrasID = "entry.43626244";
+    static string _deviationBodyID = "entry.512424644";
 
     private GameMode _mode;
     private string _saveString;
@@ -80,8 +89,70 @@ public class ResearchData
             { _numClicksDataID, _clicks[AnalyticsInputType.DATA].ToString() },
         };
 
+        var devtiations = CalculateDeviation();
+        foreach (var deviation in devtiations) {
+            formData.Add(deviation.Item1, deviation.Item2);
+        }
+
         var content = new FormUrlEncodedContent(formData);
         return content;
+    }
+
+    private List<(string, string)> CalculateDeviation()
+    {
+        var res = new List<(string, string)>();
+
+        var saveString = _saveString.Substring(SaveSystem.IDLength);
+
+        var categories = saveString.Split('|');
+        var facePieces = categories[0].Split("&");
+        var allFeatures = Resources.LoadAll<FeatureSOData>("FacialFeatures").OrderByDescending(x => x.Priority).ToList();
+
+        List<float> eyeScores = new List<float>();
+        List<float> noseScores = new List<float>();
+        List<float> mouthScores = new List<float>();
+        List<float> eyebrowsScores = new List<float>();
+        List<float> extrasScores = new List<float>();
+
+        foreach (var facePart in facePieces) {
+            if (facePart.Length <= 1) continue; 
+            
+            var parts = facePart.Split("~");
+            FeatureSOData selected = null;
+            foreach (var f in allFeatures) if (f.Icon.name == parts[0]) selected = f;
+
+            var total = 0f;
+            total += float.Parse(parts[1].Substring(0, 3)) / 1000; //horizontal position
+            total += float.Parse(parts[1].Substring(3, 3)) / 1000; //vertical position
+            total += float.Parse(parts[1].Substring(6, 3)) / 1000; //size
+            total += float.Parse(parts[1].Substring(9, 3)) / 1000; //rotation
+            var average = Mathf.Abs(((total / 4) * 2) - 1);
+
+            if (selected.SubType == FeatureSubType.EYES) eyeScores.Add(average);
+            else if (selected.SubType == FeatureSubType.NOSE) noseScores.Add(average);
+            else if (selected.SubType == FeatureSubType.LIPS) mouthScores.Add(average);
+            else if (selected.SubType == FeatureSubType.BROWS) eyebrowsScores.Add(average);
+            else extrasScores.Add(average);
+        }
+
+        if (eyeScores.Count > 0) res.Add((_deviationEyesID, eyeScores.Average().ToString()));
+        if (noseScores.Count > 0) res.Add((_deviationNoseID, noseScores.Average().ToString()));
+        if (mouthScores.Count > 0) res.Add((_deviationMouthID, mouthScores.Average().ToString()));
+        if (eyebrowsScores.Count > 0) res.Add((_deviationEyebrowsID, eyebrowsScores.Average().ToString()));
+        if (extrasScores.Count > 0) res.Add((_deviationExtrasID, extrasScores.Average().ToString()));
+
+        var bodyParts = categories[4].Split("%");
+        List<float> bodyScores = new List<float>();
+
+        foreach (var part in bodyParts) {
+            var value = float.Parse(part);
+            value = Mathf.Abs((value * 2) - 1);
+            bodyScores.Add(value);
+        }
+
+        if (bodyScores.Count > 0) res.Add((_deviationBodyID, bodyScores.Average().ToString()));
+
+        return res;
     }
 }
 

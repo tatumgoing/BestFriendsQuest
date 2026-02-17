@@ -88,9 +88,6 @@ public class FaceFeatureController : MonoBehaviour, IFeatureController
         FeatureSOData selected = null;
         foreach (var f in _allFeatures) if (f.Icon.name == parts[0]) selected = f;
 
-        //foreach (var f in _allFeatures) if (f.Icon.name != parts[0]) print("|" + f.Icon.name + " != " + parts[0]);
-        //if (selected == null) print("couln't find " + parts[0] + " feature. count: " + _allFeatures.Count);
-
         var newFeature = AddFeature(selected);
         newFeature.ConfigureFromString(parts[1]);
         newFeature.As<FacialFeature>().SetScaleMode(inCharacterCreator);
