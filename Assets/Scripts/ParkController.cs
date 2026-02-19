@@ -7,7 +7,7 @@ using UnityEngine;
 public class ParkController : MonoBehaviour
 {
     //[SerializeField] private List<Transform> _characterSpawns = new List<Transform>();
-    [SerializeField] private List<Transform> _spawnSpots = new List<Transform>();
+    [SerializeField] private List<CharacterSpawnLocation> _spawnSpots = new List<CharacterSpawnLocation>();
     private List<SpawnedCharacter> _spawnedCharacters = new List<SpawnedCharacter>();
 
     /// <summary>
@@ -33,8 +33,10 @@ public class ParkController : MonoBehaviour
 
         for (int i = 0; i < IDs.Count; i++) {
             if (i >= _spawnSpots.Count) break;
-            var newCharacter = CharacterManager.i.SpawnCharacter(IDs[i], _spawnSpots[i]);
+            var newCharacter = CharacterManager.i.SpawnCharacter(IDs[i], _spawnSpots[i].transform);
+            _spawnSpots[i].SetCharacter(newCharacter);
             _spawnedCharacters.Add(newCharacter);
+        
         }
     }
 
