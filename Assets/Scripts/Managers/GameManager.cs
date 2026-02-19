@@ -15,11 +15,13 @@ public class GameManager : MonoBehaviour
     public static GameManager i;
     private void Awake() { i = this; }
 
+    [SerializeField] private bool _doTutorial;
     [SerializeField] private GameMode _mode;
     [SerializeField] GameObject _pauseMenu;
     [SerializeField] Fade _fade;
     [SerializeField] MusicPlayer _music;
     public Transform Camera;
+    [SerializeField] private GameObject _tutorial;
 
     [Header("saving")]
     [SerializeField] private CharacterMetaController _character;
@@ -37,6 +39,8 @@ public class GameManager : MonoBehaviour
 
         _modeExlusiveItems = FindObjectsByType<ModeExlusiveItem>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList();
         UpdateMode();
+
+        _tutorial.SetActive(_doTutorial);
     }
 
     private void UpdateMode()

@@ -2,6 +2,7 @@ using MyBox;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class MoveMenuController : MonoBehaviour
@@ -14,6 +15,8 @@ public class MoveMenuController : MonoBehaviour
     [SerializeField] private Slider _angleSlider;
     [SerializeField] private List<SelectableItem> _mirrorOptions = new List<SelectableItem>();
     private FeatureObj _current;
+
+    [SerializeField] private UnityEvent _onChangePosition;
 
     private void OnEnable()
     {

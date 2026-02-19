@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.ExceptionServices;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class AddMenuController : MonoBehaviour
@@ -19,6 +20,7 @@ public class AddMenuController : MonoBehaviour
     [Header("Add")]
     [SerializeField] private GameObject _addPrefab;
     [SerializeField] private Transform _addListParent;
+
 
     private List<AddOption> _spawnedAddOptions = new List<AddOption>();
     private int _numPages = 0;
@@ -71,7 +73,6 @@ public class AddMenuController : MonoBehaviour
 
     public void ChangeCategory(FeatureSubType type)
     {
-
         _currentDisplayType = type;
 
         foreach (var button in _categoryParent.GetComponentsInChildren<AddMenuCategoryButton>()) {
@@ -97,8 +98,5 @@ public class AddMenuController : MonoBehaviour
             }
             UpdatePageButtons();
         }
-
-        //Category = type;
-        //BuildAddList();
     }
 }
