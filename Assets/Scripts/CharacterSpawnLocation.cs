@@ -37,6 +37,7 @@ public class CharacterSpawnLocation : MonoBehaviour
 
     void AnimateCharacter()
     {
+        spawnedCharacter.gameObject.transform.localEulerAngles = new Vector3(gameObject.transform.localEulerAngles.x, gameObject.transform.localEulerAngles.y - 180, gameObject.transform.localEulerAngles.z);
         spawnedCharacter.AnimateFromEnum(animations);
     }
 
