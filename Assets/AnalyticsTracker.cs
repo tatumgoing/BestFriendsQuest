@@ -33,18 +33,35 @@ public class ResearchData
     static string _deviationExtrasID = "entry.43626244";
     static string _deviationBodyID = "entry.512424644";
 
+    static string _timeEyesID = "entry.1587597076";
+    static string _timeNoseID = "entry.1581770759";
+    static string _timeMouthID = "entry.2046527975";
+    static string _timeEyebrowsID = "entry.712381159";
+    static string _timeExtrasID = "entry.2101347696";
+    static string _timeHairID = "entry.157892271";
+    static string _timeStrandsID = "entry.524053232";
+    static string _timeSkinID = "entry.954402558";
+    static string _timeBodyID = "entry.478587131";
+    static string _timeDataID = "entry.112423647";
+
     private GameMode _mode;
     private string _saveString;
     private float _timeSpent;
 
     private Dictionary<AnalyticsInputType, int> _clicks = new Dictionary<AnalyticsInputType, int>();
+    private List<float> _timeTotals = new List<float>();
 
-    public void TickTime() => _timeSpent += Time.deltaTime;
+    public void TickTime(AnalyticsInputType type)
+    {
+        _timeSpent += Time.deltaTime;
+        if (type != AnalyticsInputType.NONE) _timeTotals[(int)type] += Time.deltaTime;
+    }
 
     public ResearchData()
     {
         var clickOptions = Utils.EnumToList<AnalyticsInputType>();
         foreach (var key in clickOptions) _clicks.Add(key, 0);
+        _timeTotals = new List<float>() { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     }
 
     public void Finalize(string saveString)
@@ -87,6 +104,17 @@ public class ResearchData
             { _numClicksSkinID, _clicks[AnalyticsInputType.SKIN].ToString() },
             { _numClicksBodyID, _clicks[AnalyticsInputType.BODY].ToString() },
             { _numClicksDataID, _clicks[AnalyticsInputType.DATA].ToString() },
+
+            {_timeEyesID, _timeTotals[0].ToString()},
+            {_timeNoseID, _timeTotals[1].ToString()},
+            {_timeMouthID, _timeTotals[2].ToString()},
+            {_timeEyebrowsID, _timeTotals[3].ToString()},
+            {_timeExtrasID, _timeTotals[4].ToString()},
+            {_timeHairID, _timeTotals[5].ToString()},
+            {_timeStrandsID, _timeTotals[6].ToString()},
+            {_timeSkinID, _timeTotals[7].ToString()},
+            {_timeBodyID, _timeTotals[8].ToString()},
+            {_timeDataID, _timeTotals[9].ToString()},
         };
 
         var devtiations = CalculateDeviation();
@@ -169,10 +197,9 @@ public class AnalyticsTracker : MonoBehaviour
     {
         if (!_makingCharacter) return;
 
-        _data.TickTime();
+        _data.TickTime(_currentInputType);
         if (Input.GetMouseButtonDown(0)) _data.Click(_currentInputType);
     }
-
 
     public void SwitchToHair() => SwitchCategory(AnalyticsInputType.HAIR);
     public void SwitchToStrands() => SwitchCategory(AnalyticsInputType.STRANDS);
