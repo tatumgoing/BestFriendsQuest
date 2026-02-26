@@ -132,8 +132,20 @@ public abstract class FeatureObj : MonoBehaviour
 
     protected virtual void SpawnMirror()
     {
+
         MirroredFeature = Instantiate(gameObject, transform.parent).GetComponent<FeatureObj>();
         MirroredFeature.SetAsMirroredVersion();
+
+        var addon = GetComponentInChildren<MovableAddon>();
+
+        /*if (addon != null) {
+            var mirroredStrand = MirroredFeature.transform.GetChild(0);
+            var pos = transform.GetChild(0).localPosition;
+            pos.x *= -1;
+            mirroredStrand.localPosition = pos;
+
+            print("Spawn mirror addon. localPos: " + pos);
+        }*/
     }
 
     public void SetDefaults()
@@ -154,8 +166,24 @@ public abstract class FeatureObj : MonoBehaviour
     public void SetMirrorTpe(MirrorType mirror)
     {
         if (Settings.Mirror == mirror) return;
+
         Settings.Mirror = mirror;
         UpdateDisplay();
+
+        var addon = GetComponentInChildren<MovableAddon>();
+        if (addon) {
+            var mirroredStrand = MirroredFeature.transform.GetChild(0);
+            var pos = transform.GetChild(0).localPosition;
+            pos.x *= -1;
+            mirroredStrand.localPosition = pos;
+
+            var mirroredAddon = MirroredFeature.GetComponentInChildren<MovableAddon>();
+            mirroredStrand.localEulerAngles = addon.transform.localEulerAngles;
+            mirroredStrand.localEulerAngles += Vector3.up * 180;
+            mirroredAddon.SetTargetUp(mirroredStrand.up);
+
+            print("Spawn mirror addon. localPos: " + pos);
+        }
     }
 
     public void SetAll(FeatureObjSettings settings)

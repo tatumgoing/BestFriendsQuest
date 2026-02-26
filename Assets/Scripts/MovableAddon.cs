@@ -24,6 +24,11 @@ public class MovableAddon : MonoBehaviour
         _controller = GetComponentInParent<HairPiece>();
     }
 
+    public void SetTargetUp(Vector3 targetUp)
+    {
+        _targetUp = targetUp; 
+    }
+
     /// <summary>
     /// Returns a 12 digit string representing the rotation of the parent and then the child, parent rot first.
     /// </summary>
@@ -39,6 +44,7 @@ public class MovableAddon : MonoBehaviour
 
     public void SetRot(string inputString)
     {
+        print("set rot string!");
         Utils.DecodeQuaternions12(inputString, out var parentRot, out var childRot);
 
         //print("decoded quatString. rotA: " + parentRot + ", childRot: " + childRot + ", inputString: " + inputString);
@@ -97,9 +103,7 @@ public class MovableAddon : MonoBehaviour
         //print("decoded pos string. x: " + x + ", y: " + y + ", z: " + z + ", posString: " + inputString);
         transform.localPosition = new Vector3(x, y, z);
 
-        /*Vector3 localPos = transform.parent.InverseTransformPoint(hitInfo.point);
-        localPos.x = -localPos.x;
-        _mirror.transform.position = transform.parent.TransformPoint(localPos);*/
+        if (_mirror) _mirror.transform.localPosition = new Vector3(-x, y, z);
     }
 
     public void SetSelected(bool selected)
