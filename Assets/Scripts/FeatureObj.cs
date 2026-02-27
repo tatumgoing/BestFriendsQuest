@@ -182,7 +182,7 @@ public abstract class FeatureObj : MonoBehaviour
             mirroredStrand.localEulerAngles += Vector3.up * 180;
             mirroredAddon.SetTargetUp(mirroredStrand.up);
 
-            print("Spawn mirror addon. localPos: " + pos);
+            //print("Spawn mirror addon. localPos: " + pos);
         }
     }
 

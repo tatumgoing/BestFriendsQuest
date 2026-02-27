@@ -44,7 +44,7 @@ public class MovableAddon : MonoBehaviour
 
     public void SetRot(string inputString)
     {
-        print("set rot string!");
+        //print("set rot string!");
         Utils.DecodeQuaternions12(inputString, out var parentRot, out var childRot);
 
         //print("decoded quatString. rotA: " + parentRot + ", childRot: " + childRot + ", inputString: " + inputString);

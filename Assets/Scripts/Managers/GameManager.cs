@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     public static GameManager i;
     private void Awake() { i = this; }
 
-    [SerializeField] private bool _doTutorial;
+    [SerializeField] private bool _demoMode;
     [SerializeField] private GameMode _mode;
     [SerializeField] GameObject _pauseMenu;
     [SerializeField] Fade _fade;
@@ -31,6 +31,8 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public UnityEvent OnModeChange;
     private List<ModeExlusiveItem> _modeExlusiveItems = new List<ModeExlusiveItem>();
 
+    public bool DemoMode => _demoMode;
+
     public string CharactersSavePath => System.IO.Path.Combine(Application.streamingAssetsPath, _saveFileName);
 
     private void Start()
@@ -40,7 +42,7 @@ public class GameManager : MonoBehaviour
         _modeExlusiveItems = FindObjectsByType<ModeExlusiveItem>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList();
         UpdateMode();
 
-        _tutorial.SetActive(_doTutorial);
+        _tutorial.SetActive(_demoMode);
     }
 
     private void UpdateMode()

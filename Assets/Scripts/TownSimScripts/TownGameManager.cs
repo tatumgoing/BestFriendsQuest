@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using System.Threading.Tasks;
 using System.Linq;
 using MyBox;
+using Unity.VisualScripting;
 
 public enum AreaName {MAP, PARK, TOWN, SHOP, RESTURAUNT, TOWN_HALL, PORT }
 
@@ -32,6 +33,8 @@ public class TownGameManager : MonoBehaviour
     public static TownGameManager i;
 
     [SerializeField] private List<AreaData> _areas = new List<AreaData>();
+
+    [SerializeField] private bool _demoMode;
 
     public void GoToMap() => ChangeArea(AreaName.MAP);
     public void GoToPark() => ChangeArea(AreaName.PARK);
@@ -75,18 +78,28 @@ public class TownGameManager : MonoBehaviour
         ChangeScene(sceneUIList[sceneUIList.Count - 1], true);
 
         //MakeCharacterHouses();
-
     }
 
     public async void ChangeArea(AreaName targetArea)
     {
         await FadeScreen(true);
+
+        if (_demoMode) {
+            targetArea = AreaName.PARK;
+            sceneUIList[^1].gameObject.SetActive(false);
+        }
         foreach (var a in _areas) a.SetActiveState(a.Type == targetArea);
+
         await FadeScreen(false);        
     }
 
     public async void ChangeScene(GameObject newSceneUI, bool firstLaunch = false)
     {
+        if (_demoMode && !newSceneUI.name.ContainsInsensitive("title")) {
+            GoToPark();
+            return;
+        }
+
         //fades out track
         var musicPlayer = TownMusicPlayer.i;
         if (newSceneUI && musicPlayer.currentTrack != null && musicPlayer.currentTrack.TrackName != newSceneUI.GetComponent<Area>().associatedTrack.TrackName) {
