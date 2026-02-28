@@ -12,6 +12,15 @@ public class IdPhotoController : MonoBehaviour
 
     [SerializeField] private CharacterMetaController _character;
 
+    public void ShowPicture(CompleteCharacterData character)
+    {
+        _photoImg.sprite = character.Icon;
+        _nameText.text = character.Name;
+
+        var birthday = character.Birthday;
+        _birthdayText.text = birthday.Month + " / " + birthday.Day + " / " + birthday.Year;
+    }
+
     public void ShowPicture(Texture2D idTexture)
     {
         var idSprite = Sprite.Create(

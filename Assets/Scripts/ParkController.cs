@@ -27,8 +27,11 @@ public class ParkController : MonoBehaviour
         foreach (var s in _spawnedCharacters) Destroy(s.gameObject);
         _spawnedCharacters.Clear();
 
-        var IDs = CharacterManager.i.allCharacters.Select(x => x.ID).ToList().Shuffle();
-        IDs.Take(_spawnSpots.Count).ToList();
+        var IDs = CharacterManager.i.allCharacters.Select(x => x.ID).ToList();//.Shuffle();
+        IDs.Reverse();
+        print("IDs: " + string.Join(", ", IDs));
+
+        IDs = IDs.Take(_spawnSpots.Count).ToList();
         _spawnSpots.Shuffle();
 
         for (int i = 0; i < IDs.Count; i++) {
