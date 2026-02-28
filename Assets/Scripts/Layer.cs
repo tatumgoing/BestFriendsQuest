@@ -11,6 +11,7 @@ public class Layer : MonoBehaviour
     private FeatureObj _feature;
     [SerializeField] private RectTransform _arrowButtonTransform;
     [SerializeField] private Tooltip _arrowTooltip;
+    [SerializeField] private GameObject _changeTierArrowParent;
 
     private FeatureTier _tier;
 
@@ -19,6 +20,7 @@ public class Layer : MonoBehaviour
     private void Start()
     {
         _controller = GetComponentInParent<LayersMenuController>();
+        _changeTierArrowParent.SetActive(_controller.ShowingDetails);
     }
 
     public void Initialize(FeatureObj feature, FeatureTier tier)

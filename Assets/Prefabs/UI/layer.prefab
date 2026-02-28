@@ -384,6 +384,7 @@ MonoBehaviour:
   _preview: {fileID: 5727289270735156793}
   _arrowButtonTransform: {fileID: 5948264370945870322}
   _arrowTooltip: {fileID: 1833675867282742561}
+  _changeTierArrowParent: {fileID: 3429026477106079745}
 --- !u!114 &5175363081621117589
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -404,6 +405,7 @@ MonoBehaviour:
   _hoverCooldown: 0.05
   _hoverWhenSelected: 0
   _deHoverOnEnable: 0
+  _deHoverOnRenable: 0
   _data:
   - Name: selected
     _type: 2
@@ -1156,6 +1158,10 @@ PrefabInstance:
     - target: {fileID: 6196855260716952122, guid: 25efec819d55ab243a186613e16941bc, type: 3}
       propertyPath: m_Name
       value: switchTier
+      objectReference: {fileID: 0}
+    - target: {fileID: 6196855260716952122, guid: 25efec819d55ab243a186613e16941bc, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

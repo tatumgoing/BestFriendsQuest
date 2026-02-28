@@ -35,6 +35,7 @@ public class LayersMenuController : MonoBehaviour
     private FeatureSubType _currentSubType;
     private IFeatureController _featureController;
 
+    public bool ShowingDetails => _detailsParent.activeInHierarchy;
     public int NumLayers => _spawnedLayers.Count;
 
     public FeatureObj GetCurrent() => _featureController.GetCurrent();
