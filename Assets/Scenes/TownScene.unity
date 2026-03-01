@@ -13601,9 +13601,9 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 10
+  near clip plane: 1.4
   far clip plane: 1000
-  field of view: 60.000004
+  field of view: 30
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -13629,8 +13629,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.20197447, y: 0, z: 0, w: 0.9793908}
-  m_LocalPosition: {x: 123.99928, y: 14.02507, z: 94.734024}
+  m_LocalRotation: {x: 0.08803495, y: 0.025257774, z: -0.002232956, w: 0.99579465}
+  m_LocalPosition: {x: 366.53, y: 522.44995, z: -20.45}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -17049,6 +17049,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1846945477268886057, guid: 6153e7fa27e50454196817f3c4ba499e, type: 3}
+      propertyPath: m_Intensity
+      value: 10.66
+      objectReference: {fileID: 0}
     - target: {fileID: 3294799608165869178, guid: 6153e7fa27e50454196817f3c4ba499e, type: 3}
       propertyPath: m_Name
       value: CharacterRoomModel
@@ -17057,8 +17061,17 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3674977863390433770, guid: 6153e7fa27e50454196817f3c4ba499e, type: 3}
+      propertyPath: m_Intensity
+      value: 10.66
+      objectReference: {fileID: 0}
+    - target: {fileID: 4563298302807004857, guid: 6153e7fa27e50454196817f3c4ba499e, type: 3}
+      propertyPath: m_Intensity
+      value: 10.66
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 8988861198672391819, guid: 6153e7fa27e50454196817f3c4ba499e, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6153e7fa27e50454196817f3c4ba499e, type: 3}
@@ -27329,7 +27342,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2074531007
 Transform:
   m_ObjectHideFlags: 0

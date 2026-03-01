@@ -16,6 +16,8 @@ public class MovableAddon : MonoBehaviour
     private MovableAddon _mirror;
     private HairPiece _controller;
 
+    private Vector3 _loadedPos; 
+
     public Transform Mirror => _mirror.transform;
 
     private void Start()
@@ -56,8 +58,14 @@ public class MovableAddon : MonoBehaviour
         _targetUp = transform.localRotation * Vector3.up;
 
         if (_mirror) {
-            Vector3 mirrorUp = Vector3.Scale(_targetUp, new Vector3(-1f, 1f, 1f));
+
+            var surfaceNormal = transform.parent.TransformDirection(_targetUp);
+            var mirrorUp = Vector3.Scale(transform.parent.InverseTransformDirection(surfaceNormal), new Vector3(-1, 1, 1));
             _mirror._targetUp = Quaternion.AngleAxis(180f, mirrorUp) * mirrorUp;
+            //print("setting mirror targetUp:"  + _mirror._targetUp);
+
+            //Vector3 mirrorUp = Vector3.Scale(_targetUp, new Vector3(-1f, 1f, 1f));
+            //_mirror._targetUp = Quaternion.AngleAxis(180f, mirrorUp) * mirrorUp;
         }
     }
 
@@ -100,10 +108,19 @@ public class MovableAddon : MonoBehaviour
         float y = Decode(inputString, 3);
         float z = Decode(inputString, 6);
 
-        //print("decoded pos string. x: " + x + ", y: " + y + ", z: " + z + ", posString: " + inputString);
+        //gameObject.name = Random.Range(0, 1000).ToString();
+        //print(gameObject.name + ": decoded pos string. x: " + x + ", y: " + y + ", z: " + z + ", posString: " + inputString);
         transform.localPosition = new Vector3(x, y, z);
+        _loadedPos = transform.localPosition;
 
-        if (_mirror) _mirror.transform.localPosition = new Vector3(-x, y, z);
+        if (_mirror) {
+            //print("mirror exists, setting its position");
+            //_mirror.transform.localPosition = new Vector3(-x, y, z);
+
+            Vector3 localPos = transform.parent.InverseTransformPoint(transform.position);
+            localPos.x = -localPos.x;
+            _mirror.transform.position = transform.parent.TransformPoint(localPos);
+        }
     }
 
     public void SetSelected(bool selected)
@@ -113,6 +130,7 @@ public class MovableAddon : MonoBehaviour
 
     public void Initialize(MovableAddon mirror)
     {
+        //print("initialize movable addon with mirror");
         _mirror = mirror; 
     }
 
@@ -124,11 +142,10 @@ public class MovableAddon : MonoBehaviour
 
     private void Update()
     {
-        if (!GameManager.i || !_uiController.Addons) {
-            _rotationControls.SetActive(false); 
-            _moveGizmo.SetActive(false);
-            return;
-        }
+        _currentUp = transform.up;
+        Quaternion targetLocalRot = Quaternion.FromToRotation(Vector3.up, _targetUp) * Quaternion.identity;
+        transform.localRotation = Quaternion.Slerp(transform.localRotation, targetLocalRot, 15 * Time.deltaTime);
+        //Debug.DrawLine(transform.position, transform.position + transform.up * 10, Color.green);
 
         if (_controller.IsMirroredVersion) {
             var scale = transform.localScale;
@@ -136,13 +153,17 @@ public class MovableAddon : MonoBehaviour
             transform.localScale = scale;
         }
 
+        if (!GameManager.i || !_uiController.Addons) {
+            if (_mirror) transform.localPosition = _loadedPos;
+            _rotationControls.SetActive(false); 
+            _moveGizmo.SetActive(false);
+            return;
+        }       
+
         _rotationControls.SetActive(_uiController.Rotating && Selected);
         _moveGizmo.SetActive(Selected && !_rotationControls.activeInHierarchy);
         if (!Selected) return;
 
-        _currentUp = transform.up;
-        Quaternion targetLocalRot = Quaternion.FromToRotation(Vector3.up, _targetUp) * Quaternion.identity;
-        transform.localRotation = Quaternion.Slerp(transform.localRotation, targetLocalRot, 15 * Time.deltaTime);
 
         if (_uiController.Rotating) {
             _dragging = false;
@@ -151,10 +172,6 @@ public class MovableAddon : MonoBehaviour
 
         if (!_dragging) {
             var didHover = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out var hoverInfo, 1000, _hoverLayers);
-
-            /*if (didHover) {
-                print("collider: " + hoverInfo.collider.gameObject.name);
-            }*/
 
             if (!didHover || hoverInfo.collider.GetComponentInParent<MovableAddon>() != this) return;
 
