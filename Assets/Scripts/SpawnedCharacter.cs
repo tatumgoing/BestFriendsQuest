@@ -26,9 +26,17 @@ public class SpawnedCharacter : MonoBehaviour
         if (animator != null)
         {
 
+            if (anim == CharacterAnimations.Grilling)
+            {
+                Grilling();
+            }
             if (anim == CharacterAnimations.Sitting)
             {
                 Sitting();
+            }
+            if (anim == CharacterAnimations.SittingGround)
+            {
+                SittingGround();
             }
             else if (anim == CharacterAnimations.Standing)
             {
@@ -42,9 +50,17 @@ public class SpawnedCharacter : MonoBehaviour
         }
     }
 
+    public void Grilling()
+    {
+        animator.SetBool("Grilling", true);
+    }
     public void Sitting()
     {
         animator.SetBool("Sitting", true);
+    }
+    public void SittingGround()
+    {
+        animator.SetBool("SittingGround", true);
     }
     public void Standing()
     {

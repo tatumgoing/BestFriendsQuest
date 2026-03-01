@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public enum CharacterAnimations { Standing, Sitting, Walking };
+public enum CharacterAnimations { Grilling, Standing, Sitting, SittingGround, Walking };
 public class CharacterSpawnLocation : MonoBehaviour
 {
     
