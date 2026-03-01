@@ -20,7 +20,7 @@ public class Layer : MonoBehaviour
     private void Start()
     {
         _controller = GetComponentInParent<LayersMenuController>();
-        _changeTierArrowParent.SetActive(_controller.ShowingDetails);
+        if (_changeTierArrowParent) _changeTierArrowParent.SetActive(_controller.ShowingDetails());
     }
 
     public void Initialize(FeatureObj feature, FeatureTier tier)
@@ -32,6 +32,8 @@ public class Layer : MonoBehaviour
             _arrowButtonTransform.localScale = new Vector3(-1, 1, 1);
             _arrowTooltip.UpdateText("Switch to Detail");
         }
+
+        gameObject.name = feature.GetData().name + " Layer";
     }
 
     public void Select()

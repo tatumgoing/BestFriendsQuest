@@ -22,7 +22,7 @@ public class ParkController : MonoBehaviour
     /// On startup, delete any existing spawned characters and spawn new ones.
     /// spawn as many characters as there are spawn spots (or as many as there are characters if fewer)
     /// </summary>
-    private void Initialize()
+    private async void Initialize()
     {
         foreach (var s in _spawnedCharacters) Destroy(s.gameObject);
         _spawnedCharacters.Clear();
@@ -39,7 +39,14 @@ public class ParkController : MonoBehaviour
             var newCharacter = CharacterManager.i.SpawnCharacter(IDs[i], _spawnSpots[i].transform);
             _spawnSpots[i].SetCharacter(newCharacter);
             _spawnedCharacters.Add(newCharacter);
-        
+        }
+
+        foreach (var c in _spawnedCharacters) c.gameObject.SetActive(false);
+        await System.Threading.Tasks.Task.Delay(100);
+
+        for (int i = 0; i < _spawnedCharacters.Count; i++) {
+            _spawnedCharacters[i].gameObject.SetActive(true);
+            _spawnSpots[i].SetCharacter(_spawnedCharacters[i]);
         }
     }
 

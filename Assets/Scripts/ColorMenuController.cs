@@ -36,6 +36,7 @@ public class ColorMenuController : MonoBehaviour
     [SerializeField] private HexColorInputField _hexInput;
     [SerializeField] private GameObject _hexSectionParent;
     [SerializeField] private FollowMouseInRectBounds _advancedSelector;
+    [SerializeField] private SelectableItem _advancedToggleButton;
 
     private List<BasicColorOption> _basicOptions = new List<BasicColorOption>();
     private float _hue = 0.5f;
@@ -67,6 +68,8 @@ public class ColorMenuController : MonoBehaviour
 
     public void Initialize()
     {
+        if (_initialized) return;
+
         _basicOptions = _basicGridParent.GetComponentsInChildren<BasicColorOption>().ToList();
         for (int i = 0; i < _basicOptions.Count; i++) {
             if (i >= _basicColors.Count) break;
@@ -126,13 +129,18 @@ public class ColorMenuController : MonoBehaviour
         if (advanced) {
             _basicParent.transform.SetAsFirstSibling();
             _advancedParent.gameObject.SetActive(true);
-            _basicParent.SetTrigger("Exit");
+            if (gameObject.activeInHierarchy) _basicParent.SetTrigger("Exit");
+            else _basicParent.gameObject.SetActive(false);
+            _advancedToggleButton.Select(true, false);
+            
         }
         else {
             _advancedParent.transform.SetAsFirstSibling();
             _basicParent.gameObject.SetActive(true);
-            _advancedParent.SetTrigger("Exit");
+            if (gameObject.activeInHierarchy) _advancedParent.SetTrigger("Exit");
+            else _advancedParent.gameObject.SetActive(false);
             SetFromHexCode(_basicColor.ToHex());
+            _advancedToggleButton.Deselect(true, false);
         }
 
         _advancedSelector.FollowMouse = advanced;
@@ -146,12 +154,24 @@ public class ColorMenuController : MonoBehaviour
 
     public void SetColor(Color color)
     {
+        if (!_initialized) Initialize();
+
         SetFromHexCode(color.ToHex());
         _basicColor = color;
+
+        var isBasic = false;
         foreach (var b in _basicOptions) {
-            if (b.Color == color) b.Select();
-            else b.Deselect();
+            if (Utils.CompareColors(b.Color, color) < 0.01f) {
+                b.Select();
+                isBasic = true;
+            }
+            else {
+                b.Deselect();
+            }
         }
+
+        SetMode(!isBasic);
+        if (!isBasic) SetFromHexCode(color.ToHex());
     }
 
     public void SetFromHexCode(string hex)

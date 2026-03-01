@@ -17,6 +17,15 @@ public static class Utils
     private static int AXIS_BITS = 6;
     private static int AXIS_STEPS = 1 << AXIS_BITS;
 
+    public static float CompareColors(Color col1, Color col2)
+    {
+        var rDiff = Mathf.Abs(col1.r - col2.r);    
+        var gDiff = Mathf.Abs(col1.g - col2.g);
+        var bDiff = Mathf.Abs(col1.b - col2.b);
+
+        return rDiff + gDiff + bDiff;
+    }
+
     public static Color HexToColor(string hex)
     {
         if (hex.StartsWith("#")) hex = hex.Substring(1);
