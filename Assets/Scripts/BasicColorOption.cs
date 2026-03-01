@@ -23,6 +23,7 @@ public class BasicColorOption : MonoBehaviour
 
     public void Select()
     {
+        _button.Select(true, false);
         _controller.SelectBasicColor(_color.color, this);
     }
 

@@ -35,7 +35,11 @@ public class LayersMenuController : MonoBehaviour
     private FeatureSubType _currentSubType;
     private IFeatureController _featureController;
 
-    public bool ShowingDetails => _detailsParent.activeInHierarchy;
+    public bool ShowingDetails() {
+        if (_detailsParent) return _detailsParent.activeInHierarchy;
+        return false;
+    }
+
     public int NumLayers => _spawnedLayers.Count;
 
     public FeatureObj GetCurrent() => _featureController.GetCurrent();
@@ -49,7 +53,6 @@ public class LayersMenuController : MonoBehaviour
         SelectInitial();
 
         if (_featureController == null) Initialize(_currentSubType);
-        //print("Layers onEnable. hasCurrent: " + _featureController.HasCurrent() + ", currentType: ");
     }
 
     private void Start()
@@ -141,8 +144,8 @@ public class LayersMenuController : MonoBehaviour
         }
 
         if (_colorMenu) {
-            added.SetColor(_colorMenu.GetColor());
-            //added.SetColor(_colorMenu.GetDefaultColor());
+            _colorMenu.SetColor(data.DefaultSettings.Color);
+            added.SetColor(data.DefaultSettings.Color);
         }
 
         if (_transitionToMoveAutomatically) {
@@ -180,7 +183,8 @@ public class LayersMenuController : MonoBehaviour
         }
         else {
             for (int i = _spawnedLayers.Count-1; i >= 0; i--) {
-                if (_spawnedLayers[i].GetFeature().GetData().SubType == _currentSubType) {
+                var layer = _spawnedLayers[i];
+                if (layer.GetFeature().GetData().SubType == _currentSubType && layer.GetFeature() == GetCurrent()) {
                     
                     _spawnedLayers[i].GetComponent<SelectableItem>().Select(true);
                     break;
@@ -256,5 +260,7 @@ public class LayersMenuController : MonoBehaviour
         if (_addonSizeSlider) _addonSizeSlider.value = feature.GetSettings().Size;
 
         if (_faceMenu) _faceMenu.SwitchSelectedLayer(layerObj);
+
+        if (_colorMenu) _colorMenu.SetColor(feature.GetSettings().Color);
     }
 }
