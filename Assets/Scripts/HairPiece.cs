@@ -64,18 +64,6 @@ public class HairPiece : FeatureObj
         UpdateColors();
 
         base.UpdateDisplay();
-
-        return;
-
-        if (!IsMirroredVersion) {
-            AlignWithTarget();
-            AlignToHeadNormal();
-
-            _modelParent.GetChild(0).transform.localEulerAngles = Vector3.up * Mathf.Lerp(-180, 180, Settings.Angle);
-
-
-            if (_mirroredFeature) _mirroredFeature.SetMirrorRot(transform, _modelParent);
-        }
     }
 
     private void UpdateColors()

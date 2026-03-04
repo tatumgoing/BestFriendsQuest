@@ -31,11 +31,13 @@ public abstract class FeatureObj : MonoBehaviour
 
         if (Data.Type == FeatureType.HAIR && Data.IsMainHair == false) {
 
+            var addon = GetComponentInChildren<MovableAddon>();
+
             var rotString = numString.Substring(0, 12);
-            GetComponentInChildren<MovableAddon>().SetRot(rotString);
+            addon.SetRot(rotString);
 
             var posString = numString.Substring(12, 9);
-            GetComponentInChildren<MovableAddon>().SetPos(posString);
+            addon.SetPos(posString);
 
             Settings.Size = float.Parse(numString.Substring(21, 3)) / 1000;
 
@@ -132,20 +134,17 @@ public abstract class FeatureObj : MonoBehaviour
 
     protected virtual void SpawnMirror()
     {
+        if (MirroredFeature != null) return;
 
         MirroredFeature = Instantiate(gameObject, transform.parent).GetComponent<FeatureObj>();
         MirroredFeature.SetAsMirroredVersion();
+        MirroredFeature.gameObject.name += "_Mirror";
 
         var addon = GetComponentInChildren<MovableAddon>();
 
-        /*if (addon != null) {
-            var mirroredStrand = MirroredFeature.transform.GetChild(0);
-            var pos = transform.GetChild(0).localPosition;
-            pos.x *= -1;
-            mirroredStrand.localPosition = pos;
-
-            print("Spawn mirror addon. localPos: " + pos);
-        }*/
+        if (addon != null) {
+            addon.Initialize(MirroredFeature.GetComponentInChildren<MovableAddon>());
+        }
     }
 
     public void SetDefaults()
@@ -176,6 +175,7 @@ public abstract class FeatureObj : MonoBehaviour
             var pos = transform.GetChild(0).localPosition;
             pos.x *= -1;
             mirroredStrand.localPosition = pos;
+            print("setting position from 'set mirror type'. pos: " + pos);
 
             var mirroredAddon = MirroredFeature.GetComponentInChildren<MovableAddon>();
             mirroredStrand.localEulerAngles = addon.transform.localEulerAngles;
