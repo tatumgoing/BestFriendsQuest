@@ -182,21 +182,24 @@ public class LayersMenuController : MonoBehaviour
             _spawnedLayers[0].GetComponent<Layer>().Select();
         }
         else {
-            for (int i = _spawnedLayers.Count-1; i >= 0; i--) {
+
+            for (int i = _spawnedLayers.Count - 1; i >= 0; i--) {
                 var layer = _spawnedLayers[i];
+
                 if (layer.GetFeature().GetData().SubType == _currentSubType && layer.GetFeature() == GetCurrent()) {
-                    
                     _spawnedLayers[i].GetComponent<SelectableItem>().Select(true);
                     break;
                 }
             }
 
-            /*
-            foreach (var layer in _spawnedLayers) {
-                if (layer.GetFeature() == _featureController.GetCurrent()) {
-                    layer.GetComponent<SelectableItem>().Select();
+            for (int i = _spawnedLayers.Count - 1; i >= 0; i--) {
+                var layer = _spawnedLayers[i];
+
+                if (layer.GetFeature().GetData().SubType == _currentSubType) {
+                    _spawnedLayers[i].GetComponent<SelectableItem>().Select(true);
+                    break;
                 }
-            }*/
+            }
         }
     }
 
