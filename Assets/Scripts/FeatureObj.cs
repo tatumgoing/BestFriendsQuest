@@ -175,7 +175,7 @@ public abstract class FeatureObj : MonoBehaviour
             var pos = transform.GetChild(0).localPosition;
             pos.x *= -1;
             mirroredStrand.localPosition = pos;
-            print("setting position from 'set mirror type'. pos: " + pos);
+            //print("setting position from 'set mirror type'. pos: " + pos);
 
             var mirroredAddon = MirroredFeature.GetComponentInChildren<MovableAddon>();
             mirroredStrand.localEulerAngles = addon.transform.localEulerAngles;

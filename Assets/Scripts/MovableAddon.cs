@@ -125,7 +125,18 @@ public class MovableAddon : MonoBehaviour
 
     public void SetSelected(bool selected)
     {
+        if (transform.localPosition.magnitude < 0.1f) FixStartingPosition();
+
         Selected = selected;
+    }
+
+    private void FixStartingPosition()
+    {
+        bool didHit = Physics.Raycast(transform.position + Vector3.up * 5, Vector3.down, out var hitInfo, 1000, _hitLayers);
+        if (!didHit) return;
+
+        transform.position = hitInfo.point;
+        _loadedPos = transform.localPosition;   
     }
 
     public void Initialize(MovableAddon mirror)
@@ -196,6 +207,8 @@ public class MovableAddon : MonoBehaviour
                 localPos.x = -localPos.x;
                 _mirror.transform.position = transform.parent.TransformPoint(localPos);
             }
+
+            _loadedPos = transform.localPosition;   
         }
     }
 }
