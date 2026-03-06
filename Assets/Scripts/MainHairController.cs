@@ -133,7 +133,13 @@ public class MainHairController : MonoBehaviour
 
         //print("initializing hair to " + _hairData[_currentlySelectedIndex].name);
         _controller.AddFeature(_hairData[_currentlySelectedIndex]);
-        _controller.SetCurrentColor(_color.GetColor());
+        if (_controller.Current.GetSettings().Color != _controller.Current.GetData().DefaultSettings.Color) {
+            _controller.SetCurrentColor(_controller.HairColor);
+            _color.SetColor(_controller.HairColor);
+        }
+        else {
+            _controller.SetCurrentColor(_color.GetColor());
+        }
 
         foreach (var option in _spawnedOptions) {
             if (option && option.Feature != _hairData[_currentlySelectedIndex]) option.GetComponent<SelectableItem>().Deselect(false);
