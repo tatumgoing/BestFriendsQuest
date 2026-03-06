@@ -23,6 +23,7 @@ public class CharacterCreatorProgression : MonoBehaviour
         HideAll(false);
         _characterController.gameObject.SetActive(false);
         _titleOptions.gameObject.SetActive(true);
+
     }
 
     public async void StartNew()

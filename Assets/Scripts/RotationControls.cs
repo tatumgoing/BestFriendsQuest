@@ -13,7 +13,7 @@ public class RotationControls : MonoBehaviour
 
     [SerializeField] private Vector3 _alphaRange = new Vector3(0.2f, 0.5f, 0.9f);
     [SerializeField] private LayerMask _hoverLayers;
-    [SerializeField] private float _rotationSpeed = 1;
+    private float _rotationSpeed = 2.5f;
     private AddonsUIHelper _uiController;
 
     private MovableAddon _controller;

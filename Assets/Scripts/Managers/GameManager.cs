@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] MusicPlayer _music;
     public Transform Camera;
     [SerializeField] private GameObject _tutorial;
+    [SerializeField] private GameObject _editExistingButtonParent;
 
     [Header("saving")]
     [SerializeField] private CharacterMetaController _character;
@@ -43,6 +44,7 @@ public class GameManager : MonoBehaviour
         UpdateMode();
 
         _tutorial.SetActive(_demoMode);
+        _editExistingButtonParent.SetActive(!_demoMode);
     }
 
     private void UpdateMode()
