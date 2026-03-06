@@ -32,6 +32,8 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public UnityEvent OnModeChange;
     private List<ModeExlusiveItem> _modeExlusiveItems = new List<ModeExlusiveItem>();
 
+    private string UndoStateString; //WIP
+
     public bool DemoMode => _demoMode;
 
     public string CharactersSavePath => System.IO.Path.Combine(Application.streamingAssetsPath, _saveFileName);
@@ -57,10 +59,17 @@ public class GameManager : MonoBehaviour
     {
         if (InputController.GetDown(Control.PAUSE)) TogglePause();
 
+        //UNDO WIP
+        if (Input.GetMouseButtonUp(0)) SaveUndoState();
         if (Input.GetKeyDown(KeyCode.Z) && Input.GetKey(KeyCode.LeftControl)) Undo();
     }
 
-    public void Undo()
+    private void SaveUndoState() //WIP
+    {
+
+    }
+
+    public void Undo() //WIP
     {
         print("I WANT TO UNDO");
     }
