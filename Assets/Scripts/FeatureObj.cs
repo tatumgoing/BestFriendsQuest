@@ -134,7 +134,7 @@ public abstract class FeatureObj : MonoBehaviour
         if (MirroredFeature) Destroy(MirroredFeature.gameObject);
     }
 
-    protected virtual void SpawnMirror()
+    public virtual void SpawnMirror()
     {
         if (MirroredFeature != null) return;
 
@@ -179,10 +179,14 @@ public abstract class FeatureObj : MonoBehaviour
             mirroredStrand.localPosition = pos;
             //print("setting position from 'set mirror type'. pos: " + pos);
 
-            var mirroredAddon = MirroredFeature.GetComponentInChildren<MovableAddon>();
+            var surfaceNormal = addon.transform.parent.TransformDirection(addon.TargetUp);
+            var mirrorUp = Vector3.Scale(addon.transform.parent.InverseTransformDirection(surfaceNormal), new Vector3(-1, 1, 1));
+            mirroredStrand.GetComponent<MovableAddon>().SetTargetUp(Quaternion.AngleAxis(180f, mirrorUp) * mirrorUp);
+
+            /*var mirroredAddon = MirroredFeature.GetComponentInChildren<MovableAddon>();
             mirroredStrand.localEulerAngles = addon.transform.localEulerAngles;
             mirroredStrand.localEulerAngles += Vector3.up * 180;
-            mirroredAddon.SetTargetUp(mirroredStrand.up);
+            mirroredAddon.SetTargetUp(mirroredStrand.up);*/
 
             //print("Spawn mirror addon. localPos: " + pos);
         }

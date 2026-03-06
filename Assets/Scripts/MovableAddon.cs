@@ -20,6 +20,7 @@ public class MovableAddon : MonoBehaviour
 
     public Transform Mirror => _mirror.transform;
     public void StoreLoadedPosition() => _loadedPos = transform.localPosition;
+    public Vector3 TargetUp => _targetUp;
 
     private void Start()
     {
@@ -63,10 +64,6 @@ public class MovableAddon : MonoBehaviour
             var surfaceNormal = transform.parent.TransformDirection(_targetUp);
             var mirrorUp = Vector3.Scale(transform.parent.InverseTransformDirection(surfaceNormal), new Vector3(-1, 1, 1));
             _mirror._targetUp = Quaternion.AngleAxis(180f, mirrorUp) * mirrorUp;
-            //print("setting mirror targetUp:"  + _mirror._targetUp);
-
-            //Vector3 mirrorUp = Vector3.Scale(_targetUp, new Vector3(-1f, 1f, 1f));
-            //_mirror._targetUp = Quaternion.AngleAxis(180f, mirrorUp) * mirrorUp;
         }
     }
 
@@ -121,6 +118,7 @@ public class MovableAddon : MonoBehaviour
             Vector3 localPos = transform.parent.InverseTransformPoint(transform.position);
             localPos.x = -localPos.x;
             _mirror.transform.position = transform.parent.TransformPoint(localPos);
+            _mirror.StoreLoadedPosition();
         }
     }
 
@@ -143,7 +141,7 @@ public class MovableAddon : MonoBehaviour
     public void Initialize(MovableAddon mirror)
     {
         //print("initialize movable addon with mirror");
-        _mirror = mirror; 
+        _mirror = mirror;
     }
 
     private void OnDisable()
@@ -156,8 +154,8 @@ public class MovableAddon : MonoBehaviour
     {
         _currentUp = transform.up;
         Quaternion targetLocalRot = Quaternion.FromToRotation(Vector3.up, _targetUp) * Quaternion.identity;
-        transform.localRotation = Quaternion.Slerp(transform.localRotation, targetLocalRot, 15 * Time.deltaTime);
-        //Debug.DrawLine(transform.position, transform.position + transform.up * 10, Color.green);
+        transform.localRotation = Quaternion.Slerp(transform.localRotation, targetLocalRot, 20* Time.deltaTime);
+        Debug.DrawLine(transform.position, transform.position + transform.up * 10, Color.green);
 
         if (_controller.IsMirroredVersion) {
             var scale = transform.localScale;

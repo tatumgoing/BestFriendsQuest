@@ -44,23 +44,27 @@ public class CharacterCreatorProgression : MonoBehaviour
 
         face.SetCategory(FeatureCategory.EYES);
         face.AddFeature(eyes);
-        face.SetCurrentColor(eyes.DefaultSettings.Color);
         _faceColorMenu.SetColor(eyes.DefaultSettings.Color);
+        face.SetCurrentColor(eyes.DefaultSettings.Color);
+        print("eye default color: " + eyes.DefaultSettings.Color);
 
         face.SetCategory(FeatureCategory.EYEBROWS);
         face.AddFeature(eyebrows);
-        face.SetCurrentColor(eyebrows.DefaultSettings.Color);
         _faceColorMenu.SetColor(eyebrows.DefaultSettings.Color);
+        face.SetCurrentColor(eyebrows.DefaultSettings.Color);
+        print("eyebrows default color: " + eyebrows.DefaultSettings.Color);
 
         face.SetCategory(FeatureCategory.NOSE);
         face.AddFeature(nose);
-        face.SetCurrentColor(nose.DefaultSettings.Color);
         _faceColorMenu.SetColor(nose.DefaultSettings.Color);
+        face.SetCurrentColor(nose.DefaultSettings.Color);
+        print("nose default color: " + nose.DefaultSettings.Color);
 
         face.SetCategory(FeatureCategory.MOUTH);
         face.AddFeature(mouth);
-        face.SetCurrentColor(mouth.DefaultSettings.Color);
         _faceColorMenu.SetColor(mouth.DefaultSettings.Color);
+        face.SetCurrentColor(mouth.DefaultSettings.Color);
+        print("mouth default color: " + mouth.DefaultSettings.Color);
     }
 
     public async void StartNew()

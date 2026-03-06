@@ -200,7 +200,7 @@ public class FacialFeature : FeatureObj
     }
 
 
-    protected override void SpawnMirror()
+    public override void SpawnMirror()
     {
         base.SpawnMirror();
         _mirroredFeature = MirroredFeature.As<FacialFeature>();

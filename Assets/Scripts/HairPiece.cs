@@ -51,7 +51,7 @@ public class HairPiece : FeatureObj
         Settings.MatchColor = match;
     }
 
-    protected override void SpawnMirror()
+    public override void SpawnMirror()
     {
         base.SpawnMirror();
         _mirroredFeature = MirroredFeature.As<HairPiece>();
