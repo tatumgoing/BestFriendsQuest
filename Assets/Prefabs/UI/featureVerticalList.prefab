@@ -186,6 +186,7 @@ MonoBehaviour:
   _hoverCooldown: 0.05
   _hoverWhenSelected: 1
   _deHoverOnEnable: 0
+  _deHoverOnRenable: 0
   _data:
   - Name: Handle
     _type: 0
@@ -488,21 +489,22 @@ MonoBehaviour:
   _hoverCooldown: 0.05
   _hoverWhenSelected: 1
   _deHoverOnEnable: 0
+  _deHoverOnRenable: 0
   _data:
   - Name: backing
     _type: 0
     _graphic: {fileID: 5211709421333171847}
-    _useMaterials: 0
+    _useMaterials: 1
     _colors:
-      _normal: {r: 1, g: 1, b: 1, a: 0}
-      _hovered: {r: 1, g: 1, b: 1, a: 0.101960786}
-      _selected: {r: 1, g: 1, b: 1, a: 0.101960786}
-      _disabled: {r: 1, g: 1, b: 1, a: 0}
+      _normal: {r: 1, g: 1, b: 1, a: 1}
+      _hovered: {r: 1, g: 1, b: 1, a: 1}
+      _selected: {r: 1, g: 1, b: 1, a: 1}
+      _disabled: {r: 1, g: 1, b: 1, a: 1}
     _materials:
-      _normal: {fileID: 0}
-      _hovered: {fileID: 0}
-      _selected: {fileID: 0}
-      _disabled: {fileID: 0}
+      _normal: {fileID: 2100000, guid: 0dc811b2e1d6b19469f65b84f46168a6, type: 2}
+      _hovered: {fileID: 2100000, guid: 620b040d46ff09f4aa687e851c615966, type: 2}
+      _selected: {fileID: 2100000, guid: 620b040d46ff09f4aa687e851c615966, type: 2}
+      _disabled: {fileID: 2100000, guid: 0dc811b2e1d6b19469f65b84f46168a6, type: 2}
     _gameObjectTarget: {fileID: 0}
     _activeStates:
       _normal: 0
@@ -522,7 +524,7 @@ MonoBehaviour:
       _selected: {fileID: 0}
       _disabled: {fileID: 0}
     _showGraphicSettings: 1
-    _showGraphicColorSettings: 1
+    _showGraphicColorSettings: 0
     _showGOSettings: 0
     _showGroupSettings: 0
     _showSpriteSettings: 0
@@ -659,7 +661,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000022888184, y: -9.7496}
+  m_AnchoredPosition: {x: -0.000015258789, y: -9.749603}
   m_SizeDelta: {x: 6.0446, y: 27.1086}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8350176277421433743
@@ -682,7 +684,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: 0dc811b2e1d6b19469f65b84f46168a6, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
