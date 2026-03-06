@@ -136,7 +136,7 @@ MeshCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -6012459535787910364, guid: 41f59a831ed11cf40a4f367b6156e6de, type: 3}
 --- !u!1 &6417639152515902170
@@ -206,7 +206,7 @@ GameObject:
   - component: {fileID: 7333481239650620065}
   - component: {fileID: 749431431408509465}
   - component: {fileID: 5152485991908856894}
-  - component: {fileID: 2688488118517191700}
+  - component: {fileID: 7532244248726360957}
   m_Layer: 7
   m_Name: X
   m_TagString: RotationControls
@@ -279,7 +279,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &2688488118517191700
+--- !u!64 &7532244248726360957
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -298,8 +298,8 @@ MeshCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
+  m_Convex: 1
+  m_CookingOptions: -1
   m_Mesh: {fileID: -6012459535787910364, guid: 41f59a831ed11cf40a4f367b6156e6de, type: 3}
 --- !u!1 &8695013678268565437
 GameObject:
@@ -317,7 +317,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5731607630776155024
 Transform:
   m_ObjectHideFlags: 0
@@ -351,11 +351,9 @@ MonoBehaviour:
   _xRing: {fileID: 7333481239650620065}
   _yRing: {fileID: 8794158767520626893}
   _zRing: {fileID: 1409054020844395627}
-  _alphaRange: {x: 0.15, y: 0.35, z: 0.75}
   _hoverLayers:
     serializedVersion: 2
     m_Bits: 128
-  _rotationSpeed: 0.75
 --- !u!1 &8788592317803177858
 GameObject:
   m_ObjectHideFlags: 0
@@ -459,7 +457,7 @@ MeshCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -6012459535787910364, guid: 41f59a831ed11cf40a4f367b6156e6de, type: 3}
 --- !u!1001 &7986630415894947971

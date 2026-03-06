@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -31,6 +32,7 @@ public class RotationControls : MonoBehaviour
         _uiController = FindObjectOfType<AddonsUIHelper>();
         _controller = GetComponentInParent<MovableAddon>();
         SetAllAlphas(_alphaRange.x);
+
     }
 
     private void Update()
@@ -42,7 +44,10 @@ public class RotationControls : MonoBehaviour
             return;
         }
 
+
+        Physics.queriesHitBackfaces = true;
         var didHover = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out var hoverInfo, 1000, _hoverLayers);
+        
         if (!didHover) return;
 
         _currentAxis = Axis.NONE;

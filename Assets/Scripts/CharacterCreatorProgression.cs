@@ -19,6 +19,8 @@ public class CharacterCreatorProgression : MonoBehaviour
     [SerializeField] private ExpressionButtonsController _expressionButtons;
     [SerializeField] private AnalyticsTracker _analyticsTracker;
 
+    [SerializeField] private ColorMenuController _faceColorMenu;
+
     private void Start()
     {
         HideAll(false);
@@ -31,11 +33,34 @@ public class CharacterCreatorProgression : MonoBehaviour
         StartNew();
 
         var allFeatures = Resources.LoadAll<FeatureSOData>("FacialFeatures").OrderByDescending(x => x.Priority).ToList();
-        var eyes = allFeatures.Where(x => x.SubType == FeatureSubType.EYES).ToList();
+        
+        var eyes = allFeatures.Where(x => x.SubType == FeatureSubType.EYES).GetRandom();
+        var eyebrows = allFeatures.Where(x => x.SubType == FeatureSubType.BROWS).GetRandom();
+        var nose = allFeatures.Where(x => x.SubType == FeatureSubType.NOSE).GetRandom();
+        var mouth = allFeatures.Where(x => x.SubType == FeatureSubType.LIPS).GetRandom();
 
         var face = FindObjectOfType<FaceFeatureController>();
         face.Reset();
-        face.AddFeature(eyes.GetRandom());
+
+        face.SetCategory(FeatureCategory.EYES);
+        face.AddFeature(eyes);
+        face.SetCurrentColor(eyes.DefaultSettings.Color);
+        _faceColorMenu.SetColor(eyes.DefaultSettings.Color);
+
+        face.SetCategory(FeatureCategory.EYEBROWS);
+        face.AddFeature(eyebrows);
+        face.SetCurrentColor(eyebrows.DefaultSettings.Color);
+        _faceColorMenu.SetColor(eyebrows.DefaultSettings.Color);
+
+        face.SetCategory(FeatureCategory.NOSE);
+        face.AddFeature(nose);
+        face.SetCurrentColor(nose.DefaultSettings.Color);
+        _faceColorMenu.SetColor(nose.DefaultSettings.Color);
+
+        face.SetCategory(FeatureCategory.MOUTH);
+        face.AddFeature(mouth);
+        face.SetCurrentColor(mouth.DefaultSettings.Color);
+        _faceColorMenu.SetColor(mouth.DefaultSettings.Color);
     }
 
     public async void StartNew()
