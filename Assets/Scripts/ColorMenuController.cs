@@ -136,6 +136,8 @@ public class ColorMenuController : MonoBehaviour
         }
         else {
             _advancedParent.transform.SetAsFirstSibling();
+
+            _advancedParent.gameObject.SetActive(false);
             _basicParent.gameObject.SetActive(true);
             if (gameObject.activeInHierarchy) _advancedParent.SetTrigger("Exit");
             else _advancedParent.gameObject.SetActive(false);
@@ -154,6 +156,7 @@ public class ColorMenuController : MonoBehaviour
 
     public void SetColor(Color color)
     {
+        print("setting color");
         if (!_initialized) Initialize();
 
         SetFromHexCode(color.ToHex());

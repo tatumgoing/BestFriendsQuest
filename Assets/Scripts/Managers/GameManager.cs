@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] MusicPlayer _music;
     public Transform Camera;
     [SerializeField] private GameObject _tutorial;
+    [SerializeField] private GameObject _editExistingButtonParent;
 
     [Header("saving")]
     [SerializeField] private CharacterMetaController _character;
@@ -30,6 +31,8 @@ public class GameManager : MonoBehaviour
     public bool Advanced => _mode == GameMode.ADVANCED;
     [HideInInspector] public UnityEvent OnModeChange;
     private List<ModeExlusiveItem> _modeExlusiveItems = new List<ModeExlusiveItem>();
+
+    private string UndoStateString; //WIP
 
     public bool DemoMode => _demoMode;
 
@@ -43,6 +46,7 @@ public class GameManager : MonoBehaviour
         UpdateMode();
 
         _tutorial.SetActive(_demoMode);
+        _editExistingButtonParent.SetActive(!_demoMode);
     }
 
     private void UpdateMode()
@@ -54,6 +58,20 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         if (InputController.GetDown(Control.PAUSE)) TogglePause();
+
+        //UNDO WIP
+        if (Input.GetMouseButtonUp(0)) SaveUndoState();
+        if (Input.GetKeyDown(KeyCode.Z) && Input.GetKey(KeyCode.LeftControl)) Undo();
+    }
+
+    private void SaveUndoState() //WIP
+    {
+
+    }
+
+    public void Undo() //WIP
+    {
+        print("I WANT TO UNDO");
     }
 
     public string SaveCurrent()
