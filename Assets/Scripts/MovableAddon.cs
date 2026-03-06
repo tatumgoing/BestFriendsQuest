@@ -19,6 +19,7 @@ public class MovableAddon : MonoBehaviour
     private Vector3 _loadedPos; 
 
     public Transform Mirror => _mirror.transform;
+    public void StoreLoadedPosition() => _loadedPos = transform.localPosition;
 
     private void Start()
     {
@@ -206,9 +207,11 @@ public class MovableAddon : MonoBehaviour
                 Vector3 localPos = transform.parent.InverseTransformPoint(hitInfo.point);
                 localPos.x = -localPos.x;
                 _mirror.transform.position = transform.parent.TransformPoint(localPos);
+                _mirror.StoreLoadedPosition();
             }
 
             _loadedPos = transform.localPosition;   
         }
     }
+
 }
