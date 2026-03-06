@@ -56,6 +56,13 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         if (InputController.GetDown(Control.PAUSE)) TogglePause();
+
+        if (Input.GetKeyDown(KeyCode.Z) && Input.GetKey(KeyCode.LeftControl)) Undo();
+    }
+
+    public void Undo()
+    {
+        print("I WANT TO UNDO");
     }
 
     public string SaveCurrent()
