@@ -94,6 +94,8 @@ public class CharacterCreatorProgression : MonoBehaviour
         _analyticsTracker.StartNew();
 
         _hairController.UpdateVisuals();
+
+        _skinColorMenu.SetColor(_skinColorMenu.GetDefaultColor());
     }
 
     public void FocusFace()

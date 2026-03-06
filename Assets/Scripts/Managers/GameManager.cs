@@ -49,6 +49,14 @@ public class GameManager : MonoBehaviour
         _editExistingButtonParent.SetActive(!_demoMode);
     }
 
+    [ButtonMethod]
+    public void DeleteAllCharacters()
+    {
+        var file = File.CreateText(CharactersSavePath);
+        file.Write("");
+        file.Close();
+    }
+
     private void UpdateMode()
     {
         _modeExlusiveItems.ForEach(item => item.UpdateMode(_mode));

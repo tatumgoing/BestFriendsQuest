@@ -1575,19 +1575,19 @@ MonoBehaviour:
     - DisplayName: BELLY
       Name: 12
       _minScale: {x: 0.8, y: 1, z: 0.8}
-      _maxScale: {x: 1.5, y: 1, z: 1.5}
+      _maxScale: {x: 1.05, y: 1, z: 1.05}
       IndependentScale: 1
       _sameXYZ: 0
     - DisplayName: CORE
       Name: 0
-      _minScale: {x: 0.5, y: 1, z: 0.5}
-      _maxScale: {x: 1.4, y: 1, z: 1.4}
+      _minScale: {x: 0.85, y: 1, z: 0.85}
+      _maxScale: {x: 1.3, y: 1, z: 1.3}
       IndependentScale: 1
       _sameXYZ: 0
     - DisplayName: UPPER_ARM
       Name: 3
       _minScale: {x: 0.9, y: 1, z: 0.9}
-      _maxScale: {x: 1.6, y: 1, z: 1.6}
+      _maxScale: {x: 1.85, y: 1, z: 1.85}
       IndependentScale: 1
       _sameXYZ: 0
     - DisplayName: FOREARM
@@ -1604,14 +1604,14 @@ MonoBehaviour:
       _sameXYZ: 0
     - DisplayName: THIGH
       Name: 8
-      _minScale: {x: 1, y: 1, z: 1}
-      _maxScale: {x: 1.6, y: 1, z: 1.6}
+      _minScale: {x: 0.85, y: 1, z: 0.85}
+      _maxScale: {x: 1.25, y: 1, z: 1.25}
       IndependentScale: 1
       _sameXYZ: 0
     - DisplayName: SHIN
       Name: 9
-      _minScale: {x: 1, y: 1, z: 1}
-      _maxScale: {x: 1.6, y: 1, z: 1.6}
+      _minScale: {x: 1.2, y: 1, z: 1.2}
+      _maxScale: {x: 1.5, y: 1, z: 1.5}
       IndependentScale: 1
       _sameXYZ: 0
     - DisplayName: HEEL
@@ -1626,27 +1626,33 @@ MonoBehaviour:
       _maxScale: {x: 1.2, y: 1.3, z: 1.2}
       IndependentScale: 0
       _sameXYZ: 0
+    - DisplayName: SHOULDER
+      Name: 2
+      _minScale: {x: 1.2, y: 1.2, z: 1.2}
+      _maxScale: {x: 1.1, y: 1.1, z: 1.1}
+      IndependentScale: 1
+      _sameXYZ: 0
   - Name: ARMS
     Type: 3
     Bones:
     - DisplayName: UPPER_ARM
       Name: 3
       _minScale: {x: 0.8, y: 1, z: 0.8}
-      _maxScale: {x: 1.2, y: 1, z: 1.2}
+      _maxScale: {x: 1.4, y: 1, z: 1.4}
       IndependentScale: 1
       _sameXYZ: 0
     - DisplayName: FOREARM
       Name: 4
       _minScale: {x: 0.8, y: 1, z: 0.8}
-      _maxScale: {x: 1.2, y: 1, z: 1.2}
+      _maxScale: {x: 1.45, y: 1, z: 1.45}
       IndependentScale: 1
       _sameXYZ: 0
     - DisplayName: SHOULDER
       Name: 2
-      _minScale: {x: 0.8, y: 0.9, z: 0.8}
-      _maxScale: {x: 1.2, y: 1.2, z: 1.2}
+      _minScale: {x: 0.8, y: 0.8, z: 0.8}
+      _maxScale: {x: 1.4, y: 1.4, z: 1.4}
       IndependentScale: 1
-      _sameXYZ: 0
+      _sameXYZ: 1
     - DisplayName: HAND
       Name: 5
       _minScale: {x: 0.95, y: 0.95, z: 0.95}
@@ -1658,13 +1664,13 @@ MonoBehaviour:
     Bones:
     - DisplayName: CHEST
       Name: 1
-      _minScale: {x: 0.6, y: 0.9, z: 0.6}
-      _maxScale: {x: 1.4, y: 1.1, z: 1.4}
+      _minScale: {x: 1, y: 1, z: 1}
+      _maxScale: {x: 1.5, y: 1.5, z: 1.5}
       IndependentScale: 1
-      _sameXYZ: 0
+      _sameXYZ: 1
     - DisplayName: BELLY
       Name: 12
-      _minScale: {x: 0.9, y: 0.9, z: 0.9}
+      _minScale: {x: 0.85, y: 0.85, z: 0.85}
       _maxScale: {x: 1.1, y: 1.1, z: 1.1}
       IndependentScale: 1
       _sameXYZ: 1
@@ -1679,8 +1685,26 @@ MonoBehaviour:
     Bones:
     - DisplayName: BELLY
       Name: 12
+      _minScale: {x: 0.7, y: 1, z: 0.7}
+      _maxScale: {x: 1.1, y: 1, z: 1.1}
+      IndependentScale: 1
+      _sameXYZ: 0
+    - DisplayName: THIGH
+      Name: 8
       _minScale: {x: 0.8, y: 1, z: 0.8}
-      _maxScale: {x: 1.2, y: 1, z: 1.2}
+      _maxScale: {x: 1.1, y: 1, z: 1.1}
+      IndependentScale: 1
+      _sameXYZ: 0
+    - DisplayName: CORE
+      Name: 0
+      _minScale: {x: 0.8, y: 1, z: 0.8}
+      _maxScale: {x: 1.1, y: 1, z: 1.1}
+      IndependentScale: 1
+      _sameXYZ: 0
+    - DisplayName: CHEST
+      Name: 1
+      _minScale: {x: 1.3, y: 1, z: 1.3}
+      _maxScale: {x: 0.9, y: 1, z: 0.9}
       IndependentScale: 1
       _sameXYZ: 0
   - Name: LEGS
@@ -1694,13 +1718,13 @@ MonoBehaviour:
       _sameXYZ: 0
     - DisplayName: THIGH
       Name: 8
-      _minScale: {x: 0.8, y: 1, z: 0.8}
+      _minScale: {x: 0.9, y: 1, z: 0.9}
       _maxScale: {x: 1.2, y: 1, z: 1.2}
       IndependentScale: 1
       _sameXYZ: 0
     - DisplayName: SHIN
       Name: 9
-      _minScale: {x: 0.9, y: 1, z: 0.9}
+      _minScale: {x: 0.95, y: 1, z: 0.95}
       _maxScale: {x: 1.1, y: 1, z: 1.1}
       IndependentScale: 1
       _sameXYZ: 0

@@ -56,6 +56,7 @@ public class ColorMenuController : MonoBehaviour
     private Color _currentColor => Color.HSVToRGB(_currentHue, _currentSat, _currentVal);
 
     public Color GetRandomBasicColor() => _basicColors[Random.Range(0, _basicColors.Count)].Color;
+    public Color GetDefaultColor() => _defaultColor;
 
     private void OnEnable()
     {
@@ -113,10 +114,7 @@ public class ColorMenuController : MonoBehaviour
         return _defaultColor;
     }
 
-    public Color GetDefaultColor()
-    {
-        return _basicColors[0].Color;
-    }
+    
 
     public void SelectBasicColor(Color color, BasicColorOption selected)
     {
