@@ -23,14 +23,17 @@ public class HairColorMenu : MonoBehaviour
 
     public void SetMatch(bool match)
     {
-        _hairController.Current.As<HairPiece>().SetMatch(match);
-        if (match) _controller.SetFromHexCode(_hairController.HairColor.ToHex());
         _matching = match;
+        _hairController.Current.As<HairPiece>().SetMatch(match);
+        if (match) {
+            _controller.SetFromHexCode(_hairController.HairColor.ToHex());
+            _hairController.Current.SetColor(_hairController.HairColor);
+        }
     }
 
     public void SetColor(Color color)
     {
-        if (_matching) _hairController.SetHairColor(color);
+        if (_hairController.Current.GetSettings().MatchColor) _hairController.SetHairColor(color);
         else _hairController.SetCurrentColor(color);
     }
 }

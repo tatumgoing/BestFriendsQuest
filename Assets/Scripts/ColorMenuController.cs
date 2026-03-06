@@ -128,19 +128,25 @@ public class ColorMenuController : MonoBehaviour
     {
         if (advanced) {
             _basicParent.transform.SetAsFirstSibling();
+
             _advancedParent.gameObject.SetActive(true);
-            if (gameObject.activeInHierarchy) _basicParent.SetTrigger("Exit");
+            _basicParent.gameObject.SetActive(false);
+
+            if (gameObject.activeSelf) _basicParent.SetTrigger("Exit");
             else _basicParent.gameObject.SetActive(false);
+
             _advancedToggleButton.Select(true, false);
             
         }
         else {
             _advancedParent.transform.SetAsFirstSibling();
 
-            _advancedParent.gameObject.SetActive(false);
             _basicParent.gameObject.SetActive(true);
-            if (gameObject.activeInHierarchy) _advancedParent.SetTrigger("Exit");
+            _advancedParent.gameObject.SetActive(false);
+
+            if (gameObject.activeSelf) _advancedParent.SetTrigger("Exit");
             else _advancedParent.gameObject.SetActive(false);
+
             SetFromHexCode(_basicColor.ToHex());
             _advancedToggleButton.Deselect(true, false);
         }
@@ -156,7 +162,7 @@ public class ColorMenuController : MonoBehaviour
 
     public void SetColor(Color color)
     {
-        print("setting color");
+        //print("setting color");
         if (!_initialized) Initialize();
 
         SetFromHexCode(color.ToHex());

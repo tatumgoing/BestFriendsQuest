@@ -100,7 +100,7 @@ public class HairController : MonoBehaviour, IFeatureController
 
     public void SetCurrentColor(Color newColor)
     {
-        print("setting current color: " + newColor.ToHex());
+        //print("setting current color: " + newColor.ToHex());
 
         if (Current.GetData().IsMainHair) SetHairColor(newColor);
         Current.SetColor(newColor);
@@ -108,6 +108,10 @@ public class HairController : MonoBehaviour, IFeatureController
 
     public void SetHairColor(Color newColor)
     {
+        if (string.Equals(HairColor.ToHex(), newColor.ToHex())) return;
+
+        //print("setting HAIR COLOR: " + newColor.ToHex() + ", previous: " + HairColor.ToHex());
+
         foreach (var h in _currentPieces) {
             if (h.GetSettings().MatchColor || h.GetData().IsMainHair) h.SetColor(newColor);
         }
