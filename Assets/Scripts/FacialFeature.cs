@@ -33,7 +33,19 @@ public class FacialFeature : FeatureObj
         _projector.material.SetTexture("Base_Map", Data.Texture);
 
         if (MirroredFeature && !MirroredFeature.gameObject.name.Contains("Mirror")) MirroredFeature.gameObject.name += " Mirror";
-    }    
+    }
+
+    [ButtonMethod]
+    public void SetOnTop()
+    {
+        _projector.material.SetInt("_DrawOrder", 1);
+    }
+
+    [ButtonMethod]
+    public void SetInBack()
+    {
+        _projector.material.SetInt("_DrawOrder", -1);
+    }
 
     public void SetScaleMode(bool inCharacterCreator)
     {
@@ -80,6 +92,11 @@ public class FacialFeature : FeatureObj
     {
         base.ConfigureFromString(inputString);
         Category = (FeatureCategory) int.Parse(inputString.Substring(20, 1));
+
+        if (Category == FeatureCategory.EXTRAS) {
+            if (Tier == FeatureTier.BASE) SetInBack();
+            else SetOnTop();
+        }
     }
 
     public override string ToString()

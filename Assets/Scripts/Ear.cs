@@ -17,7 +17,7 @@ public class Ear : FeatureObj
 
     public override void SetColor(Color color)
     {
-        base.SetColor(color);
+        base.SetColor(color);   
     }
 
     public override void SetAsMirroredVersion()
@@ -31,6 +31,8 @@ public class Ear : FeatureObj
 
     public void initilize()
     {
+        if (!Data) return;
+
         _model = Instantiate(Data.EarPrefab, transform);
 
         if (!IsMirroredVersion) UpdateMirror();

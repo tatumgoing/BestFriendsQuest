@@ -20,10 +20,10 @@ public class Layer : MonoBehaviour
     private void Start()
     {
         _controller = GetComponentInParent<LayersMenuController>();
-        if (_changeTierArrowParent) _changeTierArrowParent.SetActive(_controller.ShowingDetails());
+        //if (_changeTierArrowParent) _changeTierArrowParent.SetActive(_controller.ShowingDetails());
     }
 
-    public void Initialize(FeatureObj feature, FeatureTier tier)
+    public void Initialize(FeatureObj feature, FeatureTier tier, LayersMenuController controller)
     {
         _feature = feature;
         _preview.sprite = _feature.GetData().Icon;
@@ -34,6 +34,11 @@ public class Layer : MonoBehaviour
         }
 
         gameObject.name = feature.GetData().name + " Layer";
+
+        if (!controller.ShowingDetails()) {
+            if (_tier == FeatureTier.BASE) _feature.GetComponent<FacialFeature>().SetInBack();
+            else _feature.GetComponent<FacialFeature>().SetOnTop();
+        }
     }
 
     public void Select()
@@ -68,13 +73,16 @@ public class Layer : MonoBehaviour
 
         if (_tier == FeatureTier.DETAIL) {
             _tier = FeatureTier.BASE;
+
             _arrowButtonTransform.localScale = new Vector3(-1, 1, 1);
-            _arrowTooltip.UpdateText("Switch to Detail");
+            if (_controller.ShowingDetails()) _arrowTooltip.UpdateText("Switch to Detail");
+            else _feature.GetComponent<FacialFeature>().SetInBack();
         }
         else {
             _tier = FeatureTier.DETAIL;
             _arrowButtonTransform.localScale = Vector3.one;
-            _arrowTooltip.UpdateText("Switch to Base");
+            if (_controller.ShowingDetails()) _arrowTooltip.UpdateText("Switch to Base");
+            else _feature.GetComponent<FacialFeature>().SetOnTop();
         }
     }
 }

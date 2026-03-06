@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.NetworkInformation;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -18,11 +19,14 @@ public class LayersMenuController : MonoBehaviour
     [SerializeField] private GameObject _layerPrefab;
     [SerializeField] private Transform _baseLayerListParent;
     [SerializeField] private Transform _detailLayerListParent;
+    [SerializeField] private Transform _aboveLayerListParent;
     [SerializeField] private FaceMenu _faceMenu;
     [SerializeField] private ColorMenuController _colorMenu;
 
     [Header("Options")]
     [SerializeField] private GameObject _detailsParent;
+    [SerializeField] private TextMeshProUGUI _mainListHeader;
+    [SerializeField] private GameObject _topParent;
     [SerializeField] private bool _hairAddonLayers;
     [SerializeField] private bool _transitionToMoveAutomatically;
     [SerializeField, ConditionalField(nameof(_transitionToMoveAutomatically))] private SelectableItem _moveMenuButton;
@@ -63,6 +67,8 @@ public class LayersMenuController : MonoBehaviour
     public void SetShowDetails(bool showDetails = true)
     {
         _detailsParent.SetActive(showDetails);
+        _topParent.SetActive(!showDetails);
+        _mainListHeader.text = showDetails ? "Base" : "Below";
     }
 
     public void SetScale(float scale)
@@ -102,6 +108,7 @@ public class LayersMenuController : MonoBehaviour
         }
 
         var newParent = oldTier == FeatureTier.BASE ? _detailLayerListParent : _baseLayerListParent;
+        if (!ShowingDetails() && newParent == _detailLayerListParent) newParent = _aboveLayerListParent; 
         layer.transform.SetParent(newParent);
 
         if (newParent.transform.childCount > oldSiblingIndex) layer.transform.SetSiblingIndex(oldSiblingIndex);
@@ -241,10 +248,12 @@ public class LayersMenuController : MonoBehaviour
         if (_hairAddonLayers && feature.GetData().SubType != FeatureSubType.ADDONS) return;
 
         var parent = _currentTier == FeatureTier.BASE ? _baseLayerListParent : _detailLayerListParent;
+        if (!ShowingDetails() && parent == _detailLayerListParent) parent = _aboveLayerListParent;
+
         var newLayer = Instantiate(_layerPrefab, parent).GetComponent<Layer>();
 
         newLayer.transform.SetAsFirstSibling();
-        newLayer.Initialize(feature, _currentTier);
+        newLayer.Initialize(feature, _currentTier, this);
         _spawnedLayers.Add(newLayer);
         UpdateTabButtons();
     }

@@ -21,6 +21,8 @@ public abstract class FeatureObj : MonoBehaviour
 
     public virtual void ConfigureFromString(string inputString)
     {
+        if (Data == null) return;
+
         var numString = inputString.Substring(1);
 
         //print("total inputString = " + inputString + ", numString: " + numString);
