@@ -35,7 +35,7 @@ public class Layer : MonoBehaviour
 
         gameObject.name = feature.GetData().name + " Layer";
 
-        if (!controller.ShowingDetails()) {
+        if (!controller.ShowingDetails() && _feature && _feature.GetComponent<FacialFeature>()) {
             if (_tier == FeatureTier.BASE) _feature.GetComponent<FacialFeature>().SetInBack();
             else _feature.GetComponent<FacialFeature>().SetOnTop();
         }

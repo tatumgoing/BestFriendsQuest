@@ -37,6 +37,12 @@ public class FaceFeatureController : MonoBehaviour, IFeatureController
         if (_allFeatures.Count == 0) Initialize();
     }
 
+    public void Reset()
+    {
+        foreach (var feature in CurrentFeatures) if (feature) Destroy(feature.gameObject);
+        CurrentFeatures = new List<FacialFeature>();
+    }
+
     private void Initialize()
     {
         _allFeatures = Resources.LoadAll<FeatureSOData>("FacialFeatures").OrderByDescending(x => x.Priority).ToList();

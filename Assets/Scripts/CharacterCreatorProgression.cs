@@ -1,6 +1,7 @@
 using MyBox;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -23,7 +24,18 @@ public class CharacterCreatorProgression : MonoBehaviour
         HideAll(false);
         _characterController.gameObject.SetActive(false);
         _titleOptions.gameObject.SetActive(true);
+    }
 
+    public void Randomize()
+    {
+        StartNew();
+
+        var allFeatures = Resources.LoadAll<FeatureSOData>("FacialFeatures").OrderByDescending(x => x.Priority).ToList();
+        var eyes = allFeatures.Where(x => x.SubType == FeatureSubType.EYES).ToList();
+
+        var face = FindObjectOfType<FaceFeatureController>();
+        face.Reset();
+        face.AddFeature(eyes.GetRandom());
     }
 
     public async void StartNew()
