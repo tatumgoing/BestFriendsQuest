@@ -20,6 +20,7 @@ public class CharacterCreatorProgression : MonoBehaviour
     [SerializeField] private AnalyticsTracker _analyticsTracker;
 
     [SerializeField] private ColorMenuController _faceColorMenu;
+    [SerializeField] private ColorMenuController _skinColorMenu;
 
     private void Start()
     {
@@ -39,32 +40,48 @@ public class CharacterCreatorProgression : MonoBehaviour
         var nose = allFeatures.Where(x => x.SubType == FeatureSubType.NOSE).GetRandom();
         var mouth = allFeatures.Where(x => x.SubType == FeatureSubType.LIPS).GetRandom();
 
+        var skinColor = _skinColorMenu.GetRandomBasicColor();
+        _skinColorMenu.SetColor(skinColor);
+
+        var hairColor = Random.ColorHSV(0, 1, 0.6f, 1, 0.1f, 0.75f);
+
         var face = FindObjectOfType<FaceFeatureController>();
         face.Reset();
 
         face.SetCategory(FeatureCategory.EYES);
-        face.AddFeature(eyes);
-        _faceColorMenu.SetColor(eyes.DefaultSettings.Color);
-        face.SetCurrentColor(eyes.DefaultSettings.Color);
-        print("eye default color: " + eyes.DefaultSettings.Color.ToHex());
+        //print("eye default color: " + eyes.DefaultSettings.Color.ToHex());
+        var eyeObj = face.AddFeature(eyes);
+        face.Select(eyeObj);
+        var eyeColor = Random.ColorHSV(0, 1, 0.6f, 1, 0.2f, 1f);
+        _faceColorMenu.SetColor(eyeColor);
+        face.SetCurrentColor(eyeColor);
 
         face.SetCategory(FeatureCategory.EYEBROWS);
-        face.AddFeature(eyebrows);
-        _faceColorMenu.SetColor(eyebrows.DefaultSettings.Color);
-        face.SetCurrentColor(eyebrows.DefaultSettings.Color);
-        print("eyebrows default color: " + eyebrows.DefaultSettings.Color.ToHex());
+        //print("eyebrows default color: " + eyebrows.DefaultSettings.Color.ToHex());
+        var eyeBrowsObj = face.AddFeature(eyebrows);
+        face.Select(eyeBrowsObj);
+        _faceColorMenu.SetColor(hairColor);
+        face.SetCurrentColor(hairColor);
 
         face.SetCategory(FeatureCategory.NOSE);
-        face.AddFeature(nose);
-        _faceColorMenu.SetColor(nose.DefaultSettings.Color);
-        face.SetCurrentColor(nose.DefaultSettings.Color);
-        print("nose default color: " + nose.DefaultSettings.Color.ToHex());
+        //print("nose default color: " + nose.DefaultSettings.Color.ToHex());
+        var noseObj = face.AddFeature(nose);
+        face.Select(noseObj);
+        _faceColorMenu.SetColor(skinColor);
+        face.SetCurrentColor(skinColor);
 
         face.SetCategory(FeatureCategory.MOUTH);
-        face.AddFeature(mouth);
-        _faceColorMenu.SetColor(mouth.DefaultSettings.Color);
-        face.SetCurrentColor(mouth.DefaultSettings.Color);
-        print("mouth default color: " + mouth.DefaultSettings.Color.ToHex());
+        //print("mouth default color: " + mouth.DefaultSettings.Color.ToHex());
+        var mouthObj = face.AddFeature(mouth);
+        face.Select(mouthObj);
+        var mouthColor = Utils.DarkerMoreSaturatedMoreRed(skinColor);
+        _faceColorMenu.SetColor(mouthColor);
+        face.SetCurrentColor(mouthColor);
+
+        var allHairs = Resources.LoadAll<FeatureSOData>("HairFeatures").OrderByDescending(x => x.Priority).Where(x => x.IsMainHair).ToList();
+        FindObjectOfType<HairController>().AddFeature(allHairs.GetRandom());
+        FindObjectOfType<HairController>().SetHairColor(hairColor);
+
     }
 
     public async void StartNew()

@@ -109,7 +109,7 @@ public class FaceFeatureController : MonoBehaviour, IFeatureController
 
     public void SetCurrentColor(Color color)
     {
-        print("current: " + Current.name + " set to color: " + color.ToHex());
+        //print("current: " + Current.name + " set to color: " + color.ToHex());
         Current.SetColor(color);
     }
 

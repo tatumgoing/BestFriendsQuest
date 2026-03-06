@@ -26,6 +26,21 @@ public static class Utils
         return rDiff + gDiff + bDiff;
     }
 
+    public static Color DarkerMoreSaturatedMoreRed(Color c, float redShift = 0.15f, float saturationBoost = 0.2f, float valueMultiplier = 0.7f)
+    {
+        Color.RGBToHSV(c, out float h, out float s, out float v);
+
+        // Move hue toward red (0 or 1 — whichever is closer)
+        float targetRed = (h > 0.5f) ? 1f : 0f;
+        h = Mathf.Lerp(h, targetRed, redShift);
+
+        // Increase saturation and darken
+        s = Mathf.Clamp01(s + saturationBoost);
+        v = Mathf.Clamp01(v * valueMultiplier);
+
+        return Color.HSVToRGB(h, s, v);
+    }
+
     public static Color HexToColor(string hex)
     {
         if (hex.StartsWith("#")) hex = hex.Substring(1);

@@ -55,6 +55,7 @@ public class ColorMenuController : MonoBehaviour
     private float _currentVal { get { return _val; } set { _val = Mathf.Abs(value); } }
     private Color _currentColor => Color.HSVToRGB(_currentHue, _currentSat, _currentVal);
 
+    public Color GetRandomBasicColor() => _basicColors[Random.Range(0, _basicColors.Count)].Color;
 
     private void OnEnable()
     {

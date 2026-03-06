@@ -103,7 +103,7 @@ public abstract class FeatureObj : MonoBehaviour
 
     public virtual void SetColor(Color color)
     {
-        print(gameObject.name + " feature set color: " + color.ToHex());
+        //print(gameObject.name + " feature set color: " + color.ToHex());
         color.a = 1;
         Settings.Color = color;
         UpdateDisplay();
