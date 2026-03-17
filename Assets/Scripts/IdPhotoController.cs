@@ -9,8 +9,14 @@ public class IdPhotoController : MonoBehaviour
     [SerializeField] private Image _photoImg;
     [SerializeField] private TextMeshProUGUI _nameText;
     [SerializeField] private TextMeshProUGUI _birthdayText;
+    [SerializeField] private TextMeshProUGUI _exitButtonText;
 
     [SerializeField] private CharacterMetaController _character;
+
+    private void OnEnable()
+    {
+        if (GameManager.i && GameManager.i.ResearchMode) _exitButtonText.text = "Exit";
+    }
 
     public void ShowPicture(CompleteCharacterData character)
     {

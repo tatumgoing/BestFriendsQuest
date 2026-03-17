@@ -10,6 +10,8 @@ public class ParkController : MonoBehaviour
     [SerializeField] private List<CharacterSpawnLocation> _spawnSpots = new List<CharacterSpawnLocation>();
     private List<SpawnedCharacter> _spawnedCharacters = new List<SpawnedCharacter>();
 
+    private void OnDisable() => ClearAllCharacters();
+
     /// <summary>
     /// rn TownGameManager just enables this object, so 'initialization' code is called from OnEnable
     /// </summary>
@@ -22,37 +24,63 @@ public class ParkController : MonoBehaviour
     /// On startup, delete any existing spawned characters and spawn new ones.
     /// spawn as many characters as there are spawn spots (or as many as there are characters if fewer)
     /// </summary>
-    private async void Initialize()
+    private void Initialize()
+    {
+        ClearAllCharacters();
+        SpawnAllCharacters();
+    }
+
+    /// <summary>
+    /// Deletes all spawned characters and resets the list.
+    /// </summary>
+    private void ClearAllCharacters()
     {
         foreach (var s in _spawnedCharacters) Destroy(s.gameObject);
         _spawnedCharacters.Clear();
+    }
 
-        var IDs = CharacterManager.i.allCharacters.Select(x => x.ID).ToList();//.Shuffle();
+    /// <summary>
+    /// Spawns the most recent x number of characters, where x is the number of spawn spots. 
+    /// (if there are more spawn spots than characters, spawns all characters and leaves some spawn spots empty)
+    /// </summary>
+    private void SpawnAllCharacters()
+    {
+        var IDs = SelectCharactersToSpawn();
+
+        _spawnSpots.Shuffle();
+        for (int i = 0; i < Mathf.Min(IDs.Count, _spawnSpots.Count); i++) {
+            SpawnCharacter(IDs[i], _spawnSpots[i]);
+        }
+    }
+
+    /// <summary>
+    /// Spawns 1 character and sets its animation. enables and  disables the spawned character quickly to force update the rig.
+    /// </summary>
+    private async void SpawnCharacter(ID id, CharacterSpawnLocation spawnPoint)
+    {
+        var newCharacter = CharacterManager.i.SpawnCharacter(id, spawnPoint.transform);
+        
+        //newCharacter.gameObject.SetActive(false);
+        //await System.Threading.Tasks.Task.Delay(100);
+        //newCharacter.gameObject.SetActive(true);
+        
+        spawnPoint.SetCharacter(newCharacter);
+
+        _spawnedCharacters.Add(newCharacter);
+    }
+
+    /// <summary>
+    /// Selects which characters should spawn (currently just selects the most recent x number of characters, 
+    /// where x is the number of spawn spots. if there are more spawn spots than characters, 
+    /// selects all characters and leaves some spawn spots empty)
+    /// </summary>
+    private List<ID> SelectCharactersToSpawn()
+    {
+        var IDs = CharacterManager.i.allCharacters.Select(x => x.ID).ToList();
         IDs.Reverse();
-        //print("IDs: " + string.Join(", ", IDs));
 
         IDs = IDs.Take(_spawnSpots.Count).ToList();
-        _spawnSpots.Shuffle();
-
-        for (int i = 0; i < IDs.Count; i++) {
-            if (i >= _spawnSpots.Count) break;
-            var newCharacter = CharacterManager.i.SpawnCharacter(IDs[i], _spawnSpots[i].transform);
-            _spawnSpots[i].SetCharacter(newCharacter);
-            _spawnedCharacters.Add(newCharacter);
-        }
-
-        foreach (var c in _spawnedCharacters) c.gameObject.SetActive(false);
-        await System.Threading.Tasks.Task.Delay(100);
-
-        for (int i = 0; i < _spawnedCharacters.Count; i++) {
-            _spawnedCharacters[i].gameObject.SetActive(true);
-            _spawnSpots[i].SetCharacter(_spawnedCharacters[i]);
-        }
+        return IDs;
     }
 
-    private void OnDisable()
-    {
-        foreach (var s in _spawnedCharacters) if (s) Destroy(s.gameObject);
-        _spawnedCharacters.Clear();
-    }
 }

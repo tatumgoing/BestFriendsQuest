@@ -126,6 +126,16 @@ public class CharacterCreatorProgression : MonoBehaviour
         _analyticsTracker.FinishCharacter(saveString);
 
         UIManager.i.Fade.Appear();
+        await Task.Delay(Mathf.RoundToInt(UIManager.i.Fade.FadeTime * 1000));
+
+        if (GameManager.i.ResearchMode) {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+            Application.Quit();
+#endif
+            return;
+        }
 
         var fadeTime = Mathf.RoundToInt(UIManager.i.Fade.FadeTime * 1000);
         await Task.Delay(fadeTime);

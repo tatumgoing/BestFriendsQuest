@@ -54,6 +54,12 @@ public class BoneSliderData
         _minScale.z = _minScale.x;
         _maxScale.z = _maxScale.x;
     }
+
+    public void ForceSymetry()
+    {
+        _minScale.y = _minScale.z = _minScale.x;
+        _maxScale.y = _maxScale.z = _maxScale.x;
+    }
 }
 
 public class BodyCustomizer : MonoBehaviour

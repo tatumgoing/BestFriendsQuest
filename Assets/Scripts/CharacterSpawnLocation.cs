@@ -7,10 +7,10 @@ public enum CharacterAnimations { Grilling, Standing, Sitting, SittingGround, Wa
 public class CharacterSpawnLocation : MonoBehaviour
 {
     
-    [SerializeField] CharacterAnimations animations;
-    [SerializeField] bool isMoving;
+    [SerializeField] private CharacterAnimations animations;
+    [SerializeField] private bool isMoving;
 
-    [SerializeField] SpawnedCharacter spawnedCharacter;
+    [SerializeField] private SpawnedCharacter spawnedCharacter;
 
     public void Update()
     {
@@ -19,27 +19,28 @@ public class CharacterSpawnLocation : MonoBehaviour
             if (spawnedCharacter != null)
             {
                 spawnedCharacter.gameObject.transform.position = gameObject.transform.position;
-                //spawnedCharacter.gameObject.transform.localRotation = gameObject.transform.localRotation;
                 spawnedCharacter.gameObject.transform.localEulerAngles = new Vector3(gameObject.transform.localEulerAngles.x, gameObject.transform.localEulerAngles.y - 180, gameObject.transform.localEulerAngles.z);
             }
 
         }
     }
+
+    /// <summary>
+    /// Configure a newly spawned characted (animations) based on this spot's information
+    /// </summary>
     public void SetCharacter(SpawnedCharacter newChara)
     {
-        // assign and place character
         spawnedCharacter = newChara;
-        AnimateCharacter();
-
-       
+        AnimateCharacter();       
     }
 
 
+    /// <summary>
+    /// Picks the right animation for the character based on this spot's information, and also rotates the character to face the right direction (since some animations are directional)
+    /// </summary>
     void AnimateCharacter()
     {
         spawnedCharacter.gameObject.transform.localEulerAngles = new Vector3(gameObject.transform.localEulerAngles.x, gameObject.transform.localEulerAngles.y - 180, gameObject.transform.localEulerAngles.z);
         spawnedCharacter.AnimateFromEnum(animations);
     }
-
-
 }
