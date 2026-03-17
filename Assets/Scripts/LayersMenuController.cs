@@ -248,7 +248,7 @@ public class LayersMenuController : MonoBehaviour
         if (_hairAddonLayers && feature.GetData().SubType != FeatureSubType.ADDONS) return;
 
         var parent = _currentTier == FeatureTier.BASE ? _baseLayerListParent : _detailLayerListParent;
-        if (!ShowingDetails() && parent == _detailLayerListParent) parent = _aboveLayerListParent;
+        if (!ShowingDetails() && parent == _detailLayerListParent && _currentSubType == (FeatureSubType) 4) parent = _aboveLayerListParent;
 
         var newLayer = Instantiate(_layerPrefab, parent).GetComponent<Layer>();
 
