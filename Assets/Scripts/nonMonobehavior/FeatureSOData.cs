@@ -23,9 +23,7 @@ public class FeatureSOData : ScriptableObject
 
     [ConditionalField(nameof(Type), false, FeatureType.HAIR)] public GameObject MainhairPrefab;
 
-    [ConditionalField(nameof(Type), true, FeatureType.HAIR), SerializeField] private float _horiLimit;
     [ConditionalField(nameof(Type), false, FeatureType.EAR), SerializeField] private float _earOffset;
-    [ConditionalField(nameof(Type), true, FeatureType.HAIR), SerializeField] private Vector2 _vertLimits;
 
     [ConditionalField(nameof(Type), false, FeatureType.HAIR)] public bool IsMainHair;
     [ConditionalField(nameof(Type), false, FeatureType.HAIR)] public Vector3 MainHairLocalPosition;
@@ -36,6 +34,10 @@ public class FeatureSOData : ScriptableObject
     [ConditionalField(nameof(Type), false, FeatureType.EAR)] public Vector2 AngleLimits;
 
     public Vector2 SizeLimits;
+
+    [Header("Advanced")]
+    [ConditionalField(nameof(Type), true, FeatureType.HAIR), SerializeField] private float _horiLimit;
+    [ConditionalField(nameof(Type), true, FeatureType.HAIR), SerializeField] private Vector2 _vertLimits;
 
     [Header("Simple Mode")]
     [ConditionalField(nameof(Type), true, FeatureType.HAIR), SerializeField] private float _simpleHoriLimit;
@@ -51,7 +53,7 @@ public class FeatureSOData : ScriptableObject
     {
         var horiLimits = GameManager.i == null ? _horiLimit : (GameManager.i.Advanced ? _horiLimit : _simpleHoriLimit);
 
-        if (Type == FeatureType.EAR) return  new Vector2(_earOffset - _horiLimit, _earOffset+ _horiLimit);
-        else return new Vector2(-_horiLimit, _horiLimit);
+        if (Type == FeatureType.EAR) return  new Vector2(_earOffset - horiLimits, _earOffset + horiLimits);
+        else return new Vector2(-horiLimits, horiLimits);
     }
 }
