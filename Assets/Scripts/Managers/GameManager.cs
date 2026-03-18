@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private bool _researchMode;
     [SerializeField] private bool _demoMode;
+    [SerializeField] private bool _sendData = true;
     [SerializeField] private GameMode _mode;
     [SerializeField] GameObject _pauseMenu;
     [SerializeField] Fade _fade;
@@ -37,6 +38,7 @@ public class GameManager : MonoBehaviour
 
     public bool DemoMode => _demoMode;
     public bool ResearchMode => _researchMode;
+    public bool SendData => _sendData;
 
     public string CharactersSavePath => System.IO.Path.Combine(Application.streamingAssetsPath, _saveFileName);
 
