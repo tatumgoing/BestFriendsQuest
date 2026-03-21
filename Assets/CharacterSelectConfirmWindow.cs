@@ -30,7 +30,7 @@ public class CharacterSelectConfirmWindow : MonoBehaviour
     /// </summary>
     public void Confirm()
     {
-        _controller.StartMinigame(_id);
+        _controller.SelectCharacter(_id);
         Hide();
     }
 

@@ -55,8 +55,6 @@ public class MinigameManager : MonoBehaviour
         i = this;
 
         gameManager = TownGameManager.i;
-
-        GenerateRecipeSelect();
     }
 
     public void StartProblemMinigame(CompleteCharacterData problemCharacter)
@@ -66,24 +64,6 @@ public class MinigameManager : MonoBehaviour
         characterSelectionMenu.selectedCharacter = problemCharacter;
 
         NextMinigameScene();
-
-    }
-    public void GenerateRecipeSelect()
-    {
-        foreach (Transform child in recipeGrid.transform)
-        {
-            Destroy(child.gameObject);
-        }
-
-        foreach (RecipeData recipe in allRecipes)
-        {
-            //make their icons dawg
-            GameObject newIcon = Instantiate(recipeButtonPrefab, recipeGrid.transform);
-            newIcon.GetComponent<Button>().onClick.AddListener(() => SelectRecipe(recipe));
-            newIcon.GetComponentInChildren<Image>().sprite = recipe.Icon;
-            newIcon.GetComponentInChildren<TMP_Text>().text = recipe.Name;
-        }
-
 
     }
 
@@ -124,7 +104,6 @@ public class MinigameManager : MonoBehaviour
             completionText = gameScenes[currentScene].GetComponentInChildren<CompletionText>();
             completionText.gameObject.SetActive(false);
         }
-        
     }
 
     public void ToggleConfirmWindow()

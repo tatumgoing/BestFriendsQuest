@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class CharacterManager : MonoBehaviour
@@ -54,18 +55,28 @@ public class CharacterManager : MonoBehaviour
         return name;
     }
 
-    public SpawnedCharacter SpawnCharacter(ID id, Transform spawnSpot) => SpawnCharacter(id, spawnSpot.position, spawnSpot.lossyScale);
-    private SpawnedCharacter SpawnCharacter(ID id, Vector3 position, Vector3 scale)
+    public SpawnedCharacter SpawnCharacter(ID id, Transform spawnSpot) => SpawnCharacter(id, spawnSpot.position, spawnSpot.lossyScale, spawnSpot.eulerAngles);
+    private SpawnedCharacter SpawnCharacter(ID id, Vector3 position, Vector3 scale, Vector3 rot)
     {
         var characterData = allCharacters.Find(c => c.ID == id);
         if (characterData == null) return null;
         
-        var spawnedCharacter = Instantiate(_characterControllerPrefab, position, Quaternion.identity).GetComponent<SpawnedCharacter>();
-        spawnedCharacter.transform.localScale = scale;
-        
+        var spawnedCharacter = Instantiate(_characterControllerPrefab, position, Quaternion.Euler(rot)).GetComponent<SpawnedCharacter>();
         spawnedCharacter.LoadFromString(SaveSystem.GetStaticSaveString(id));
 
+        spawnedCharacter.transform.localScale = scale;
+
+        //FIX FOR SCALING BUG, FOR NOW
+        ToggleCharacter(spawnedCharacter.gameObject);
+
         return spawnedCharacter;
+    }
+
+    private async void ToggleCharacter(GameObject character)
+    {
+        character.SetActive(false);
+        await Task.Delay(100);
+        character.SetActive(true);
     }
 
     public void AssignProblem(ID id, Problem problem)

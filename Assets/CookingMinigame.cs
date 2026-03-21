@@ -2,37 +2,49 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MinigameController : MonoBehaviour
-{
-    public virtual void StartMinigame(ID id) { }
-}
-
 public class CookingMinigame : MinigameController
 {
     [SerializeField] private GameObject _characterSelectScreen;
+    [SerializeField] private RecipeSelector _recipeSelector;
+    [SerializeField] private RestrauntController _areaController;
+
+    //TESTING
+    [SerializeField] private List<RecipeData> _recipes;
+
+    private ID selectedCharacter = new ID(0);
 
     private void OnEnable()
     {
-        OpenCharacterSelect();
+        _recipeSelector.gameObject.SetActive(false);
+
+        if (CharacterManager.i) OpenCharacterSelect();
     }
 
     private void OpenCharacterSelect()
     {
-        print("Starting cooking!");
         _characterSelectScreen.SetActive(true);
     }
 
     /// <summary>
     /// Called from the confirm window of the character selection menu
     /// </summary>
-    public override void StartMinigame(ID id)
+    public override void SelectCharacter(ID id)
     {
-        base.StartMinigame(id);
-        StartCooking(id);
+        base.SelectCharacter(id);
+
+        selectedCharacter = id;
+        _characterSelectScreen.SetActive(false);
+        ShowRecipeOptions();
     }
 
-    public void StartCooking(ID id)
+    public void ShowRecipeOptions()
     {
-        MinigameManager.i.NextMinigameScene();
+        _recipeSelector.ShowRecipes(_recipes);
+    }
+
+    public void StartCooking(RecipeData recipe)
+    {
+        _areaController.SpawnCharacter(selectedCharacter);
+        //MinigameManager.i.NextMinigameScene();
     }
 }

@@ -140,12 +140,12 @@ public class CharacterMetaController : MonoBehaviour
     public void LoadFromString(string input)
     {
         //TESTING UNIFORM SCALING TO FIX BUG::::
-        _inputString = input;
-        foreach (var group in _rigGroups) {
-            foreach (var bone in group.Bones) {
-                bone.ForceSymetry();
-            }
-        }
+        //_inputString = input;
+        //foreach (var group in _rigGroups) {
+        //    foreach (var bone in group.Bones) {
+        //        bone.ForceSymetry();
+        //    }
+        //}
 
         input = input.Replace("\n", "");
 
