@@ -27,10 +27,10 @@ public class MinigameManager : MonoBehaviour
     private bool confirmWindowVisible = false;
 
     [Header("Recipes")]
-    public List<Recipe> allRecipes = new List<Recipe>();
+    public List<RecipeData> allRecipes = new List<RecipeData>();
     public GameObject recipeGrid;
     public GameObject recipeButtonPrefab;
-    public Recipe selectedRecipe;
+    public RecipeData selectedRecipe;
 
     [Header("Cooking Minigame")]
     public GameObject tempIcon;
@@ -75,7 +75,7 @@ public class MinigameManager : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        foreach (Recipe recipe in allRecipes)
+        foreach (RecipeData recipe in allRecipes)
         {
             //make their icons dawg
             GameObject newIcon = Instantiate(recipeButtonPrefab, recipeGrid.transform);
@@ -87,7 +87,7 @@ public class MinigameManager : MonoBehaviour
 
     }
 
-    private void SelectRecipe(Recipe recipe)
+    private void SelectRecipe(RecipeData recipe)
     {
         selectedRecipe = recipe;
 

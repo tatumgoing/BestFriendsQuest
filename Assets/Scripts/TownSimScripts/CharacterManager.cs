@@ -30,10 +30,28 @@ public class CharacterManager : MonoBehaviour
         return allCharacters.Find(x =>  x.ID == id);
     }
 
-    public Sprite GetIcon(ID id)
+    public Sprite GetPortrait(ID id)
     {
         var characterData = allCharacters.Find(c => c.ID == id);
         return characterData != null ? characterData.Icon : null;
+    }
+
+    public string GetName(ID id)
+    {
+        var characterData = allCharacters.Find(c => c.ID == id);
+        return characterData != null ? characterData.Name : "";
+    }
+
+    public string GetNameFormatted(ID id)
+    {
+        var name = GetName(id);
+        for (int i = 0; i < name.Length; i++) {
+            if (i == 0 || name[i - 1] == ' ') {
+                name = name.Substring(0, i) + char.ToUpper(name[i]) + name.Substring(i + 1);
+            }
+        }
+
+        return name;
     }
 
     public SpawnedCharacter SpawnCharacter(ID id, Transform spawnSpot) => SpawnCharacter(id, spawnSpot.position, spawnSpot.lossyScale);
