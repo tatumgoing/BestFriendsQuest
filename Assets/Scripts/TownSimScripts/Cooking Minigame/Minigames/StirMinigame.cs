@@ -31,7 +31,7 @@ public class StirMinigame : MonoBehaviour
     [Header("Audio")]
     [SerializeField] private Sound stirringSFX;
 
-    void Start()
+    public void StartStirring()
     {
         stirringSFX = Instantiate(stirringSFX);
         stirringSFX.Play();
@@ -46,8 +46,9 @@ public class StirMinigame : MonoBehaviour
 
         tempIcon.GetComponent<Image>().sprite = manager.characterSelectionMenu.selectedCharacter.Icon;
 
-
+        gameObject.SetActive(true);
     }
+
     void Update()
     {
         CheckTargets();

@@ -15,6 +15,7 @@ public class RecipeSelector : MonoBehaviour
 
     public void ShowRecipes(List<RecipeData> selectedRecipes)
     {
+        _startButton.SetActive(false);
         BuildRecipeList(selectedRecipes);
         gameObject.SetActive(true);
     }
