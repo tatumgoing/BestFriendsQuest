@@ -27,20 +27,20 @@ public class MinigameResultsScreen : MonoBehaviour
     [Space()]
     [SerializeField] private MinigameNarrativeResults _narrative;
 
-
     public async Task ShowScore(float finalScore, RecipeData recipe, ID character, ID recipient)
     {
+        gameObject.SetActive(true);
+
         foreach (Transform child in _listParent) child.gameObject.SetActive(false);
 
         ColorStars(finalScore);
 
         ShowHappiness(finalScore, character);
 
-        _cashRewardText.text = Mathf.CeilToInt(finalScore * recipe.MoneyReward + 1).ToString();
+        _cashRewardText.text = Mathf.CeilToInt(finalScore * recipe.MoneyReward).ToString();
 
         _narrative.Show(character, recipient, recipe, finalScore);
 
-        gameObject.SetActive(true);
         foreach (Transform child in _listParent) {
             child.gameObject.SetActive(true);
             await Task.Delay(Mathf.RoundToInt(_delay * 1000));

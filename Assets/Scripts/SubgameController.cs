@@ -76,7 +76,7 @@ public class SubgameController : MonoBehaviour
 
         var score = _targetSliderPos;
         _totalScore += score/_currentRecipe.Subgames.Count;
-        print("Completed subgame. score: " +  score + ", totalScore: " + _totalScore);
+        //print("Completed subgame. score: " +  score + ", totalScore: " + _totalScore);
 
         _subgameIndex++;
         _completionText.Show(score);
@@ -110,7 +110,7 @@ public class SubgameController : MonoBehaviour
     /// </summary>
     public void StartCurrentSubgame()
     {
-        print("trying to start next selected subgame");
+        //print("trying to start next selected subgame");
         if (_subgameIndex >= _currentRecipe.Subgames.Count) {
             _currentSubgame = null;
             ShowResults();
@@ -136,7 +136,7 @@ public class SubgameController : MonoBehaviour
 
     private void ShowResults()
     {
-        print("Showing results");
+        //print("Showing results");
         _timerParent.SetActive(false);
         _results.ShowScore(_totalScore, _currentRecipe, _character, _recipient);
     }

@@ -29,7 +29,7 @@ public class MinigameNarrativeResults : MonoBehaviour
         _recipientPortrait.sprite = CharacterManager.i.GetPortrait(recipient);
 
         var bottomTextOptions = gift ? _giftBottomTextOptions : _soloBottomTextOptions;
-        var stringIndex = Mathf.FloorToInt(score * bottomTextOptions.Count - 1);
+        var stringIndex = Mathf.FloorToInt(score * (bottomTextOptions.Count - 1));
         if (score > 0.99f) _bottomText.text = bottomTextOptions[^1];
         else _bottomText.text = bottomTextOptions[stringIndex];
 
@@ -40,7 +40,8 @@ public class MinigameNarrativeResults : MonoBehaviour
         var topTextString = (gift ? _giftTopTextTemplate : _soloTopTextTemplate).
             Replace("NAME", CharacterManager.i.GetNameFormatted(primary)).
             Replace("DISH", dish.Name).
-            Replace("RECIPIENT", CharacterManager.i.GetNameFormatted(recipient));
+            Replace("RECIPIENT", CharacterManager.i.GetNameFormatted(recipient)).
+            Replace("PRONOUN", CharacterManager.i.GetPronounOwnership(primary));
 
         _topText.text = topTextString;
     }

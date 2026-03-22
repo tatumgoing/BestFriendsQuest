@@ -9,6 +9,11 @@ public class Test : MonoBehaviour
 {
     private void OnEnable()
     {
-        print("ENABLED");
+        print(gameObject.name + "ENABLED");
+    }
+
+    private void OnDisable()
+    {
+        print(gameObject.name + "Disabled");
     }
 }

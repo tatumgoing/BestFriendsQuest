@@ -46,7 +46,11 @@ public class CharacterManager : MonoBehaviour
     private Pronoun GetPronounInternal(ID id)
     {
         var characterData = allCharacters.Find(c => c.ID == id);
-        return characterData.Pronouns;
+        var pronoun = characterData.Pronouns;
+        if (pronoun == Pronoun.SHE) pronoun = Pronoun.THEY;
+        else if (pronoun == Pronoun.THEY) pronoun = Pronoun.SHE;
+
+        return pronoun;
     }
 
     public string GetPronoun(ID id)
@@ -60,9 +64,9 @@ public class CharacterManager : MonoBehaviour
     {
         var pronoun = GetPronounInternal(id);
         switch (pronoun) {
-            case Pronoun.HE: return "Himself";
-            case Pronoun.SHE: return "Herself";
-            default: return "Themself";
+            case Pronoun.HE: return "himself";
+            case Pronoun.SHE: return "herself";
+            default: return "themself";
         }
     }
 
