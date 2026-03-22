@@ -50,6 +50,11 @@ public class CookingMinigame : MinigameController
         }
     }
 
+    public void ReturnToMap()
+    {
+        TownGameManager.i.GoToMap();
+    }
+
     public void ResetKitchen()
     {
         _subgameController.gameObject.SetActive(false);
