@@ -67,23 +67,6 @@ public class MinigameManager : MonoBehaviour
 
     }
 
-    private void SelectRecipe(RecipeData recipe)
-    {
-        selectedRecipe = recipe;
-
-        foreach (GameObject minigame in recipe.Minigames) {
-
-            var newMinigame = Instantiate(minigame, minigameUIContainer.transform);
-            newMinigame.SetActive(false);
-            gameScenes.Add(newMinigame);
-
-        }
-
-        gameScenes.Add(endScreen);
-
-        NextMinigameScene();
-    }
-
     public void NextMinigameScene()
     {
         gameScenes[currentScene].gameObject.SetActive(false);
@@ -137,8 +120,6 @@ public class MinigameManager : MonoBehaviour
 
     IEnumerator StartNextMinigameDelay()
     {
-        completionText.PlayCompletionSFX();
-
         yield return new WaitForSeconds(3);
 
         NextMinigameScene();
