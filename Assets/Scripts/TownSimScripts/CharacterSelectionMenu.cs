@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.TextCore.Text;
+using UnityEngine.Events;
+using MyBox;
 
 public class CharacterSelectionMenu : MonoBehaviour
 {
@@ -12,13 +14,29 @@ public class CharacterSelectionMenu : MonoBehaviour
     [SerializeField] private Transform _listParent;
     [SerializeField] private CharacterSelectConfirmWindow _confirmWindow;
     [SerializeField] private GameObject _selectButton;
+    [SerializeField] private bool _recipientSelector;
+    [SerializeField, ConditionalField(nameof(_recipientSelector))] private TextMeshProUGUI _headerText;
+    [SerializeField, ConditionalField(nameof(_recipientSelector))] private string _headerTemplateString = "Who is NAME cooking for?";
+
+    [SerializeField] private UnityEvent<ID> _onSelect;
 
     private List<CharacterSelectButton> _spawnedButtons = new List<CharacterSelectButton>();
     private ID _selectedCharacter = new ID(0);
+    private ID _alreadySelectedPrimary;
 
     //-------------------//
     [HideInInspector] public CompleteCharacterData selectedCharacter;
     //-------------------//
+
+    public bool Recipient => _recipientSelector;
+
+    public void SelectPreviousPrimary(ID id)
+    {
+        _alreadySelectedPrimary = id;
+        if (_recipientSelector) {
+            _headerText.text = _headerTemplateString.Replace("NAME", CharacterManager.i.GetNameFormatted(id));
+        }
+    }
 
     private void OnEnable()
     {
@@ -64,6 +82,11 @@ public class CharacterSelectionMenu : MonoBehaviour
     /// </summary>
     public void ShowConfirmMenu()
     {
-        if (_selectedCharacter != 0) _confirmWindow.Display(_selectedCharacter, _minigameController);
+        if (_selectedCharacter == 0) return;
+
+        if (_recipientSelector) _confirmWindow.Display(_alreadySelectedPrimary, _selectedCharacter, _minigameController);
+        else _confirmWindow.Display(_selectedCharacter, _minigameController);
+
+        _onSelect.Invoke(_selectedCharacter);
     }
 }

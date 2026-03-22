@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Donut
   Icon: {fileID: 21300000, guid: 9fb848869efb9f446bac73b2b6a28e35, type: 3}
-  MaxScore: 0
+  MaxScore: 50
+  MoneyReward: 300
   Subgames:
   - Type: 0
     TimeLimit: 25
@@ -25,15 +26,8 @@ MonoBehaviour:
     ChangeSpeedFrequency: {x: 3, y: 11}
   - Type: 0
     TimeLimit: 20
-    TargetTime: 5
+    TargetTime: 3
     countdown: 3
     MinStirSpeed: 0.5
     MaxStirSpeed: 4
-    ChangeSpeedFrequency: {x: 3, y: 5}
-  - Type: 0
-    TimeLimit: 10
-    TargetTime: 10
-    countdown: 3
-    MinStirSpeed: 0.5
-    MaxStirSpeed: 2
     ChangeSpeedFrequency: {x: 3, y: 5}

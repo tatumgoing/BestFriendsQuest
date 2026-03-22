@@ -14,8 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Ramen
   Icon: {fileID: 21300000, guid: 550ccd52633ecbd49a1e8efb1468bb93, type: 3}
-  Time: 15
-  Minigames:
-  - {fileID: 8729571409805816110, guid: 822313e53f154b544bfe3d734e8a21b5, type: 3}
-  - {fileID: 5439071337947887875, guid: c60dfd9480fa17e47acaca84d3e89b99, type: 3}
-  - {fileID: 6418087436521999393, guid: 515dbfc3ad735eb4e9e4d358578aec0b, type: 3}
+  MaxScore: 20
+  MoneyReward: 150
+  Subgames:
+  - Type: 0
+    TimeLimit: 3
+    TargetTime: 1
+    countdown: 3
+    MinStirSpeed: 1.2
+    MaxStirSpeed: 2.5
+    ChangeSpeedFrequency: {x: 3, y: 11}

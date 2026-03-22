@@ -43,6 +43,29 @@ public class CharacterManager : MonoBehaviour
         return characterData != null ? characterData.Name : "";
     }
 
+    private Pronoun GetPronounInternal(ID id)
+    {
+        var characterData = allCharacters.Find(c => c.ID == id);
+        return characterData.Pronouns;
+    }
+
+    public string GetPronoun(ID id)
+    {
+        var pronoun = GetPronounInternal(id);
+        var formatted = Utils.CapitalFirst(pronoun.ToString().ToLower());
+        return formatted;
+    }
+
+    public string GetPronounOwnership(ID id)
+    {
+        var pronoun = GetPronounInternal(id);
+        switch (pronoun) {
+            case Pronoun.HE: return "Himself";
+            case Pronoun.SHE: return "Herself";
+            default: return "Themself";
+        }
+    }
+
     public string GetNameFormatted(ID id)
     {
         var name = GetName(id);
@@ -85,39 +108,17 @@ public class CharacterManager : MonoBehaviour
         character?.SetProblem(problem);
     }
 
-    private void LoadCharactersFromFile()
+    private async void LoadCharactersFromFile()
     {
         var staticSaveStrings = SaveSystem.LoadAllStaticSaveStrings();
 
         foreach (var s in staticSaveStrings) {
             allCharacters.Add(new CompleteCharacterData(s));
         }
-        
-    }
 
-    private void InitializeTestCharacters()
-    {
-
-
-        /*CharacterData Johnny = new CharacterData();
-        CharacterData Sally = new CharacterData();
-        CharacterData Goobert = new CharacterData();
-
-        Johnny.CharacterName = "Johnny";
-        Sally.CharacterName = "Sally";
-        Goobert.CharacterName = "Goobert";
-
-        //testing code to be deleted later
-
-        allCharacters.Add(Johnny);
-        allCharacters.Add(Sally);
-        allCharacters.Add(Goobert);
-
-        Johnny.Happiness = 100;
-        Sally.Happiness = 100;
-
-        Johnny.UpdateRelationship(Sally, 0.25f);
-        Sally.UpdateRelationship(Johnny, 0.25f);*/
+        var newCharacter = SpawnCharacter(AllCharacters[0].ID, transform);
+        await Task.Delay(200);
+        Destroy(newCharacter.gameObject);
     }
 
     public float GetRelationship(ID id1, ID id2)

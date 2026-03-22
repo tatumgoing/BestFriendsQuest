@@ -19,11 +19,13 @@ public class SubgameController : MonoBehaviour
     [Header("SubMenus")]
     [SerializeField] private SubgameCountdownController _countdownTimer;
     [SerializeField] private CompletionText _completionText;
+    [SerializeField] private MinigameResultsScreen _results;
 
     [Header("Sounds")]
     [SerializeField] private Sound _tickSound;
 
     [Header("Misc References")]
+    [SerializeField] private GameObject _timerParent;
     [SerializeField] private TextMeshProUGUI _timerText;
     [SerializeField] private Image _timerFillImage;
     [SerializeField] private Slider _slider;
@@ -38,6 +40,8 @@ public class SubgameController : MonoBehaviour
     private float _totalScore;
     private RecipeData _currentRecipe;
     private Subgame _currentSubgame;
+    private ID _character;
+    private ID _recipient;
 
     private SubgameData _currentSubgameData => _currentRecipe.Subgames[_subgameIndex];
 
@@ -71,7 +75,8 @@ public class SubgameController : MonoBehaviour
         _currentSubgame = null;
 
         var score = _targetSliderPos;
-        _totalScore += score;
+        _totalScore += score/_currentRecipe.Subgames.Count;
+        print("Completed subgame. score: " +  score + ", totalScore: " + _totalScore);
 
         _subgameIndex++;
         _completionText.Show(score);
@@ -79,17 +84,20 @@ public class SubgameController : MonoBehaviour
 
     private void FinishMinigame()
     {
-        print("FINISHING MINIGAME!");
-        _currentSubgame = null;
         gameObject.SetActive(false);
     }
 
-    public void StartSubgame(RecipeData recipe)
+    public void StartMinigame(RecipeData recipe, ID character, ID recipient)
     {
         if (!_initialized) Initialize();
 
+        _character = character;
+        _recipient = recipient;
+        _timerParent.SetActive(true);
+        _results.gameObject.SetActive(false);
         _currentRecipe = recipe;
         _subgameIndex = 0;
+        _totalScore = 0;
 
         _currentSubgame = null;
         gameObject.SetActive(true);
@@ -102,7 +110,9 @@ public class SubgameController : MonoBehaviour
     /// </summary>
     public void StartCurrentSubgame()
     {
+        print("trying to start next selected subgame");
         if (_subgameIndex >= _currentRecipe.Subgames.Count) {
+            _currentSubgame = null;
             ShowResults();
             return;
         }
@@ -110,7 +120,6 @@ public class SubgameController : MonoBehaviour
         _totalTime = _currentSubgameData.TimeLimit;
         _timeLeft = _currentSubgameData.TimeLimit;
 
-        _totalScore = 0;
         _slider.value = 0;
         _targetSliderPos = 0;
 
@@ -127,7 +136,9 @@ public class SubgameController : MonoBehaviour
 
     private void ShowResults()
     {
-
+        print("Showing results");
+        _timerParent.SetActive(false);
+        _results.ShowScore(_totalScore, _currentRecipe, _character, _recipient);
     }
 
     public void CompleteCountdown()

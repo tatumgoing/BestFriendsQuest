@@ -27,6 +27,7 @@ public class RecipeData : ScriptableObject
     public string Name;
     public Sprite Icon;
     public float MaxScore;
+    public int MoneyReward;
 
     public List<SubgameData> Subgames = new List<SubgameData>();
 }
