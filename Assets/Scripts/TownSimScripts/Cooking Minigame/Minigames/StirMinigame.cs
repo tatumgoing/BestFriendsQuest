@@ -1,120 +1,67 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class StirMinigame : MonoBehaviour
+public class StirMinigame : Subgame
 {
-    public MinigameManager manager;
-
-    public List<TargetZone> targets = new List<TargetZone>();
-
-    public GameObject tempIcon;
+    [SerializeField] private CircleMovement _target;
+    [SerializeField] private CanvasGroup _targetCanvasGroup;
+    [SerializeField] private float _minOpacity = 0.5f;
+    [SerializeField] private float _distanceThreshold = 30;
 
     [Header("Scoring")]
-
-    public float addScore;
-    public float penaltyScore;
-
-    [Header("Icon")]
-    public GameObject barIcon;
-    float iconHeight;
-    float iconWidth;
-
-    [Header("Animation")]
-    public float upperSpeed;
-    public float lowerSpeed;
-
-    public float minSpeedBlackout;
-    public float maxSpeedBlackout;
+    [SerializeField] private float _rewardScore;
+    [SerializeField] private float _failScorePenalty;
 
     [Header("Audio")]
-    [SerializeField] private Sound stirringSFX;
+    [SerializeField] private Sound _stirringSFX;
 
-    void Start()
+    private float _changeTimer;
+    private bool _clockwise;
+    private float _successTime;
+
+    private void Update()
     {
-        stirringSFX = Instantiate(stirringSFX);
-        stirringSFX.Play();
+        _changeTimer -= Time.deltaTime;
+        if (_changeTimer < 0) ChangeSpeed();
 
-        iconHeight = barIcon.GetComponent<RectTransform>().sizeDelta.y;
-        iconWidth = barIcon.GetComponent<RectTransform>().sizeDelta.x;
-
-        //BAD BAD BAD BAD BAD KILL
-        manager = FindFirstObjectByType<MinigameManager>();
-
-        InvokeRepeating("GenerateNewSpeed", 5.0f, 4.0f);
-
-        tempIcon.GetComponent<Image>().sprite = manager.characterSelectionMenu.selectedCharacter.Icon;
-
-
-    }
-    void Update()
-    {
-        CheckTargets();
-
-        if (manager.currentTimer != null)
-        {
-            if (CheckTargets())
-            {
-                manager.currentTimer.AddProgress(addScore * Time.deltaTime);
-                stirringSFX.SetPercentVolume(100, 10 * Time.deltaTime);
-
-            }
-            else
-            {
-                manager.currentTimer.RemoveProgress(penaltyScore * Time.deltaTime);
-                stirringSFX.SetPercentVolume(0, 10 * Time.deltaTime);
-
-            }
-        }
-        if (!manager.currentTimer.timerActive)
-        {
-            ChangeSpeed(0);
+        var dist = Vector2.Distance(Input.mousePosition, _target.Position);
+        if (dist < _distanceThreshold) _successTime += Time.deltaTime;
+        controller.UpdateSlider(_successTime / data.TargetTime);
+        if (_successTime >= data.TargetTime) {
+            gameObject.SetActive(false);
+            controller.CompleteSubgame();
         }
 
+        _targetCanvasGroup.alpha = Mathf.Lerp(_targetCanvasGroup.alpha, dist < _distanceThreshold ? 1 : _minOpacity, 5 * Time.deltaTime);
     }
 
-    public void GenerateNewSpeed()
+    public override void StartSubgame(SubgameData data)
     {
-        float randomSpeed = Random.Range(lowerSpeed, upperSpeed);
+        base.StartSubgame(data);
 
-        ChangeSpeed(randomSpeed);
-
-        if (minSpeedBlackout < randomSpeed && randomSpeed < maxSpeedBlackout)
-        {
-            GenerateNewSpeed();
-        }
-
+        _successTime = 0;
+        _stirringSFX.Play();
+        ChangeSpeed();
     }
-    public void ChangeSpeed(float newSpeed)
+
+    protected override void Initialize()
     {
-        CircleMovement barMovement= barIcon.GetComponent<CircleMovement>();
+        base.Initialize();
 
-        barMovement.moveSpeed = newSpeed;
+        _stirringSFX = Instantiate(_stirringSFX);
     }
 
-    public bool CheckTargets()
+    private void ChangeSpeed()
     {
-        bool inRange = false;
+        if (data == null) return;
 
-        float xMouse= Input.mousePosition.x;
-        float yMouse = Input.mousePosition.y;
+        _clockwise = !_clockwise;
+        var speed = Mathf.Lerp(data.MinStirSpeed, data.MaxStirSpeed, 1 - controller.TimeLeftPercent);
+        _target.SetMoveSpeed(speed * (_clockwise ? 1 : -1));
 
-        float xBar = barIcon.GetComponent<RectTransform>().position.x;
-        float yBar = barIcon.GetComponent<RectTransform>().position.y;
-
-        if (xBar - iconWidth/2 <= xMouse && xBar + iconWidth / 2 >=  xMouse)
-        {
-
-            if (yBar - iconHeight / 2 <= yMouse && yBar + iconHeight / 2 >= yMouse)
-            {
-                inRange = true;
-            }
-        }
-        //Debug.Log("MOUSE POSITION: " + xMouse + " " + yMouse + "\n BAR POSITION: " + xBar + " " + yBar + inRange);
-
-        return inRange;
-
+        _changeTimer = Random.Range(data.ChangeSpeedFrequency.x, data.ChangeSpeedFrequency.y);
     }
-
 }

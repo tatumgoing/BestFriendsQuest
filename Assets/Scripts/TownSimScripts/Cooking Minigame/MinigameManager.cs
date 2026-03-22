@@ -27,10 +27,10 @@ public class MinigameManager : MonoBehaviour
     private bool confirmWindowVisible = false;
 
     [Header("Recipes")]
-    public List<Recipe> allRecipes = new List<Recipe>();
+    public List<RecipeData> allRecipes = new List<RecipeData>();
     public GameObject recipeGrid;
     public GameObject recipeButtonPrefab;
-    public Recipe selectedRecipe;
+    public RecipeData selectedRecipe;
 
     [Header("Cooking Minigame")]
     public GameObject tempIcon;
@@ -55,8 +55,6 @@ public class MinigameManager : MonoBehaviour
         i = this;
 
         gameManager = TownGameManager.i;
-
-        GenerateRecipeSelect();
     }
 
     public void StartProblemMinigame(CompleteCharacterData problemCharacter)
@@ -67,41 +65,6 @@ public class MinigameManager : MonoBehaviour
 
         NextMinigameScene();
 
-    }
-    public void GenerateRecipeSelect()
-    {
-        foreach (Transform child in recipeGrid.transform)
-        {
-            Destroy(child.gameObject);
-        }
-
-        foreach (Recipe recipe in allRecipes)
-        {
-            //make their icons dawg
-            GameObject newIcon = Instantiate(recipeButtonPrefab, recipeGrid.transform);
-            newIcon.GetComponent<Button>().onClick.AddListener(() => SelectRecipe(recipe));
-            newIcon.GetComponentInChildren<Image>().sprite = recipe.Icon;
-            newIcon.GetComponentInChildren<TMP_Text>().text = recipe.Name;
-        }
-
-
-    }
-
-    private void SelectRecipe(Recipe recipe)
-    {
-        selectedRecipe = recipe;
-
-        foreach (GameObject minigame in recipe.Minigames) {
-
-            var newMinigame = Instantiate(minigame, minigameUIContainer.transform);
-            newMinigame.SetActive(false);
-            gameScenes.Add(newMinigame);
-
-        }
-
-        gameScenes.Add(endScreen);
-
-        NextMinigameScene();
     }
 
     public void NextMinigameScene()
@@ -124,7 +87,6 @@ public class MinigameManager : MonoBehaviour
             completionText = gameScenes[currentScene].GetComponentInChildren<CompletionText>();
             completionText.gameObject.SetActive(false);
         }
-        
     }
 
     public void ToggleConfirmWindow()
@@ -158,8 +120,6 @@ public class MinigameManager : MonoBehaviour
 
     IEnumerator StartNextMinigameDelay()
     {
-        completionText.PlayCompletionSFX();
-
         yield return new WaitForSeconds(3);
 
         NextMinigameScene();

@@ -15,9 +15,7 @@ public class Area : MonoBehaviour
     }
     private void OnEnable()
     {
-
         StartCoroutine(StartMusic());
-
     }
 
     private IEnumerator StartMusic()
@@ -26,9 +24,7 @@ public class Area : MonoBehaviour
 
         if (associatedEnvironment != null)
         {
-
             associatedEnvironment.SetActive(true);
-
         }
 
         if (associatedTrack == null) 

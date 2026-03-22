@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class CharacterManager : MonoBehaviour
@@ -30,24 +31,52 @@ public class CharacterManager : MonoBehaviour
         return allCharacters.Find(x =>  x.ID == id);
     }
 
-    public Sprite GetIcon(ID id)
+    public Sprite GetPortrait(ID id)
     {
         var characterData = allCharacters.Find(c => c.ID == id);
         return characterData != null ? characterData.Icon : null;
     }
 
-    public SpawnedCharacter SpawnCharacter(ID id, Transform spawnSpot) => SpawnCharacter(id, spawnSpot.position, spawnSpot.lossyScale);
-    private SpawnedCharacter SpawnCharacter(ID id, Vector3 position, Vector3 scale)
+    public string GetName(ID id)
+    {
+        var characterData = allCharacters.Find(c => c.ID == id);
+        return characterData != null ? characterData.Name : "";
+    }
+
+    public string GetNameFormatted(ID id)
+    {
+        var name = GetName(id);
+        for (int i = 0; i < name.Length; i++) {
+            if (i == 0 || name[i - 1] == ' ') {
+                name = name.Substring(0, i) + char.ToUpper(name[i]) + name.Substring(i + 1);
+            }
+        }
+
+        return name;
+    }
+
+    public SpawnedCharacter SpawnCharacter(ID id, Transform spawnSpot) => SpawnCharacter(id, spawnSpot.position, spawnSpot.lossyScale, spawnSpot.eulerAngles);
+    private SpawnedCharacter SpawnCharacter(ID id, Vector3 position, Vector3 scale, Vector3 rot)
     {
         var characterData = allCharacters.Find(c => c.ID == id);
         if (characterData == null) return null;
         
-        var spawnedCharacter = Instantiate(_characterControllerPrefab, position, Quaternion.identity).GetComponent<SpawnedCharacter>();
-        spawnedCharacter.transform.localScale = scale;
-        
+        var spawnedCharacter = Instantiate(_characterControllerPrefab, position, Quaternion.Euler(rot)).GetComponent<SpawnedCharacter>();
         spawnedCharacter.LoadFromString(SaveSystem.GetStaticSaveString(id));
 
+        spawnedCharacter.transform.localScale = scale;
+
+        //FIX FOR SCALING BUG, FOR NOW
+        ToggleCharacter(spawnedCharacter.gameObject);
+
         return spawnedCharacter;
+    }
+
+    private async void ToggleCharacter(GameObject character)
+    {
+        character.SetActive(false);
+        await Task.Delay(100);
+        character.SetActive(true);
     }
 
     public void AssignProblem(ID id, Problem problem)
