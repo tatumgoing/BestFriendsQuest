@@ -22,15 +22,6 @@ public class RecordsManager : MonoBehaviour
     public List<ItemTabs> tabs = new List<ItemTabs>();
     public ItemType currentType;
 
-
-
-    //public GameObject recordContainer;
-
-    // Start is called before the first frame update
-    void OnEnable()
-    {
-        //StartCoroutine(UpdateRecord());
-    }
     void Start()
     {
         gameManager = TownGameManager.i;

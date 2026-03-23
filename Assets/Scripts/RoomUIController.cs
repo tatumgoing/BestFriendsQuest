@@ -7,11 +7,8 @@ public class RoomUIController : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _nameText;
     [SerializeField] private CharacterStatusMenu _statusMenu;
-
-    [Header("Speaking")]
-    [SerializeField, TextArea(3, 10)] private List<string> _lines = new List<string>();
-    [SerializeField] private GameObject _textBoxParent;
-    [SerializeField] private TextMeshProUGUI _textBox;
+    [SerializeField] private CharacterDialogue _dialogue;
+    [SerializeField] private GiftMenu _giftMenu;
 
     private ID _id;
 
@@ -22,7 +19,7 @@ public class RoomUIController : MonoBehaviour
         _nameText.text = character.Name + "'s";
 
         _statusMenu.gameObject.SetActive(false);
-        _textBoxParent.SetActive(false);
+        _dialogue.gameObject.SetActive(false);
 
         gameObject.SetActive(true);
     }
@@ -34,7 +31,11 @@ public class RoomUIController : MonoBehaviour
 
     public void Talk()
     {
-        _textBox.text = _lines[Random.Range(0, _lines.Count)];
-        _textBoxParent.SetActive(true);
+        _dialogue.ShowRandomText();
+    }
+
+    public void ShowGiftMenu()
+    {
+        _giftMenu.Show();
     }
 }

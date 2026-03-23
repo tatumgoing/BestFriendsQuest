@@ -5,54 +5,19 @@ using UnityEngine;
 
 public class CharacterDialogue : MonoBehaviour
 {
-    public CompleteCharacterData associatedCharacter;
+    [SerializeField] private List<string> _randomLines = new List<string>();
+    [SerializeField] private TextMeshProUGUI _textBox;
 
-    public List<string> dialogues = new List<string>();
-    public TMP_Text dialogueBox;
-    public GameObject textBox;
+    public void ShowRandomText() => ShowText(_randomLines[Random.Range(0, _randomLines.Count)]);
 
-    // Start is called before the first frame update
-    void Start()
+    public void ShowText(string text)
     {
-        //temp dialogues 
-
-        dialogues.Add("Life is like a dream!");
-        dialogues.Add("Lorem ipsum- haha Just Kidding Can You Imagine?");
-        dialogues.Add("Whats the weather like in your world?");
-        dialogues.Add("It's good having so many neighbors in this town. Maybe we ought to have a party soon.");
-        dialogues.Add("Thanks for checking in on me!");
-    }
-
-    public void DisplayDialogue(string newDialogue="")
-    {
-        //enables the text box and then displays the dialogue
-        textBox.SetActive(true);
-
-        if(newDialogue!= "")
-        {
-            dialogueBox.text = newDialogue;
-        }
-        else if(associatedCharacter.CurrentProblem)
-        {
-            dialogueBox.text = associatedCharacter.CurrentProblem.problemDialogue;
-        }
-        else
-        {
-            dialogueBox.text = RandomDialogue();
-        }
-    }
-    public string RandomDialogue()
-    {
-        //finds random dialogue string and returns it
-        int index = Random.Range(0, dialogues.Count);
-        return dialogues[index];
+        _textBox.text = text;
+        gameObject.SetActive(true);
     }
 
     public void HideDialogue()
     {
-        if (textBox != null)
-        {
-            textBox.SetActive(false);
-        }
+        gameObject.SetActive(false);
     }
 }

@@ -335,7 +335,6 @@ public class TownGameManager : MonoBehaviour
                 {
                     rManager.CreateLockedItem(i);
                 }
-
             }
         
         }
