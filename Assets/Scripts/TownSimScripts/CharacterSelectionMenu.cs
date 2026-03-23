@@ -4,113 +4,89 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.TextCore.Text;
+using UnityEngine.Events;
+using MyBox;
 
 public class CharacterSelectionMenu : MonoBehaviour
 {
-    [Header("Managers")] 
-    
-    public TownGameManager gameManager;
+    [SerializeField] private MinigameController _minigameController;
+    [SerializeField] private GameObject _characterButtonPrefab;
+    [SerializeField] private Transform _listParent;
+    [SerializeField] private CharacterSelectConfirmWindow _confirmWindow;
+    [SerializeField] private GameObject _selectButton;
+    [SerializeField] private bool _recipientSelector;
+    [SerializeField, ConditionalField(nameof(_recipientSelector))] private TextMeshProUGUI _headerText;
+    [SerializeField, ConditionalField(nameof(_recipientSelector))] private string _headerTemplateString = "Who is NAME cooking for?";
 
-    [Header("Selected Character")]
+    [SerializeField] private UnityEvent<ID> _onSelect;
 
-    public CompleteCharacterData selectedCharacter;
+    private List<CharacterSelectButton> _spawnedButtons = new List<CharacterSelectButton>();
+    private ID _selectedCharacter = new ID(0);
+    private ID _alreadySelectedPrimary;
 
-    [Header("Layout")]
-    public GameObject characterButtonPrefab;
-    public GameObject characterSelectionGrid;
+    //-------------------//
+    [HideInInspector] public CompleteCharacterData selectedCharacter;
+    //-------------------//
 
-    public List<GameObject> characterSelectionButtons = new List<GameObject>();
+    public bool Recipient => _recipientSelector;
 
-    [Header("Quest Specific")]
-    public bool isQuest = false;
-    public CharacterSelectionMenu otherSelection;
-
-
-    // Start is called before the first frame update
-
-    void Start()
+    public void SelectPreviousPrimary(ID id)
     {
-        gameManager = TownGameManager.i;
-
-        GenerateCharacterSelect();
-
-    }
-
-    public void GenerateCharacterSelect()
-    {
-        foreach (Transform child in characterSelectionGrid.transform)
-        {
-            Destroy(child.gameObject);
-        }
-
-        foreach (CompleteCharacterData character in CharacterManager.i.AllCharacters)
-        {
-            if (!isQuest)
-            {
-                MakeIcon(character);
-            }
-            else if(character.Happiness>= 100)
-            {
-                MakeIcon(character);
-            }
-            else
-            {
-                MakeUnselectableIcon(character);
-            }
-        }
-
-    }
-
-    public void MakeIcon(CompleteCharacterData character)
-    {
-        GameObject newIcon = Instantiate(characterButtonPrefab, characterSelectionGrid.transform);
-
-        newIcon.GetComponent<Button>().onClick.AddListener(() => SelectCharacter(character));
-
-        newIcon.GetComponent<Button>().onClick.AddListener(() => SelectButton(newIcon, character));
-
-        newIcon.GetComponent<Image>().sprite = character.Icon;
-
-        characterSelectionButtons.Add(newIcon);
-    }
-
-    public void MakeUnselectableIcon(CompleteCharacterData character)
-    {
-        GameObject newIcon = Instantiate(characterButtonPrefab, characterSelectionGrid.transform);
-
-        newIcon.GetComponent<Button>().interactable= false;
-
-        newIcon.GetComponent<Image>().sprite = character.Icon;
-
-        characterSelectionButtons.Add(newIcon);
-    }
-
-    private void SelectCharacter(CompleteCharacterData character)
-    {
-        if(otherSelection != null && otherSelection.selectedCharacter != character || !isQuest)
-        {
-            selectedCharacter = character;
+        _alreadySelectedPrimary = id;
+        if (_recipientSelector) {
+            _headerText.text = _headerTemplateString.Replace("NAME", CharacterManager.i.GetNameFormatted(id));
         }
     }
 
-    public void SelectButton(GameObject button, CompleteCharacterData character)
+    private void OnEnable()
     {
-        if (otherSelection != null && otherSelection.selectedCharacter != character || !isQuest)
-        {
-
-            //Debug.Log(button);
-            foreach (GameObject resetButton in characterSelectionButtons)
-            {
-                if (resetButton != button)
-                {
-                    resetButton.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
-                }
-            }
-
-            button.GetComponent<RectTransform>().localScale = new Vector3(1.2f, 1.2f, 1);
-
-        }
+        _confirmWindow.gameObject.SetActive(false);
+        _selectButton.SetActive(false);
+        BuildSelectionList();
     }
 
-   
+    /// <summary>
+    /// Creates the list of character buttons based on available characters from characterManager
+    /// </summary>
+    private void BuildSelectionList()
+    {
+        foreach (var b in _spawnedButtons) Destroy(b.gameObject);
+        _spawnedButtons.Clear();
+
+        foreach (var ID in CharacterManager.i.AllIDs()) SpawnCharacterButton(ID);
+    }
+
+    /// <summary>
+    /// Based on the ID, spawns one character button and initializes it with the correct data, then adds it to the list of spawned buttons
+    /// called from BuildSelectionList for each character ID in the character manager
+    /// </summary>
+    private void SpawnCharacterButton(ID id)
+    {
+        var newButton = Instantiate(_characterButtonPrefab, _listParent).GetComponent<CharacterSelectButton>();
+        newButton.Initialize(id, this);
+        _spawnedButtons.Add(newButton); 
+    }
+
+    /// <summary>
+    /// Called from the character button when clicked
+    /// </summary>
+    public void SelectCharacter(ID id)
+    {
+        foreach (var button in _spawnedButtons) if (button.ID != id) button.Deselect();
+        _selectedCharacter = id;
+        _selectButton.SetActive(true);
+    }
+
+    /// <summary>
+    /// Called from the button on the character selection menu to open the confirm window with the selected character's info, only opens if a character is selected (selectedCharacter != 0)
+    /// </summary>
+    public void ShowConfirmMenu()
+    {
+        if (_selectedCharacter == 0) return;
+
+        if (_recipientSelector) _confirmWindow.Display(_alreadySelectedPrimary, _selectedCharacter, _minigameController);
+        else _confirmWindow.Display(_selectedCharacter, _minigameController);
+
+        _onSelect.Invoke(_selectedCharacter);
+    }
 }

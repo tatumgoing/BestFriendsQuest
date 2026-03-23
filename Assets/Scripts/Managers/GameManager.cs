@@ -15,7 +15,9 @@ public class GameManager : MonoBehaviour
     public static GameManager i;
     private void Awake() { i = this; }
 
+    [SerializeField] private bool _researchMode;
     [SerializeField] private bool _demoMode;
+    [SerializeField] private bool _sendData = true;
     [SerializeField] private GameMode _mode;
     [SerializeField] GameObject _pauseMenu;
     [SerializeField] Fade _fade;
@@ -35,6 +37,8 @@ public class GameManager : MonoBehaviour
     private string UndoStateString; //WIP
 
     public bool DemoMode => _demoMode;
+    public bool ResearchMode => _researchMode;
+    public bool SendData => _sendData;
 
     public string CharactersSavePath => System.IO.Path.Combine(Application.streamingAssetsPath, _saveFileName);
 
@@ -46,7 +50,7 @@ public class GameManager : MonoBehaviour
         UpdateMode();
 
         _tutorial.SetActive(_demoMode);
-        _editExistingButtonParent.SetActive(!_demoMode);
+        _editExistingButtonParent.SetActive(!_demoMode && !ResearchMode);
     }
 
     [ButtonMethod]

@@ -123,9 +123,19 @@ public class CharacterCreatorProgression : MonoBehaviour
     public async void FinishCharacter()
     {
         var saveString = GameManager.i.SaveCurrent();
-        _analyticsTracker.FinishCharacter(saveString);
+        if (GameManager.i.SendData) _analyticsTracker.FinishCharacter(saveString);
 
         UIManager.i.Fade.Appear();
+        await Task.Delay(Mathf.RoundToInt(UIManager.i.Fade.FadeTime * 1000));
+
+        if (GameManager.i.ResearchMode) {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+            Application.Quit();
+#endif
+            return;
+        }
 
         var fadeTime = Mathf.RoundToInt(UIManager.i.Fade.FadeTime * 1000);
         await Task.Delay(fadeTime);

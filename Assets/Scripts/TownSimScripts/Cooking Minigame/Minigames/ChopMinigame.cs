@@ -68,7 +68,7 @@ public class ChopMinigame : MonoBehaviour
     void Update()
     {
 
-        if (manager.currentTimer.timerActive) {
+        /*if (manager.currentTimer.timerActive) {
             iconPosX = (amplitude * Mathf.Sin(barSpeed * (Time.time)) + shift);
             barIcon.GetComponent<RectTransform>().anchoredPosition = new Vector2(iconPosX, iconPosY);
         }
@@ -86,7 +86,7 @@ public class ChopMinigame : MonoBehaviour
             }
 
             //Debug.Log(CheckTargets());
-        }
+        }*/
     }
 
 

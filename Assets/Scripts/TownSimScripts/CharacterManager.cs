@@ -1,7 +1,10 @@
+using MyBox;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 public class CharacterManager : MonoBehaviour
 {
@@ -13,11 +16,27 @@ public class CharacterManager : MonoBehaviour
 
     public List<CompleteCharacterData> AllCharacters => allCharacters;
     public CompleteCharacterData GetRandomCharacter() => AllCharacters[Random.Range(0, AllCharacters.Count)];
+    public string GetAge(ID id) => allCharacters.Find(c => c.ID == id).Age.ToString();
+    public string GetFavoriteColor(ID id) => Utils.CapitalFirst(allCharacters.Find(c => c.ID == id).FavColor.ToString().ToLower());
 
     void Awake()
     {
         i = this;
         LoadCharactersFromFile();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.L)) RandomizeRelationships();
+    }
+
+    [ButtonMethod]
+    public void RandomizeRelationships()
+    {
+        print("RANDOMIZING RELATIONSHIPS");
+        for (int i = 0; i < _relationships.Count; i++) {
+            _relationships[i].Value = Random.Range(0, 10f);
+        }
     }
 
     public List<ID> AllIDs()
@@ -30,24 +49,91 @@ public class CharacterManager : MonoBehaviour
         return allCharacters.Find(x =>  x.ID == id);
     }
 
-    public Sprite GetIcon(ID id)
+    public float GetHappiness(ID id)
+    {
+        var characterData = allCharacters.Find(c => c.ID == id);
+        return characterData != null ? characterData.Happiness : 0;
+    }
+
+    public Sprite GetPortrait(ID id)
     {
         var characterData = allCharacters.Find(c => c.ID == id);
         return characterData != null ? characterData.Icon : null;
     }
 
-    public SpawnedCharacter SpawnCharacter(ID id, Transform spawnSpot) => SpawnCharacter(id, spawnSpot.position, spawnSpot.lossyScale);
-    private SpawnedCharacter SpawnCharacter(ID id, Vector3 position, Vector3 scale)
+    public string GetName(ID id)
+    {
+        var characterData = allCharacters.Find(c => c.ID == id);
+        return characterData != null ? characterData.Name : "";
+    }
+
+    public Pronoun GetPronoun(ID id)
+    {
+        var characterData = allCharacters.Find(c => c.ID == id);
+        var pronoun = characterData.Pronouns;
+        if (pronoun == Pronoun.SHE) pronoun = Pronoun.THEY;
+        else if (pronoun == Pronoun.THEY) pronoun = Pronoun.SHE;
+
+        return pronoun;
+    }
+
+    public string GetPronounString(ID id)
+    {
+        var pronoun = GetPronoun(id);
+        var formatted = Utils.CapitalFirst(pronoun.ToString().ToLower());
+        return formatted;
+    }
+
+    public string GetPronounOwnership(ID id)
+    {
+        var pronoun = GetPronoun(id);
+        switch (pronoun) {
+            case Pronoun.HE: return "himself";
+            case Pronoun.SHE: return "herself";
+            default: return "themself";
+        }
+    }
+
+    public string GetBirthdayFormatted(ID id)
+    {
+        var birthday = allCharacters.Find(c => c.ID == id).Birthday;
+        return birthday.Month + " / " + birthday.Day + " / " + birthday.Year;
+    }
+
+    public string GetNameFormatted(ID id)
+    {
+        var name = GetName(id);
+        for (int i = 0; i < name.Length; i++) {
+            if (i == 0 || name[i - 1] == ' ') {
+                name = name.Substring(0, i) + char.ToUpper(name[i]) + name.Substring(i + 1);
+            }
+        }
+
+        return name;
+    }
+
+    public SpawnedCharacter SpawnCharacter(ID id, Transform spawnSpot) => SpawnCharacter(id, spawnSpot.position, spawnSpot.lossyScale, spawnSpot.eulerAngles);
+    private SpawnedCharacter SpawnCharacter(ID id, Vector3 position, Vector3 scale, Vector3 rot)
     {
         var characterData = allCharacters.Find(c => c.ID == id);
         if (characterData == null) return null;
         
-        var spawnedCharacter = Instantiate(_characterControllerPrefab, position, Quaternion.identity).GetComponent<SpawnedCharacter>();
-        spawnedCharacter.transform.localScale = scale;
-        
+        var spawnedCharacter = Instantiate(_characterControllerPrefab, position, Quaternion.Euler(rot)).GetComponent<SpawnedCharacter>();
         spawnedCharacter.LoadFromString(SaveSystem.GetStaticSaveString(id));
 
+        spawnedCharacter.transform.localScale = scale;
+
+        //FIX FOR SCALING BUG, FOR NOW
+        ToggleCharacter(spawnedCharacter.gameObject);
+
         return spawnedCharacter;
+    }
+
+    private async void ToggleCharacter(GameObject character)
+    {
+        character.SetActive(false);
+        await Task.Delay(100);
+        character.SetActive(true);
     }
 
     public void AssignProblem(ID id, Problem problem)
@@ -56,39 +142,17 @@ public class CharacterManager : MonoBehaviour
         character?.SetProblem(problem);
     }
 
-    private void LoadCharactersFromFile()
+    private async void LoadCharactersFromFile()
     {
         var staticSaveStrings = SaveSystem.LoadAllStaticSaveStrings();
 
         foreach (var s in staticSaveStrings) {
             allCharacters.Add(new CompleteCharacterData(s));
         }
-        
-    }
 
-    private void InitializeTestCharacters()
-    {
-
-
-        /*CharacterData Johnny = new CharacterData();
-        CharacterData Sally = new CharacterData();
-        CharacterData Goobert = new CharacterData();
-
-        Johnny.CharacterName = "Johnny";
-        Sally.CharacterName = "Sally";
-        Goobert.CharacterName = "Goobert";
-
-        //testing code to be deleted later
-
-        allCharacters.Add(Johnny);
-        allCharacters.Add(Sally);
-        allCharacters.Add(Goobert);
-
-        Johnny.Happiness = 100;
-        Sally.Happiness = 100;
-
-        Johnny.UpdateRelationship(Sally, 0.25f);
-        Sally.UpdateRelationship(Johnny, 0.25f);*/
+        var newCharacter = SpawnCharacter(AllCharacters[0].ID, transform);
+        await Task.Delay(200);
+        Destroy(newCharacter.gameObject);
     }
 
     public float GetRelationship(ID id1, ID id2)

@@ -7,5 +7,13 @@ using UnityEngine;
 
 public class Test : MonoBehaviour
 {
-   
+    private void OnEnable()
+    {
+        print(gameObject.name + "ENABLED");
+    }
+
+    private void OnDisable()
+    {
+        print(gameObject.name + "Disabled");
+    }
 }

@@ -20,9 +20,7 @@ MonoBehaviour:
   Texture: {fileID: 2800000, guid: f7546a22a362bde4dbb11bfc08107521, type: 3}
   ColorMask: {fileID: 0}
   MainhairPrefab: {fileID: 0}
-  _horiLimit: 0.89
   _earOffset: 0
-  _vertLimits: {x: -0.98, y: 1.44}
   IsMainHair: 0
   MainHairLocalPosition: {x: 0, y: 0, z: 0}
   MainHairLocalRotation: {x: 0, y: 0, z: 0, w: 0}
@@ -30,12 +28,14 @@ MonoBehaviour:
   EarPrefab: {fileID: 0}
   AngleLimits: {x: 0, y: 0}
   SizeLimits: {x: 0.3, y: 2}
-  _simpleHoriLimit: 0
-  _simpleVertLimits: {x: 0, y: 0}
+  _horiLimit: 0.89
+  _vertLimits: {x: -0.98, y: 1.44}
+  _simpleHoriLimit: 0.1
+  _simpleVertLimits: {x: -0.9, y: -0.6}
   _defaultSettings:
     Mirror: 0
     MatchColor: 1
-    Vert: 0.2
+    Vert: 0.5
     Hori: 0.5
     Size: 0.5
     Angle: 0.5

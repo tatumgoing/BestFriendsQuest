@@ -41,7 +41,7 @@ public class HouseController : MonoBehaviour
         _controller = controller;
         gameObject.SetActive(true);
         _id = id;
-        _characterIcon.sprite = CharacterManager.i.GetIcon(id);
+        _characterIcon.sprite = CharacterManager.i.GetPortrait(id);
     }
 
     private bool IsHovered()

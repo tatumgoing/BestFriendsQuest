@@ -39,6 +39,7 @@ public class CharacterMetaController : MonoBehaviour
     private Expression _currentExpression;
     private bool _eyesClosed;
     private bool _mouthOpen;
+    private string _inputString;
 
     public Color SkinColor => _skinColor;
     [ButtonMethod] public void setNeutral() => SetExpression(Expression.NEUTRAL);
@@ -130,8 +131,22 @@ public class CharacterMetaController : MonoBehaviour
         if (expressionData != null) _face.SetExpression(expressionData);
     }
 
+    [ButtonMethod]
+    public void TestReloadFromString()
+    {
+        if (_inputString != "") LoadFromString(_inputString);
+    }
+
     public void LoadFromString(string input)
     {
+        //TESTING UNIFORM SCALING TO FIX BUG::::
+        /*_inputString = input;
+        foreach (var group in _rigGroups) {
+            foreach (var bone in group.Bones) {
+                bone.ForceSymetry();
+            }
+        }*/
+
         input = input.Replace("\n", "");
 
         ID = new ID(input[..SaveSystem.IDLength]);
