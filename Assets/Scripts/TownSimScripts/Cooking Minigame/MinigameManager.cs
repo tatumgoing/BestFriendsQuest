@@ -32,61 +32,31 @@ public class MinigameManager : MonoBehaviour
     public GameObject recipeButtonPrefab;
     public RecipeData selectedRecipe;
 
-    [Header("Cooking Minigame")]
-    public GameObject tempIcon;
-    public MinigameTimer currentTimer;
-    public CompletionText completionText;
-
     [Header("Scoring")]
     public List<float> minigameScores = new List<float>();
 
-    [Header("End Screen")]
-    public GameObject endScreen;
-
-    public GameObject happinessMeter;
-    public Image endScreenIcon;
-
     private bool isProblemRun;
 
+    public void UpdateCurrencyDisplay(float finalScore) => StartCoroutine(EndscreenAnimations(finalScore));
 
-    // Start is called before the first frame update
     void Start()
     {
         i = this;
-
         gameManager = TownGameManager.i;
     }
 
     public void StartProblemMinigame(CompleteCharacterData problemCharacter)
     {
         isProblemRun = true;
-
         characterSelectionMenu.selectedCharacter = problemCharacter;
-
         NextMinigameScene();
-
     }
 
     public void NextMinigameScene()
     {
         gameScenes[currentScene].gameObject.SetActive(false);
-
         currentScene++;
-
         gameScenes[currentScene].gameObject.SetActive(true);
-
-        //assign new variables, could be unique method
-        if (gameScenes[currentScene].GetComponentInChildren<MinigameTimer>() != null) {
-
-            currentTimer = gameScenes[currentScene].GetComponentInChildren<MinigameTimer>();
-
-        }
-
-        if (gameScenes[currentScene].GetComponentInChildren<CompletionText>() != null) {
-            
-            completionText = gameScenes[currentScene].GetComponentInChildren<CompletionText>();
-            completionText.gameObject.SetActive(false);
-        }
     }
 
     public void ToggleConfirmWindow()
@@ -110,10 +80,6 @@ public class MinigameManager : MonoBehaviour
 
     public void TotalScore(float newScore)
     {
-        //Debug.Log("Totalling Score");
-
-        completionText.gameObject.SetActive(true);
-
         minigameScores.Add(newScore);
         StartCoroutine(StartNextMinigameDelay());
     }
@@ -140,50 +106,30 @@ public class MinigameManager : MonoBehaviour
         gameScenesTemp.Add(gameScenes[1]);
 
         gameScenes = gameScenesTemp;
-
         gameScenes[0].gameObject.SetActive(true);
-
         currentScene = 0;
 
         characterSelectionMenu.selectedCharacter = null;
         selectedRecipe = null;
 
         minigameScores.Clear();
-
         isProblemRun = false;
     }
 
     public void UpdateHappinessDisplay(float finalScore)
     {
-        endScreenIcon.sprite= characterSelectionMenu.selectedCharacter.Icon;
-
-        float newWidth = happinessMeter.transform.parent.GetComponent<RectTransform>().sizeDelta.x * (characterSelectionMenu.selectedCharacter.Happiness / 100);
-        happinessMeter.GetComponent<RectTransform>().sizeDelta = new Vector2(newWidth, happinessMeter.GetComponent<RectTransform>().sizeDelta.y);
-
         var happinessToAdd = maxHappiness * (finalScore / 100);
         CharacterManager.i.IncreaseHappiness(characterSelectionMenu.selectedCharacter.ID, happinessToAdd);
     }
 
-    public void UpdateCurrencyDisplay(float finalScore)
-    {
-
-        //gameManager.currency += maxCurrency * (finalScore / 100);
-
-        StartCoroutine(EndscreenAnimations(finalScore));
-    }
+    
 
     IEnumerator EndscreenAnimations(float finalScore)
     {
-
         yield return new WaitForSeconds(2);
 
         gameManager.currency += maxCurrency * (finalScore / 100);
 
         yield return new WaitForSeconds(2);
-
-        float newWidth = happinessMeter.transform.parent.GetComponent<RectTransform>().sizeDelta.x * (characterSelectionMenu.selectedCharacter.Happiness / 100);
-        happinessMeter.GetComponent<RectTransform>().sizeDelta = new Vector2(newWidth, happinessMeter.GetComponent<RectTransform>().sizeDelta.y);
-
     }
-
 }

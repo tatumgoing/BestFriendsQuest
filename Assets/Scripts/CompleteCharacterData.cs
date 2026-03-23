@@ -6,6 +6,7 @@ using UnityEngine;
 [System.Serializable]
 public class CompleteCharacterData
 {
+    [HideInInspector] public string DisplayName;
     [SerializeField] private StaticCharacterData _staticData;
     [SerializeField] private CharacterData _dynamicData;
 
@@ -19,6 +20,7 @@ public class CompleteCharacterData
         _staticData.FromStaticSaveString(staticSaveString);
 
         _dynamicData = new CharacterData(_staticData.ID);
+        DisplayName = _staticData.Name;
     }
 
     /// <summary>
@@ -30,6 +32,7 @@ public class CompleteCharacterData
     {
         _staticData = staticData;
         _dynamicData = new CharacterData(_staticData.ID);
+        DisplayName = _staticData.Name;
     }
 
     public ID ID => _staticData.ID;

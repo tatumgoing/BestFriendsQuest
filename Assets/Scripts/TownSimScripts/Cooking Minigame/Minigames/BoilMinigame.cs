@@ -71,7 +71,7 @@ public class BoilMinigame : MonoBehaviour
 
     void Update()
     {
-        if (manager.currentTimer != null && manager.currentTimer.timerActive)
+        /*if (manager.currentTimer != null && manager.currentTimer.timerActive)
         {
             CheckSpeed();
         }
@@ -98,7 +98,7 @@ public class BoilMinigame : MonoBehaviour
         {
             boilLoud.SetPercentVolume(0, 10 * Time.deltaTime);
             boilNormal.SetPercentVolume(0, 10 * Time.deltaTime);
-        }
+        }*/
 
     }
 

@@ -34,7 +34,7 @@ public class MinigameNarrativeResults : MonoBehaviour
         else _bottomText.text = bottomTextOptions[stringIndex];
 
         var text = _bottomText.text;
-        var pronoun = CharacterManager.i.GetPronoun(gift ? recipient : primary);
+        var pronoun = CharacterManager.i.GetPronounString(gift ? recipient : primary);
         _bottomText.text = text.Replace("PRONOUN", pronoun);
 
         var topTextString = (gift ? _giftTopTextTemplate : _soloTopTextTemplate).

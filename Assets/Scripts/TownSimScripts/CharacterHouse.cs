@@ -11,44 +11,25 @@ public class CharacterHouse : MonoBehaviour
     public CompleteCharacterData associatedCharacter;
 
     [Header("Dialogue Box")]
-
     public CharacterDialogue dialogueBox;
-
     public GameObject minigameNavMenu;
-
 
     [Header("Gift Inventory")]
     public GameObject giftMenu;
-
-    public GameObject giftButton;
-    public TMP_Text giftButtonText;
-
-
     private bool giftEnabled = false;
-
     public RecordsManager giftManager;
-    //public ItemBanner selectedGift;
 
     [Header("Status Menu")]
-
-    public GameObject houseStatusMenu;
-
-    public GameObject statusButton;
-
     private bool statusEnabled = false;
     public TMP_Text displayName;
-    public TMP_Text statusButtonText;
-
     public HappinessBar statusHappinessMeter;
-
     public GameObject relationshipPrefab;
     public GameObject relationshipContainer;
 
     [Header("Rewards Animation")]
-
     public HappinessBar rewardsHappinessMeter;
     public GameObject currencyDisplay;
-   
+
     private void Start()
     {
         //set associated character lol
@@ -58,7 +39,6 @@ public class CharacterHouse : MonoBehaviour
         dialogueBox.associatedCharacter = associatedCharacter;
 
         giftMenu.SetActive(false);
-        houseStatusMenu.SetActive(false);
         minigameNavMenu.SetActive(false);
 
         rewardsHappinessMeter.gameObject.SetActive(false);
@@ -66,11 +46,7 @@ public class CharacterHouse : MonoBehaviour
 
     private void OnEnable()
     {
-        print("enableHouseButton");
         statusEnabled = false;
-        houseStatusMenu.SetActive(false);
-
-        UpdateRelationships();
 
         displayName.text = associatedCharacter.Name;
     }
@@ -104,26 +80,6 @@ public class CharacterHouse : MonoBehaviour
         SolveProblemInHouse();
     }
 
-    public void ToggleStatusWindow()
-    {
-        if (statusEnabled)
-        {
-            houseStatusMenu.SetActive(false);
-            statusEnabled = false;
-            statusButtonText.text = "Status";
-            
-            giftButton.SetActive(true);
-
-        }
-        else
-        {
-            houseStatusMenu.SetActive(true); 
-            statusEnabled = true;
-            statusButtonText.text = "X";
-            
-            giftButton.SetActive(false);
-        }
-    }
 
     public void ToggleGiftWindow()
     {
@@ -131,30 +87,12 @@ public class CharacterHouse : MonoBehaviour
         {
             giftMenu.SetActive(false);
             giftEnabled = false;
-            giftButtonText.text = "Gift";
-
-            statusButton.SetActive(true);
         }
         else
         {
             giftMenu.SetActive(true);
             giftEnabled = true;
-            giftButtonText.text = "X";
-
-            statusButton.SetActive(false);
         }
-    }
-    
-    public void UpdateRelationships()
-    {
-        foreach (var character in CharacterManager.i.AllCharacters)
-        {
-            RelationshipBanner newBanner = Instantiate(relationshipPrefab, relationshipContainer.transform).GetComponent<RelationshipBanner>();
-            newBanner.icon.sprite = character.Icon;
-            newBanner.nameRelo.text = character.Name;
-            newBanner.slider.SetCharacters(associatedCharacter.ID, character.ID);
-            newBanner.status.text = "Testing";
-        } 
     }
     
     public void GiveGift()

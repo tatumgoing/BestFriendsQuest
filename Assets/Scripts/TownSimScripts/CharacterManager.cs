@@ -1,8 +1,10 @@
+using MyBox;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 public class CharacterManager : MonoBehaviour
 {
@@ -14,11 +16,27 @@ public class CharacterManager : MonoBehaviour
 
     public List<CompleteCharacterData> AllCharacters => allCharacters;
     public CompleteCharacterData GetRandomCharacter() => AllCharacters[Random.Range(0, AllCharacters.Count)];
+    public string GetAge(ID id) => allCharacters.Find(c => c.ID == id).Age.ToString();
+    public string GetFavoriteColor(ID id) => Utils.CapitalFirst(allCharacters.Find(c => c.ID == id).FavColor.ToString().ToLower());
 
     void Awake()
     {
         i = this;
         LoadCharactersFromFile();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.L)) RandomizeRelationships();
+    }
+
+    [ButtonMethod]
+    public void RandomizeRelationships()
+    {
+        print("RANDOMIZING RELATIONSHIPS");
+        for (int i = 0; i < _relationships.Count; i++) {
+            _relationships[i].Value = Random.Range(0, 10f);
+        }
     }
 
     public List<ID> AllIDs()
@@ -29,6 +47,12 @@ public class CharacterManager : MonoBehaviour
     public CompleteCharacterData GetCharacter(ID id)
     {
         return allCharacters.Find(x =>  x.ID == id);
+    }
+
+    public float GetHappiness(ID id)
+    {
+        var characterData = allCharacters.Find(c => c.ID == id);
+        return characterData != null ? characterData.Happiness : 0;
     }
 
     public Sprite GetPortrait(ID id)
@@ -43,7 +67,7 @@ public class CharacterManager : MonoBehaviour
         return characterData != null ? characterData.Name : "";
     }
 
-    private Pronoun GetPronounInternal(ID id)
+    public Pronoun GetPronoun(ID id)
     {
         var characterData = allCharacters.Find(c => c.ID == id);
         var pronoun = characterData.Pronouns;
@@ -53,21 +77,27 @@ public class CharacterManager : MonoBehaviour
         return pronoun;
     }
 
-    public string GetPronoun(ID id)
+    public string GetPronounString(ID id)
     {
-        var pronoun = GetPronounInternal(id);
+        var pronoun = GetPronoun(id);
         var formatted = Utils.CapitalFirst(pronoun.ToString().ToLower());
         return formatted;
     }
 
     public string GetPronounOwnership(ID id)
     {
-        var pronoun = GetPronounInternal(id);
+        var pronoun = GetPronoun(id);
         switch (pronoun) {
             case Pronoun.HE: return "himself";
             case Pronoun.SHE: return "herself";
             default: return "themself";
         }
+    }
+
+    public string GetBirthdayFormatted(ID id)
+    {
+        var birthday = allCharacters.Find(c => c.ID == id).Birthday;
+        return birthday.Month + " / " + birthday.Day + " / " + birthday.Year;
     }
 
     public string GetNameFormatted(ID id)
