@@ -137,11 +137,11 @@ public class SubgameController : MonoBehaviour
         }
     }
 
-    private void ShowResults()
+    private async void ShowResults()
     {
         //print("Showing results");
         _timerParent.SetActive(false);
-        _results.ShowScore(_totalScore, _currentRecipe, _character, _recipient, _isProblem);
+        await _results.ShowScore(_totalScore, _currentRecipe, _character, _recipient, _isProblem);
     }
 
     public void CompleteCountdown()

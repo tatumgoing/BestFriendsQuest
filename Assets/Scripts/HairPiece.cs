@@ -93,27 +93,6 @@ public class HairPiece : FeatureObj
         //_modelParent.GetChild(0).transform.localEulerAngles = modelParent.GetChild(0).transform.localEulerAngles;
     }
 
-    private void AlignWithTarget()
-    {
-        return;
-        var targetPos =  _controller.GetTargetPosition(Settings.Hori, Settings.Vert);
-        transform.LookAt(targetPos);
-    }
-
-    private void AlignToHeadNormal()
-    {
-        return;
-        _modelParent.localPosition = Vector3.forward * 2.5f;
-        var dir = transform.forward * -1;
-        bool hit = Physics.Raycast(_modelParent.position, dir, out var hitData, 100);
-        if (!hit) {
-            return;
-        }
-
-        _modelParent.up = hitData.normal;
-        _modelParent.position = hitData.point;
-    }
-
     [ButtonMethod]
     private void Save()
     {

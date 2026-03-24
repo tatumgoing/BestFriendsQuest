@@ -27,7 +27,7 @@ public class CameraController : MonoBehaviour
     [SerializeField] private Transform _freelookParent;
     [SerializeField] private float _freelookLerpFactor = 10;
     [SerializeField] private float _freelookZoomLerpFactor = 8;
-    [SerializeField] private float _freelookZoomSpeed = 5;
+    //[SerializeField] private float _freelookZoomSpeed = 5; //TEMP DISABLED
     [SerializeField] private Vector2 _freelookZoomLimits = new Vector2(0.1f, 2);
     [SerializeField] private bool _freeLook;
     [SerializeField] private Vector2 _freeLookSpeed = Vector2.one;

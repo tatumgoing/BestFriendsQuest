@@ -15,13 +15,13 @@ public class TownGameManager : MonoBehaviour
 
     [SerializeField] private bool _demoMode;
 
-    public void GoToMap() => ChangeArea(AreaName.MAP);
-    public void GoToPark() => ChangeArea(AreaName.PARK);
-    public void GoToTown() => ChangeArea(AreaName.TOWN);
-    public void GoToShop() => ChangeArea(AreaName.SHOP);
-    public void GoToResturaunt() => ChangeArea(AreaName.RESTURAUNT);
-    public void GoToTownHall() => ChangeArea(AreaName.TOWN_HALL);
-    public void GoToPort() => ChangeArea(AreaName.PORT);
+    public async void GoToMap() => await ChangeArea(AreaName.MAP);
+    public async void GoToPark() => await ChangeArea(AreaName.PARK);
+    public async void GoToTown() => await ChangeArea(AreaName.TOWN);
+    public async void GoToShop() => await ChangeArea(AreaName.SHOP);
+    public async void GoToResturaunt() => await ChangeArea(AreaName.RESTURAUNT);
+    public async void GoToTownHall() => await ChangeArea(AreaName.TOWN_HALL);
+    public async void GoToPort() => await ChangeArea(AreaName.PORT);
 
     private void OnValidate()
     {
@@ -57,7 +57,7 @@ public class TownGameManager : MonoBehaviour
     /// </summary>
     public void GoToRoom(ID id)
     {
-        //WIP, not implemented yet!
+        GoToTown();
     }
 
     /// <summary>

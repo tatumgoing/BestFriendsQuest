@@ -56,7 +56,7 @@ public class ParkController : MonoBehaviour
     /// <summary>
     /// Spawns 1 character and sets its animation. enables and  disables the spawned character quickly to force update the rig.
     /// </summary>
-    private async void SpawnCharacter(ID id, CharacterSpawnLocation spawnPoint)
+    private void SpawnCharacter(ID id, CharacterSpawnLocation spawnPoint)
     {
         var newCharacter = CharacterManager.i.SpawnCharacter(id, spawnPoint.transform);
         

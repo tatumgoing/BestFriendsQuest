@@ -84,7 +84,7 @@ public class CharacterCreatorProgression : MonoBehaviour
 
     }
 
-    public async void StartNew()
+    public void StartNew()
     {
         _characterController.MakeNewID();
         _facialFeaturesTabButton.Select(true);
