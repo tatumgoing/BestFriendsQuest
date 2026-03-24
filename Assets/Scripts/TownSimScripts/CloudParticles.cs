@@ -24,6 +24,6 @@ public class CloudParticles : MonoBehaviour
 
     public void SpawnCharacterSelectCloud()
     {
-        endTime += duration;
+        endTime = Time.deltaTime + duration;
     }
 }
