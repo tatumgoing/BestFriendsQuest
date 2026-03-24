@@ -15004,8 +15004,8 @@ Camera:
     width: 1
     height: 1
   near clip plane: 1.4
-  far clip plane: 3000
-  field of view: 52.8
+  far clip plane: 1000
+  field of view: 30
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -15031,8 +15031,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.20863575, y: -0.77271974, z: 0.31675792, w: 0.5089596}
-  m_LocalPosition: {x: 707.42725, y: 481.6, z: 158.70898}
+  m_LocalRotation: {x: 0.08803495, y: 0.025257774, z: -0.002232956, w: 0.99579465}
+  m_LocalPosition: {x: 366.53, y: 522.8, z: -20.45}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -16059,10 +16059,10 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1141014258}
-  - {fileID: 1816880362}
   - {fileID: 1287727945}
   - {fileID: 638591774}
   - {fileID: 558422468}
+  - {fileID: 1816880362}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1025632719
@@ -17277,11 +17277,6 @@ MonoBehaviour:
   allItems: []
   itemNames: []
   itemCounts: 
-  allProblems:
-  - {fileID: 11400000, guid: 3264bf2440549174e9f5c86bdc09a737, type: 2}
-  - {fileID: 11400000, guid: e2c11b5fdd5bfdc4aa440ec8f08d6085, type: 2}
-  - {fileID: 11400000, guid: f1e36858e97635743b6f28f75414dee3, type: 2}
-  - {fileID: 11400000, guid: 2fae5e233aafce1439e26c9a503fbd55, type: 2}
   sceneList:
   - {fileID: 1803094215}
   - {fileID: 1347480911}
@@ -19122,6 +19117,8 @@ MonoBehaviour:
   _characterControllerPrefab: {fileID: 8200072468975677627, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
   allCharacters: []
   _relationships: []
+  _maxProblemPercent: 0.5
+  _allProblems: []
 --- !u!4 &1287727945
 Transform:
   m_ObjectHideFlags: 0

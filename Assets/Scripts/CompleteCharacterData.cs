@@ -60,8 +60,8 @@ public class CompleteCharacterData
     
     //Problems
     public void SolveProblem() => _dynamicData.SolveProblem();
-    public void SetProblem(Problem problem) => _dynamicData.CurrentProblem = problem;
+    public void SetProblem(ProblemData problem) => _dynamicData.CurrentProblem = problem;
     public bool HasProblem => _dynamicData.CurrentProblem != null;
-    public Problem CurrentProblem => _dynamicData.CurrentProblem;
+    public ProblemData CurrentProblem => _dynamicData.CurrentProblem;
 
 }

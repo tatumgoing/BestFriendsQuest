@@ -8,7 +8,7 @@ public class Quest : ScriptableObject
 {
     public bool completed= false;
 
-    public Item unlockedItem;
+    public ItemData unlockedItem;
 
     public float completionTime;
 
