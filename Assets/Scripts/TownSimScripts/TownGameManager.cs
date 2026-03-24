@@ -52,6 +52,15 @@ public class TownGameManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Called from a minigameController when completing a problem-based minigame.
+    /// returns to the room of the character and triggers the completion dialogue.
+    /// </summary>
+    public void GoToRoom(ID id)
+    {
+        //WIP, not implemented yet!
+    }
+
+    /// <summary>
     /// Given an ID, goes to and starts the minigame to solve that character's problem
     /// warning: only call if certain that this character has a minigame-type problem
     /// </summary>

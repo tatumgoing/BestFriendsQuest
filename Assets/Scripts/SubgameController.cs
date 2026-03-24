@@ -42,6 +42,7 @@ public class SubgameController : MonoBehaviour
     private Subgame _currentSubgame;
     private ID _character;
     private ID _recipient;
+    private bool _isProblem;
 
     private SubgameData _currentSubgameData => _currentRecipe.Subgames[_subgameIndex];
 
@@ -87,15 +88,17 @@ public class SubgameController : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void StartMinigame(RecipeData recipe, ID character, ID recipient)
+    public void StartMinigame(RecipeData recipe, ID character, ID recipient, bool isProblem)
     {
         if (!_initialized) Initialize();
 
+        _isProblem = isProblem;
         _character = character;
         _recipient = recipient;
         _timerParent.SetActive(true);
         _results.gameObject.SetActive(false);
         _currentRecipe = recipe;
+
         _subgameIndex = 0;
         _totalScore = 0;
 
@@ -138,7 +141,7 @@ public class SubgameController : MonoBehaviour
     {
         //print("Showing results");
         _timerParent.SetActive(false);
-        _results.ShowScore(_totalScore, _currentRecipe, _character, _recipient);
+        _results.ShowScore(_totalScore, _currentRecipe, _character, _recipient, _isProblem);
     }
 
     public void CompleteCountdown()

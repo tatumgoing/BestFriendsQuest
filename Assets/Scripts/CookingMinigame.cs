@@ -13,24 +13,26 @@ public class CookingMinigame : MinigameController
     [SerializeField] private GameObject _startButton;
     [SerializeField] private GameObject _backButton;
 
-    [Header("Minigames")]
+    [Header("Subgames")]
     [SerializeField] private StirMinigame _stirMinigame;
 
-    //TESTING
+    private ID _selectedCharacter = new ID(0);
+    private ID _selectedRecipient = new ID(0);
+    private bool _solvingProblem;
+    private GameObject _spawnedCharacter;
+
+    //===TESTING===
     [Header("TESTING")]
     [SerializeField] private List<RecipeData> _recipes;
     [SerializeField] private ID _testID = new ID(8126);
     [SerializeField, DisplayInspector] private RecipeData _testRecipe;
 
-    private ID _selectedCharacter = new ID(0);
-    private ID _selectedRecipient = new ID(0);
-    private GameObject _spawnedCharacter;
+    // I, too, am testing
+    private ID _displayedSelectedCharacter = new ID(0); //tracks character on the main menu
+
+    //===END TESTING===
 
     public override MinigameType GetMinigameType() => MinigameType.COOKING;
-
-    // I, too, am testing
-
-    private ID _displayedSelectedCharacter = new ID(0); //tracks character on the main menu
 
     private void OnEnable()
     {
@@ -44,6 +46,7 @@ public class CookingMinigame : MinigameController
         _recipeSelector.gameObject.SetActive(false);
         _recipientSelectScreen.gameObject.SetActive(false);
         _characterSelectScreen.SetActive(false);
+        _solvingProblem = false;
 
         _backButton.SetActive(true);
         _startButton.SetActive(true);
@@ -74,7 +77,18 @@ public class CookingMinigame : MinigameController
         _startButton.SetActive(false);
         _backButton.SetActive(false);
 
+        _solvingProblem = true;
+
         SelectPrimaryCharacter(character);
+    }
+
+    /// <summary>
+    /// Called from minigameResultsScreen after hitting 'continue' after solving a problem that requires playing a minigame
+    /// sends the player back to the room of the character for some post-problem dialogue and rewards
+    /// </summary>
+    override public void CompleteProblem()
+    {
+        TownGameManager.i.GoToRoom(_selectedCharacter);
     }
 
     public void ReturnToMap()
@@ -108,6 +122,7 @@ public class CookingMinigame : MinigameController
         _recipientSelectScreen.gameObject.SetActive(true);
 
         _recipientSelectScreen.SelectPreviousPrimary(id);
+        _areaController.DestroySpawnedCharacter();
         _spawnedCharacter = _areaController.SpawnCharacter(_selectedCharacter);
     }
 
@@ -127,8 +142,7 @@ public class CookingMinigame : MinigameController
     {
         _recipeSelector.gameObject.SetActive(false);
 
-
-        _subgameController.StartMinigame(recipe, _selectedCharacter, _selectedRecipient);
+        _subgameController.StartMinigame(recipe, _selectedCharacter, _selectedRecipient, _solvingProblem);
 
         //_stirMinigame.StartStirring();
         //MinigameManager.i.NextMinigameScene();

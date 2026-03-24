@@ -27,7 +27,11 @@ public class MinigameResultsScreen : MonoBehaviour
     [Space()]
     [SerializeField] private MinigameNarrativeResults _narrative;
 
-    public async Task ShowScore(float finalScore, RecipeData recipe, ID character, ID recipient)
+    [Space()]
+    [SerializeField] private GameObject _normalButtons;
+    [SerializeField] private GameObject _problemContinueButton;
+
+    public async Task ShowScore(float finalScore, RecipeData recipe, ID character, ID recipient, bool isProblem)
     {
         gameObject.SetActive(true);
 
@@ -42,6 +46,9 @@ public class MinigameResultsScreen : MonoBehaviour
         _narrative.Show(character, recipient, recipe, finalScore);
 
         foreach (Transform child in _listParent) {
+            if (isProblem && child.gameObject == _normalButtons) continue;
+            if (!isProblem && child.gameObject == _problemContinueButton) continue;
+
             child.gameObject.SetActive(true);
             await Task.Delay(Mathf.RoundToInt(_delay * 1000));
         }
@@ -67,5 +74,10 @@ public class MinigameResultsScreen : MonoBehaviour
             _happinessEffectText.color = _happyColor;
         } 
         _happinessCharacterPortrait.sprite = CharacterManager.i.GetPortrait(character);
+    }
+
+    public void ReturnToProblemRoom()
+    {
+        GetComponentInParent<MinigameController>().CompleteProblem();
     }
 }

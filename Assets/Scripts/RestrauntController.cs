@@ -41,21 +41,23 @@ public class RestrauntController : MonoBehaviour
 
     }
 
+    public void DestroySpawnedCharacter()
+    {
+        if (characterSelectSpawnedCharacter) Destroy(characterSelectSpawnedCharacter);
+    }
+
     public void SpawnCharacterSelect(ID id)
     {
-        Debug.Log("Changing characters!");
+        //Debug.Log("Changing characters!");
 
         //kill old character, spawn new
 
-        if (characterSelectSpawnedCharacter != null)
-        {
-            Destroy(characterSelectSpawnedCharacter);
-        }
+        DestroySpawnedCharacter();
 
         SpawnCharacterSelectCloud(id);
     }
 
-    public async Task SpawnCharacterSelectCloud(ID id)
+    public async void SpawnCharacterSelectCloud(ID id)
     {
         characterSelectCloud.SetActive(true);
 
