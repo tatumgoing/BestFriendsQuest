@@ -14,7 +14,7 @@ public class RestrauntController : MonoBehaviour
 
     [Header("Effects")]
 
-    [SerializeField] private GameObject characterSelectCloud;
+    [SerializeField] private CloudParticles characterSelectCloud;
 
     private GameObject characterSelectSpawnedCharacter;
 
@@ -52,18 +52,9 @@ public class RestrauntController : MonoBehaviour
             Destroy(characterSelectSpawnedCharacter);
         }
 
-        SpawnCharacterSelectCloud(id);
-    }
+        characterSelectCloud.SpawnCharacterSelectCloud();
 
-    public async Task SpawnCharacterSelectCloud(ID id)
-    {
-        characterSelectCloud.SetActive(true);
-
-        await Task.Delay(500);
         characterSelectSpawnedCharacter = SpawnCharacter(id);
-
-        await Task.Delay(500);
-        characterSelectCloud.SetActive(false);
     }
    
 }
