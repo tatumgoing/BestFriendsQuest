@@ -7,26 +7,7 @@ using System.Linq;
 using MyBox;
 using Unity.VisualScripting;
 
-public enum AreaName {MAP, PARK, TOWN, SHOP, RESTURAUNT, TOWN_HALL, PORT }
 
-[System.Serializable]
-public class AreaData
-{
-    [HideInInspector] public string DisplayName;
-    [HideInInspector] public AreaName Type;
-
-    public GameObject UI;
-    public GameObject Environment;
-
-    public void Show() => SetActiveState(true);
-    public void Hide() => SetActiveState(false);
-
-    public void SetActiveState(bool active)
-    {
-        if (UI) UI.SetActive(active);
-        if (Environment) Environment.SetActive(active);
-    }
-}
 
 public class TownGameManager : MonoBehaviour
 {
@@ -58,11 +39,9 @@ public class TownGameManager : MonoBehaviour
     private void Awake()
     {
         i = this;
+        allItems = Resources.LoadAll<ItemData>("Items").ToList();
 
-        //load items from Resources
-        foreach (Item item in Resources.LoadAll("Items", typeof(Item))) {
-            allItems.Add(item);
-        }
+        LoadInventory();
     }
 
     void Start()
@@ -70,14 +49,8 @@ public class TownGameManager : MonoBehaviour
         currency = PlayerPrefs.GetFloat("PlayerCurrency", 100);
         ChangeCurrency(0);
 
-        LoadInventory();
-
-        GenerateProblem(new ID());
-
         //bad liine of temp code
         ChangeScene(sceneUIList[sceneUIList.Count - 1], true);
-
-        //MakeCharacterHouses();
     }
 
     public async void ChangeArea(AreaName targetArea)
@@ -125,16 +98,11 @@ public class TownGameManager : MonoBehaviour
     
     public List<RecordsManager> recordsManagers = new List<RecordsManager>();
 
-    [SerializeField]private List<Item> allItems = new List<Item> ();
+    [SerializeField]private List<ItemData> allItems = new List<ItemData> ();
     
     public List<string> itemNames= new List<string> (); 
     public List<int> itemCounts = new List<int> ();
-    public Dictionary<Item, int> items = new Dictionary<Item, int> ();
-
-    [Header("Problems")]
-
-    public List<Problem> allProblems = new List<Problem> ();
-    //public CharacterData problemCharacter;
+    public Dictionary<ItemData, int> items = new Dictionary<ItemData, int> ();
 
     [Header ("UI Lists")]
 
@@ -207,7 +175,7 @@ public class TownGameManager : MonoBehaviour
 
     }
 
-    public void AddInventory(Item newItem)
+    public void AddInventory(ItemData newItem)
     {
         if (items.ContainsKey(newItem))
         {
@@ -224,7 +192,7 @@ public class TownGameManager : MonoBehaviour
         SaveCurrentInventory();
     }
 
-    public void SubtractInventory(Item newItem)
+    public void SubtractInventory(ItemData newItem)
     {
         if (items.ContainsKey(newItem))
         {
@@ -275,22 +243,19 @@ public class TownGameManager : MonoBehaviour
         items.Clear();
 
 
-        foreach (var i in inventoryList) { 
-        
-            var splitString= i.Split(',');
-            if(splitString.Length == 2)
-            {
-                Item newItem = GetItemFromName(splitString[0]);
-                items.Add(newItem, int.Parse(splitString[1]));
-
-            }
+        foreach (var itemString in inventoryList) { 
+            var parts = itemString.Split(',');
+            if (parts.Length != 2) continue;
+            
+            ItemData newItem = GetItemFromName(parts[0]);
+            items.Add(newItem, int.Parse(parts[1]));
         }
 
         UpdateInventoryInspector();
     }
 
 
-    private Item GetItemFromName(string coolItem)
+    private ItemData GetItemFromName(string coolItem)
     {
         foreach (var item in allItems)
         {
@@ -302,9 +267,7 @@ public class TownGameManager : MonoBehaviour
 
         Debug.LogError(coolItem + " doesn't exist, what the hell?");
         return null;
-        
     }
-
 
     public void GiveMoney()
     {
@@ -313,10 +276,9 @@ public class TownGameManager : MonoBehaviour
 
     public void UpdateRecordDisplay(RecordsManager rManager, ItemType type)
     {
-       
         rManager.ClearRecords();
 
-        foreach (Item i in allItems)
+        foreach (ItemData i in allItems)
         {
             if (i.Type == type)
             {
@@ -338,24 +300,6 @@ public class TownGameManager : MonoBehaviour
             }
         
         }
-
         rManager.UpdateRecordSync();
-
-    }
-
-    private void OpenHouse(CompleteCharacterData character)
-    {
-        // disable the navigation UI, set active the house game object
-        character.RoomScript.Show(character.ID);
-    }
-
-    public void GenerateProblem(ID prevID)
-    {
-        var validOptions = _characterManager.AllCharacters.Where(x => x.ID != prevID).ToList();
-
-        var selectedCharacter = validOptions[Random.Range(0, validOptions.Count())];
-        var selectedProblem = allProblems[Random.Range(0, allProblems.Count)];
-
-        CharacterManager.i.AssignProblem(selectedCharacter.ID, selectedProblem);
     }
 }

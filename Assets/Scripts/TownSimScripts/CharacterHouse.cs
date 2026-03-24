@@ -13,18 +13,13 @@ public class CharacterHouse : MonoBehaviour
     [Header("Dialogue Box")]
     public GameObject minigameNavMenu;
 
-
-
     [Header("Rewards Animation")]
     public HappinessBar rewardsHappinessMeter;
     public GameObject currencyDisplay;
 
     private void Start()
     {
-        //set associated character lol
         rewardsHappinessMeter.associatedCharacter = associatedCharacter;
-
-        //dialogueBox.associatedCharacter = associatedCharacter;
 
         minigameNavMenu.SetActive(false);
 
@@ -39,7 +34,7 @@ public class CharacterHouse : MonoBehaviour
 
     public async void ShowMinigameOptions()
     {
-        if (associatedCharacter.HasProblem && associatedCharacter.CurrentProblem.IsMinigame)
+        if (associatedCharacter.HasProblem && associatedCharacter.CurrentProblem.Type == ProblemType.MINIGAME)
         {
             await Task.Delay(3000);
 
@@ -58,8 +53,6 @@ public class CharacterHouse : MonoBehaviour
         MinigameManager.i.StartProblemMinigame(associatedCharacter);
         SolveProblemInHouse();
     }
-    
-    
 
     public IEnumerator SolveProblem()
     {
@@ -70,7 +63,7 @@ public class CharacterHouse : MonoBehaviour
         yield return new WaitForSeconds(4f);
 
         //dialogueBox.HideDialogue();
-        StartCoroutine(RewardsAnimation(associatedCharacter.CurrentProblem.rewardHappiness, associatedCharacter.CurrentProblem.rewardCurrency));
+        StartCoroutine(RewardsAnimation(associatedCharacter.CurrentProblem.RewardHappiness, associatedCharacter.CurrentProblem.RewardCurrency));
     }
 
     public IEnumerator FailProblem()
@@ -129,10 +122,9 @@ public class CharacterHouse : MonoBehaviour
 
 
         //stop old problem, make new problem
-        if (associatedCharacter.HasProblem && !associatedCharacter.CurrentProblem.IsMinigame)
+        if (associatedCharacter.HasProblem && associatedCharacter.CurrentProblem.Type != ProblemType.MINIGAME)
         {
-            CharacterManager.i.SolveProblem(associatedCharacter.ID);
-            TownGameManager.i.GenerateProblem(associatedCharacter.ID);
+            CharacterManager.i.SolveAndGenerateProblem(associatedCharacter.ID);
         }
     }
 
@@ -140,8 +132,7 @@ public class CharacterHouse : MonoBehaviour
     {
         if (associatedCharacter.HasProblem)
         {
-            CharacterManager.i.SolveProblem(associatedCharacter.ID);
-            TownGameManager.i.GenerateProblem(associatedCharacter.ID);
+            CharacterManager.i.SolveAndGenerateProblem(associatedCharacter.ID);
         }
     }
 }

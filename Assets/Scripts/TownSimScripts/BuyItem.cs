@@ -6,7 +6,7 @@ public class BuyItem : MonoBehaviour
 {
     public TownGameManager gameManager;
 
-    public Item item;
+    public ItemData item;
 
     private void Start()
     {

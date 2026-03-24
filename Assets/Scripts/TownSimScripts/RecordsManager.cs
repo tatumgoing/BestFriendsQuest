@@ -78,7 +78,7 @@ public class RecordsManager : MonoBehaviour
 
     }
 
-    public void CreateHeldItem(Item item, int itemCount, float price)
+    public void CreateHeldItem(ItemData item, int itemCount, float price)
     {
 
        ItemBanner newBanner = Instantiate(heldItem, this.transform);
@@ -90,7 +90,7 @@ public class RecordsManager : MonoBehaviour
 
     }
 
-    public void CreateUnheldItem(Item item, int itemCount, float price)
+    public void CreateUnheldItem(ItemData item, int itemCount, float price)
     {
         if (isRecords) { 
             CreateHeldItem(item, itemCount, item.Cost);
@@ -106,7 +106,7 @@ public class RecordsManager : MonoBehaviour
         }
     }
 
-    public void CreateLockedItem(Item item) {
+    public void CreateLockedItem(ItemData item) {
 
         if (isRecords) {
             ItemBanner newBanner = Instantiate(lockedItem, this.transform);

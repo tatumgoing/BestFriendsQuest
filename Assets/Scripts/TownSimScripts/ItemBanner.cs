@@ -6,14 +6,14 @@ using UnityEngine.UI;
 
 public class ItemBanner : MonoBehaviour
 {
-    public Item itemID;
+    public ItemData itemID;
     // Start is called before the first frame update
     public TMP_Text itemName;
     public TMP_Text itemCount;
     public TMP_Text itemPrice;
 
     
-    public void UpdateBanner(Item item)
+    public void UpdateBanner(ItemData item)
     {
         UpdateName(item.Name);
         itemID = item; 

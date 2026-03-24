@@ -6146,6 +6146,10 @@ PrefabInstance:
       value: GoToResturaunt
       objectReference: {fileID: 0}
     - target: {fileID: 6520267158234211079, guid: 5e39acf2f1421b14fbdf4aefc9fdf830, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: NavigationButton, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6520267158234211079, guid: 5e39acf2f1421b14fbdf4aefc9fdf830, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
       value: TownGameManager, Assembly-CSharp
       objectReference: {fileID: 0}
@@ -9648,7 +9652,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &635968985
 Transform:
   m_ObjectHideFlags: 0
@@ -15031,8 +15035,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.20863575, y: -0.77271974, z: 0.31675792, w: 0.5089596}
-  m_LocalPosition: {x: 707.42725, y: 481.6, z: 158.70898}
+  m_LocalRotation: {x: 0.12168471, y: -0.6117367, z: 0.09595948, w: 0.77573377}
+  m_LocalPosition: {x: 377.89, y: 211.70001, z: 2.08}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -16059,10 +16063,10 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1141014258}
-  - {fileID: 1816880362}
   - {fileID: 1287727945}
   - {fileID: 638591774}
   - {fileID: 558422468}
+  - {fileID: 1816880362}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1025632719
@@ -17277,11 +17281,6 @@ MonoBehaviour:
   allItems: []
   itemNames: []
   itemCounts: 
-  allProblems:
-  - {fileID: 11400000, guid: 3264bf2440549174e9f5c86bdc09a737, type: 2}
-  - {fileID: 11400000, guid: e2c11b5fdd5bfdc4aa440ec8f08d6085, type: 2}
-  - {fileID: 11400000, guid: f1e36858e97635743b6f28f75414dee3, type: 2}
-  - {fileID: 11400000, guid: 2fae5e233aafce1439e26c9a503fbd55, type: 2}
   sceneList:
   - {fileID: 1803094215}
   - {fileID: 1347480911}
@@ -19122,6 +19121,8 @@ MonoBehaviour:
   _characterControllerPrefab: {fileID: 8200072468975677627, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
   allCharacters: []
   _relationships: []
+  _maxProblemPercent: 0.5
+  _allProblems: []
 --- !u!4 &1287727945
 Transform:
   m_ObjectHideFlags: 0
@@ -19498,7 +19499,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1347480912
 Transform:
   m_ObjectHideFlags: 0
@@ -26427,7 +26428,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4933895329171210666, guid: 73d5b6b441c101941a9a03cde8c344b5, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4977913545704511210, guid: 73d5b6b441c101941a9a03cde8c344b5, type: 3}
       propertyPath: m_IsActive
@@ -27924,7 +27925,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1933116800
 Transform:
   m_ObjectHideFlags: 0

@@ -9,7 +9,7 @@ using System.Linq;
 public class CharacterData 
 {
     [Range(0,100) ]public float Happiness = 50;
-    public Problem CurrentProblem;
+    public ProblemData CurrentProblem;
 
     public CharacterRoomModel RoomScript;
 

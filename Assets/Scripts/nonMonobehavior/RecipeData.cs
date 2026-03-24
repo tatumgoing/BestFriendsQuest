@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum MinigameType { COOKING, GARDENING, FISHING}
 public enum SubgameType { SITRRING, GRILLING}
 
 [System.Serializable]

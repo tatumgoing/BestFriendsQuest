@@ -1,18 +1,21 @@
 using MyBox;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
 
 public class CharacterManager : MonoBehaviour
 {
     public static CharacterManager i;
 
+    [Header("Characters")]
     [SerializeField] private GameObject _characterControllerPrefab;
     [SerializeField] public List<CompleteCharacterData> allCharacters = new List<CompleteCharacterData>();
     [SerializeField] private List<RelationshipData> _relationships = new List<RelationshipData>();
+
+    [Header("Problems")]
+    [SerializeField, Range(0, 1), Tooltip("Max percent of citizens that can have problems")] private float _maxProblemPercent = 0.3f;
+    [SerializeField] private List<ProblemData> _allProblems;
 
     public List<CompleteCharacterData> AllCharacters => allCharacters;
     public CompleteCharacterData GetRandomCharacter() => AllCharacters[Random.Range(0, AllCharacters.Count)];
@@ -23,11 +26,46 @@ public class CharacterManager : MonoBehaviour
     {
         i = this;
         LoadCharactersFromFile();
+        LoadProblems();
+    }
+
+    private void Start()
+    {
+        GenerateProblem();
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.L)) RandomizeRelationships();
+        if (Input.GetKeyDown(KeyCode.L)) RandomizeRelationships(); //TESTING
+
+        var problemRatio = (float)numCharactersWithProblems() / allCharacters.Count;
+        if (problemRatio < _maxProblemPercent) GenerateProblem();
+    }
+
+    private int numCharactersWithProblems()
+    {
+        int numProblems = 0;
+        foreach (var character in allCharacters) if (character.HasProblem) numProblems++;
+        return numProblems;
+    }
+
+    public void GenerateProblem()
+    {
+        var validOptions = AllCharacters.Where(x => !x.HasProblem)  .ToList();
+        GenerateProblem(validOptions[Random.Range(0, validOptions.Count)].ID);
+    }
+
+    private void GenerateProblem(ID selectedCharacterID)
+    {
+        var selectedProblem = _allProblems[Random.Range(0, _allProblems.Count)];
+        AssignProblem(selectedCharacterID, selectedProblem);
+
+        print("gave problem: " + selectedProblem.name + " to " + GetNameFormatted(selectedCharacterID));
+    }
+
+    private void LoadProblems()
+    {
+        _allProblems = Resources.LoadAll<ProblemData>("Problems").ToList();
     }
 
     [ButtonMethod]
@@ -136,7 +174,7 @@ public class CharacterManager : MonoBehaviour
         character.SetActive(true);
     }
 
-    public void AssignProblem(ID id, Problem problem)
+    public void AssignProblem(ID id, ProblemData problem)
     {
         var character = allCharacters.Find(c => c.ID == id);
         character?.SetProblem(problem);
@@ -163,10 +201,12 @@ public class CharacterManager : MonoBehaviour
         return 0;
     }
 
-    public void SolveProblem(ID id)
+    public void SolveAndGenerateProblem(ID id)
     {
         var character = allCharacters.Find(c => c.ID == id);
         character?.SolveProblem();
+
+        GenerateProblem();
     }
 
     /// <summary>
