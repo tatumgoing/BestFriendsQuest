@@ -9291,6 +9291,7 @@ GameObject:
   - component: {fileID: 585318295}
   - component: {fileID: 585318297}
   - component: {fileID: 585318296}
+  - component: {fileID: 585318298}
   m_Layer: 0
   m_Name: CloudParticles
   m_TagString: Untagged
@@ -14110,6 +14111,24 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
+--- !u!114 &585318298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 585318294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a8fb02d5cd280e42ab8df90962071ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 1
+--- !u!1 &586368045 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7267196523468811813, guid: 73d5b6b441c101941a9a03cde8c344b5, type: 3}
+  m_PrefabInstance: {fileID: 1855206028}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &587814567
 GameObject:
   m_ObjectHideFlags: 0
@@ -32058,6 +32077,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2669077850521313178, guid: 73d5b6b441c101941a9a03cde8c344b5, type: 3}
+      propertyPath: _normalButtons
+      value: 
+      objectReference: {fileID: 586368045}
+    - target: {fileID: 2669077850521313178, guid: 73d5b6b441c101941a9a03cde8c344b5, type: 3}
+      propertyPath: _problemContinueButton
+      value: 
+      objectReference: {fileID: 338613862}
     - target: {fileID: 2717238215919911559, guid: 73d5b6b441c101941a9a03cde8c344b5, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -33693,7 +33720,7 @@ MonoBehaviour:
   _characterSpawnPoint: {fileID: 406499057}
   startingCamera: {fileID: 923341723}
   stoveCamera: {fileID: 65334498}
-  characterSelectCloud: {fileID: 585318294}
+  characterSelectCloud: {fileID: 585318298}
 --- !u!1 &1935775762
 GameObject:
   m_ObjectHideFlags: 0
