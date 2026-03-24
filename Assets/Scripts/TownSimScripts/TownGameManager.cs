@@ -7,8 +7,6 @@ using System.Linq;
 using MyBox;
 using Unity.VisualScripting;
 
-
-
 public class TownGameManager : MonoBehaviour
 {
     public static TownGameManager i;
@@ -53,7 +51,21 @@ public class TownGameManager : MonoBehaviour
         ChangeScene(sceneUIList[sceneUIList.Count - 1], true);
     }
 
-    public async void ChangeArea(AreaName targetArea)
+    /// <summary>
+    /// Given an ID, goes to and starts the minigame to solve that character's problem
+    /// warning: only call if certain that this character has a minigame-type problem
+    /// </summary>
+    public async void QuickStartMinigame(ID character)
+    {
+        var minigame = CharacterManager.i.GetProblem(character).Minigame;
+        var selected = _areas.Where(x => x._minigameController?.GetMinigameType() == minigame).FirstOrDefault();
+        if (selected == default) return;
+
+        await ChangeArea(selected.Type);
+        selected._minigameController.StartProblemMinigame(character);
+    }
+
+    public async Task ChangeArea(AreaName targetArea)
     {
         await FadeScreen(true);
 

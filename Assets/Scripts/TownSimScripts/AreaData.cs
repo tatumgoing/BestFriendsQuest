@@ -1,3 +1,4 @@
+using MyBox;
 using UnityEngine;
 
 public enum AreaName { MAP, PARK, TOWN, SHOP, RESTURAUNT, TOWN_HALL, PORT }
@@ -10,6 +11,8 @@ public class AreaData
 
     public GameObject UI;
     public GameObject Environment;
+    [SerializeField] private bool _hasMinigame;
+    [ConditionalField(nameof(_hasMinigame))] public MinigameController _minigameController;
 
     public void Show() => SetActiveState(true);
     public void Hide() => SetActiveState(false);

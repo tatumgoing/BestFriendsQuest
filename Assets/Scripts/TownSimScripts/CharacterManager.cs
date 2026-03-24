@@ -42,6 +42,18 @@ public class CharacterManager : MonoBehaviour
         if (problemRatio < _maxProblemPercent) GenerateProblem();
     }
 
+    public ProblemData GetProblem(ID id)
+    {
+        var characterData = allCharacters.Find(c => c.ID == id);
+        return characterData.CurrentProblem;
+    }
+
+    public string GetDialogue(ID id)
+    {
+        var characterData = allCharacters.Find(c => c.ID == id);
+        return characterData.GetDialogue();
+    }
+
     private int numCharactersWithProblems()
     {
         int numProblems = 0;

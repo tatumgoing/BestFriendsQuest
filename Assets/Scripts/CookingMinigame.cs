@@ -6,7 +6,7 @@ using UnityEngine;
 public class CookingMinigame : MinigameController
 {
     [SerializeField] private GameObject _characterSelectScreen;
-    [SerializeField] private GameObject _recipientSelectScreen;
+    [SerializeField] private CharacterSelectionMenu _recipientSelectScreen;
     [SerializeField] private RecipeSelector _recipeSelector;
     [SerializeField] private RestrauntController _areaController;
     [SerializeField] private SubgameController _subgameController;
@@ -26,13 +26,15 @@ public class CookingMinigame : MinigameController
     private ID _selectedRecipient = new ID(0);
     private GameObject _spawnedCharacter;
 
+    public override MinigameType GetMinigameType() => MinigameType.COOKING;
+
     private void OnEnable()
     {
         if (_spawnedCharacter != null) Destroy(_spawnedCharacter.gameObject);
 
         _subgameController.gameObject.SetActive(false);
         _recipeSelector.gameObject.SetActive(false);
-        _recipientSelectScreen.SetActive(false);
+        _recipientSelectScreen.gameObject.SetActive(false);
         _characterSelectScreen.SetActive(false);
 
         _backButton.SetActive(true);
@@ -50,6 +52,16 @@ public class CookingMinigame : MinigameController
         }
     }
 
+    public override void StartProblemMinigame(ID character)
+    {
+        gameObject.SetActive(true);
+
+        _startButton.SetActive(false);
+        _backButton.SetActive(false);
+
+        SelectPrimaryCharacter(character);
+    }
+
     public void ReturnToMap()
     {
         TownGameManager.i.GoToMap();
@@ -57,8 +69,9 @@ public class CookingMinigame : MinigameController
 
     public void ResetKitchen()
     {
+        if (_spawnedCharacter) Destroy(_spawnedCharacter.gameObject);
+
         _subgameController.gameObject.SetActive(false);
-        Destroy(_spawnedCharacter.gameObject);
         _startButton.SetActive(true);
         _backButton.SetActive(true);
     }
@@ -75,21 +88,18 @@ public class CookingMinigame : MinigameController
     /// </summary>
     public override void SelectPrimaryCharacter(ID id)
     {
-        base.SelectPrimaryCharacter(id);
-
         _selectedCharacter = id;
         _characterSelectScreen.SetActive(false);
-        _recipientSelectScreen.SetActive(true);
+        _recipientSelectScreen.gameObject.SetActive(true);
 
+        _recipientSelectScreen.SelectPreviousPrimary(id);
         _spawnedCharacter = _areaController.SpawnCharacter(_selectedCharacter);
     }
 
     public override void SelectRecipient(ID id)
     {
-        base.SelectRecipient(id);
-
         _selectedRecipient = id;
-        _recipientSelectScreen.SetActive(false);
+        _recipientSelectScreen.gameObject.SetActive(false);
         ShowRecipeOptions();
     }
 

@@ -64,4 +64,11 @@ public class CompleteCharacterData
     public bool HasProblem => _dynamicData.CurrentProblem != null;
     public ProblemData CurrentProblem => _dynamicData.CurrentProblem;
 
+
+    public string GetDialogue()
+    {
+        if (_dynamicData.CurrentProblem == null) return "";
+        else return _dynamicData.CurrentProblem.Dialogue;
+    }
+
 }

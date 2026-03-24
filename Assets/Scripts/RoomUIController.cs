@@ -31,7 +31,7 @@ public class RoomUIController : MonoBehaviour
 
     public void Talk()
     {
-        _dialogue.ShowRandomText();
+        _dialogue.Talk(_id);
     }
 
     public void ShowGiftMenu()

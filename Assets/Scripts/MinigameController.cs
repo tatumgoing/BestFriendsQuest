@@ -1,7 +1,9 @@
 using UnityEngine;
 
-public class MinigameController : MonoBehaviour
+public abstract class MinigameController : MonoBehaviour
 {
-    public virtual void SelectPrimaryCharacter(ID id) { }
-    public virtual void SelectRecipient(ID id) { }
+    public abstract MinigameType GetMinigameType();
+    public abstract void SelectPrimaryCharacter(ID id);
+    public abstract void SelectRecipient(ID id);
+    public abstract void StartProblemMinigame(ID character);
 }

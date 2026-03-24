@@ -18,14 +18,12 @@ public class CharacterSelectionMenu : MonoBehaviour
     [SerializeField, ConditionalField(nameof(_recipientSelector))] private TextMeshProUGUI _headerText;
     [SerializeField, ConditionalField(nameof(_recipientSelector))] private string _headerTemplateString = "Who is NAME cooking for?";
 
-    [SerializeField] private UnityEvent<ID> _onSelect;
-
     private List<CharacterSelectButton> _spawnedButtons = new List<CharacterSelectButton>();
     private ID _selectedCharacter = new ID(0);
     private ID _alreadySelectedPrimary;
 
     //-------------------//
-    [HideInInspector] public CompleteCharacterData selectedCharacter;
+    [HideInInspector] public CompleteCharacterData selectedCharacter; //to be removed, haven't gotten there yet
     //-------------------//
 
     public bool Recipient => _recipientSelector;
@@ -86,7 +84,5 @@ public class CharacterSelectionMenu : MonoBehaviour
 
         if (_recipientSelector) _confirmWindow.Display(_alreadySelectedPrimary, _selectedCharacter, _minigameController);
         else _confirmWindow.Display(_selectedCharacter, _minigameController);
-
-        _onSelect.Invoke(_selectedCharacter);
     }
 }
