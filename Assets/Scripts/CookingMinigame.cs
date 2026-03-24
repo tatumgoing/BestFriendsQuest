@@ -28,8 +28,16 @@ public class CookingMinigame : MinigameController
 
     public override MinigameType GetMinigameType() => MinigameType.COOKING;
 
+    // I, too, am testing
+
+    private ID _displayedSelectedCharacter = new ID(0); //tracks character on the main menu
+
     private void OnEnable()
     {
+        //set camera to the main camera 
+
+        _areaController.ResetCamera();
+
         if (_spawnedCharacter != null) Destroy(_spawnedCharacter.gameObject);
 
         _subgameController.gameObject.SetActive(false);
@@ -49,6 +57,13 @@ public class CookingMinigame : MinigameController
             SelectPrimaryCharacter(_testID);
             SelectRecipient(new ID(2216));
             StartCooking(_testRecipe);
+        }
+
+        //spawn characters as they are selected
+        if (_characterSelectScreen.GetComponent<CharacterSelectionMenu>()._selectedCharacter != _displayedSelectedCharacter)
+        {
+            _areaController.SpawnCharacterSelect(_characterSelectScreen.GetComponent<CharacterSelectionMenu>()._selectedCharacter);
+            _displayedSelectedCharacter = _characterSelectScreen.GetComponent<CharacterSelectionMenu>()._selectedCharacter;
         }
     }
 

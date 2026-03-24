@@ -19,7 +19,8 @@ public class CharacterSelectionMenu : MonoBehaviour
     [SerializeField, ConditionalField(nameof(_recipientSelector))] private string _headerTemplateString = "Who is NAME cooking for?";
 
     private List<CharacterSelectButton> _spawnedButtons = new List<CharacterSelectButton>();
-    private ID _selectedCharacter = new ID(0);
+    //cries
+    public ID _selectedCharacter = new ID(0);
     private ID _alreadySelectedPrimary;
 
     //-------------------//
