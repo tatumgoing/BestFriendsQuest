@@ -67,6 +67,8 @@ public class CookingMinigame : MinigameController
         {
             _areaController.SpawnCharacterSelect(_characterSelectScreen.GetComponent<CharacterSelectionMenu>()._selectedCharacter);
             _displayedSelectedCharacter = _characterSelectScreen.GetComponent<CharacterSelectionMenu>()._selectedCharacter;
+
+            //_areaController.characterSelectSpawnedCharacter.GetComponent<SpawnedCharacter>().CharacterLookAt();
         }
     }
 
