@@ -45,6 +45,11 @@ public class CharacterRoomModel : MonoBehaviour
         foreach (var obj in _colorChangeObjects) obj.Initialize();
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Q)) UpdateColor();
+    }
+
     public void Show(ID id)
     {
         gameObject.SetActive(true);
