@@ -10,17 +10,17 @@ public class CharacterManager : MonoBehaviour
 
     [Header("Characters")]
     [SerializeField] private GameObject _characterControllerPrefab;
-    [SerializeField] public List<CompleteCharacterData> allCharacters = new List<CompleteCharacterData>();
-    [SerializeField] private List<RelationshipData> _relationships = new List<RelationshipData>();
+    [SerializeField, ReadOnly] private List<CompleteCharacterData> _allCharacters = new List<CompleteCharacterData>();
+    [SerializeField, ReadOnly] private List<RelationshipData> _relationships = new List<RelationshipData>();
 
     [Header("Problems")]
     [SerializeField, Range(0, 1), Tooltip("Max percent of citizens that can have problems")] private float _maxProblemPercent = 0.3f;
     [SerializeField] private List<ProblemData> _allProblems;
 
-    public List<CompleteCharacterData> AllCharacters => allCharacters;
+    public List<CompleteCharacterData> AllCharacters => _allCharacters;
     public CompleteCharacterData GetRandomCharacter() => AllCharacters[Random.Range(0, AllCharacters.Count)];
-    public string GetAge(ID id) => allCharacters.Find(c => c.ID == id).Age.ToString();
-    public string GetFavoriteColor(ID id) => Utils.CapitalFirst(allCharacters.Find(c => c.ID == id).FavColor.ToString().ToLower());
+    public string GetAge(ID id) => _allCharacters.Find(c => c.ID == id).Age.ToString();
+    public string GetFavoriteColor(ID id) => Utils.CapitalFirst(_allCharacters.Find(c => c.ID == id).FavColor.ToString().ToLower());
 
     void Awake()
     {
@@ -38,26 +38,40 @@ public class CharacterManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.L)) RandomizeRelationships(); //TESTING
 
-        var problemRatio = (float)numCharactersWithProblems() / allCharacters.Count;
+        var problemRatio = (float)numCharactersWithProblems() / _allCharacters.Count;
         if (problemRatio < _maxProblemPercent) GenerateProblem();
+    }
+
+    /// <summary>
+    /// Call to mark a problem as solved - problem doesn't get completely resolved until the rewards are given,
+    /// so calling this means that the rewards can be dispensed when the character with the problem
+    /// is spoken to again. 
+    /// Set up this way so that minigame problems can be solved when the minigame is completed but the rewards can be given
+    /// and the reward dialogue can be said in the character's room.
+    /// </summary>
+    public void SolveProblem(ID id)
+    {
+        for (int i = 0; i < _allCharacters.Count; i++) {
+            if (_allCharacters[i].ID == id) _allCharacters[i].SolveProblem();
+        }
     }
 
     public ProblemData GetProblem(ID id)
     {
-        var characterData = allCharacters.Find(c => c.ID == id);
+        var characterData = _allCharacters.Find(c => c.ID == id);
         return characterData.CurrentProblem;
     }
 
     public string GetDialogue(ID id)
     {
-        var characterData = allCharacters.Find(c => c.ID == id);
+        var characterData = _allCharacters.Find(c => c.ID == id);
         return characterData.GetDialogue();
     }
 
     private int numCharactersWithProblems()
     {
         int numProblems = 0;
-        foreach (var character in allCharacters) if (character.HasProblem) numProblems++;
+        foreach (var character in _allCharacters) if (character.HasProblem) numProblems++;
         return numProblems;
     }
 
@@ -91,35 +105,35 @@ public class CharacterManager : MonoBehaviour
 
     public List<ID> AllIDs()
     {
-        return allCharacters.Select(x => x.ID).ToList();
+        return _allCharacters.Select(x => x.ID).ToList();
     }
 
     public CompleteCharacterData GetCharacter(ID id)
     {
-        return allCharacters.Find(x =>  x.ID == id);
+        return _allCharacters.Find(x =>  x.ID == id);
     }
 
     public float GetHappiness(ID id)
     {
-        var characterData = allCharacters.Find(c => c.ID == id);
+        var characterData = _allCharacters.Find(c => c.ID == id);
         return characterData != null ? characterData.Happiness : 0;
     }
 
     public Sprite GetPortrait(ID id)
     {
-        var characterData = allCharacters.Find(c => c.ID == id);
+        var characterData = _allCharacters.Find(c => c.ID == id);
         return characterData != null ? characterData.Icon : null;
     }
 
     public string GetName(ID id)
     {
-        var characterData = allCharacters.Find(c => c.ID == id);
+        var characterData = _allCharacters.Find(c => c.ID == id);
         return characterData != null ? characterData.Name : "";
     }
 
     public Pronoun GetPronoun(ID id)
     {
-        var characterData = allCharacters.Find(c => c.ID == id);
+        var characterData = _allCharacters.Find(c => c.ID == id);
         var pronoun = characterData.Pronouns;
         if (pronoun == Pronoun.SHE) pronoun = Pronoun.THEY;
         else if (pronoun == Pronoun.THEY) pronoun = Pronoun.SHE;
@@ -146,7 +160,7 @@ public class CharacterManager : MonoBehaviour
 
     public string GetBirthdayFormatted(ID id)
     {
-        var birthday = allCharacters.Find(c => c.ID == id).Birthday;
+        var birthday = _allCharacters.Find(c => c.ID == id).Birthday;
         return birthday.Month + " / " + birthday.Day + " / " + birthday.Year;
     }
 
@@ -165,7 +179,7 @@ public class CharacterManager : MonoBehaviour
     public SpawnedCharacter SpawnCharacter(ID id, Transform spawnSpot) => SpawnCharacter(id, spawnSpot.position, spawnSpot.lossyScale, spawnSpot.eulerAngles);
     private SpawnedCharacter SpawnCharacter(ID id, Vector3 position, Vector3 scale, Vector3 rot)
     {
-        var characterData = allCharacters.Find(c => c.ID == id);
+        var characterData = _allCharacters.Find(c => c.ID == id);
         if (characterData == null) return null;
         
         var spawnedCharacter = Instantiate(_characterControllerPrefab, position, Quaternion.Euler(rot)).GetComponent<SpawnedCharacter>();
@@ -188,7 +202,7 @@ public class CharacterManager : MonoBehaviour
 
     public void AssignProblem(ID id, ProblemData problem)
     {
-        var character = allCharacters.Find(c => c.ID == id);
+        var character = _allCharacters.Find(c => c.ID == id);
         character?.SetProblem(problem);
     }
 
@@ -197,7 +211,7 @@ public class CharacterManager : MonoBehaviour
         var staticSaveStrings = SaveSystem.LoadAllStaticSaveStrings();
 
         foreach (var s in staticSaveStrings) {
-            allCharacters.Add(new CompleteCharacterData(s));
+            _allCharacters.Add(new CompleteCharacterData(s));
         }
 
         var newCharacter = SpawnCharacter(AllCharacters[0].ID, transform);
@@ -215,8 +229,11 @@ public class CharacterManager : MonoBehaviour
 
     public void SolveAndGenerateProblem(ID id)
     {
-        var character = allCharacters.Find(c => c.ID == id);
-        character?.SolveProblem();
+        var character = _allCharacters.Find(c => c.ID == id);
+        if (character != null) {
+            character.SolveProblem();
+            character.GiveProblemRewards();
+        }
 
         GenerateProblem();
     }
@@ -244,7 +261,7 @@ public class CharacterManager : MonoBehaviour
     /// </summary>
     public void IncreaseHappiness(ID id, float increase)
     {
-        var character = allCharacters.Find(c => c.ID == id);
+        var character = _allCharacters.Find(c => c.ID == id);
         character?.IncreaseHappiness(increase);
     }
 }

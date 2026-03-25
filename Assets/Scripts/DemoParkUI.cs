@@ -17,7 +17,7 @@ public class DemoParkUI : MonoBehaviour
             _endScreenParent.SetActive(true);
             _buttonText.text = "Finish";
 
-            var character = CharacterManager.i.allCharacters.Last();
+            var character = CharacterManager.i.AllCharacters.Last();
             _idPhoto.ShowPicture(character);
 
             return;

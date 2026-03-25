@@ -9,6 +9,7 @@ public class RoomUIController : MonoBehaviour
     [SerializeField] private CharacterStatusMenu _statusMenu;
     [SerializeField] private CharacterDialogue _dialogue;
     [SerializeField] private GiftMenu _giftMenu;
+    //[SerializeField] private GameObject _
 
     private ID _id;
 

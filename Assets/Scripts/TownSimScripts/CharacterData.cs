@@ -17,7 +17,15 @@ public class CharacterData
 
     public void SolveProblem()
     {
-        if (CurrentProblem == null) return;
+        CurrentProblem.IsSolved = true;
+    }
+
+    /// <summary>
+    /// Call to reward the player for completing the problem. 
+    /// Also clears the problem from this character
+    /// </summary>
+    public void GiveProblemRewards()
+    {
         CurrentProblem = null;
     }
 

@@ -124,7 +124,7 @@ public class CharacterHouse : MonoBehaviour
         //stop old problem, make new problem
         if (associatedCharacter.HasProblem && associatedCharacter.CurrentProblem.Type != ProblemType.MINIGAME)
         {
-            CharacterManager.i.SolveAndGenerateProblem(associatedCharacter.ID);
+            //CharacterManager.i.SolveAndGenerateProblem(associatedCharacter.ID);
         }
     }
 
@@ -132,7 +132,7 @@ public class CharacterHouse : MonoBehaviour
     {
         if (associatedCharacter.HasProblem)
         {
-            CharacterManager.i.SolveAndGenerateProblem(associatedCharacter.ID);
+            //CharacterManager.i.SolveAndGenerateProblem(associatedCharacter.ID);
         }
     }
 }

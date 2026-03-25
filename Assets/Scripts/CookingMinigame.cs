@@ -88,6 +88,7 @@ public class CookingMinigame : MinigameController
     /// </summary>
     override public void CompleteProblem()
     {
+        CharacterManager.i.SolveProblem(_selectedCharacter);
         TownGameManager.i.GoToRoom(_selectedCharacter);
     }
 

@@ -59,7 +59,13 @@ public class CompleteCharacterData
     }
     
     //Problems
+    /// <summary>
+    /// Solves the problem but doesn't actually remove it because the rewards haven't been dispensed yet.
+    /// that happens when the character is spoken to - this structure is so that minigame problems are marked complete when the
+    /// minigame is finished, then rewards are given when the player is back in the characters room talking to them.
+    /// </summary>
     public void SolveProblem() => _dynamicData.SolveProblem();
+    public void GiveProblemRewards() => _dynamicData.GiveProblemRewards();
     public void SetProblem(ProblemData problem) => _dynamicData.CurrentProblem = problem;
     public bool HasProblem => _dynamicData.CurrentProblem != null;
     public ProblemData CurrentProblem => _dynamicData.CurrentProblem;

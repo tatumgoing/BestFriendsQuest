@@ -14,6 +14,7 @@ public class TownGameManager : MonoBehaviour
     [SerializeField] private List<AreaData> _areas = new List<AreaData>();
 
     [SerializeField] private bool _demoMode;
+    [SerializeField] private NeighborhoodController _neighborhoodController;
 
     public async void GoToMap() => await ChangeArea(AreaName.MAP);
     public async void GoToPark() => await ChangeArea(AreaName.PARK);
@@ -55,9 +56,10 @@ public class TownGameManager : MonoBehaviour
     /// Called from a minigameController when completing a problem-based minigame.
     /// returns to the room of the character and triggers the completion dialogue.
     /// </summary>
-    public void GoToRoom(ID id)
+    public async void GoToRoom(ID id)
     {
-        GoToTown();
+        await ChangeArea(AreaName.TOWN);
+        _neighborhoodController.ShowRoom(id);
     }
 
     /// <summary>
