@@ -50,13 +50,17 @@ public class CharacterDialogue : MonoBehaviour
         else ShowText(characterDialogue);
 
         var currentProblem = CharacterManager.i.GetProblem(id);
-        var isProblemMinigame = currentProblem && currentProblem.Type == ProblemType.MINIGAME;
-        if (isProblemMinigame) {
+        if (currentProblem.IsSolved) {
+            CharacterManager.i.GiveProblemRewards(id);
+        }
+        
+        bool isProblemMinigame = currentProblem && currentProblem.Type == ProblemType.MINIGAME;
+        if (isProblemMinigame && !currentProblem.IsSolved) {
             _minigameConfirmButtonText.text = _buttonStrings.Where(x => x.Type == currentProblem.Minigame).First().ButtonText;
         }
         
-        _minigameButtons.SetActive(isProblemMinigame);
-        _closeButton.SetActive(!isProblemMinigame);
+        _minigameButtons.SetActive(isProblemMinigame && !currentProblem.IsSolved);
+        _closeButton.SetActive(!isProblemMinigame || currentProblem.IsSolved);
     }
 
     public void ShowText(string text)
@@ -67,6 +71,7 @@ public class CharacterDialogue : MonoBehaviour
 
     public void HideDialogue()
     {
+        GetComponentInParent<RoomUIController>().Show(_id);
         gameObject.SetActive(false);
     }
 }

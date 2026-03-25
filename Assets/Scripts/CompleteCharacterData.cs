@@ -66,7 +66,12 @@ public class CompleteCharacterData
     /// </summary>
     public void SolveProblem() => _dynamicData.SolveProblem();
     public void GiveProblemRewards() => _dynamicData.GiveProblemRewards();
-    public void SetProblem(ProblemData problem) => _dynamicData.CurrentProblem = problem;
+    public void SetProblem(ProblemData problem)
+    {
+        _dynamicData.CurrentProblem = GameObject.Instantiate(problem);
+        _dynamicData.CurrentProblem.IsSolved = false;
+    }
+
     public bool HasProblem => _dynamicData.CurrentProblem != null;
     public ProblemData CurrentProblem => _dynamicData.CurrentProblem;
 
@@ -74,7 +79,7 @@ public class CompleteCharacterData
     public string GetDialogue()
     {
         if (_dynamicData.CurrentProblem == null) return "";
-        else return _dynamicData.CurrentProblem.Dialogue;
+        else return _dynamicData.CurrentProblem.Dialogue();
     }
 
 }

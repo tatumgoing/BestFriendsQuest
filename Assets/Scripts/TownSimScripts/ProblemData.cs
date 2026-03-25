@@ -14,7 +14,8 @@ public enum ProblemType { SINGLE_ITEM, GENERAL_ITEM, MINIGAME}
 [CreateAssetMenu(fileName = "Problem", menuName = "Problem", order = 2)]
 public class ProblemData : ScriptableObject
 {
-    [TextArea] public string Dialogue;
+    [TextArea(2, 10), SerializeField] private string _startingDialogue;
+    [TextArea(2, 10), SerializeField] private string _completionDialogue;
 
     [Header("Details")]
     public ProblemType Type;
@@ -26,10 +27,11 @@ public class ProblemData : ScriptableObject
     public float RewardHappiness;
     public float RewardCurrency;
 
-    [HideInInspector] public bool IsSolved;
+    [ReadOnly] public bool IsSolved;
 
-    private void OnValidate()
+    public string Dialogue()
     {
-
+        if (IsSolved) return _completionDialogue;
+        else return _startingDialogue;
     }
 }

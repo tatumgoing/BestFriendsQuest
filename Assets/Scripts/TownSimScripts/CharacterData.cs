@@ -26,6 +26,9 @@ public class CharacterData
     /// </summary>
     public void GiveProblemRewards()
     {
+        TownGameManager.i.ChangeCurrency(CurrentProblem.RewardCurrency);
+        CharacterManager.i.IncreaseHappiness(ID, CurrentProblem.RewardHappiness);
+
         CurrentProblem = null;
     }
 

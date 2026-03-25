@@ -9,7 +9,9 @@ public class RoomUIController : MonoBehaviour
     [SerializeField] private CharacterStatusMenu _statusMenu;
     [SerializeField] private CharacterDialogue _dialogue;
     [SerializeField] private GiftMenu _giftMenu;
-    //[SerializeField] private GameObject _
+    [SerializeField] private GameObject _talkOnlyButtonParent;
+    [SerializeField] private GameObject _buttonsParent;
+    [SerializeField] private GameObject _backButton;
 
     private ID _id;
 
@@ -21,6 +23,11 @@ public class RoomUIController : MonoBehaviour
 
         _statusMenu.gameObject.SetActive(false);
         _dialogue.gameObject.SetActive(false);
+
+        var hasSolvedProblem = CharacterManager.i.GetProblem(id).IsSolved;
+        _talkOnlyButtonParent.SetActive(hasSolvedProblem);
+        _buttonsParent.SetActive(!hasSolvedProblem);
+        _backButton.SetActive(!hasSolvedProblem);
 
         gameObject.SetActive(true);
     }
@@ -38,5 +45,10 @@ public class RoomUIController : MonoBehaviour
     public void ShowGiftMenu()
     {
         _giftMenu.Show();
+    }
+
+    public void HideRoom()
+    {
+        GetComponentInParent<NeighborhoodUI>().HideRoomUI();
     }
 }

@@ -56,6 +56,13 @@ public class CharacterManager : MonoBehaviour
         }
     }
 
+    public void GiveProblemRewards(ID id)
+    {
+        for (int i = 0; i < _allCharacters.Count; i++) {
+            if (_allCharacters[i].ID == id) _allCharacters[i].GiveProblemRewards();
+        }
+    }
+
     public ProblemData GetProblem(ID id)
     {
         var characterData = _allCharacters.Find(c => c.ID == id);
