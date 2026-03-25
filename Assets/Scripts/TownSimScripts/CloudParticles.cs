@@ -10,13 +10,14 @@ public class CloudParticles : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Time.deltaTime > endTime) { 
-        
+        if (Time.time > endTime) {
+            Debug.Log("False");
             this.gameObject.SetActive(false);
 
         }
         else
         {
+            Debug.Log("True");
             this.gameObject.SetActive(true);
         }
     }
@@ -24,6 +25,9 @@ public class CloudParticles : MonoBehaviour
 
     public void SpawnCharacterSelectCloud()
     {
-        endTime = Time.deltaTime + duration;
+        endTime = Time.time + duration;
+        Debug.Log(endTime + " " + Time.time);
+        this.gameObject.SetActive(true);
+
     }
 }
