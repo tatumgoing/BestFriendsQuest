@@ -16,7 +16,7 @@ public class RestrauntController : MonoBehaviour
 
     [SerializeField] private CloudParticles characterSelectCloud;
 
-    private GameObject characterSelectSpawnedCharacter;
+    public GameObject characterSelectSpawnedCharacter;
 
     public GameObject SpawnCharacter(ID id)
     {
@@ -46,17 +46,19 @@ public class RestrauntController : MonoBehaviour
         if (characterSelectSpawnedCharacter) Destroy(characterSelectSpawnedCharacter);
     }
 
-    public void SpawnCharacterSelect(ID id)
+    public async Task SpawnCharacterSelect(ID id)
     {
-        //Debug.Log("Changing characters!");
-
         //kill old character, spawn new
 
         DestroySpawnedCharacter();
 
         characterSelectCloud.SpawnCharacterSelectCloud();
 
+        await Task.Delay(200);
+
         characterSelectSpawnedCharacter = SpawnCharacter(id);
+
+        characterSelectSpawnedCharacter.GetComponent<SpawnedCharacter>().CharacterLookAt(startingCamera.transform);
     }
    
 }
