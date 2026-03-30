@@ -20,7 +20,7 @@ public class CharacterManager : MonoBehaviour
     public List<CompleteCharacterData> AllCharacters => _allCharacters;
     public CompleteCharacterData GetRandomCharacter() => AllCharacters[Random.Range(0, AllCharacters.Count)];
     public string GetAge(ID id) => _allCharacters.Find(c => c.ID == id).Age.ToString();
-    public string GetFavoriteColor(ID id) => Utils.CapitalFirst(_allCharacters.Find(c => c.ID == id).FavColor.ToString().ToLower());
+    public string GetFavoriteColorString(ID id) => Utils.CapitalFirst(GetFavoriteColor(id).ToString().ToLower());
 
     void Awake()
     {
@@ -40,6 +40,12 @@ public class CharacterManager : MonoBehaviour
 
         var problemRatio = (float)numCharactersWithProblems() / _allCharacters.Count;
         if (problemRatio < _maxProblemPercent) GenerateProblem();
+    }
+
+    public FavoriteColor GetFavoriteColor(ID id)
+    {
+        var characterData = _allCharacters.Find(c => c.ID == id);
+        return characterData.FavColor;
     }
 
     /// <summary>

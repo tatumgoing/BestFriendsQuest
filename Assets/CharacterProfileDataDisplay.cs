@@ -20,7 +20,7 @@ public class CharacterProfileDataDisplay : MonoBehaviour
         _nameText.text = cMan.GetNameFormatted(id);
         _birthdayText.text = "Birthday: " + cMan.GetBirthdayFormatted(id);
         _ageText.text = "Age: " + cMan.GetAge(id);
-        _favoriteColorText.text = "Favorite Color: " + cMan.GetFavoriteColor(id);
+        _favoriteColorText.text = "Favorite Color: " + cMan.GetFavoriteColorString(id);
 
         var pronoun = cMan.GetPronoun(id);
         var pronounString = Utils.CapitalFirst(pronoun.ToString().ToLower()) + "/";
