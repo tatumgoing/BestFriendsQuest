@@ -4,8 +4,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Threading.Tasks;
+
+public enum CharacterAnimations { Grilling, Spawn, Standing, Sitting, SittingGround, Walking };
 
 [SelectionBase]
+
 public class SpawnedCharacter : MonoBehaviour
 {
     [SerializeField] private CharacterMetaController _characterController;
@@ -25,6 +29,26 @@ public class SpawnedCharacter : MonoBehaviour
     private bool isLooking;
     private Quaternion lastRotation;
 
+    //Growing
+    private float growTimer;
+    private float growRate;
+
+    [SerializeField] private AnimationCurve growCurve;
+
+
+    private void Update()
+    {
+
+
+        if (Time.time < growTimer)
+        {
+            var progress = (growTimer - Time.time / growRate);
+
+            progress = growCurve.Evaluate(progress);
+
+            transform.localScale = Vector3.Lerp(new Vector3(1,1,1),new Vector3(0, 0, 0), progress );
+        }
+    }
 
     private void LateUpdate()
     {
@@ -47,9 +71,6 @@ public class SpawnedCharacter : MonoBehaviour
     {
         if (lookAtTarget)
         {
-            //head.LookAt(lookAtTarget);
-
-            //head.right = lookAtTarget.position - head.position;
 
             Vector3 Direction = (lookAtTarget.position - head.position).normalized;
             float angle = Vector3.SignedAngle(Direction, headForward.position, headForward.up);
@@ -83,51 +104,30 @@ public class SpawnedCharacter : MonoBehaviour
     
     public void AnimateFromEnum(CharacterAnimations anim)
     {
-        if (animator != null)
-        {
+        animator.SetBool(anim.ToString(), true);
 
-            if (anim == CharacterAnimations.Grilling)
-            {
-                Grilling();
-            }
-            if (anim == CharacterAnimations.Sitting)
-            {
-                Sitting();
-            }
-            if (anim == CharacterAnimations.SittingGround)
-            {
-                SittingGround();
-            }
-            else if (anim == CharacterAnimations.Standing)
-            {
-                Standing();
-            }
-            else if(anim == CharacterAnimations.Walking)
-            {
-                Walking();
-            }
-
-        }
     }
 
-    public void Grilling()
+    public void AnimateFromString(String anim)
     {
-        animator.SetBool("Grilling", true);
+        animator.SetBool(anim, true);
+
     }
-    public void Sitting()
+
+    public void TriggerFromString(String anim)
     {
-        animator.SetBool("Sitting", true);
+        animator.SetTrigger(anim.ToString());
+        Debug.Log(anim);
     }
-    public void SittingGround()
+
+
+    public void GrowCharacter(float growTime)
     {
-        animator.SetBool("SittingGround", true);
+        growRate = growTime;
+
+        growTimer = Time.time + growTime;
+        transform.localScale = new Vector3(0, 0, 0);
+
     }
-    public void Standing()
-    {
-        animator.SetBool("Standing", true);
-    }
-    public void Walking()
-    {
-        animator.SetBool("Walking", true);
-    }
+
 }
