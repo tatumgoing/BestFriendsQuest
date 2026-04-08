@@ -7,13 +7,10 @@ using UnityEngine;
 
 public class Test : MonoBehaviour
 {
-    private void OnEnable()
-    {
-        print(gameObject.name + "ENABLED");
-    }
+    [SerializeField] private Animator _animator;
 
-    private void OnDisable()
+    private void Start()
     {
-        print(gameObject.name + "Disabled");
+        _animator.SetBool("Walking", true);
     }
 }
