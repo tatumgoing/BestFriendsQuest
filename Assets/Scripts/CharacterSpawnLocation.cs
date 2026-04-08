@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using UnityEngine;
 
 
-public enum CharacterAnimations { Grilling, Standing, Sitting, SittingGround, Walking };
 public class CharacterSpawnLocation : MonoBehaviour
 {
     

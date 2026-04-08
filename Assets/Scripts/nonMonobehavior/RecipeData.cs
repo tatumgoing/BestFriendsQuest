@@ -22,13 +22,19 @@ public class SubgameData
     [ConditionalField(nameof(Type), false, false, SubgameType.SITRRING)] public Vector2 ChangeSpeedFrequency;
 }
 
+
+public enum CookingRank { NONE, BRONZE, SILVER, GOLD, SPECIAL }
+
 [CreateAssetMenu(fileName = "Recipe", menuName = "Recipe", order = 1)]
+
 public class RecipeData : ScriptableObject
 {
     public string Name;
     public Sprite Icon;
     public float MaxScore;
     public int MoneyReward;
+
+    public CookingRank unlockedRank;
 
     public List<SubgameData> Subgames = new List<SubgameData>();
 }
