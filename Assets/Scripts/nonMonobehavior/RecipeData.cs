@@ -23,8 +23,6 @@ public class SubgameData
 }
 
 
-public enum CookingRank { NONE, BRONZE, SILVER, GOLD, SPECIAL }
-
 [CreateAssetMenu(fileName = "Recipe", menuName = "Recipe", order = 1)]
 
 public class RecipeData : ScriptableObject
@@ -33,8 +31,6 @@ public class RecipeData : ScriptableObject
     public Sprite Icon;
     public float MaxScore;
     public int MoneyReward;
-
-    public CookingRank unlockedRank;
 
     public List<SubgameData> Subgames = new List<SubgameData>();
 }
