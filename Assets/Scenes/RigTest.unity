@@ -177,7 +177,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 74991890}
-  - component: {fileID: 74991891}
   m_Layer: 0
   m_Name: UpperChest
   m_TagString: Untagged
@@ -203,19 +202,6 @@ Transform:
   - {fileID: 478649919}
   m_Father: {fileID: 1824457185}
   m_LocalEulerAnglesHint: {x: 3.0314604e-15, y: 0.000013660381, z: 4.9397986e-14}
---- !u!114 &74991891
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 74991889}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b22b877c36c2ae244934429fabce1416, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _name: 1
 --- !u!1001 &76154999
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1350,7 +1336,7 @@ MonoBehaviour:
     _symetricDist: 0
   - _bone: 3
     _adjustDirection: {x: 0, y: 1, z: 0}
-    _scaleLimits: {x: 1.1, y: 0.9}
+    _scaleLimits: {x: 0.95000005, y: 1.05}
     _distLimits: {x: 0, y: 0.07}
     _symetricScale: 1
     _symetricDist: 0
@@ -1360,18 +1346,66 @@ MonoBehaviour:
     _distLimits: {x: 0, y: 0}
     _symetricScale: 1
     _symetricDist: 0
+  - _bone: 4
+    _adjustDirection: {x: 0, y: 0, z: 0}
+    _scaleLimits: {x: 0.90999997, y: 1.09}
+    _distLimits: {x: 0, y: 0}
+    _symetricScale: 1
+    _symetricDist: 0
   _waist: 0.5
   _waistBoneSettings:
   - _bone: 12
     _adjustDirection: {x: 0, y: 0, z: 0}
-    _scaleLimits: {x: 1, y: 1}
+    _scaleLimits: {x: 0.6, y: 1.4}
     _distLimits: {x: -0, y: 0}
     _symetricScale: 1
     _symetricDist: 1
-  _arms: 0.5
-  _armsBoneSettings: []
+  - _bone: 1
+    _adjustDirection: {x: 0, y: 1, z: 0}
+    _scaleLimits: {x: 1.4, y: 0.6}
+    _distLimits: {x: 0.76, y: -0.11}
+    _symetricScale: 1
+    _symetricDist: 0
+  - _bone: 8
+    _adjustDirection: {x: 1, y: 0, z: 0}
+    _scaleLimits: {x: 0.95000005, y: 1.05}
+    _distLimits: {x: -0, y: -0.06}
+    _symetricScale: 1
+    _symetricDist: 0
+  _arms: 1
+  _armsBoneSettings:
+  - _bone: 3
+    _adjustDirection: {x: 0, y: 0, z: 0}
+    _scaleLimits: {x: 0.68, y: 1.2}
+    _distLimits: {x: -0, y: 0}
+    _symetricScale: 0
+    _symetricDist: 1
+  - _bone: 4
+    _adjustDirection: {x: 0, y: 1, z: 0}
+    _scaleLimits: {x: 1.2, y: 0.8}
+    _distLimits: {x: 0.38, y: -0.02}
+    _symetricScale: 1
+    _symetricDist: 0
+  - _bone: 5
+    _adjustDirection: {x: 0, y: 0, z: 0}
+    _scaleLimits: {x: 0.97, y: 1.03}
+    _distLimits: {x: -0, y: 0}
+    _symetricScale: 1
+    _symetricDist: 0
   _legs: 0.5
-  _legsBoneSettings: []
+  _legsBoneSettings:
+  - _bone: 8
+    _adjustDirection: {x: 1, y: 0, z: 0}
+    _scaleLimits: {x: 0.79999995, y: 1.2}
+    _distLimits: {x: 0.07, y: -0.07}
+    _symetricScale: 1
+    _symetricDist: 1
+  - _bone: 9
+    _adjustDirection: {x: 0, y: 1, z: 0}
+    _scaleLimits: {x: 1, y: 1}
+    _distLimits: {x: 0.22, y: -0.22}
+    _symetricScale: 1
+    _symetricDist: 1
 --- !u!95 &399808656
 Animator:
   serializedVersion: 5

@@ -3,6 +3,7 @@ using UnityEngine;
 [System.Serializable]
 public class BoneSettingsData
 {
+    [HideInInspector] public string DisplayName;
     [SerializeField] private BoneName _bone;
     [SerializeField] private Vector3 _adjustDirection;
     [SerializeField] private Vector2 _scaleLimits = new Vector2(0.9f, 1.1f);
@@ -27,6 +28,8 @@ public class BoneSettingsData
             var dist = _distLimits.y;
             _distLimits.x = -dist;
         }
+
+        DisplayName = _bone.ToString();
     }
 
     public void UpdateValue(float value)

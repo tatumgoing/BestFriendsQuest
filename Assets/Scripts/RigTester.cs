@@ -5,51 +5,77 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+[System.Serializable]
+public class BoneSettingsDataGroup
+{
+    [HideInInspector] public string DisplayName;
+    [SerializeField] private BoneSliderName _category;
+    [SerializeField] private List<BoneSettingsData> _boneSettings;
+
+    public void OnValidate()
+    {
+        foreach (var b in _boneSettings) b.OnValidate();
+        DisplayName = _category.ToString();
+    }
+
+    public void UpdateSettings(List<RigBoneCoordinator> allBones)
+    {
+        foreach (var boneData in _boneSettings) {
+            foreach (var rigBone in allBones) {
+                if (rigBone.Name == boneData.AffectedBone) rigBone.RegisterScaleData(boneData, _category);
+            }
+        }
+    }
+}
+
 public class RigTester : MonoBehaviour
 {
+    [SerializeField] private List<BoneSettingsDataGroup> _allSettings;
+
+
     [SerializeField] private bool _updateParamsOnValidate;
     [SerializeField] private Transform _boneParent;
 
-    [Header("Height")]
+    [Header("Sliders")]
     [SerializeField, Range(0, 1)] private float _height = 0.5f;
-
-    [SerializeField] private List<BoneSettingsData> _heightBoneSettings;
-
-
-    [Header("Weight")]
     [SerializeField, Range(0, 1)] private float _weight = 0.5f;
-
-    [SerializeField] private List<BoneSettingsData> _weightBoneSettings;
-
-
-    [Header("Torso")]
     [SerializeField, Range(0, 1)] private float _torso = 0.5f;
-
-    [SerializeField] private List<BoneSettingsData> _torsoBoneSettings;
-
-
-    [Header("Waist")]
     [SerializeField, Range(0, 1)] private float _waist = 0.5f;
-
-    [SerializeField] private List<BoneSettingsData> _waistBoneSettings;
-
-
-    [Header("Arms")]
     [SerializeField, Range(0, 1)] private float _arms = 0.5f;
-
-    [SerializeField] private List<BoneSettingsData> _armsBoneSettings;
-
-
-    [Header("Legs")]
     [SerializeField, Range(0, 1)] private float _legs = 0.5f;
 
+    [Header("OLD")]
+    [SerializeField] private List<BoneSettingsData> _heightBoneSettings;
+    [SerializeField] private List<BoneSettingsData> _weightBoneSettings;
     [SerializeField] private List<BoneSettingsData> _legsBoneSettings;
+    [SerializeField] private List<BoneSettingsData> _armsBoneSettings;
+    [SerializeField] private List<BoneSettingsData> _waistBoneSettings;
+    [SerializeField] private List<BoneSettingsData> _torsoBoneSettings;
 
     private List<RigBoneCoordinator> _allBones = new List<RigBoneCoordinator>();
+
+    private void OnValidate()
+    {
+        foreach (var settingGroup in _allSettings) settingGroup.OnValidate();
+
+        if (!Application.isPlaying) return;
+
+        if (_updateParamsOnValidate) UpdateBoneParameters();
+
+        foreach (var b in _allBones) {
+            b.UpdateValue(BoneSliderName.HEIGHT, _height);
+            b.UpdateValue(BoneSliderName.WEIGHT, _weight);
+            b.UpdateValue(BoneSliderName.TORSO, _torso);
+            b.UpdateValue(BoneSliderName.ARMS, _arms);
+            b.UpdateValue(BoneSliderName.WAIST, _waist);
+            b.UpdateValue(BoneSliderName.LEGS, _legs);
+        }
+    }
 
     private void OnEnable()
     {
         if (_allBones.Count == 0) Initialize();
+        OnValidate();
         OnValidate();
 
         void InitializeSettings(ref List<BoneSettingsData> boneSettings, BoneSliderName sliderName)
@@ -74,46 +100,9 @@ public class RigTester : MonoBehaviour
         _allBones = _boneParent.GetComponentsInChildren<RigBoneCoordinator>(true).ToList();
     }
 
-    private void OnValidate()
-    {
-        foreach (var b in _heightBoneSettings) b.OnValidate();
-        foreach (var b in _weightBoneSettings) b.OnValidate();
-        foreach (var b in _torsoBoneSettings) b.OnValidate();
-        foreach (var b in _armsBoneSettings) b.OnValidate();
-        foreach (var b in _waistBoneSettings) b.OnValidate();
-        foreach (var b in _legsBoneSettings) b.OnValidate();
-
-        if (!Application.isPlaying) return;
-
-        if (_updateParamsOnValidate) UpdateBoneParameters();
-
-        foreach (var b in _allBones) {
-            b.UpdateValue(BoneSliderName.HEIGHT, _height);
-            b.UpdateValue(BoneSliderName.WEIGHT, _weight);
-            b.UpdateValue(BoneSliderName.TORSO, _torso);
-            b.UpdateValue(BoneSliderName.ARMS, _arms);
-            b.UpdateValue(BoneSliderName.WAIST, _waist);
-            b.UpdateValue(BoneSliderName.LEGS, _legs);
-        }
-    }
-
     private void UpdateBoneParameters()
     {
-        void UpdateSettings(ref List<BoneSettingsData> boneSettings, BoneSliderName sliderName)
-        {
-            foreach (var boneData in boneSettings) {
-                foreach (var rigBone in _allBones) {
-                    if (rigBone.Name == boneData.AffectedBone) rigBone.RegisterScaleData(boneData, sliderName);
-                }
-            }
-        }
-
-        UpdateSettings(ref _heightBoneSettings, BoneSliderName.HEIGHT);
-        UpdateSettings(ref _weightBoneSettings, BoneSliderName.WEIGHT);
-        UpdateSettings(ref _torsoBoneSettings, BoneSliderName.TORSO);
-        UpdateSettings(ref _armsBoneSettings, BoneSliderName.ARMS);
-        UpdateSettings(ref _waistBoneSettings, BoneSliderName.WAIST);
-        UpdateSettings(ref _legsBoneSettings, BoneSliderName.LEGS);
+        foreach (var settingGroup in _allSettings) settingGroup.UpdateSettings(_allBones);
     }
 
     private void LateUpdate()
