@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Threading.Tasks;
 
-public enum CharacterAnimations { Grilling, Spawn, Standing, Sitting, SittingGround, Walking };
+public enum CharacterAnimations { Grilling, Standing, Sitting, SittingGround, Walking, Spawn };
 
 [SelectionBase]
 
