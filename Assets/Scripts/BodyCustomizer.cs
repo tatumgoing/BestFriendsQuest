@@ -137,6 +137,7 @@ public class BodyCustomizer : MonoBehaviour
     {
         var data = _sliderGroups.Where(x => x.Type == sliderGroupName).FirstOrDefault();
         if (data == default) return;
-        foreach (var bone in data.Bones) _rigController.ModifyBone(bone.Name, sliderGroupName, bone.GetCurrent(value), bone.IndependentScale); 
+        //foreach (var bone in data.Bones) _rigController.ModifyBone(bone.Name, sliderGroupName, bone.GetCurrent(value), bone.IndependentScale); 
+        foreach (var bone in data.Bones) _rigController.SetValue(value, sliderGroupName);
     }
 }

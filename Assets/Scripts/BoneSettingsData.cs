@@ -17,8 +17,9 @@ public class BoneSettingsData
     public BoneName AffectedBone => _bone;
     public float ScaleMod => _targetScale;
     public Vector3 PositionOffset => _targetPosition;
+    private bool _enabled;
 
-    public void OnValidate()
+    public void OnValidate(bool enabled)
     {
         if (_symetricScale) {
             var scale = _scaleLimits.y - 1;
@@ -28,6 +29,8 @@ public class BoneSettingsData
             var dist = _distLimits.y;
             _distLimits.x = -dist;
         }
+
+        _enabled = enabled;
 
         DisplayName = _bone.ToString();
     }
@@ -43,6 +46,10 @@ public class BoneSettingsData
     {
         ApplyScale(percent);
         ApplyDistance(percent);
+        if (!_enabled) {
+            _targetScale = 1;
+            _targetPosition = Vector3.zero;
+        }
     }
 
     public void ApplyScale(float scaleFactor)

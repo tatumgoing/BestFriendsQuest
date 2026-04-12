@@ -9,12 +9,13 @@ using UnityEngine;
 public class BoneSettingsDataGroup
 {
     [HideInInspector] public string DisplayName;
+    [SerializeField] private bool _enabled;
     [SerializeField] private BoneSliderName _category;
     [SerializeField] private List<BoneSettingsData> _boneSettings;
 
     public void OnValidate()
     {
-        foreach (var b in _boneSettings) b.OnValidate();
+        foreach (var b in _boneSettings) b.OnValidate(_enabled);
         DisplayName = _category.ToString();
     }
 
@@ -32,7 +33,6 @@ public class RigTester : MonoBehaviour
 {
     [SerializeField] private List<BoneSettingsDataGroup> _allSettings;
 
-
     [SerializeField] private bool _updateParamsOnValidate;
     [SerializeField] private Transform _boneParent;
 
@@ -43,14 +43,6 @@ public class RigTester : MonoBehaviour
     [SerializeField, Range(0, 1)] private float _waist = 0.5f;
     [SerializeField, Range(0, 1)] private float _arms = 0.5f;
     [SerializeField, Range(0, 1)] private float _legs = 0.5f;
-
-    [Header("OLD")]
-    [SerializeField] private List<BoneSettingsData> _heightBoneSettings;
-    [SerializeField] private List<BoneSettingsData> _weightBoneSettings;
-    [SerializeField] private List<BoneSettingsData> _legsBoneSettings;
-    [SerializeField] private List<BoneSettingsData> _armsBoneSettings;
-    [SerializeField] private List<BoneSettingsData> _waistBoneSettings;
-    [SerializeField] private List<BoneSettingsData> _torsoBoneSettings;
 
     private List<RigBoneCoordinator> _allBones = new List<RigBoneCoordinator>();
 
@@ -75,24 +67,8 @@ public class RigTester : MonoBehaviour
     private void OnEnable()
     {
         if (_allBones.Count == 0) Initialize();
-        OnValidate();
-        OnValidate();
 
-        void InitializeSettings(ref List<BoneSettingsData> boneSettings, BoneSliderName sliderName)
-        {
-            foreach (var boneData in boneSettings) {
-                foreach (var rigBone in _allBones) {
-                    if (rigBone.Name == boneData.AffectedBone) rigBone.RegisterScaleData(boneData, sliderName);
-                }
-            }
-        }
-
-        InitializeSettings(ref _heightBoneSettings, BoneSliderName.HEIGHT);
-        InitializeSettings(ref _weightBoneSettings, BoneSliderName.WEIGHT);
-        InitializeSettings(ref _torsoBoneSettings, BoneSliderName.TORSO);
-        InitializeSettings(ref _armsBoneSettings, BoneSliderName.ARMS);
-        InitializeSettings(ref _waistBoneSettings, BoneSliderName.WAIST);
-        InitializeSettings(ref _legsBoneSettings, BoneSliderName.LEGS);
+        OnValidate();
     }
 
     private void Initialize()

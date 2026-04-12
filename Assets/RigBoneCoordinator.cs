@@ -7,6 +7,7 @@ public class RigBoneCoordinator : MonoBehaviour
     [SerializeField] private BoneName _name;
     private Dictionary<BoneSliderName, BoneSettingsData> _data = new Dictionary<BoneSliderName, BoneSettingsData>();
     private Dictionary<BoneSliderName, float> _currentSettings = new Dictionary<BoneSliderName, float>();
+    [SerializeField] private bool _disablePositionOffset;
 
     private Vector3 _startingLocalPosition;
     private bool _initialized = false;
@@ -39,6 +40,7 @@ public class RigBoneCoordinator : MonoBehaviour
 
     public void UpdateValue(BoneSliderName category, float value)
     {
+        //print("tring to update " + category + " settings of " + value + " for " + _name + " bone. contains: " + _data.ContainsKey(category));
         if (!_data.ContainsKey(category)) return;
 
         _data[category].UpdateValue(value);        
@@ -47,7 +49,7 @@ public class RigBoneCoordinator : MonoBehaviour
     public void UpdatePositionAndScale()
     {
         if (_initialized) Initialize();
-        UpdatePosition();
+        if (!_disablePositionOffset) UpdatePosition();
         UpdateScale();
     }
 

@@ -16,6 +16,7 @@ public class CharacterMetaController : MonoBehaviour
     [SerializeField, ConditionalField(nameof(_isCharacterCreator), inverse:true)] private FavoriteColorClothingInterface _clothingInterface;
 
     [Header("Rig")]
+    [SerializeField] private bool _oldRigMode;
     [SerializeField] private CharacterRigController _rigController;
     [SerializeField] private List<BoneSliderGroupData> _rigGroups = new List<BoneSliderGroupData>();
 
@@ -139,14 +140,6 @@ public class CharacterMetaController : MonoBehaviour
 
     public void LoadFromString(string input)
     {
-        //TESTING UNIFORM SCALING TO FIX BUG::::
-        /*_inputString = input;
-        foreach (var group in _rigGroups) {
-            foreach (var bone in group.Bones) {
-                bone.ForceSymetry();
-            }
-        }*/
-
         input = input.Replace("\n", "");
 
         ID = new ID(input[..SaveSystem.IDLength]);
@@ -172,7 +165,6 @@ public class CharacterMetaController : MonoBehaviour
             _clothingInterface.SetColor(Data.FavColor);
         }
 
-        //print("LOADED CHARACTER");
         gameObject.SetActive(true);
     }
 
