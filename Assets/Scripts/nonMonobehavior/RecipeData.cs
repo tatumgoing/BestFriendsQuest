@@ -23,6 +23,8 @@ public class SubgameData
 }
 
 
+public enum Difficulty { EASY, MEDIUM, HARD, EXTREME }
+
 [CreateAssetMenu(fileName = "Recipe", menuName = "Recipe", order = 1)]
 
 public class RecipeData : ScriptableObject
@@ -31,6 +33,8 @@ public class RecipeData : ScriptableObject
     public Sprite Icon;
     public float MaxScore;
     public int MoneyReward;
+
+    public Difficulty Difficulty;
 
     public List<SubgameData> Subgames = new List<SubgameData>();
 
@@ -45,6 +49,8 @@ public class RecipeData : ScriptableObject
     {
         int stepNumber = 1;
         string stepsStr = "";
+
+        //for every subgame, add the number of step, the verb, and a line break
         foreach (SubgameData s in Subgames)
         { 
             stepsStr += stepNumber.ToString() + ". " + subgameToVerb[s.Type].ToString() + "\n";

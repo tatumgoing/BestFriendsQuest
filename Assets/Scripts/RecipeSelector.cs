@@ -62,6 +62,8 @@ public class RecipeSelector : MonoBehaviour
         bigIcon.sprite = _selected.Icon;
         recipeName.text = _selected.Name;
         steps.text = _selected.ReturnSteps();
+
+        difficulty.text = "Difficulty: " + Utils.CapitalFirst(_selected.Difficulty.ToString());
     }
 
     public void StartCooking()
