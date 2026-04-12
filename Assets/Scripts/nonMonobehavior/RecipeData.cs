@@ -33,4 +33,26 @@ public class RecipeData : ScriptableObject
     public int MoneyReward;
 
     public List<SubgameData> Subgames = new List<SubgameData>();
+
+    // enum to verb pls
+    static Dictionary<SubgameType, string> subgameToVerb =
+    new Dictionary<SubgameType, string>() {
+        {SubgameType.SITRRING, "Stir"},
+        {SubgameType.GRILLING, "Grill"},
+    };
+
+    public string ReturnSteps()
+    {
+        int stepNumber = 1;
+        string stepsStr = "";
+        foreach (SubgameData s in Subgames)
+        { 
+            stepsStr += stepNumber.ToString() + ". " + subgameToVerb[s.Type].ToString() + "\n";
+            stepNumber++;
+        }
+
+        return stepsStr;
+    }
+
+
 }

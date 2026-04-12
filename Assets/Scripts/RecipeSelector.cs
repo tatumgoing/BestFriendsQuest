@@ -17,6 +17,8 @@ public class RecipeSelector : MonoBehaviour
     [SerializeField] private Image bigIcon;
     [SerializeField] private TMP_Text recipeName;
 
+    [SerializeField] private TMP_Text steps;
+
     [SerializeField] private TMP_Text difficulty;
     [SerializeField] private TMP_Text highScore;
 
@@ -59,6 +61,7 @@ public class RecipeSelector : MonoBehaviour
     {
         bigIcon.sprite = _selected.Icon;
         recipeName.text = _selected.Name;
+        steps.text = _selected.ReturnSteps();
     }
 
     public void StartCooking()
