@@ -5,27 +5,22 @@ using Cinemachine;
 using UnityEngine.EventSystems;
 public class RotatingCamera : MonoBehaviour
 {
-    public float topSpeed;
-    CinemachineVirtualCamera cam; 
+    [SerializeField] private float _topSpeed = 500;
+    [SerializeField] private float _lerpFactor = 10;
 
-    void Start()
-    {
-        cam = GetComponent<CinemachineVirtualCamera>();
-    }
+    private float _currentSpeed;
+    private float _targetSpeed;
+
     void Update()
     {
+        _targetSpeed = 0;
         if (Input.GetMouseButton(0))
         {
             if (!EventSystem.current.IsPointerOverGameObject()) {
                 Cursor.visible = false;
                 Cursor.lockState = CursorLockMode.Locked;
             } 
-
-            cam.GetCinemachineComponent<CinemachineOrbitalTransposer>().m_XAxis.m_MaxSpeed = topSpeed;
-        }
-        else
-        {
-            cam.GetCinemachineComponent<CinemachineOrbitalTransposer>().m_XAxis.m_MaxSpeed = Mathf.Lerp(cam.GetCinemachineComponent<CinemachineOrbitalTransposer>().m_XAxis.m_MaxSpeed, 0f, .25f);
+            _targetSpeed = Input.GetAxis("Mouse X");
         }
 
         if (Input.GetMouseButtonUp(0) && !EventSystem.current.IsPointerOverGameObject()) {
@@ -33,9 +28,8 @@ public class RotatingCamera : MonoBehaviour
             Cursor.lockState = CursorLockMode.Confined;
         }
 
-        if(cam.GetCinemachineComponent<CinemachineOrbitalTransposer>().m_XAxis.m_MaxSpeed < 1)
-        {
-            cam.GetCinemachineComponent<CinemachineOrbitalTransposer>().m_XAxis.m_MaxSpeed = 0;
-        }
+        _currentSpeed = Mathf.Lerp(_currentSpeed, _targetSpeed, Time.deltaTime * _lerpFactor);
+        var rotDelta = Mathf.Clamp(_currentSpeed, -1, 1) * _topSpeed;
+        transform.localEulerAngles += rotDelta * Vector3.up;
     }
 }

@@ -372,12 +372,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1173226368467328618}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.00000008429371, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.0061600143, z: 0.0011899989}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 4896475398885558779}
+  m_Father: {fileID: 4216584913184146881}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!1 &1348277623760288506
 GameObject:
@@ -480,6 +480,8 @@ MonoBehaviour:
   _lossy: 0
   _symetric: 0
   _lossyScale: {x: 0, y: 0, z: 0}
+  _relativeTo: 0
+  _parentTransform: {fileID: 0}
 --- !u!64 &1563314815679814449
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1761,8 +1763,10 @@ MonoBehaviour:
       _distLimits: {x: 0.22, y: -0.22}
       _symetricScale: 1
       _symetricDist: 1
-  _updateParamsOnValidate: 0
+  _updateParamsOnValidate: 1
   _boneParent: {fileID: 4629188953692920780}
+  _testHeight: 0
+  _useTestHeight: 0
   _bones:
   - DisplayName: 'CORE: Torso'
     Name: 0
@@ -1970,7 +1974,8 @@ Transform:
   m_LocalPosition: {x: 0.00119, y: 0.00616, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 5082483132437493748}
   m_Father: {fileID: 4896475398885558779}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!33 &949004111520713316
@@ -2039,6 +2044,8 @@ MonoBehaviour:
   _lossy: 0
   _symetric: 0
   _lossyScale: {x: 0, y: 0, z: 0}
+  _relativeTo: 0
+  _parentTransform: {fileID: 0}
 --- !u!64 &2137526596238376950
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2162,6 +2169,8 @@ MonoBehaviour:
   _lossy: 0
   _symetric: 0
   _lossyScale: {x: 0, y: 0, z: 0}
+  _relativeTo: 0
+  _parentTransform: {fileID: 0}
 --- !u!64 &1948664051734656680
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -3069,6 +3078,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4896475398885558779}
   - component: {fileID: 5512345693376033014}
+  - component: {fileID: 2676542734737525096}
   m_Layer: 0
   m_Name: Head
   m_TagString: Untagged
@@ -3093,7 +3103,6 @@ Transform:
   - {fileID: 4216584913184146881}
   - {fileID: 1872894871483097152}
   - {fileID: 4157781215532346393}
-  - {fileID: 5082483132437493748}
   m_Father: {fileID: 1470377476861456323}
   m_LocalEulerAnglesHint: {x: -6.719838e-15, y: 7.3294396e-16, z: -0.45792222}
 --- !u!114 &5512345693376033014
@@ -3109,6 +3118,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TargetObject: {fileID: 5836318674036086388}
+--- !u!114 &2676542734737525096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6039712405467902653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f658e70a81fc6f4c86bb319f1a0ad87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _scale: {x: 230, y: 230, z: 230}
+  _lossy: 1
+  _symetric: 1
+  _lossyScale: {x: 0, y: 0, z: 0}
+  _relativeTo: 1
+  _parentTransform: {fileID: 8614003353711132865}
 --- !u!1 &6067769190823613056
 GameObject:
   m_ObjectHideFlags: 0
@@ -4246,4 +4273,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 853b6a9cc23b37c41bb0560210ad799d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _animator: {fileID: 0}

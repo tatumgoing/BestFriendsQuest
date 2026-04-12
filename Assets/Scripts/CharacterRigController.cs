@@ -46,6 +46,8 @@ public class CharacterRigController : MonoBehaviour
     [SerializeField] private List<BoneSettingsDataGroup> _allSettings;
     [SerializeField] private bool _updateParamsOnValidate;
     [SerializeField] private Transform _boneParent;
+    [SerializeField, Range(0,1)] private float _testHeight;
+    [SerializeField] private bool _useTestHeight;
 
     private List<RigBoneCoordinator> _allBones = new List<RigBoneCoordinator>();
 
@@ -69,6 +71,10 @@ public class CharacterRigController : MonoBehaviour
 
         if (_updateParamsOnValidate) UpdateBoneParameters();
 
+        if (_useTestHeight) {
+            SetValue(_testHeight, BoneSliderName.HEIGHT);
+        }
+
         /*foreach (var b in _allBones) {
             b.UpdateValue(BoneSliderName.HEIGHT, _height);
             b.UpdateValue(BoneSliderName.WEIGHT, _weight);
@@ -81,7 +87,7 @@ public class CharacterRigController : MonoBehaviour
 
     private void OnEnable()
     {
-        print(gameObject.name + " was enabled");
+        //print(gameObject.name + " was enabled");
 
         Initialize();
 
@@ -100,6 +106,7 @@ public class CharacterRigController : MonoBehaviour
 
     private void Start()
     {
+        Initialize();
         foreach (var b in _allBones) {
             b.UpdateValue(BoneSliderName.HEIGHT, 0.5f);
             b.UpdateValue(BoneSliderName.WEIGHT, 0.5f);
@@ -112,14 +119,14 @@ public class CharacterRigController : MonoBehaviour
 
     private void OnDisable()
     {
-        print(gameObject.name + " was disabled");
+        //print(gameObject.name + " was disabled");
     }
 
     public void SetValue(float value, BoneSliderName slider)
     {
         if (!_initialized) Initialize();
 
-        print("Setting value" + slider + " to " + value);
+        //print("Setting value" + slider + " to " + value);
         foreach (var b in _allBones) {
             b.UpdateValue(slider, value);
         }

@@ -24,6 +24,8 @@ public class SpawnedCharacter : MonoBehaviour
 
     private Transform lookAtTarget;
 
+    private string _saveString;
+
     [SerializeField] private float lookSpeed;
     private bool isLooking;
     private Quaternion lastRotation;
@@ -52,12 +54,23 @@ public class SpawnedCharacter : MonoBehaviour
         UpdateLookAt();
     }
 
-    public void LoadFromString(string saveString)
+    public async Task LoadFromString(string saveString)
     {
+        _saveString = saveString;
         _characterController.LoadFromString(saveString);
         ID = _characterController.Data.ID;
 
         gameObject.name = _characterController.Data.Name + " (spawned character)";
+
+        await Task.Delay(100);
+        _characterController.LoadFromString(saveString);
+
+    }
+
+    [ButtonMethod]
+    public void TESTSAVELOAD()
+    {
+        LoadFromString(_saveString);
     }
 
     public void CharacterLookAt(Transform target)
