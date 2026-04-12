@@ -18,7 +18,7 @@ public class CloudParticles : MonoBehaviour
     void Update()
     {
         if (Time.time > endTime) {
-            Debug.Log("False");
+            //Debug.Log("False");
             //this.gameObject.SetActive(false);
             particles.Stop();
 

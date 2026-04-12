@@ -11,9 +11,9 @@ public class CharacterMetaController : MonoBehaviour
     [Header("Mode")]
     [SerializeField, Tooltip("Check yes in character creator scene, leave unchecked everywhere else")] private bool _isCharacterCreator = false;
 
+    [SerializeField] private FavoriteColorClothingInterface _clothingInterface;
     [SerializeField, ConditionalField(nameof(_isCharacterCreator))] private BodyCustomizer _bodyCustomizer;
     [SerializeField, ConditionalField(nameof(_isCharacterCreator))] private DataPanelController _dataPanel;
-    [SerializeField, ConditionalField(nameof(_isCharacterCreator), inverse:true)] private FavoriteColorClothingInterface _clothingInterface;
 
     [Header("Rig")]
     [SerializeField] private bool _oldRigMode;
@@ -162,10 +162,10 @@ public class CharacterMetaController : MonoBehaviour
         }
         else {
             gameObject.SetActive(true);
-
             LoadRigInGame(parts[4]);
-            _clothingInterface.SetColor(Data.FavColor);
         }
+
+        _clothingInterface.SetColor(Data.FavColor);
 
         gameObject.SetActive(true);
     }
