@@ -125,6 +125,7 @@ public class CookingMinigame : MinigameController
         _recipientSelectScreen.gameObject.SetActive(true);
 
         _recipientSelectScreen.SelectPreviousPrimary(id);
+        //replace bc prev screen is spawning character
         _areaController.DestroySpawnedCharacter();
         _spawnedCharacter = _areaController.SpawnCharacter(_selectedCharacter);
     }
