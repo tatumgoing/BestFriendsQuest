@@ -201,7 +201,7 @@ public class CharacterManager : MonoBehaviour
         spawnedCharacter.transform.localScale = scale;
 
         //FIX FOR SCALING BUG, FOR NOW
-        ToggleCharacter(spawnedCharacter.gameObject);
+        //ToggleCharacter(spawnedCharacter.gameObject);
 
         return spawnedCharacter;
     }

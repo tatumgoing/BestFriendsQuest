@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 /// <summary>
@@ -11,6 +12,7 @@ public static class SaveSystem
 {
     private static readonly string saveFolder = "/SaveData/";
     public static readonly string dynamicDataFileName = "dynamicData.txt";
+    public static readonly string highscoreFileName = "highscores.txt";
     public static readonly string staticDataFileName = "characters.txt";
     public static readonly string relationshipsFileName = "relationships.txt";
     private static readonly string savePath = Application.streamingAssetsPath + saveFolder;
@@ -33,6 +35,48 @@ public static class SaveSystem
 
         saveStrings.Add(dynamicData);
         SaveToFile(dynamicDataFileName, string.Join("\n", saveStrings));
+    }
+
+    /// <summary>
+    /// Given a key and a dictionary of string-float pairs, saves the dictionary to the highscores file in the format "key|string1:float1,string2:float2,..."
+    /// overrides the data stored at that key in the highscore file.
+    /// to reset, call with an empty dictionary.
+    /// </summary>
+    public static void SaveHighscoreDictionary(string key, Dictionary<string, float> dictionary)
+    {
+        var output = "";
+        foreach (var pair in dictionary) {
+            output += pair.Key + ":" + pair.Value + ",";
+        }
+        output = key + "|" + output;
+        SaveToFile(highscoreFileName, output);
+    }
+
+    /// <summary>
+    /// Loads in the highscore dictionary stored at the given key in the highscores file.
+    /// if the dictionary doesn't exist, returns an empty dictionary.
+    /// </summary>
+    public static Dictionary<string, float> LoadHighscoreDictionary(string key)
+    {
+        var lines = ReadFromFile(highscoreFileName).Split('\n');
+
+        var results = new Dictionary<string, float>();
+        foreach (var line in lines) {
+            if (line.Length < 2) continue;
+
+            var parts = line.Split('|');
+            if (parts[0] == key) {
+                
+                var entries = parts[1].Split(',');
+                foreach (var e in entries) {
+                    if (e.Length < 2) continue;
+                    var entryParts = e.Split(':');
+                    results.Add(entryParts[0], float.Parse(entryParts[1]));
+                }
+                break;
+            }
+        }
+        return results;
     }
 
     /// <summary>

@@ -7,10 +7,25 @@ using UnityEngine;
 
 public class Test : MonoBehaviour
 {
-    [SerializeField] private Animator _animator;
 
-    private void Start()
+    [ButtonMethod]
+    public void SaveDict()
     {
-        _animator.SetBool("Walking", true);
+        var newDict = new Dictionary<string, float>();
+        for (int i = 0; i < 12; i++) {
+            newDict.Add(i.ToString(), i + Random.Range(0, 1f));
+        }
+
+        SaveSystem.SaveHighscoreDictionary("TestDict", newDict);
+    }
+
+    [ButtonMethod]
+    public void LoadDict()
+    {
+        var loadedDict = SaveSystem.LoadHighscoreDictionary("TestDict");
+        print("Loaded dict:");
+        foreach (var pair in loadedDict) {
+            print(pair.Key + ": " + pair.Value);
+        }
     }
 }

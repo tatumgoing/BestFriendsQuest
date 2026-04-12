@@ -24,7 +24,8 @@ public class RoomUIController : MonoBehaviour
         _statusMenu.gameObject.SetActive(false);
         _dialogue.gameObject.SetActive(false);
 
-        var hasSolvedProblem = CharacterManager.i.GetProblem(id).IsSolved;
+        var problem = CharacterManager.i.GetProblem(id);
+        var hasSolvedProblem = problem && problem.IsSolved;
         _talkOnlyButtonParent.SetActive(hasSolvedProblem);
         _buttonsParent.SetActive(!hasSolvedProblem);
         _backButton.SetActive(!hasSolvedProblem);

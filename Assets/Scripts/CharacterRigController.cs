@@ -54,6 +54,8 @@ public class CharacterRigController : MonoBehaviour
     [SerializeField] private Transform _rootBone;
     [SerializeField] float _localScaleMultiplier = 1f;
 
+    private bool _initialized;
+
     private void OnValidate()
     {
         foreach (var data in _bones) {
@@ -79,11 +81,21 @@ public class CharacterRigController : MonoBehaviour
 
     private void OnEnable()
     {
+        print(gameObject.name + " was enabled");
+
+        Initialize();
+
+        OnValidate();
+    }
+
+    private void Initialize()
+    {
+        if (_initialized || !_boneParent) return;
+
         if (_allBones.Count == 0) {
             _allBones = _boneParent.GetComponentsInChildren<RigBoneCoordinator>(true).ToList();
         }
-
-        OnValidate();
+        _initialized = true;
     }
 
     private void Start()
@@ -98,9 +110,16 @@ public class CharacterRigController : MonoBehaviour
         }
     }
 
+    private void OnDisable()
+    {
+        print(gameObject.name + " was disabled");
+    }
+
     public void SetValue(float value, BoneSliderName slider)
     {
-        //print("Setting value" + slider + " to " + value);
+        if (!_initialized) Initialize();
+
+        print("Setting value" + slider + " to " + value);
         foreach (var b in _allBones) {
             b.UpdateValue(slider, value);
         }

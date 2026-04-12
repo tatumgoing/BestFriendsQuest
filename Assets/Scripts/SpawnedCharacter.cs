@@ -1,5 +1,4 @@
 using MyBox;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -38,8 +37,6 @@ public class SpawnedCharacter : MonoBehaviour
 
     private void Update()
     {
-
-
         if (Time.time < growTimer)
         {
             var progress = (growTimer - Time.time / growRate);
@@ -54,10 +51,11 @@ public class SpawnedCharacter : MonoBehaviour
     {
         UpdateLookAt();
     }
+
     public void LoadFromString(string saveString)
     {
         _characterController.LoadFromString(saveString);
-        this.ID = _characterController.Data.ID;
+        ID = _characterController.Data.ID;
 
         gameObject.name = _characterController.Data.Name + " (spawned character)";
     }
@@ -71,7 +69,6 @@ public class SpawnedCharacter : MonoBehaviour
     {
         if (lookAtTarget)
         {
-
             Vector3 Direction = (lookAtTarget.position - head.position).normalized;
             float angle = Vector3.SignedAngle(Direction, headForward.position, headForward.up);
 
@@ -108,13 +105,13 @@ public class SpawnedCharacter : MonoBehaviour
 
     }
 
-    public void AnimateFromString(String anim)
+    public void AnimateFromString(string anim)
     {
         animator.SetBool(anim, true);
 
     }
 
-    public void TriggerFromString(String anim)
+    public void TriggerFromString(string anim)
     {
         animator.SetTrigger(anim.ToString());
         Debug.Log(anim);

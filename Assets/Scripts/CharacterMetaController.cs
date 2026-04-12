@@ -161,6 +161,8 @@ public class CharacterMetaController : MonoBehaviour
             _dataPanel.Load(Data);
         }
         else {
+            gameObject.SetActive(true);
+
             LoadRigInGame(parts[4]);
             _clothingInterface.SetColor(Data.FavColor);
         }
@@ -172,19 +174,29 @@ public class CharacterMetaController : MonoBehaviour
     {
         var loadedSliderValues = rigSaveString.Split('%').Select(x => float.Parse(x)).ToList();
 
-        void AffectRig(BoneSliderName sliderGroupName, float value)
-        {
-            var data = _rigGroups.Where(x => x.Type == sliderGroupName).FirstOrDefault();
-            if (data == default) return;
-            foreach (var bone in data.Bones) _rigController.ModifyBone(bone.Name, sliderGroupName, bone.GetCurrent(value), bone.IndependentScale);
+        if (!_oldRigMode) {
+            _rigController.SetValue(loadedSliderValues[0], BoneSliderName.HEIGHT);
+            _rigController.SetValue(loadedSliderValues[1], BoneSliderName.WEIGHT);
+            _rigController.SetValue(loadedSliderValues[2], BoneSliderName.ARMS);
+            _rigController.SetValue(loadedSliderValues[3], BoneSliderName.TORSO);
+            _rigController.SetValue(loadedSliderValues[4], BoneSliderName.WAIST);
+            _rigController.SetValue(loadedSliderValues[5], BoneSliderName.LEGS);
         }
+        else { 
+            void AffectRig(BoneSliderName sliderGroupName, float value)
+            {
+                var data = _rigGroups.Where(x => x.Type == sliderGroupName).FirstOrDefault();
+                if (data == default) return;
+                foreach (var bone in data.Bones) _rigController.ModifyBone(bone.Name, sliderGroupName, bone.GetCurrent(value), bone.IndependentScale);
+            }
 
-        AffectRig(BoneSliderName.HEIGHT, loadedSliderValues[0]);
-        AffectRig(BoneSliderName.WEIGHT, loadedSliderValues[1]);
-        AffectRig(BoneSliderName.ARMS, loadedSliderValues[2]);
-        AffectRig(BoneSliderName.TORSO, loadedSliderValues[3]);
-        AffectRig(BoneSliderName.WAIST, loadedSliderValues[4]);
-        AffectRig(BoneSliderName.LEGS, loadedSliderValues[5]);
+            AffectRig(BoneSliderName.HEIGHT, loadedSliderValues[0]);
+            AffectRig(BoneSliderName.WEIGHT, loadedSliderValues[1]);
+            AffectRig(BoneSliderName.ARMS, loadedSliderValues[2]);
+            AffectRig(BoneSliderName.TORSO, loadedSliderValues[3]);
+            AffectRig(BoneSliderName.WAIST, loadedSliderValues[4]);
+            AffectRig(BoneSliderName.LEGS, loadedSliderValues[5]);
+        }
     }
 
     public string GetSaveString()
