@@ -22,6 +22,13 @@ public class RecipeSelector : MonoBehaviour
     [SerializeField] private TMP_Text difficulty;
     [SerializeField] private TMP_Text highScore;
 
+    [Header("Recipe Select Medals")]
+
+    [SerializeField] private GameObject bronzeIcon;
+    [SerializeField] private GameObject silverIcon;
+    [SerializeField] private GameObject goldIcon;
+    [SerializeField] private GameObject specialIcon;
+
 
     private List<RecipeSelectButton> _spawnedButtons = new List<RecipeSelectButton>();
     private RecipeData _selected;
@@ -64,6 +71,45 @@ public class RecipeSelector : MonoBehaviour
         steps.text = _selected.ReturnSteps();
 
         difficulty.text = "Difficulty: " + Utils.CapitalFirst(_selected.Difficulty.ToString());
+
+        Dictionary<string, float> tempDict = SaveSystem.LoadHighscoreDictionary("Cooking");
+
+        highScore.text = "Highscore: " + tempDict[_selected.Name].ToString();
+
+        HighscoreDisplay();
+
+    }
+
+    public void HighscoreDisplay()
+    {
+        Dictionary<string, float> tempDict = SaveSystem.LoadHighscoreDictionary("Cooking");
+
+        float tempScore = Mathf.Floor(tempDict[_selected.Name] * 1000.0f);
+
+        highScore.text = "Highscore: " + tempScore.ToString();
+
+        //medal display
+        bronzeIcon.SetActive(false);
+        silverIcon.SetActive(false);
+        goldIcon.SetActive(false);
+        specialIcon.SetActive(false);
+
+        if (tempScore >= 500)
+        {
+            bronzeIcon.SetActive(true);
+        }
+        if(tempScore >= 750)
+        {
+            silverIcon.SetActive(true);
+        }
+        if(tempScore >= 900)
+        {
+            goldIcon.SetActive(true);
+        }
+        if (tempScore >= 1000)
+        {
+            specialIcon.SetActive(true);
+        }
     }
 
     public void StartCooking()
