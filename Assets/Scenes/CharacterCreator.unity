@@ -3645,7 +3645,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 794478881054220360, guid: 676f95359d1d26541bef42418eff701c, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7342040853583149743, guid: 676f95359d1d26541bef42418eff701c, type: 3}
       propertyPath: m_Enabled
@@ -7734,12 +7734,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 326854998}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.000000029634506, y: -0.00000008940697, z: 0.000000047250573, w: 1}
+  m_LocalPosition: {x: 0, y: -0.0061600083, z: 0.0011900015}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 161081530}
+  m_Father: {fileID: 2050848567}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!1 &327172161
 GameObject:
@@ -8988,7 +8988,7 @@ MonoBehaviour:
       _bone: 6
       _adjustDirection: {x: 0, y: 1, z: 0}
       _scaleLimits: {x: 1, y: 1}
-      _distLimits: {x: -0.05, y: 0.06}
+      _distLimits: {x: 0.12, y: -0.08}
       _symetricScale: 0
       _symetricDist: 0
     - DisplayName: CORE
@@ -9220,38 +9220,17 @@ MonoBehaviour:
     - DisplayName: BELLY
       _bone: 12
       _adjustDirection: {x: 0, y: 0, z: 0}
-      _scaleLimits: {x: 1.3, y: 0.7}
+      _scaleLimits: {x: 0.70000005, y: 1.3}
       _distLimits: {x: -0, y: 0}
       _symetricScale: 1
       _symetricDist: 1
     - DisplayName: CHEST
       _bone: 1
       _adjustDirection: {x: 0, y: 1, z: 0}
-      _scaleLimits: {x: 1.29, y: 0.83}
-      _distLimits: {x: 0.1, y: -0.1}
-      _symetricScale: 0
-      _symetricDist: 1
-    - DisplayName: PELVIS
-      _bone: 14
-      _adjustDirection: {x: 1, y: 0, z: 0}
-      _scaleLimits: {x: 0.7, y: 1.51}
+      _scaleLimits: {x: 1.3, y: 0.7}
       _distLimits: {x: 0.06, y: -0.06}
-      _symetricScale: 0
+      _symetricScale: 1
       _symetricDist: 1
-    - DisplayName: THIGH
-      _bone: 8
-      _adjustDirection: {x: 1, y: 0, z: 0}
-      _scaleLimits: {x: 0.95000005, y: 1.05}
-      _distLimits: {x: 0, y: -0.06}
-      _symetricScale: 1
-      _symetricDist: 0
-    - DisplayName: NECK
-      _bone: 6
-      _adjustDirection: {x: 0, y: 1, z: 0}
-      _scaleLimits: {x: 1, y: 1}
-      _distLimits: {x: 0.09, y: 0.1}
-      _symetricScale: 1
-      _symetricDist: 0
   - DisplayName: LEGS
     _enabled: 1
     _category: 6
@@ -43601,7 +43580,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1212405620413579717, guid: f845d669074fd2d4dad1d19c6ff52f37, type: 3}
       insertIndex: -1
       addedObject: {fileID: 791095088}
-    - targetCorrespondingSourceObject: {fileID: 7487234077803178040, guid: f845d669074fd2d4dad1d19c6ff52f37, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 2202375065683092482, guid: f845d669074fd2d4dad1d19c6ff52f37, type: 3}
       insertIndex: -1
       addedObject: {fileID: 326854999}
     m_AddedComponents:

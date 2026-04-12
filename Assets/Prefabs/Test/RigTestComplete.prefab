@@ -279,7 +279,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 794478881054220360}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 3.6, y: -9, z: -2.7}
   m_LocalScale: {x: 10.71597, y: 10.71597, z: 10.71597}
   m_ConstrainProportionsScale: 0
@@ -410,7 +410,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _allSettings:
   - DisplayName: HEIGHT
-    _enabled: 1
+    _enabled: 0
     _category: 1
     _boneSettings:
     - DisplayName: NECK
@@ -491,7 +491,7 @@ MonoBehaviour:
       _symetricScale: 0
       _symetricDist: 0
   - DisplayName: WEIGHT
-    _enabled: 1
+    _enabled: 0
     _category: 2
     _boneSettings:
     - DisplayName: NECK
@@ -579,7 +579,7 @@ MonoBehaviour:
       _symetricScale: 1
       _symetricDist: 0
   - DisplayName: TORSO
-    _enabled: 1
+    _enabled: 0
     _category: 4
     _boneSettings:
     - DisplayName: CHEST
@@ -618,7 +618,7 @@ MonoBehaviour:
       _symetricScale: 1
       _symetricDist: 0
   - DisplayName: ARMS
-    _enabled: 1
+    _enabled: 0
     _category: 3
     _boneSettings:
     - DisplayName: UPPER_ARM
@@ -649,40 +649,19 @@ MonoBehaviour:
     - DisplayName: BELLY
       _bone: 12
       _adjustDirection: {x: 0, y: 0, z: 0}
-      _scaleLimits: {x: 1.3, y: 0.7}
+      _scaleLimits: {x: 0.70000005, y: 1.3}
       _distLimits: {x: -0, y: 0}
       _symetricScale: 1
       _symetricDist: 1
     - DisplayName: CHEST
       _bone: 1
       _adjustDirection: {x: 0, y: 1, z: 0}
-      _scaleLimits: {x: 1.29, y: 0.83}
-      _distLimits: {x: 0.1, y: -0.1}
-      _symetricScale: 0
-      _symetricDist: 1
-    - DisplayName: PELVIS
-      _bone: 14
-      _adjustDirection: {x: 1, y: 0, z: 0}
-      _scaleLimits: {x: 0.7, y: 1.51}
+      _scaleLimits: {x: 1.3, y: 0.7}
       _distLimits: {x: 0.06, y: -0.06}
-      _symetricScale: 0
+      _symetricScale: 1
       _symetricDist: 1
-    - DisplayName: THIGH
-      _bone: 8
-      _adjustDirection: {x: 1, y: 0, z: 0}
-      _scaleLimits: {x: 0.95000005, y: 1.05}
-      _distLimits: {x: 0, y: -0.06}
-      _symetricScale: 1
-      _symetricDist: 0
-    - DisplayName: NECK
-      _bone: 6
-      _adjustDirection: {x: 0, y: 1, z: 0}
-      _scaleLimits: {x: 1, y: 1}
-      _distLimits: {x: 0.09, y: 0.1}
-      _symetricScale: 1
-      _symetricDist: 0
   - DisplayName: LEGS
-    _enabled: 1
+    _enabled: 0
     _category: 6
     _boneSettings:
     - DisplayName: THIGH
@@ -707,229 +686,6 @@ MonoBehaviour:
   _waist: 0.5
   _arms: 0.5
   _legs: 0.5
-  _heightBoneSettings:
-  - DisplayName: 
-    _bone: 0
-    _adjustDirection: {x: 0, y: 0, z: 1}
-    _scaleLimits: {x: 0.85, y: 1.15}
-    _distLimits: {x: -0.08, y: 0.47}
-    _symetricScale: 1
-    _symetricDist: 0
-  - DisplayName: 
-    _bone: 8
-    _adjustDirection: {x: 1, y: 0, z: 0}
-    _scaleLimits: {x: 1, y: 1}
-    _distLimits: {x: 0.03, y: -0.07}
-    _symetricScale: 1
-    _symetricDist: 0
-  - DisplayName: 
-    _bone: 9
-    _adjustDirection: {x: 0, y: 1, z: 0}
-    _scaleLimits: {x: 1, y: 1}
-    _distLimits: {x: 0.25, y: 0.2}
-    _symetricScale: 1
-    _symetricDist: 0
-  - DisplayName: 
-    _bone: 10
-    _adjustDirection: {x: 1, y: 0, z: 0}
-    _scaleLimits: {x: 1, y: 1}
-    _distLimits: {x: -0.01, y: -0.08}
-    _symetricScale: 1
-    _symetricDist: 0
-  - DisplayName: 
-    _bone: 13
-    _adjustDirection: {x: 1, y: 0.5, z: 0}
-    _scaleLimits: {x: 1, y: 1}
-    _distLimits: {x: -0.01, y: 0}
-    _symetricScale: 1
-    _symetricDist: 0
-  - DisplayName: 
-    _bone: 12
-    _adjustDirection: {x: 1, y: 0, z: 0}
-    _scaleLimits: {x: 1, y: 1}
-    _distLimits: {x: 0.16, y: 0.21}
-    _symetricScale: 1
-    _symetricDist: 0
-  - DisplayName: 
-    _bone: 1
-    _adjustDirection: {x: 0, y: 1, z: 0}
-    _scaleLimits: {x: 1, y: 1}
-    _distLimits: {x: -0.08, y: 0.03}
-    _symetricScale: 1
-    _symetricDist: 0
-  - DisplayName: 
-    _bone: 3
-    _adjustDirection: {x: 0, y: 1, z: 0}
-    _scaleLimits: {x: 0.95000005, y: 1.05}
-    _distLimits: {x: 0, y: 0}
-    _symetricScale: 1
-    _symetricDist: 0
-  - DisplayName: 
-    _bone: 5
-    _adjustDirection: {x: 0, y: 1, z: 0}
-    _scaleLimits: {x: 0.78999996, y: 0.74}
-    _distLimits: {x: 0, y: 0}
-    _symetricScale: 0
-    _symetricDist: 0
-  _weightBoneSettings:
-  - DisplayName: 
-    _bone: 0
-    _adjustDirection: {x: 0, y: 1, z: 0}
-    _scaleLimits: {x: 0.90999997, y: 1.09}
-    _distLimits: {x: -0, y: 0}
-    _symetricScale: 1
-    _symetricDist: 1
-  - DisplayName: 
-    _bone: 8
-    _adjustDirection: {x: 0.92, y: 0, z: -0.1}
-    _scaleLimits: {x: 0.86, y: 1.14}
-    _distLimits: {x: -0.14, y: 0.14}
-    _symetricScale: 1
-    _symetricDist: 1
-  - DisplayName: 
-    _bone: 9
-    _adjustDirection: {x: 0, y: 1, z: 0}
-    _scaleLimits: {x: 1.23, y: 1.1}
-    _distLimits: {x: 0.17, y: -0.17}
-    _symetricScale: 0
-    _symetricDist: 1
-  - DisplayName: 
-    _bone: 13
-    _adjustDirection: {x: 0.5, y: 1, z: 0}
-    _scaleLimits: {x: 1.1700001, y: 0.83}
-    _distLimits: {x: 0.03, y: -0.03}
-    _symetricScale: 1
-    _symetricDist: 1
-  - DisplayName: 
-    _bone: 10
-    _adjustDirection: {x: 0, y: 1, z: 0}
-    _scaleLimits: {x: 1.0699999, y: 0.93}
-    _distLimits: {x: -0.07, y: 0.07}
-    _symetricScale: 1
-    _symetricDist: 1
-  - DisplayName: 
-    _bone: 3
-    _adjustDirection: {x: 0, y: 1, z: 0}
-    _scaleLimits: {x: 0.96, y: 1.86}
-    _distLimits: {x: 0.06, y: 0.17}
-    _symetricScale: 0
-    _symetricDist: 0
-  - DisplayName: 
-    _bone: 4
-    _adjustDirection: {x: 0, y: 1, z: 0}
-    _scaleLimits: {x: 1.18, y: 0.75}
-    _distLimits: {x: 0.17, y: 0.04}
-    _symetricScale: 0
-    _symetricDist: 0
-  - DisplayName: 
-    _bone: 5
-    _adjustDirection: {x: 0, y: 1, z: 0}
-    _scaleLimits: {x: 0.9, y: 1.1}
-    _distLimits: {x: -0.05, y: -0.25}
-    _symetricScale: 1
-    _symetricDist: 0
-  - DisplayName: 
-    _bone: 12
-    _adjustDirection: {x: 1, y: 0, z: 0}
-    _scaleLimits: {x: 0.83, y: 1.24}
-    _distLimits: {x: 0, y: 0}
-    _symetricScale: 0
-    _symetricDist: 0
-  - DisplayName: 
-    _bone: 1
-    _adjustDirection: {x: 0, y: 1, z: 0}
-    _scaleLimits: {x: 1.1800001, y: 0.82}
-    _distLimits: {x: 0.24, y: 0}
-    _symetricScale: 1
-    _symetricDist: 0
-  _legsBoneSettings:
-  - DisplayName: 
-    _bone: 8
-    _adjustDirection: {x: 1, y: 0, z: 0}
-    _scaleLimits: {x: 0.79999995, y: 1.2}
-    _distLimits: {x: 0.07, y: -0.07}
-    _symetricScale: 1
-    _symetricDist: 1
-  - DisplayName: 
-    _bone: 9
-    _adjustDirection: {x: 0, y: 1, z: 0}
-    _scaleLimits: {x: 1, y: 1}
-    _distLimits: {x: 0.22, y: -0.22}
-    _symetricScale: 1
-    _symetricDist: 1
-  _armsBoneSettings:
-  - DisplayName: 
-    _bone: 3
-    _adjustDirection: {x: 0, y: 0, z: 0}
-    _scaleLimits: {x: 0.68, y: 1.2}
-    _distLimits: {x: -0, y: 0}
-    _symetricScale: 0
-    _symetricDist: 1
-  - DisplayName: 
-    _bone: 4
-    _adjustDirection: {x: 0, y: 1, z: 0}
-    _scaleLimits: {x: 1.2, y: 0.8}
-    _distLimits: {x: 0.38, y: -0.02}
-    _symetricScale: 1
-    _symetricDist: 0
-  - DisplayName: 
-    _bone: 5
-    _adjustDirection: {x: 0, y: 0, z: 0}
-    _scaleLimits: {x: 0.97, y: 1.03}
-    _distLimits: {x: -0, y: 0}
-    _symetricScale: 1
-    _symetricDist: 0
-  _waistBoneSettings:
-  - DisplayName: 
-    _bone: 12
-    _adjustDirection: {x: 0, y: 0, z: 0}
-    _scaleLimits: {x: 0.6, y: 1.4}
-    _distLimits: {x: -0, y: 0}
-    _symetricScale: 1
-    _symetricDist: 1
-  - DisplayName: 
-    _bone: 1
-    _adjustDirection: {x: 0, y: 1, z: 0}
-    _scaleLimits: {x: 1.4, y: 0.6}
-    _distLimits: {x: 0.76, y: -0.11}
-    _symetricScale: 1
-    _symetricDist: 0
-  - DisplayName: 
-    _bone: 8
-    _adjustDirection: {x: 1, y: 0, z: 0}
-    _scaleLimits: {x: 0.95000005, y: 1.05}
-    _distLimits: {x: -0, y: -0.06}
-    _symetricScale: 1
-    _symetricDist: 0
-  _torsoBoneSettings:
-  - DisplayName: 
-    _bone: 1
-    _adjustDirection: {x: 0, y: 0, z: 0}
-    _scaleLimits: {x: 0.9, y: 1.1}
-    _distLimits: {x: 0, y: 0}
-    _symetricScale: 1
-    _symetricDist: 0
-  - DisplayName: 
-    _bone: 3
-    _adjustDirection: {x: 0, y: 1, z: 0}
-    _scaleLimits: {x: 0.95000005, y: 1.05}
-    _distLimits: {x: 0, y: 0.07}
-    _symetricScale: 1
-    _symetricDist: 0
-  - DisplayName: 
-    _bone: 6
-    _adjustDirection: {x: 0, y: 0, z: 0}
-    _scaleLimits: {x: 1.1, y: 0.9}
-    _distLimits: {x: 0, y: 0}
-    _symetricScale: 1
-    _symetricDist: 0
-  - DisplayName: 
-    _bone: 4
-    _adjustDirection: {x: 0, y: 0, z: 0}
-    _scaleLimits: {x: 0.90999997, y: 1.09}
-    _distLimits: {x: 0, y: 0}
-    _symetricScale: 1
-    _symetricDist: 0
 --- !u!114 &1982774321018442912
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1327,6 +1083,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _scale: {x: 1, y: 1, z: 1}
   _lossy: 0
+  _symetric: 0
   _lossyScale: {x: 0, y: 0, z: 0}
 --- !u!64 &6840671167643814332
 MeshCollider:
@@ -2076,6 +1833,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _scale: {x: 1120, y: 1120, z: 1120}
   _lossy: 1
+  _symetric: 0
   _lossyScale: {x: 0, y: 0, z: 0}
 --- !u!1 &6225263859215681491
 GameObject:
@@ -2913,6 +2671,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _scale: {x: 1, y: 1, z: 1}
   _lossy: 0
+  _symetric: 0
   _lossyScale: {x: 0, y: 0, z: 0}
 --- !u!64 &5874113441206127070
 MeshCollider:
@@ -3113,6 +2872,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _scale: {x: 1, y: 1, z: 1}
   _lossy: 0
+  _symetric: 0
   _lossyScale: {x: 0, y: 0, z: 0}
 --- !u!64 &3605386843159865641
 MeshCollider:
