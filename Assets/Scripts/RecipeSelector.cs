@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class RecipeSelector : MonoBehaviour
 {
@@ -9,6 +11,15 @@ public class RecipeSelector : MonoBehaviour
     [SerializeField] private Transform _listParent;
     [SerializeField] private GameObject _startButton;
     [SerializeField] private CookingMinigame _controller;
+
+    [Header("Recipe Select Visuals")]
+
+    [SerializeField] private Image bigIcon;
+    [SerializeField] private TMP_Text recipeName;
+
+    [SerializeField] private TMP_Text difficulty;
+    [SerializeField] private TMP_Text highScore;
+
 
     private List<RecipeSelectButton> _spawnedButtons = new List<RecipeSelectButton>();
     private RecipeData _selected;
@@ -39,8 +50,15 @@ public class RecipeSelector : MonoBehaviour
     {
         foreach (var s in _spawnedButtons) if (s.Recipe != recipe) s.Deselect();
         _selected = recipe;
+        UpdateSelectDisplay();
 
         _startButton.SetActive(true);   
+    }
+
+    public void UpdateSelectDisplay()
+    {
+        bigIcon.sprite = _selected.Icon;
+        recipeName.text = _selected.Name;
     }
 
     public void StartCooking()
