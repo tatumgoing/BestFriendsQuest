@@ -76,7 +76,7 @@ public class SpawnedCharacter : MonoBehaviour
 
     public void RandomMannequinPose()
     {
-        animator.Play("Mannequin", -1, Random.Range(0, 1f));
+        animator.Play("Mannequin Default", -1, Random.Range(0, 1f));
         animator.speed = 0;
     }
 

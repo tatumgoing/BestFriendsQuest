@@ -11,6 +11,11 @@ public class ClothingShopController : MonoBehaviour
         _mannequin.RandomMannequinPose();
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Q)) _mannequin.RandomMannequinPose();
+    }
+
     public void DisplayItem(ItemData item)
     {
         _mannequin.ShowClothingItem(item);
