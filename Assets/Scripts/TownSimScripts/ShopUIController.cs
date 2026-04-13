@@ -5,9 +5,17 @@ using UnityEngine;
 using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
 
-public class ShopManager : MonoBehaviour
+public class ShopUIController : MonoBehaviour
 {
-    TownGameManager gameManager;
+    [SerializeField] private GameObject _listItemPrefab;
+    [SerializeField] private Transform _listParent;
+
+    [SerializeField] private ClothingShopController _areaController;
+
+    private List<ShopListItem> _spawnedItems = new List<ShopListItem>();
+
+
+
 
     [Header("Sidebar")]
 
@@ -26,16 +34,29 @@ public class ShopManager : MonoBehaviour
 
     void Start()
     {
-        gameManager = TownGameManager.i;
+        BuildList();
+    }
 
-        foreach (ItemTabs tab in tabs)
-        {
-            tab.GetComponent<Button>().onClick.AddListener(() => UpdateTab(tab));
-        }
+    private void BuildList()
+    {
+        foreach (var item in _spawnedItems) Destroy(item.gameObject);
+        _spawnedItems.Clear();
 
-        UpdateTab(tabs[0]);
-        purchaseButton.GetComponent<Button>().onClick.AddListener(() => UpdatePurchasedButton());
+        foreach (var item in TownGameManager.i.GetAllItems()) SpawnItem(item);
+    }
 
+    private void SpawnItem(ItemData item)
+    {
+        var spawnedItem = Instantiate(_listItemPrefab, _listParent).GetComponent<ShopListItem>();
+        spawnedItem.Initialize(item, this);
+        _spawnedItems.Add(spawnedItem);
+    }
+
+    public void SelectItem(ItemData item)
+    {
+        foreach (var i in _spawnedItems) if (i.Item != item) i.Deselect();
+
+        _areaController.DisplayItem(item);
     }
 
     void UpdateTab(ItemTabs clickedTab)

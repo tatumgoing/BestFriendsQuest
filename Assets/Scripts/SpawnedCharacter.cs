@@ -12,7 +12,18 @@ public class ClothingItemData
 {
     [HideInInspector] public string DisplayName;
     [DisplayInspector] public ItemData Item;
-    public GameObject Mesh;
+    [SerializeField] private List<GameObject> _meshes;
+
+    public void OnValidate() 
+    { 
+        if (Item) DisplayName = Item.Name;
+        else DisplayName = "Empty";
+    }
+
+    public void SetState(bool active)
+    {
+        foreach (var item in _meshes) item.SetActive(active);
+    }
 }
 
 [SelectionBase]
@@ -31,30 +42,29 @@ public class SpawnedCharacter : MonoBehaviour
     [SerializeField] private Transform head;
     [SerializeField] private Transform headForward;
     [SerializeField] private float maxAngle, minAngle;
-
-    private Transform lookAtTarget;
-
-    private string _saveString;
-
     [SerializeField] private float lookSpeed;
-    private bool isLooking;
-    private Quaternion lastRotation;
-
-    //Growing
-    private float growTimer;
-    private float growRate;
-
     [SerializeField] private AnimationCurve growCurve;
 
+    private bool _isLooking;
+    private Quaternion _lastRotation;
+    private Transform _lookAtTarget;
+    private string _saveString;
+
+    //Growing
+    private float _growTimer;
+    private float _growRate;
+
+    private void OnValidate()
+    {
+        foreach (var item in _clothingItems) item.OnValidate();
+    }
 
     private void Update()
     {
-        if (Time.time < growTimer)
+        if (Time.time < _growTimer)
         {
-            var progress = (growTimer - Time.time / growRate);
-
+            var progress = (_growTimer - Time.time / _growRate);
             progress = growCurve.Evaluate(progress);
-
             transform.localScale = Vector3.Lerp(new Vector3(1,1,1),new Vector3(0, 0, 0), progress );
         }
     }
@@ -62,6 +72,20 @@ public class SpawnedCharacter : MonoBehaviour
     private void LateUpdate()
     {
         UpdateLookAt();
+    }
+
+    public void RandomMannequinPose()
+    {
+        animator.Play("Mannequin", -1, Random.Range(0, 1f));
+        animator.speed = 0;
+    }
+
+    public void ShowClothingItem(ItemData item)
+    {
+        foreach (var clothingItem in _clothingItems)
+        {
+            clothingItem.SetState(clothingItem.Item.Name == item.Name);
+        }
     }
 
     public async Task LoadFromString(string saveString)
@@ -74,7 +98,6 @@ public class SpawnedCharacter : MonoBehaviour
 
         await Task.Delay(100);
         _characterController.LoadFromString(saveString);
-
     }
 
     [ButtonMethod]
@@ -85,41 +108,41 @@ public class SpawnedCharacter : MonoBehaviour
 
     public void CharacterLookAt(Transform target)
     {
-        lookAtTarget = target;
+        _lookAtTarget = target;
     }
 
     public void UpdateLookAt()
     {
-        if (lookAtTarget)
+        if (_lookAtTarget)
         {
-            Vector3 Direction = (lookAtTarget.position - head.position).normalized;
+            Vector3 Direction = (_lookAtTarget.position - head.position).normalized;
             float angle = Vector3.SignedAngle(Direction, headForward.position, headForward.up);
 
             if (angle < maxAngle && angle > minAngle)
             {
 
-                if (!isLooking)
+                if (!_isLooking)
                 {
-                    isLooking = true;
-                    lastRotation = head.rotation;
+                    _isLooking = true;
+                    _lastRotation = head.rotation;
                 }
 
-                Quaternion targetRotation = Quaternion.LookRotation(lookAtTarget.position - head.position);
-                lastRotation = Quaternion.Slerp(lastRotation, targetRotation, lookSpeed * Time.deltaTime);
+                Quaternion targetRotation = Quaternion.LookRotation(_lookAtTarget.position - head.position);
+                _lastRotation = Quaternion.Slerp(_lastRotation, targetRotation, lookSpeed * Time.deltaTime);
 
-                head.rotation = lastRotation;
+                head.rotation = _lastRotation;
             }
         }
         else
         {
-            lastRotation = Quaternion.Slerp(lastRotation, headForward.rotation, lookSpeed * Time.deltaTime);
-            head.rotation = lastRotation;   
+            _lastRotation = Quaternion.Slerp(_lastRotation, headForward.rotation, lookSpeed * Time.deltaTime);
+            head.rotation = _lastRotation;   
         }
     }
 
     public void EndCharacterLookAt()
     {
-        lookAtTarget = null;
+        _lookAtTarget = null;
     }
     
     public void AnimateFromEnum(CharacterAnimations anim)
@@ -143,9 +166,9 @@ public class SpawnedCharacter : MonoBehaviour
 
     public void GrowCharacter(float growTime)
     {
-        growRate = growTime;
+        _growRate = growTime;
 
-        growTimer = Time.time + growTime;
+        _growTimer = Time.time + growTime;
         transform.localScale = new Vector3(0, 0, 0);
 
     }

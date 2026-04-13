@@ -16,6 +16,8 @@ public class TownGameManager : MonoBehaviour
     [SerializeField] private bool _demoMode;
     [SerializeField] private NeighborhoodController _neighborhoodController;
 
+    public List<ItemData> GetAllItems() => allItems;
+
     public async void GoToMap() => await ChangeArea(AreaName.MAP);
     public async void GoToPark() => await ChangeArea(AreaName.PARK);
     public async void GoToTown() => await ChangeArea(AreaName.TOWN);
@@ -121,7 +123,7 @@ public class TownGameManager : MonoBehaviour
     
     public List<RecordsManager> recordsManagers = new List<RecordsManager>();
 
-    [SerializeField]private List<ItemData> allItems = new List<ItemData> ();
+    [SerializeField] private List<ItemData> allItems = new List<ItemData> ();
     
     public List<string> itemNames= new List<string> (); 
     public List<int> itemCounts = new List<int> ();

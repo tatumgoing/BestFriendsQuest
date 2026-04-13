@@ -25,9 +25,7 @@ public class RecordsManager : MonoBehaviour
     void Start()
     {
         gameManager = TownGameManager.i;
-
         StartCoroutine(UpdateRecord());
-
         currentType = ItemType.Clothing;
 
         foreach (ItemTabs tab in tabs) { 
@@ -35,6 +33,7 @@ public class RecordsManager : MonoBehaviour
             tab.GetComponent<Button>().onClick.AddListener(() => UpdateTab(tab));
         }
 
+        UpdateType(currentType);
         UpdateTab(tabs[0]);
     }
 
@@ -69,23 +68,19 @@ public class RecordsManager : MonoBehaviour
         foreach (Transform child in transform)
         {
             Destroy(child.gameObject);
-
             containedItems = new List<ItemBanner>();
-
             selectedBanner = null;
         }
     }
 
     public void CreateHeldItem(ItemData item, int itemCount, float price)
     {
-
        ItemBanner newBanner = Instantiate(heldItem, this.transform);
        newBanner.UpdateBanner(item);
        newBanner.UpdateCount(itemCount);
        newBanner.UpdatePrice(price);
 
        containedItems.Add(newBanner);
-
     }
 
     public void CreateUnheldItem(ItemData item, int itemCount, float price)
@@ -112,8 +107,6 @@ public class RecordsManager : MonoBehaviour
             newBanner.UpdateCount(0);
             containedItems.Add(newBanner);
         }
-
-
     }
 
     public void SelectBanner(ItemBanner newSelected)
@@ -127,6 +120,7 @@ public class RecordsManager : MonoBehaviour
         currentType = type;
         gameManager.UpdateRecordDisplay(this, type);
     }
+
     void UpdateTab(ItemTabs clickedTab)
     {
         foreach (ItemTabs tab in tabs)
