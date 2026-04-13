@@ -7,7 +7,6 @@ using UnityEngine.UI;
 
 public class ShopManager : MonoBehaviour
 {
-
     TownGameManager gameManager;
 
     [Header("Sidebar")]
@@ -25,8 +24,6 @@ public class ShopManager : MonoBehaviour
     public RecordsManager recordsManager;
     public List<ItemTabs> tabs = new List<ItemTabs>();
 
-
-    // Start is called before the first frame update
     void Start()
     {
         gameManager = TownGameManager.i;
@@ -41,8 +38,6 @@ public class ShopManager : MonoBehaviour
 
     }
 
-
-    // Update is called once per frame
     void UpdateTab(ItemTabs clickedTab)
     {
         foreach(ItemTabs tab in tabs)
@@ -61,6 +56,4 @@ public class ShopManager : MonoBehaviour
         purchaseButton.GetComponent<BuyItem>().item = recordsManager.selectedBanner.itemID;
         purchaseButton.GetComponent<BuyItem>().Puchased();
     }
-
-
 }

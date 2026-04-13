@@ -55,7 +55,6 @@ public class RecordsManager : MonoBehaviour
 
     public void UpdateRecordSync()
     {
-         
         foreach (ItemBanner i in containedItems)
         {
             if (i.GetComponent<Button>() != null)
@@ -75,7 +74,6 @@ public class RecordsManager : MonoBehaviour
 
             selectedBanner = null;
         }
-
     }
 
     public void CreateHeldItem(ItemData item, int itemCount, float price)
@@ -141,7 +139,5 @@ public class RecordsManager : MonoBehaviour
 
         clickedTab.selected = true;
     }
-
     //go back to towngamemanager and update item class to accomodate. sorry future vincent
-
 }

@@ -26,7 +26,7 @@ public class CookingHighscores : MonoBehaviour
 
         }
 
-        Debug.Log(string.Join(", ", tempDict)); 
+        //Debug.Log(string.Join(", ", tempDict)); 
         
         SaveSystem.SaveHighscoreDictionary("Cooking", tempDict);
     }

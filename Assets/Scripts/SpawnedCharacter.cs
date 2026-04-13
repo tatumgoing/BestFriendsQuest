@@ -7,14 +7,24 @@ using System.Threading.Tasks;
 
 public enum CharacterAnimations { Grilling, Standing, Sitting, SittingGround, Walking, Spawn };
 
-[SelectionBase]
+[System.Serializable]
+public class ClothingItemData
+{
+    [HideInInspector] public string DisplayName;
+    [DisplayInspector] public ItemData Item;
+    public GameObject Mesh;
+}
 
+[SelectionBase]
 public class SpawnedCharacter : MonoBehaviour
 {
     [SerializeField] private CharacterMetaController _characterController;
     [SerializeField] public ID ID;
 
     [SerializeField] private Animator animator;
+
+    [Header("Clothing")]
+    [SerializeField] private List<ClothingItemData> _clothingItems;
 
     [Header("Head Look At")]
 
