@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ChopMinigame : MonoBehaviour
+public class ChopMinigameOLD : MonoBehaviour
 {
     public MinigameManager manager;
 

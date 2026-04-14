@@ -76,7 +76,8 @@ public class SpawnedCharacter : MonoBehaviour
 
     public void RandomMannequinPose()
     {
-        animator.Play("Mannequin Default", -1, Random.Range(0, 1f));
+        int numPoses = 4;
+        animator.Play("Mannequin Default", -1, Random.Range(1, numPoses) / (float)numPoses);
         animator.speed = 0;
     }
 
@@ -160,7 +161,7 @@ public class SpawnedCharacter : MonoBehaviour
     public void TriggerFromString(string anim)
     {
         animator.SetTrigger(anim.ToString());
-        Debug.Log(anim);
+        //Debug.Log(anim);
     }
 
 

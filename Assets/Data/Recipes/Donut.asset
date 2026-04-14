@@ -16,18 +16,29 @@ MonoBehaviour:
   Icon: {fileID: 21300000, guid: 9fb848869efb9f446bac73b2b6a28e35, type: 3}
   MaxScore: 50
   MoneyReward: 300
+  Difficulty: 0
   Subgames:
-  - Type: 0
-    TimeLimit: 25
-    TargetTime: 8
-    countdown: 3
+  - TimeLimit: 25
+    TargetTime: 1
+    Countdown: 3
+    Type: 2
     MinStirSpeed: 1.2
     MaxStirSpeed: 2.5
     ChangeSpeedFrequency: {x: 3, y: 11}
-  - Type: 0
-    TimeLimit: 20
+    ChopValue: 0.2
+  - TimeLimit: 20
     TargetTime: 3
-    countdown: 3
+    Countdown: 3
+    Type: 0
     MinStirSpeed: 0.5
     MaxStirSpeed: 4
     ChangeSpeedFrequency: {x: 3, y: 5}
+    ChopValue: 0
+  - TimeLimit: 20
+    TargetTime: 3
+    Countdown: 3
+    Type: 2
+    MinStirSpeed: 0.5
+    MaxStirSpeed: 4
+    ChangeSpeedFrequency: {x: 3, y: 5}
+    ChopValue: 0.1

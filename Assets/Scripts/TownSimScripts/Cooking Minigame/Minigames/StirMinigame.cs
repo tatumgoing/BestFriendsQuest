@@ -20,29 +20,23 @@ public class StirMinigame : Subgame
 
     private float _changeTimer;
     private bool _clockwise;
-    private float _successTime;
 
-    private void Update()
+    protected override void Update()
     {
         _changeTimer -= Time.deltaTime;
         if (_changeTimer < 0) ChangeSpeed();
 
         var dist = Vector2.Distance(Input.mousePosition, _target.Position);
-        if (dist < _distanceThreshold) _successTime += Time.deltaTime;
-        controller.UpdateSlider(_successTime / data.TargetTime);
-        if (_successTime >= data.TargetTime) {
-            gameObject.SetActive(false);
-            controller.CompleteSubgame();
-        }
-
         _targetCanvasGroup.alpha = Mathf.Lerp(_targetCanvasGroup.alpha, dist < _distanceThreshold ? 1 : _minOpacity, 5 * Time.deltaTime);
+        if (dist < _distanceThreshold) SuccessTime += Time.deltaTime;
+
+        base.Update();
     }
 
     public override void StartSubgame(SubgameData data)
     {
         base.StartSubgame(data);
 
-        _successTime = 0;
         _stirringSFX.Play();
         ChangeSpeed();
     }
@@ -56,12 +50,12 @@ public class StirMinigame : Subgame
 
     private void ChangeSpeed()
     {
-        if (data == null) return;
+        if (Data == null) return;
 
         _clockwise = !_clockwise;
-        var speed = Mathf.Lerp(data.MinStirSpeed, data.MaxStirSpeed, 1 - controller.TimeLeftPercent);
+        var speed = Mathf.Lerp(Data.MinStirSpeed, Data.MaxStirSpeed, 1 - Controller.TimeLeftPercent);
         _target.SetMoveSpeed(speed * (_clockwise ? 1 : -1));
 
-        _changeTimer = Random.Range(data.ChangeSpeedFrequency.x, data.ChangeSpeedFrequency.y);
+        _changeTimer = Random.Range(Data.ChangeSpeedFrequency.x, Data.ChangeSpeedFrequency.y);
     }
 }

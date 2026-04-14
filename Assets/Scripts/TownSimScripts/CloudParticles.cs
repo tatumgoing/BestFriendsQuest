@@ -25,7 +25,7 @@ public class CloudParticles : MonoBehaviour
         }
         else
         {
-            Debug.Log("True");
+            //Debug.Log("True");
             //this.gameObject.SetActive(true);
             particles.Play();
 
@@ -36,7 +36,7 @@ public class CloudParticles : MonoBehaviour
     public void SpawnCharacterSelectCloud()
     {
         endTime = Time.time + duration;
-        Debug.Log(endTime + " " + Time.time);
+        //Debug.Log(endTime + " " + Time.time);
         this.gameObject.SetActive(true);
 
     }

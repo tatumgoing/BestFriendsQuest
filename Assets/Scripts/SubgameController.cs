@@ -129,7 +129,7 @@ public class SubgameController : MonoBehaviour
         foreach (var o in _options) {
             if (o.Type == _currentSubgameData.Type) {
                 _currentSubgame = o.Subgame;
-                _countdownTimer.StartCountdown(_currentSubgameData.countdown);
+                _countdownTimer.StartCountdown(_currentSubgameData.Countdown);
             }
             else {
                 o.Subgame.gameObject.SetActive(false);

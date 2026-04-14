@@ -4,23 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum MinigameType { COOKING, GARDENING, FISHING}
-public enum SubgameType { SITRRING, GRILLING}
-
-[System.Serializable]
-public class SubgameData
-{
-    public SubgameType Type;
-
-    public float TimeLimit;
-    public float TargetTime;
-    public int countdown = 3;
-
-
-    [Space()]
-    [ConditionalField(nameof(Type), false, false, SubgameType.SITRRING)] public float MinStirSpeed;
-    [ConditionalField(nameof(Type), false, false, SubgameType.SITRRING)] public float MaxStirSpeed;
-    [ConditionalField(nameof(Type), false, false, SubgameType.SITRRING)] public Vector2 ChangeSpeedFrequency;
-}
 
 
 public enum Difficulty { EASY, MEDIUM, HARD, EXTREME }
@@ -43,6 +26,7 @@ public class RecipeData : ScriptableObject
     new Dictionary<SubgameType, string>() {
         {SubgameType.SITRRING, "Stir"},
         {SubgameType.GRILLING, "Grill"},
+        {SubgameType.CHOPPING, "Chop"},
     };
 
     public string ReturnSteps()
