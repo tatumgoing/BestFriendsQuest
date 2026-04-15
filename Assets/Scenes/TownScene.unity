@@ -3267,17 +3267,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 301640870}
   m_CullTransparentMesh: 1
---- !u!114 &303400382 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8154019186754278097, guid: 5e39acf2f1421b14fbdf4aefc9fdf830, type: 3}
-  m_PrefabInstance: {fileID: 1748209016}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b13bca70cc7dfa4580a673448b90005, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &304595372
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16863,7 +16852,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &783917763
 RectTransform:
   m_ObjectHideFlags: 0
@@ -28752,7 +28741,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1722635628
 RectTransform:
   m_ObjectHideFlags: 0
@@ -29530,7 +29519,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6520267158234211079, guid: 5e39acf2f1421b14fbdf4aefc9fdf830, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6520267158234211079, guid: 5e39acf2f1421b14fbdf4aefc9fdf830, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
@@ -29539,18 +29528,18 @@ PrefabInstance:
     - target: {fileID: 6520267158234211079, guid: 5e39acf2f1421b14fbdf4aefc9fdf830, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1141014259}
     - target: {fileID: 6520267158234211079, guid: 5e39acf2f1421b14fbdf4aefc9fdf830, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 303400382}
+      objectReference: {fileID: 1141014259}
     - target: {fileID: 6520267158234211079, guid: 5e39acf2f1421b14fbdf4aefc9fdf830, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6520267158234211079, guid: 5e39acf2f1421b14fbdf4aefc9fdf830, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: PlayGeneralButtonSFX
+      value: LoadCharacterCreator
       objectReference: {fileID: 0}
     - target: {fileID: 6520267158234211079, guid: 5e39acf2f1421b14fbdf4aefc9fdf830, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
@@ -29558,11 +29547,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6520267158234211079, guid: 5e39acf2f1421b14fbdf4aefc9fdf830, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: AudioTownManager, Assembly-CSharp
+      value: TownGameManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6520267158234211079, guid: 5e39acf2f1421b14fbdf4aefc9fdf830, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: NavigationButton, Assembly-CSharp
+      value: TownGameManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6520267158234211079, guid: 5e39acf2f1421b14fbdf4aefc9fdf830, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -29616,7 +29605,8 @@ PrefabInstance:
       propertyPath: gameManager
       value: 
       objectReference: {fileID: 1141014259}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8154019186754278097, guid: 5e39acf2f1421b14fbdf4aefc9fdf830, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 3465969631240996148, guid: 5e39acf2f1421b14fbdf4aefc9fdf830, type: 3}
@@ -40074,6 +40064,10 @@ PrefabInstance:
       propertyPath: sceneUIList.Array.data[9]
       value: 
       objectReference: {fileID: 1767314000}
+    - target: {fileID: 7068184636341037536, guid: 9fa4dc84c512a6d4889282316da1357f, type: 3}
+      propertyPath: _characterCreatorSceneIndex
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7068184636341037536, guid: 9fa4dc84c512a6d4889282316da1357f, type: 3}
       propertyPath: _areas.Array.data[1].Environment
       value: 

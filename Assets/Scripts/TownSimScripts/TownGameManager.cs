@@ -1,11 +1,12 @@
+using MyBox;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using System.Threading.Tasks;
 using System.Linq;
-using MyBox;
+using System.Threading.Tasks;
 using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class TownGameManager : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class TownGameManager : MonoBehaviour
 
     [SerializeField] private List<AreaData> _areas = new List<AreaData>();
 
+    [SerializeField] private int _characterCreatorSceneIndex = 1;
     [SerializeField] private bool _demoMode;
     [SerializeField] private NeighborhoodController _neighborhoodController;
 
@@ -121,6 +123,12 @@ public class TownGameManager : MonoBehaviour
 
         await FadeScreen(false);
     }
+
+    public void LoadCharacterCreator()
+    {
+        SceneManager.LoadScene(_characterCreatorSceneIndex);
+    }
+
 
     [Header(":::::::::")]
     [SerializeField] private CharacterManager _characterManager;

@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     public static GameManager i;
     private void Awake() { i = this; }
 
+
     [SerializeField] private bool _researchMode;
     [SerializeField] private bool _demoMode;
     [SerializeField] private bool _sendData = true;
@@ -118,11 +119,6 @@ public class GameManager : MonoBehaviour
         //print("saved sucessfully to: " + Path);
 
         return newData;
-    }
-
-    public void LoadCharacterByID()
-    {
-
     }
 
     public void LoadFromSave()
