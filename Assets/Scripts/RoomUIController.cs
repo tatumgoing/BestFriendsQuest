@@ -30,6 +30,8 @@ public class RoomUIController : MonoBehaviour
         _buttonsParent.SetActive(!hasSolvedProblem);
         _backButton.SetActive(!hasSolvedProblem);
 
+        _giftMenu.gameObject.SetActive(false);
+
         gameObject.SetActive(true);
     }
 
@@ -45,11 +47,12 @@ public class RoomUIController : MonoBehaviour
 
     public void ShowGiftMenu()
     {
-        _giftMenu.Show();
+        _giftMenu.Show(_id);
     }
 
     public void HideRoom()
     {
         GetComponentInParent<NeighborhoodUI>().HideRoomUI();
     }
+
 }

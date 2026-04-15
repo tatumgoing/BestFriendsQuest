@@ -49,6 +49,15 @@ public class TownGameManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Returns a list of all items that the player has at least 1 of
+    /// </summary>
+    public List<ItemData> GetInventoryItems()
+    {
+        var items = allItems;
+        return items.Where(x => this.items.ContainsKey(x) && this.items[x] > 0).ToList();
+    } 
+
+    /// <summary>
     /// Called from a minigameController when completing a problem-based minigame.
     /// returns to the room of the character and triggers the completion dialogue.
     /// </summary>
@@ -279,7 +288,10 @@ public class TownGameManager : MonoBehaviour
             var parts = itemString.Split(',');
             if (parts.Length != 2) continue;
             
-            ItemData newItem = GetItemFromName(parts[0]);
+            var parsedItem = GetItemFromName(parts[0]);
+            if (parsedItem == null) continue;
+
+            ItemData newItem = parsedItem;
             items.Add(newItem, int.Parse(parts[1]));
         }
 
@@ -297,7 +309,7 @@ public class TownGameManager : MonoBehaviour
             }
         }
 
-        Debug.LogError(coolItem + " doesn't exist, what the hell?");
+        //Debug.LogError(coolItem + " doesn't exist, what the hell?");
         return null;
     }
 

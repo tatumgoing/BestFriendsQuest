@@ -81,16 +81,23 @@ public class SpawnedCharacter : MonoBehaviour
         animator.speed = 0;
     }
 
+    private void LoadRandomClothing()
+    {
+        var randomClothing = _clothingItems[Random.Range(0, _clothingItems.Count)];
+        ShowClothingItem(randomClothing.Item);
+    }
+
     public void ShowClothingItem(ItemData item)
     {
-        foreach (var clothingItem in _clothingItems)
-        {
-            clothingItem.SetState(clothingItem.Item.Name == item.Name);
-        }
+        //print(gameObject.name + " showing clothing item: " + item.Name);
+        foreach(var clothingItem in _clothingItems) clothingItem.SetState(false);
+        foreach (var clothingItem in _clothingItems) if (clothingItem.Item == item) clothingItem.SetState(true);
     }
 
     public async Task LoadFromString(string saveString)
     {
+        LoadRandomClothing();
+
         _saveString = saveString;
         _characterController.LoadFromString(saveString);
         ID = _characterController.Data.ID;

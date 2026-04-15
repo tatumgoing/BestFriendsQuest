@@ -31,6 +31,14 @@ public class CharacterManager : MonoBehaviour
 
     private void Start()
     {
+        //TESTING:
+        foreach (var characterA in _allCharacters) {
+            foreach (var characterB in _allCharacters) {
+                if (characterA != characterB) _relationships.Add(new RelationshipData(characterA.ID, characterB.ID));
+            }
+        }
+        RandomizeRelationships();
+
         GenerateProblem();
     }
 
@@ -110,7 +118,7 @@ public class CharacterManager : MonoBehaviour
     [ButtonMethod]
     public void RandomizeRelationships()
     {
-        print("RANDOMIZING RELATIONSHIPS");
+        print("Randoming all relationships (for testing)");
         for (int i = 0; i < _relationships.Count; i++) {
             _relationships[i].Value = Random.Range(0, 10f);
         }
