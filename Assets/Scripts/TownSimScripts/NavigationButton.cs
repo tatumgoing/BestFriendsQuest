@@ -17,9 +17,5 @@ public class NavigationButton : MonoBehaviour
         }
     }
 
-    public void LoadCharacterCreator()
-    {
-        SceneManager.LoadScene(1);
-    }
         
 }

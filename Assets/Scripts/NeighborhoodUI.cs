@@ -10,7 +10,7 @@ public class NeighborhoodUI : MonoBehaviour
 
     public void ExitNeighborhood()
     {
-        TownGameManager.i.GoToMap();
+        TownNavigator.GoToMap();
     }
 
     public void ShowRoomUI(ID id)

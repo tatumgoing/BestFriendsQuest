@@ -1,11 +1,12 @@
+using MyBox;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using System.Threading.Tasks;
 using System.Linq;
-using MyBox;
+using System.Threading.Tasks;
 using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class TownGameManager : MonoBehaviour
 {
@@ -13,18 +14,11 @@ public class TownGameManager : MonoBehaviour
 
     [SerializeField] private List<AreaData> _areas = new List<AreaData>();
 
+    [SerializeField] private int _characterCreatorSceneIndex = 1;
     [SerializeField] private bool _demoMode;
     [SerializeField] private NeighborhoodController _neighborhoodController;
 
     public List<ItemData> GetAllItems() => allItems;
-
-    public async void GoToMap() => await ChangeArea(AreaName.MAP);
-    public async void GoToPark() => await ChangeArea(AreaName.PARK);
-    public async void GoToTown() => await ChangeArea(AreaName.TOWN);
-    public async void GoToShop() => await ChangeArea(AreaName.SHOP);
-    public async void GoToResturaunt() => await ChangeArea(AreaName.RESTURAUNT);
-    public async void GoToTownHall() => await ChangeArea(AreaName.TOWN_HALL);
-    public async void GoToPort() => await ChangeArea(AreaName.PORT);
 
     private void OnValidate()
     {
@@ -91,10 +85,17 @@ public class TownGameManager : MonoBehaviour
         await FadeScreen(false);        
     }
 
+    public void BuyItem(ItemData item)
+    {
+        if (item.Cost > currency) return;
+        ChangeCurrency(-item.Cost);
+        AddInventory(item);
+    }
+
     public async void ChangeScene(GameObject newSceneUI, bool firstLaunch = false)
     {
         if (_demoMode && !newSceneUI.name.ContainsInsensitive("title")) {
-            GoToPark();
+            await ChangeArea(AreaName.PARK);
             return;
         }
 
@@ -114,6 +115,12 @@ public class TownGameManager : MonoBehaviour
 
         await FadeScreen(false);
     }
+
+    public void LoadCharacterCreator()
+    {
+        SceneManager.LoadScene(_characterCreatorSceneIndex);
+    }
+
 
     [Header(":::::::::")]
     [SerializeField] private CharacterManager _characterManager;
@@ -255,7 +262,7 @@ public class TownGameManager : MonoBehaviour
         }
 
         PlayerPrefs.SetString("Inventory", inventory);
-        Debug.Log(inventory);
+        //Debug.Log(inventory);
     }
 
     private void LoadInventory()
