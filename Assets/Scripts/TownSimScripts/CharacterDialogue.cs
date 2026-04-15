@@ -75,7 +75,7 @@ public class CharacterDialogue : MonoBehaviour
         else ShowText(characterDialogue);
 
         var currentProblem = CharacterManager.i.GetProblem(id);
-        if (currentProblem.IsSolved) {
+        if (currentProblem && currentProblem.IsSolved) {
             CharacterManager.i.GiveProblemRewards(id);
         }
         
@@ -85,7 +85,7 @@ public class CharacterDialogue : MonoBehaviour
         }
         
         _minigameButtons.SetActive(isProblemMinigame && !currentProblem.IsSolved);
-        _closeButton.SetActive(!isProblemMinigame || currentProblem.IsSolved);
+        _closeButton.SetActive(!isProblemMinigame || (currentProblem && currentProblem.IsSolved));
     }
 
     public void ShowText(string text)

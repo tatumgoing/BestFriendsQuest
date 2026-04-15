@@ -14,11 +14,19 @@ public class ShopUIController : MonoBehaviour
 
     [SerializeField] private ClothingShopController _areaController;
 
+    [Header("Sounds")]
+    [SerializeField] private Sound _purchaseSound;
+
     private List<ShopListItem> _spawnedItems = new List<ShopListItem>();
     private ItemData _currentlySelectedItem;
 
 
     void Start()
+    {
+        _purchaseSound = Instantiate(_purchaseSound);
+    }
+
+    private void OnEnable()
     {
         BuildList();
         UpdatePurchaseButton();
@@ -44,6 +52,7 @@ public class ShopUIController : MonoBehaviour
 
     public void BuyCurrent()
     {
+        _purchaseSound.Play();
         TownGameManager.i.BuyItem(_currentlySelectedItem);
         UpdatePurchaseButton();
     }

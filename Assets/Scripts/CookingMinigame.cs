@@ -94,11 +94,6 @@ public class CookingMinigame : MinigameController
         TownGameManager.i.GoToRoom(_selectedCharacter);
     }
 
-    public void ReturnToMap()
-    {
-        TownGameManager.i.GoToMap();
-    }
-
     public void ResetKitchen()
     {
         if (_spawnedCharacter) Destroy(_spawnedCharacter.gameObject);

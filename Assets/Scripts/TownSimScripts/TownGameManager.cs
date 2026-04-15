@@ -20,14 +20,6 @@ public class TownGameManager : MonoBehaviour
 
     public List<ItemData> GetAllItems() => allItems;
 
-    public async void GoToMap() => await ChangeArea(AreaName.MAP);
-    public async void GoToPark() => await ChangeArea(AreaName.PARK);
-    public async void GoToTown() => await ChangeArea(AreaName.TOWN);
-    public async void GoToShop() => await ChangeArea(AreaName.SHOP);
-    public async void GoToResturaunt() => await ChangeArea(AreaName.RESTURAUNT);
-    public async void GoToTownHall() => await ChangeArea(AreaName.TOWN_HALL);
-    public async void GoToPort() => await ChangeArea(AreaName.PORT);
-
     private void OnValidate()
     {
         var options = Utils.EnumToList<AreaName>();
@@ -103,7 +95,7 @@ public class TownGameManager : MonoBehaviour
     public async void ChangeScene(GameObject newSceneUI, bool firstLaunch = false)
     {
         if (_demoMode && !newSceneUI.name.ContainsInsensitive("title")) {
-            GoToPark();
+            await ChangeArea(AreaName.PARK);
             return;
         }
 
