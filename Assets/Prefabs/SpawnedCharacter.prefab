@@ -963,7 +963,7 @@ MonoBehaviour:
       Sprite: {fileID: 21300000, guid: ddb95a19efa6c274092a7acddfeeef49, type: 3}
       UseColor: {r: 0.09411766, g: 0.098039225, b: 0.078431375, a: 1}
   _optionsScript: {fileID: 0}
-  _shirt: {fileID: 5343854573098883827}
+  _shirt: {fileID: 0}
 --- !u!1 &4257106519838465191
 GameObject:
   m_ObjectHideFlags: 0
@@ -1336,7 +1336,7 @@ MonoBehaviour:
   - DisplayName: Default Outfit
     Item: {fileID: 11400000, guid: 75461e03b53ce4e468cb5afb1f0d369d, type: 2}
     _meshes:
-    - {fileID: 7087502727574553149}
+    - {fileID: 0}
   - DisplayName: Flower Set
     Item: {fileID: 11400000, guid: ff100115314a01345acdf864eecbff1a, type: 2}
     _meshes:
@@ -1731,6 +1731,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2753307355192562520, guid: f845d669074fd2d4dad1d19c6ff52f37, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2770039089357659204, guid: f845d669074fd2d4dad1d19c6ff52f37, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2873187371908122762, guid: f845d669074fd2d4dad1d19c6ff52f37, type: 3}
       propertyPath: _printChanges
       value: 0
@@ -1794,6 +1802,10 @@ PrefabInstance:
     - target: {fileID: 3288418266234649324, guid: f845d669074fd2d4dad1d19c6ff52f37, type: 3}
       propertyPath: m_RenderingLayerMask
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3445972713454262508, guid: f845d669074fd2d4dad1d19c6ff52f37, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3491395068787740160, guid: f845d669074fd2d4dad1d19c6ff52f37, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2079,6 +2091,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -84.20557
       objectReference: {fileID: 0}
+    - target: {fileID: 5399273773448881577, guid: f845d669074fd2d4dad1d19c6ff52f37, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5875378782167808260, guid: f845d669074fd2d4dad1d19c6ff52f37, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6106776476029892594, guid: f845d669074fd2d4dad1d19c6ff52f37, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -2239,6 +2259,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 180
       objectReference: {fileID: 0}
+    - target: {fileID: 8158900363882214718, guid: f845d669074fd2d4dad1d19c6ff52f37, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8253545187000989202, guid: f845d669074fd2d4dad1d19c6ff52f37, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -2309,9 +2333,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1988485266028895103, guid: f845d669074fd2d4dad1d19c6ff52f37, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3726197024048042522}
-    - targetCorrespondingSourceObject: {fileID: 1072895547885172829, guid: f845d669074fd2d4dad1d19c6ff52f37, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 5343854573098883827}
     - targetCorrespondingSourceObject: {fileID: 6796758162939600470, guid: f845d669074fd2d4dad1d19c6ff52f37, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6571051027185699302}
@@ -2419,11 +2440,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: 4
   _disablePositionOffset: 0
---- !u!137 &322462534796745961 stripped
-SkinnedMeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 7548581677116958345, guid: f845d669074fd2d4dad1d19c6ff52f37, type: 3}
-  m_PrefabInstance: {fileID: 7834133584875797088}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &617690213045944431 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7217606662665566735, guid: f845d669074fd2d4dad1d19c6ff52f37, type: 3}
@@ -2973,26 +2989,6 @@ MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 1003303224296093365, guid: f845d669074fd2d4dad1d19c6ff52f37, type: 3}
   m_PrefabInstance: {fileID: 7834133584875797088}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &7087502727574553149 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1072895547885172829, guid: f845d669074fd2d4dad1d19c6ff52f37, type: 3}
-  m_PrefabInstance: {fileID: 7834133584875797088}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &5343854573098883827
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7087502727574553149}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0cfa4d2696ba7e6438c2236acaa19163, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _materialIndex: 1
-  _renderer: {fileID: 322462534796745961}
-  _fieldName: _BaseColor
 --- !u!23 &7089556786081080589 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 1070524827731238765, guid: f845d669074fd2d4dad1d19c6ff52f37, type: 3}
