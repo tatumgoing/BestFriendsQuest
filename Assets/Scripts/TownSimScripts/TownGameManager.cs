@@ -91,6 +91,13 @@ public class TownGameManager : MonoBehaviour
         await FadeScreen(false);        
     }
 
+    public void BuyItem(ItemData item)
+    {
+        if (item.Cost > currency) return;
+        ChangeCurrency(-item.Cost);
+        AddInventory(item);
+    }
+
     public async void ChangeScene(GameObject newSceneUI, bool firstLaunch = false)
     {
         if (_demoMode && !newSceneUI.name.ContainsInsensitive("title")) {
@@ -255,7 +262,7 @@ public class TownGameManager : MonoBehaviour
         }
 
         PlayerPrefs.SetString("Inventory", inventory);
-        Debug.Log(inventory);
+        //Debug.Log(inventory);
     }
 
     private void LoadInventory()

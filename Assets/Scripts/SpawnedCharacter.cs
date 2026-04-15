@@ -38,7 +38,7 @@ public class SpawnedCharacter : MonoBehaviour
     [SerializeField] private List<ClothingItemData> _clothingItems;
 
     [Header("Head Look At")]
-
+    [SerializeField] private bool _disableLookAt;
     [SerializeField] private Transform head;
     [SerializeField] private Transform headForward;
     [SerializeField] private float maxAngle, minAngle;
@@ -71,7 +71,7 @@ public class SpawnedCharacter : MonoBehaviour
 
     private void LateUpdate()
     {
-        UpdateLookAt();
+        if (!_disableLookAt) UpdateLookAt();
     }
 
     public void RandomMannequinPose()
