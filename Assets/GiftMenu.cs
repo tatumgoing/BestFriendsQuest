@@ -10,6 +10,8 @@ public class GiftMenu : MonoBehaviour, IItemListController
     [SerializeField] private ItemListDisplay _itemListDisplay;
     [SerializeField] private CurrentlySelectedItem _currentlySelectedItem;
 
+    private ItemData _currentItem;
+
     public void Show(ID id)
     {
         gameObject.SetActive(true);
@@ -21,32 +23,14 @@ public class GiftMenu : MonoBehaviour, IItemListController
 
     void IItemListController.SelectItem(ItemData item)
     {
+        _currentItem = item;
         _itemListDisplay.DeselectNonMatching(item);
         _currentlySelectedItem.ShowItem(item);
     }
 
     public void GiveGift()
     {
-        /*if (giftManager.selectedBanner != null && giftManager.selectedBanner.itemCount.text != "0") {
-            bool passed = false;
-            if (associatedCharacter.HasProblem && !associatedCharacter.CurrentProblem.IsMinigame) {
-                foreach (Item checkItem in associatedCharacter.CurrentProblem.desiredItem) {
-                    if (checkItem.Name == giftManager.selectedBanner.itemID.Name) {
-                        StartCoroutine(SolveProblem());
-                        passed = true;
-                    }
-                }
-                if (!passed) {
-                    StartCoroutine(FailProblem());
-                }
-            }
-            else {
-                StartCoroutine(RecieveGift());
-            }
-
-            TownGameManager.i.SubtractInventory(giftManager.selectedBanner.itemID);
-            TownGameManager.i.UpdateRecordDisplay(giftManager, giftManager.currentType);
-        }*/
+        TownGameManager.i.SubtractInventory(_currentItem);
+        gameObject.SetActive(false);
     }
-
 }
