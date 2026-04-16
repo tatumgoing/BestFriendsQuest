@@ -1,4 +1,5 @@
 using MyBox;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,14 @@ public class ItemListDisplay : MonoBehaviour
     [SerializeField, ConditionalField(nameof(_hasFooter))] private Transform _footer;
 
     private List<IListIItem> _spawnedItems = new List<IListIItem>();
+
+    public void ShowSelected(Func<ItemData, bool> predicate)
+    {
+        foreach (var item in _spawnedItems) {
+            if (predicate(item.Item)) item.Show();
+            else item.Hide();
+        }
+    }
 
     public void DisplayItem(List<ItemData> items, IItemListController controller)
     {
@@ -39,7 +48,12 @@ public class ItemListDisplay : MonoBehaviour
 
     public void SetFirstSelected()
     {
-        if (_spawnedItems.Count > 0) _spawnedItems[0].SetSelected();
+        foreach (var item in _spawnedItems) {
+            if (item.Active) {
+                item.SetSelected();
+                return;
+            }
+        }
     }
 
     public void DeselectNonMatching(ItemData item)

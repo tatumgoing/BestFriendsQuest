@@ -12,6 +12,10 @@ public class GiftMenu : MonoBehaviour, IItemListController
 
     private ItemData _currentItem;
 
+    public void ShowClothing() => ChangeCategory(ItemType.Clothing);
+    public void ShowFood() => ChangeCategory(ItemType.Food);
+    public void ShowHousing() => ChangeCategory(ItemType.Housing);
+
     public void Show(ID id)
     {
         gameObject.SetActive(true);
@@ -19,6 +23,8 @@ public class GiftMenu : MonoBehaviour, IItemListController
 
         var items = TownGameManager.i.GetInventoryItems();
         _itemListDisplay.DisplayItem(items, this);
+
+        ShowClothing();
     }
 
     void IItemListController.SelectItem(ItemData item)
@@ -32,5 +38,11 @@ public class GiftMenu : MonoBehaviour, IItemListController
     {
         TownGameManager.i.SubtractInventory(_currentItem);
         gameObject.SetActive(false);
+    }
+
+    private void ChangeCategory(ItemType type)
+    {
+        _itemListDisplay.ShowSelected(x => x.Type == type);
+        _itemListDisplay.SetFirstSelected();    
     }
 }
