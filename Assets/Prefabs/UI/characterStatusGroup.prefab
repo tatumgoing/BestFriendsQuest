@@ -85,6 +85,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4114169076505691433}
   - component: {fileID: 6270379795519328473}
+  - component: {fileID: 8612878973851741302}
   m_Layer: 0
   m_Name: characterStatusGroup
   m_TagString: Untagged
@@ -128,6 +129,74 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _portrait: {fileID: 7451746362007007786}
   _name: {fileID: 504913648125059893}
+--- !u!114 &8612878973851741302
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5562008344232907559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 898f698a9835d194c90dd0b423be4462, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _clickBehavior: 1
+  _selectOnMouseDown: 0
+  _canToggleOff: 1
+  _hoverBehavior: 0
+  _hasHoverCooldown: 0
+  _hoverCooldown: 0.05
+  _hoverWhenSelected: 1
+  _deHoverOnEnable: 0
+  _deHoverOnRenable: 0
+  _data: []
+  _hasAnimation: 0
+  _animator: {fileID: 0}
+  _animationSelectedBool: Selected
+  _animationHoveredBool: Hovered
+  _animationDisabledBool: Disabled
+  _hoverSound: {fileID: 11400000, guid: 4ba078087b4262248a49dc212ae8bee6, type: 2}
+  _mouseDownSound: {fileID: 0}
+  _selectSound: {fileID: 11400000, guid: 937ddfdca0a09a343831e509caa6a123, type: 2}
+  _deselectSound: {fileID: 0}
+  OnSelect:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHover:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: CharacterStatusMenu, Assembly-CSharp
+        m_MethodName: ShowBestFriendInfo
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnEndHover:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: CharacterStatusMenu, Assembly-CSharp
+        m_MethodName: HideRightinfo
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnDeselect:
+    m_PersistentCalls:
+      m_Calls: []
+  _debugStateChange: 0
 --- !u!1 &6756150822469240871
 GameObject:
   m_ObjectHideFlags: 0

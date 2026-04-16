@@ -9,8 +9,11 @@ public class CharacterPortraitNameDisplay : MonoBehaviour
     [SerializeField] private Image _portrait;
     [SerializeField] private TextMeshProUGUI _name;
 
+    public ID ID { get; private set; }
+
     public void Show(ID id)
     {
+        ID = id;
         _portrait.sprite = CharacterManager.i.GetPortrait(id);
         _name.text = CharacterManager.i.GetNameFormatted(id);
     }
