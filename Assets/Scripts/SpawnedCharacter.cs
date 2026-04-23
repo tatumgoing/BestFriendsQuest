@@ -130,8 +130,8 @@ public class SpawnedCharacter : MonoBehaviour
         //print(_characterController.Data.Name + "loading from string");
         LoadRandomClothing();
 
-        await Task.Delay(100);
-        _characterController.LoadFromString(saveString);
+        //await Task.Delay(100);
+        //_characterController.LoadFromString(saveString);
     }
 
     public void CharacterLookAt(Transform target)
