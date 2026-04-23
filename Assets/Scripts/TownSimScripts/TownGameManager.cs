@@ -1,11 +1,12 @@
+using MyBox;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using System.Threading.Tasks;
 using System.Linq;
-using MyBox;
+using System.Threading.Tasks;
 using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class TownGameManager : MonoBehaviour
 {
@@ -13,16 +14,11 @@ public class TownGameManager : MonoBehaviour
 
     [SerializeField] private List<AreaData> _areas = new List<AreaData>();
 
+    [SerializeField] private int _characterCreatorSceneIndex = 1;
     [SerializeField] private bool _demoMode;
     [SerializeField] private NeighborhoodController _neighborhoodController;
 
-    public async void GoToMap() => await ChangeArea(AreaName.MAP);
-    public async void GoToPark() => await ChangeArea(AreaName.PARK);
-    public async void GoToTown() => await ChangeArea(AreaName.TOWN);
-    public async void GoToShop() => await ChangeArea(AreaName.SHOP);
-    public async void GoToResturaunt() => await ChangeArea(AreaName.RESTURAUNT);
-    public async void GoToTownHall() => await ChangeArea(AreaName.TOWN_HALL);
-    public async void GoToPort() => await ChangeArea(AreaName.PORT);
+    public List<ItemData> GetAllItems() => allItems;
 
     private void OnValidate()
     {
@@ -51,6 +47,15 @@ public class TownGameManager : MonoBehaviour
         //bad liine of temp code
         ChangeScene(sceneUIList[sceneUIList.Count - 1], true);
     }
+
+    /// <summary>
+    /// Returns a list of all items that the player has at least 1 of
+    /// </summary>
+    public List<ItemData> GetInventoryItems()
+    {
+        var items = allItems;
+        return items.Where(x => this.items.ContainsKey(x) && this.items[x] > 0).ToList();
+    } 
 
     /// <summary>
     /// Called from a minigameController when completing a problem-based minigame.
@@ -89,10 +94,17 @@ public class TownGameManager : MonoBehaviour
         await FadeScreen(false);        
     }
 
+    public void BuyItem(ItemData item)
+    {
+        if (item.Cost > currency) return;
+        ChangeCurrency(-item.Cost);
+        AddInventory(item);
+    }
+
     public async void ChangeScene(GameObject newSceneUI, bool firstLaunch = false)
     {
         if (_demoMode && !newSceneUI.name.ContainsInsensitive("title")) {
-            GoToPark();
+            await ChangeArea(AreaName.PARK);
             return;
         }
 
@@ -113,6 +125,12 @@ public class TownGameManager : MonoBehaviour
         await FadeScreen(false);
     }
 
+    public void LoadCharacterCreator()
+    {
+        SceneManager.LoadScene(_characterCreatorSceneIndex);
+    }
+
+
     [Header(":::::::::")]
     [SerializeField] private CharacterManager _characterManager;
 
@@ -121,7 +139,7 @@ public class TownGameManager : MonoBehaviour
     
     public List<RecordsManager> recordsManagers = new List<RecordsManager>();
 
-    [SerializeField]private List<ItemData> allItems = new List<ItemData> ();
+    [SerializeField] private List<ItemData> allItems = new List<ItemData> ();
     
     public List<string> itemNames= new List<string> (); 
     public List<int> itemCounts = new List<int> ();
@@ -253,7 +271,7 @@ public class TownGameManager : MonoBehaviour
         }
 
         PlayerPrefs.SetString("Inventory", inventory);
-        Debug.Log(inventory);
+        //Debug.Log(inventory);
     }
 
     private void LoadInventory()
@@ -270,7 +288,10 @@ public class TownGameManager : MonoBehaviour
             var parts = itemString.Split(',');
             if (parts.Length != 2) continue;
             
-            ItemData newItem = GetItemFromName(parts[0]);
+            var parsedItem = GetItemFromName(parts[0]);
+            if (parsedItem == null) continue;
+
+            ItemData newItem = parsedItem;
             items.Add(newItem, int.Parse(parts[1]));
         }
 
@@ -288,7 +309,7 @@ public class TownGameManager : MonoBehaviour
             }
         }
 
-        Debug.LogError(coolItem + " doesn't exist, what the hell?");
+        //Debug.LogError(coolItem + " doesn't exist, what the hell?");
         return null;
     }
 

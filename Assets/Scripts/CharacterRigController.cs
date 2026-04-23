@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.Analytics;
 using UnityEngine.Rendering;
 
-public enum BoneName { CORE, CHEST, SHOULDER, UPPER_ARM, FOREARM, HAND, NECK, HEAD, THIGH, SHIN, FOOT, TOES, BELLY, HEEL}
+public enum BoneName { CORE, CHEST, SHOULDER, UPPER_ARM, FOREARM, HAND, NECK, HEAD, THIGH, SHIN, FOOT, TOES, BELLY, HEEL, PELVIS}
 
 [System.Serializable]
 public class BoneData
@@ -42,9 +42,21 @@ public class BoneData
 
 public class CharacterRigController : MonoBehaviour
 {
+    [Header("NEW")]
+    [SerializeField] private List<BoneSettingsDataGroup> _allSettings;
+    [SerializeField] private bool _updateParamsOnValidate;
+    [SerializeField] private Transform _boneParent;
+    [SerializeField, Range(0,1)] private float _testHeight;
+    [SerializeField] private bool _useTestHeight;
+
+    private List<RigBoneCoordinator> _allBones = new List<RigBoneCoordinator>();
+
+    [Header("OLD")]
     [SerializeField] private List<BoneData> _bones;
     [SerializeField] private Transform _rootBone;
     [SerializeField] float _localScaleMultiplier = 1f;
+
+    private bool _initialized;
 
     private void OnValidate()
     {
@@ -52,7 +64,88 @@ public class CharacterRigController : MonoBehaviour
             data.DisplayName = data.Name.ToString();
             if (data.Bone) data.DisplayName += ": " + data.Bone.gameObject.name;
         }
+
+        //NEW:
+        foreach (var settingGroup in _allSettings) settingGroup.OnValidate();
+        if (!Application.isPlaying) return;
+
+        if (_updateParamsOnValidate) UpdateBoneParameters();
+
+        if (_useTestHeight) {
+            SetValue(_testHeight, BoneSliderName.HEIGHT);
+        }
+
+        /*foreach (var b in _allBones) {
+            b.UpdateValue(BoneSliderName.HEIGHT, _height);
+            b.UpdateValue(BoneSliderName.WEIGHT, _weight);
+            b.UpdateValue(BoneSliderName.TORSO, _torso);
+            b.UpdateValue(BoneSliderName.ARMS, _arms);
+            b.UpdateValue(BoneSliderName.WAIST, _waist);
+            b.UpdateValue(BoneSliderName.LEGS, _legs);
+        }*/
     }
+
+    private void OnEnable()
+    {
+        //print(gameObject.name + " was enabled");
+
+        Initialize();
+
+        OnValidate();
+    }
+
+    private void Initialize()
+    {
+        if (_initialized || !_boneParent) return;
+
+        if (_allBones.Count == 0) {
+            _allBones = _boneParent.GetComponentsInChildren<RigBoneCoordinator>(true).ToList();
+        }
+        _initialized = true;
+    }
+
+    private void Start()
+    {
+        Initialize();
+        foreach (var b in _allBones) {
+            b.UpdateValue(BoneSliderName.HEIGHT, 0.5f);
+            b.UpdateValue(BoneSliderName.WEIGHT, 0.5f);
+            b.UpdateValue(BoneSliderName.TORSO, 0.5f);
+            b.UpdateValue(BoneSliderName.ARMS, 0.5f);
+            b.UpdateValue(BoneSliderName.WAIST, 0.5f);
+            b.UpdateValue(BoneSliderName.LEGS, 0.5f);
+        }
+    }
+
+    private void OnDisable()
+    {
+        //print(gameObject.name + " was disabled");
+    }
+
+    public void SetValue(float value, BoneSliderName slider)
+    {
+        if (!_initialized) Initialize();
+
+        //print("Setting value" + slider + " to " + value);
+        foreach (var b in _allBones) {
+            b.UpdateValue(slider, value);
+        }
+    }
+
+    private void UpdateBoneParameters()
+    {
+        foreach (var settingGroup in _allSettings) settingGroup.UpdateSettings(_allBones);
+    }
+
+    private void LateUpdate()
+    {
+        foreach (var b in _allBones) b.UpdatePositionAndScale();
+    }
+
+
+    //NEW ^
+
+    //OLD:
 
     public string GetSaveString()
     {

@@ -43,7 +43,7 @@ public class VignetteManager : MonoBehaviour
 
         currentVignetteCameras = cameraManager.vignetteCameras[vignetteImport.Location.ToString()];
 
-        Debug.Log(vignetteImport.Location.ToString());
+        //Debug.Log(vignetteImport.Location.ToString());
 
         currentVignette = vignetteImport;
         currentDialogue = currentVignette.VignetteDialogues[currentDialogueIndex];

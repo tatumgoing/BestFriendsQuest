@@ -19,7 +19,7 @@ public class DragToSpin : MonoBehaviour
 
     private void Start()
     {
-        UIManager.i.OnTabSwitch.AddListener(() => enabled = true);
+        if (UIManager.i) UIManager.i.OnTabSwitch.AddListener(() => enabled = true);
         _originalRot = transform.localRotation;
     }
 

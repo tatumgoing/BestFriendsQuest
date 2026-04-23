@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Threading.Tasks;
+using Unity.VisualScripting;
 
 public class RestrauntController : MonoBehaviour
 {
@@ -16,7 +17,7 @@ public class RestrauntController : MonoBehaviour
 
     [SerializeField] private CloudParticles characterSelectCloud;
 
-    private GameObject characterSelectSpawnedCharacter;
+    public GameObject characterSelectSpawnedCharacter;
 
     public GameObject SpawnCharacter(ID id)
     {
@@ -48,8 +49,6 @@ public class RestrauntController : MonoBehaviour
 
     public void SpawnCharacterSelect(ID id)
     {
-        //Debug.Log("Changing characters!");
-
         //kill old character, spawn new
 
         DestroySpawnedCharacter();
@@ -57,6 +56,24 @@ public class RestrauntController : MonoBehaviour
         characterSelectCloud.SpawnCharacterSelectCloud();
 
         characterSelectSpawnedCharacter = SpawnCharacter(id);
+
+        characterSelectSpawnedCharacter.GetComponent<SpawnedCharacter>().GrowCharacter(1.0f);
+
+        TriggerSpawnAnimation();
     }
-   
+
+    public async Task TriggerSpawnAnimation()
+    {
+        await Task.Delay(200);
+
+        characterSelectSpawnedCharacter.GetComponent<SpawnedCharacter>().TriggerFromString("Spawn");
+
+        await Task.Delay(1000);
+
+        characterSelectSpawnedCharacter.GetComponent<SpawnedCharacter>().CharacterLookAt(startingCamera.transform);
+
+    }
+
+
+
 }

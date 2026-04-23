@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 
-public enum CharacterAnimations { Grilling, Standing, Sitting, SittingGround, Walking };
 public class CharacterSpawnLocation : MonoBehaviour
 {
     
@@ -28,9 +28,10 @@ public class CharacterSpawnLocation : MonoBehaviour
     /// <summary>
     /// Configure a newly spawned characted (animations) based on this spot's information
     /// </summary>
-    public void SetCharacter(SpawnedCharacter newChara)
+    public async Task SetCharacter(SpawnedCharacter newChara)
     {
         spawnedCharacter = newChara;
+        await Task.Delay(200);
         AnimateCharacter();       
     }
 

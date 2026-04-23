@@ -7,6 +7,8 @@ public class CharacterStatusMenu : MonoBehaviour
 {
     [SerializeField] private Slider _happinessSlider;
     [SerializeField] private CharacterProfileDataDisplay _profileDisplay;
+    [SerializeField] private CharacterProfileDataDisplay _rightCharacterInfo;
+    [SerializeField] private CharacterProfileDataDisplay _leftCharacterInfo;
     [SerializeField] private GameObject _relationshipBannerPrefab;
     [SerializeField] private Transform _relationshipListParent;
     [SerializeField] private CharacterPortraitNameDisplay _bestFriend;
@@ -14,11 +16,31 @@ public class CharacterStatusMenu : MonoBehaviour
 
     private List<RelationshipBanner> _spawnedBanners = new List<RelationshipBanner>();
 
+    public void ShowEnemyInfo() => ShowInfoRight(_enemy.ID);
+    public void ShowBestFriendInfo() => ShowInfoRight(_bestFriend.ID);
+    public void HideRightinfo() => _rightCharacterInfo.gameObject.SetActive(false);
+    public void HideLeftinfo() => _leftCharacterInfo.gameObject.SetActive(false);
+
+    public void ShowInfoLeft(ID id)
+    {
+        _leftCharacterInfo.gameObject.SetActive(true);
+        _leftCharacterInfo.Show(id);
+    }
+
+    public void ShowInfoRight(ID id)
+    {
+        _rightCharacterInfo.gameObject.SetActive(true);
+        _rightCharacterInfo.Show(id);
+    }
+
     public void Show(ID id)
     {
         gameObject.SetActive(true);
         _happinessSlider.value = CharacterManager.i.GetHappiness(id)/100;
         _profileDisplay.Show(id);
+
+        HideRightinfo();
+        HideLeftinfo();
 
         BuildRelationshipBanners(id);
     }
@@ -58,6 +80,8 @@ public class CharacterStatusMenu : MonoBehaviour
     {
         var newRelationshipEntry = Instantiate(_relationshipBannerPrefab, _relationshipListParent).GetComponent<RelationshipBanner>();
         newRelationshipEntry.ShowRelationship(otherID, relationshipValue, "Buddy");
+        if (_spawnedBanners.Count >= 5) newRelationshipEntry.gameObject.SetActive(false); //TEMP
+
         _spawnedBanners.Add(newRelationshipEntry);
     }
 

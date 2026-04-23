@@ -129,7 +129,7 @@ public class SubgameController : MonoBehaviour
         foreach (var o in _options) {
             if (o.Type == _currentSubgameData.Type) {
                 _currentSubgame = o.Subgame;
-                _countdownTimer.StartCountdown(_currentSubgameData.countdown);
+                _countdownTimer.StartCountdown(_currentSubgameData.Countdown);
             }
             else {
                 o.Subgame.gameObject.SetActive(false);
@@ -139,6 +139,17 @@ public class SubgameController : MonoBehaviour
 
     private async void ShowResults()
     {
+        //highscores
+        Dictionary<string, float> tempDict = SaveSystem.LoadHighscoreDictionary("Cooking");
+
+        if (tempDict[_currentRecipe.Name] <= _totalScore)
+        {
+            tempDict[_currentRecipe.Name] = _totalScore;
+            SaveSystem.SaveHighscoreDictionary("Cooking", tempDict);
+
+            //add a new highscore banner later
+        }
+
         //print("Showing results");
         _timerParent.SetActive(false);
         await _results.ShowScore(_totalScore, _currentRecipe, _character, _recipient, _isProblem);

@@ -11,11 +11,12 @@ public class CharacterMetaController : MonoBehaviour
     [Header("Mode")]
     [SerializeField, Tooltip("Check yes in character creator scene, leave unchecked everywhere else")] private bool _isCharacterCreator = false;
 
+    [SerializeField] private FavoriteColorClothingInterface _clothingInterface;
     [SerializeField, ConditionalField(nameof(_isCharacterCreator))] private BodyCustomizer _bodyCustomizer;
     [SerializeField, ConditionalField(nameof(_isCharacterCreator))] private DataPanelController _dataPanel;
-    [SerializeField, ConditionalField(nameof(_isCharacterCreator), inverse:true)] private FavoriteColorClothingInterface _clothingInterface;
 
     [Header("Rig")]
+    [SerializeField] private bool _oldRigMode;
     [SerializeField] private CharacterRigController _rigController;
     [SerializeField] private List<BoneSliderGroupData> _rigGroups = new List<BoneSliderGroupData>();
 
@@ -139,14 +140,6 @@ public class CharacterMetaController : MonoBehaviour
 
     public void LoadFromString(string input)
     {
-        //TESTING UNIFORM SCALING TO FIX BUG::::
-        /*_inputString = input;
-        foreach (var group in _rigGroups) {
-            foreach (var bone in group.Bones) {
-                bone.ForceSymetry();
-            }
-        }*/
-
         input = input.Replace("\n", "");
 
         ID = new ID(input[..SaveSystem.IDLength]);
@@ -168,11 +161,12 @@ public class CharacterMetaController : MonoBehaviour
             _dataPanel.Load(Data);
         }
         else {
+            gameObject.SetActive(true);
             LoadRigInGame(parts[4]);
-            _clothingInterface.SetColor(Data.FavColor);
         }
 
-        //print("LOADED CHARACTER");
+        _clothingInterface.SetColor(Data.FavColor);
+
         gameObject.SetActive(true);
     }
 
@@ -180,19 +174,29 @@ public class CharacterMetaController : MonoBehaviour
     {
         var loadedSliderValues = rigSaveString.Split('%').Select(x => float.Parse(x)).ToList();
 
-        void AffectRig(BoneSliderName sliderGroupName, float value)
-        {
-            var data = _rigGroups.Where(x => x.Type == sliderGroupName).FirstOrDefault();
-            if (data == default) return;
-            foreach (var bone in data.Bones) _rigController.ModifyBone(bone.Name, sliderGroupName, bone.GetCurrent(value), bone.IndependentScale);
+        if (!_oldRigMode) {
+            _rigController.SetValue(loadedSliderValues[0], BoneSliderName.HEIGHT);
+            _rigController.SetValue(loadedSliderValues[1], BoneSliderName.WEIGHT);
+            _rigController.SetValue(loadedSliderValues[2], BoneSliderName.ARMS);
+            _rigController.SetValue(loadedSliderValues[3], BoneSliderName.TORSO);
+            _rigController.SetValue(loadedSliderValues[4], BoneSliderName.WAIST);
+            _rigController.SetValue(loadedSliderValues[5], BoneSliderName.LEGS);
         }
+        else { 
+            void AffectRig(BoneSliderName sliderGroupName, float value)
+            {
+                var data = _rigGroups.Where(x => x.Type == sliderGroupName).FirstOrDefault();
+                if (data == default) return;
+                foreach (var bone in data.Bones) _rigController.ModifyBone(bone.Name, sliderGroupName, bone.GetCurrent(value), bone.IndependentScale);
+            }
 
-        AffectRig(BoneSliderName.HEIGHT, loadedSliderValues[0]);
-        AffectRig(BoneSliderName.WEIGHT, loadedSliderValues[1]);
-        AffectRig(BoneSliderName.ARMS, loadedSliderValues[2]);
-        AffectRig(BoneSliderName.TORSO, loadedSliderValues[3]);
-        AffectRig(BoneSliderName.WAIST, loadedSliderValues[4]);
-        AffectRig(BoneSliderName.LEGS, loadedSliderValues[5]);
+            AffectRig(BoneSliderName.HEIGHT, loadedSliderValues[0]);
+            AffectRig(BoneSliderName.WEIGHT, loadedSliderValues[1]);
+            AffectRig(BoneSliderName.ARMS, loadedSliderValues[2]);
+            AffectRig(BoneSliderName.TORSO, loadedSliderValues[3]);
+            AffectRig(BoneSliderName.WAIST, loadedSliderValues[4]);
+            AffectRig(BoneSliderName.LEGS, loadedSliderValues[5]);
+        }
     }
 
     public string GetSaveString()

@@ -7,13 +7,25 @@ using UnityEngine;
 
 public class Test : MonoBehaviour
 {
-    private void OnEnable()
+
+    [ButtonMethod]
+    public void SaveDict()
     {
-        print(gameObject.name + "ENABLED");
+        var newDict = new Dictionary<string, float>();
+        for (int i = 0; i < 12; i++) {
+            newDict.Add(i.ToString(), i + Random.Range(0, 1f));
+        }
+
+        SaveSystem.SaveHighscoreDictionary("TestDict", newDict);
     }
 
-    private void OnDisable()
+    [ButtonMethod]
+    public void LoadDict()
     {
-        print(gameObject.name + "Disabled");
+        var loadedDict = SaveSystem.LoadHighscoreDictionary("TestDict");
+        print("Loaded dict:");
+        foreach (var pair in loadedDict) {
+            print(pair.Key + ": " + pair.Value);
+        }
     }
 }

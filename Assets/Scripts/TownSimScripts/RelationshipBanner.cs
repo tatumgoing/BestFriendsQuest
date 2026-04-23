@@ -11,12 +11,19 @@ public class RelationshipBanner : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _relationshipNameText;
     [SerializeField] private Slider _slider;
 
-    public void ShowRelationship(ID character, float relationshipLevel, string levelName)
+    private ID _id;
+
+    public void ShowRelationship(ID id, float relationshipLevel, string levelName)
     {
-        _portraitImg.sprite = CharacterManager.i.GetPortrait(character);
-        _nameText.text = CharacterManager.i.GetNameFormatted(character);
+        _id = id;
+        _portraitImg.sprite = CharacterManager.i.GetPortrait(id);
+        _nameText.text = CharacterManager.i.GetNameFormatted(id);
         _slider.value = relationshipLevel - Mathf.FloorToInt(relationshipLevel);
         _relationshipLevelTxt.text = "Level " + Mathf.FloorToInt(relationshipLevel);
         _relationshipNameText.text = levelName;
     }
+
+    public void Hover() => GetComponentInParent<CharacterStatusMenu>().ShowInfoLeft(_id);
+    
+    public void EndHover() => GetComponentInParent<CharacterStatusMenu>().HideLeftinfo();
 }

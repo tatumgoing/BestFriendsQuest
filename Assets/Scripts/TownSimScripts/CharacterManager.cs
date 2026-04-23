@@ -20,7 +20,7 @@ public class CharacterManager : MonoBehaviour
     public List<CompleteCharacterData> AllCharacters => _allCharacters;
     public CompleteCharacterData GetRandomCharacter() => AllCharacters[Random.Range(0, AllCharacters.Count)];
     public string GetAge(ID id) => _allCharacters.Find(c => c.ID == id).Age.ToString();
-    public string GetFavoriteColor(ID id) => Utils.CapitalFirst(_allCharacters.Find(c => c.ID == id).FavColor.ToString().ToLower());
+    public string GetFavoriteColorString(ID id) => Utils.CapitalFirst(GetFavoriteColor(id).ToString().ToLower());
 
     void Awake()
     {
@@ -31,6 +31,14 @@ public class CharacterManager : MonoBehaviour
 
     private void Start()
     {
+        //TESTING:
+        foreach (var characterA in _allCharacters) {
+            foreach (var characterB in _allCharacters) {
+                if (characterA != characterB) _relationships.Add(new RelationshipData(characterA.ID, characterB.ID));
+            }
+        }
+        RandomizeRelationships();
+
         GenerateProblem();
     }
 
@@ -40,6 +48,12 @@ public class CharacterManager : MonoBehaviour
 
         var problemRatio = (float)numCharactersWithProblems() / _allCharacters.Count;
         if (problemRatio < _maxProblemPercent) GenerateProblem();
+    }
+
+    public FavoriteColor GetFavoriteColor(ID id)
+    {
+        var characterData = _allCharacters.Find(c => c.ID == id);
+        return characterData.FavColor;
     }
 
     /// <summary>
@@ -104,7 +118,7 @@ public class CharacterManager : MonoBehaviour
     [ButtonMethod]
     public void RandomizeRelationships()
     {
-        print("RANDOMIZING RELATIONSHIPS");
+        print("Randoming all relationships (for testing)");
         for (int i = 0; i < _relationships.Count; i++) {
             _relationships[i].Value = Random.Range(0, 10f);
         }
@@ -195,7 +209,7 @@ public class CharacterManager : MonoBehaviour
         spawnedCharacter.transform.localScale = scale;
 
         //FIX FOR SCALING BUG, FOR NOW
-        ToggleCharacter(spawnedCharacter.gameObject);
+        //ToggleCharacter(spawnedCharacter.gameObject);
 
         return spawnedCharacter;
     }

@@ -14,6 +14,10 @@ public class MinigameButtonNames
 
 public class CharacterDialogue : MonoBehaviour
 {
+    [SerializeField] private Sound _beepSound;
+    [SerializeField] private float _letterDelay = 0.02f;
+
+
     [SerializeField] private List<string> _randomLines = new List<string>();
     [SerializeField] private TextMeshProUGUI _textBox;
     [SerializeField] private GameObject _closeButton;
@@ -22,6 +26,8 @@ public class CharacterDialogue : MonoBehaviour
     [SerializeField] private List<MinigameButtonNames> _buttonStrings = new List<MinigameButtonNames>();
 
     private ID _id;
+    private float _letterCountdown;
+    private string _targetText;
 
     public void StartMinigame() => TownGameManager.i.QuickStartMinigame(_id);
     private void ShowRandomText() => ShowText(_randomLines[Random.Range(0, _randomLines.Count)]);
@@ -41,6 +47,25 @@ public class CharacterDialogue : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        _beepSound = Instantiate(_beepSound);
+    }
+
+    private void Update()
+    {
+        if (_targetText.Length == 0) return;
+
+        _letterCountdown -= Time.deltaTime;
+        if (_letterCountdown <= 0) {
+            _letterCountdown = _letterDelay;
+            var nextLetter = _targetText[0];
+            _textBox.text += nextLetter;
+            _targetText = _targetText.Substring(1);
+            if (nextLetter != ' ') _beepSound.Play(restart:false);
+        }
+    }
+
     public void Talk(ID id)
     {
         _id = id;
@@ -50,7 +75,7 @@ public class CharacterDialogue : MonoBehaviour
         else ShowText(characterDialogue);
 
         var currentProblem = CharacterManager.i.GetProblem(id);
-        if (currentProblem.IsSolved) {
+        if (currentProblem && currentProblem.IsSolved) {
             CharacterManager.i.GiveProblemRewards(id);
         }
         
@@ -60,12 +85,14 @@ public class CharacterDialogue : MonoBehaviour
         }
         
         _minigameButtons.SetActive(isProblemMinigame && !currentProblem.IsSolved);
-        _closeButton.SetActive(!isProblemMinigame || currentProblem.IsSolved);
+        _closeButton.SetActive(!isProblemMinigame || (currentProblem && currentProblem.IsSolved));
     }
 
     public void ShowText(string text)
     {
-        _textBox.text = text;
+        _letterCountdown = 0;
+        _textBox.text = "";
+        _targetText = text;
         gameObject.SetActive(true);
     }
 

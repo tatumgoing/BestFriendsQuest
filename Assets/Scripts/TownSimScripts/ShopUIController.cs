@@ -1,0 +1,79 @@
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using TMPro;
+using UnityEngine;
+
+public interface IItemListController
+{
+    public abstract void SelectItem(ItemData item);
+}
+
+public class ShopUIController : MonoBehaviour, IItemListController
+{
+    [SerializeField] private ItemType _type;
+    [SerializeField] private ItemListDisplay _itemList;
+    [SerializeField] private CurrentlySelectedItem _currentlySelected;
+    [SerializeField] private SelectableItem _purchaseButton;
+    [SerializeField] private ClothingShopController _areaController;
+
+    [Header("Sounds")]
+    [SerializeField] private Sound _purchaseSound;
+
+    private ItemData _currentlySelectedItem;
+
+    void Start()
+    {
+        _purchaseSound = Instantiate(_purchaseSound);
+    }
+
+    private void OnEnable()
+    {
+        if (!TownGameManager.i) {
+            gameObject.SetActive(false);
+            return;
+        }
+        BuildList();
+        UpdatePurchaseButton();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Q) && Input.GetKey(KeyCode.LeftShift)) {
+            TownGameManager.i.ChangeCurrency(113);
+            UpdatePurchaseButton();
+        }
+    }
+
+    private void BuildList()
+    {
+        var selectedItems = TownGameManager.i.GetAllItems().Where(x => x.Type == _type).ToList();
+        _itemList.DisplayItem(selectedItems, this);
+        _itemList.SetFirstSelected();
+    }
+
+    public void BuyCurrent()
+    {
+        _purchaseSound.Play();
+        TownGameManager.i.BuyItem(_currentlySelectedItem);
+        UpdatePurchaseButton();
+    }
+
+    public void SelectItem(ItemData item)
+    {
+        _itemList.DeselectNonMatching(item);
+
+        _currentlySelected.ShowItem(item);
+        _currentlySelectedItem = item;
+
+        _purchaseButton.gameObject.SetActive(true);
+        UpdatePurchaseButton();
+
+        _areaController.DisplayItem(item);
+    }
+
+    private void UpdatePurchaseButton()
+    {
+        _purchaseButton.SetDisabled(TownGameManager.i.currency < _currentlySelectedItem.Cost);
+    }
+}

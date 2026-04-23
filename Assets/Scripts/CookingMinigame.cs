@@ -67,6 +67,8 @@ public class CookingMinigame : MinigameController
         {
             _areaController.SpawnCharacterSelect(_characterSelectScreen.GetComponent<CharacterSelectionMenu>()._selectedCharacter);
             _displayedSelectedCharacter = _characterSelectScreen.GetComponent<CharacterSelectionMenu>()._selectedCharacter;
+
+            //_areaController.characterSelectSpawnedCharacter.GetComponent<SpawnedCharacter>().CharacterLookAt();
         }
     }
 
@@ -90,11 +92,6 @@ public class CookingMinigame : MinigameController
     {
         CharacterManager.i.SolveProblem(_selectedCharacter);
         TownGameManager.i.GoToRoom(_selectedCharacter);
-    }
-
-    public void ReturnToMap()
-    {
-        TownGameManager.i.GoToMap();
     }
 
     public void ResetKitchen()
@@ -123,6 +120,7 @@ public class CookingMinigame : MinigameController
         _recipientSelectScreen.gameObject.SetActive(true);
 
         _recipientSelectScreen.SelectPreviousPrimary(id);
+        //replace bc prev screen is spawning character
         _areaController.DestroySpawnedCharacter();
         _spawnedCharacter = _areaController.SpawnCharacter(_selectedCharacter);
     }
