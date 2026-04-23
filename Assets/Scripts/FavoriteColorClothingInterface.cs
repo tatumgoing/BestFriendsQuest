@@ -12,6 +12,9 @@ public class FavoriteColorClothingInterface : MonoBehaviour
 
     public void SetColor(FavoriteColor color)
     {
+        //print("SETTING COLOR: " + color);
+        if (!_shirt) return;
+
         if (_optionsScript != null) {
             var colorValue = _optionsScript.GetColor(color);
             _shirt.SetColor(colorValue);

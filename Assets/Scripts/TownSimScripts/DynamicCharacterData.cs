@@ -6,15 +6,15 @@ using TMPro;
 using System.Linq;
 
 [System.Serializable]
-public class CharacterData 
+public class DynamicCharacterData 
 {
     [Range(0,100) ]public float Happiness = 50;
     public ProblemData CurrentProblem;
-
-    public CharacterRoomModel RoomScript;
-
+    private List<ItemData> _inventory = new List<ItemData>(); 
+     
     [HideInInspector] public ID ID { get; private set; }
 
+    public List<ItemData> Inventory => _inventory;
     public void SolveProblem()
     {
         CurrentProblem.IsSolved = true;
@@ -76,7 +76,7 @@ public class CharacterData
     /// <summary>
     /// Creates a new instance of CharacterData based on the 'static' data generated in the character creator or loaded from a savefile.
     /// </summary>
-    public CharacterData(ID id)
+    public DynamicCharacterData(ID id)
     {
         LoadFromFile(id);
     }
@@ -84,7 +84,7 @@ public class CharacterData
     /// <summary>
     /// Creates a new instance of CharacterData with default values.
     /// </summary>
-    public CharacterData() {}
+    public DynamicCharacterData() {}
 
     public void UpdateHappiness(float newHappiness) {
         Happiness= Mathf.Clamp(Happiness + newHappiness, 0f, 100f);

@@ -10,6 +10,7 @@ public class SetMaterialField : MonoBehaviour
 
     public void SetColor(Color color)
     {
+        //print("Setting color: " + color);
         if (_materialIndex != 0) {
             _renderer.materials[_materialIndex].SetColor(_fieldName, color);
         }

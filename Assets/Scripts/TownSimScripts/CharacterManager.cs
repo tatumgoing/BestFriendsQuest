@@ -12,6 +12,7 @@ public class CharacterManager : MonoBehaviour
     [SerializeField] private GameObject _characterControllerPrefab;
     [SerializeField, ReadOnly] private List<CompleteCharacterData> _allCharacters = new List<CompleteCharacterData>();
     [SerializeField, ReadOnly] private List<RelationshipData> _relationships = new List<RelationshipData>();
+    [SerializeField] private List<ColorData> _clothingColors;
 
     [Header("Problems")]
     [SerializeField, Range(0, 1), Tooltip("Max percent of citizens that can have problems")] private float _maxProblemPercent = 0.3f;
@@ -50,10 +51,22 @@ public class CharacterManager : MonoBehaviour
         if (problemRatio < _maxProblemPercent) GenerateProblem();
     }
 
+    public Color GetClothingColor(FavoriteColor color)
+    {
+        var data = _clothingColors.Find(c => c.Color == color);
+        return data.UseColor;
+    }
+
     public FavoriteColor GetFavoriteColor(ID id)
     {
         var characterData = _allCharacters.Find(c => c.ID == id);
         return characterData.FavColor;
+    }
+
+    public List<ItemData> GetInventory(ID id)
+    {
+        var characterData = _allCharacters.Find(c => c.ID == id);
+        return characterData.Inventory;
     }
 
     /// <summary>
@@ -200,6 +213,8 @@ public class CharacterManager : MonoBehaviour
     public SpawnedCharacter SpawnCharacter(ID id, Transform spawnSpot) => SpawnCharacter(id, spawnSpot.position, spawnSpot.lossyScale, spawnSpot.eulerAngles);
     private SpawnedCharacter SpawnCharacter(ID id, Vector3 position, Vector3 scale, Vector3 rot)
     {
+        //print("Spawning character with ID: " + id);
+
         var characterData = _allCharacters.Find(c => c.ID == id);
         if (characterData == null) return null;
         

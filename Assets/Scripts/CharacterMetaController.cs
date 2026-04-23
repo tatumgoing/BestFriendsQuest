@@ -140,21 +140,25 @@ public class CharacterMetaController : MonoBehaviour
 
     public void LoadFromString(string input)
     {
+        //print("META CONTROLLER1");
         input = input.Replace("\n", "");
 
         ID = new ID(input[..SaveSystem.IDLength]);
         input = input.Substring(SaveSystem.IDLength);
+        //print("META CONTROLLER2");
 
         var parts = input.Split('|');
         _face.LoadFromString(parts[0]);
         _hair.LoadFromString(parts[1]);
         _ears.LoadFromString(parts[2]);
+        //print("META CONTROLLER3");
 
         ColorUtility.TryParseHtmlString(parts[3], out _skinColor);
         SetSkinColor(_skinColor);
 
         Data = new StaticCharacterData();
         Data.FromString(ID, parts[5]);
+        //print("META CONTROLLER4");
 
         if (_isCharacterCreator) {
             _bodyCustomizer.LoadFromString(parts[4]);
@@ -164,10 +168,15 @@ public class CharacterMetaController : MonoBehaviour
             gameObject.SetActive(true);
             LoadRigInGame(parts[4]);
         }
+        //print("META CONTROLLER5. active: " + gameObject.activeInHierarchy + ", clothingInterface: " + _clothingInterface);
 
         _clothingInterface.SetColor(Data.FavColor);
 
-        gameObject.SetActive(true);
+        if (!gameObject.activeInHierarchy) {
+            //print("META CONTROLLER: activating gameobject");
+            gameObject.SetActive(true);
+        }
+        //print("META CONTROLLER6");
     }
 
     private void LoadRigInGame(string rigSaveString)

@@ -11,7 +11,9 @@ public enum ProfileDataEnum { GENDER, PRONOUN, ATTRACTION}
 public enum MonthAbrev { Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec}
 
 [System.Serializable] public class ListWrapper<T> { public List<T> List = new List<T>();  }
-[System.Serializable] public class ColorData {
+
+[System.Serializable] 
+public class ColorData {
     [HideInInspector] public string DisplayName;
     public FavoriteColor Color; 
     public Sprite Sprite;
