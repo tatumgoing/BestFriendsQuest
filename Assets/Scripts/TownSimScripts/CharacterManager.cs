@@ -51,6 +51,12 @@ public class CharacterManager : MonoBehaviour
         if (problemRatio < _maxProblemPercent) GenerateProblem();
     }
 
+    public void GiveItem(ID id, ItemData item)
+    {
+        var characterData = _allCharacters.Find(c => c.ID == id);
+        characterData.AddToInventory(item);
+    }
+
     public Color GetClothingColor(FavoriteColor color)
     {
         var data = _clothingColors.Find(c => c.Color == color);

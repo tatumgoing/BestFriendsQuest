@@ -11,6 +11,7 @@ public class GiftMenu : MonoBehaviour, IItemListController
     [SerializeField] private CurrentlySelectedItem _currentlySelectedItem;
 
     private ItemData _currentItem;
+    private ID _id;
 
     public void ShowClothing() => ChangeCategory(ItemType.Clothing);
     public void ShowFood() => ChangeCategory(ItemType.Food);
@@ -18,6 +19,7 @@ public class GiftMenu : MonoBehaviour, IItemListController
 
     public void Show(ID id)
     {
+        _id = id;
         gameObject.SetActive(true);
         _title.text = "A gift for " + CharacterManager.i.GetName(id) + "?";
 
@@ -38,6 +40,7 @@ public class GiftMenu : MonoBehaviour, IItemListController
     {
         TownGameManager.i.SubtractInventory(_currentItem);
         gameObject.SetActive(false);
+        CharacterManager.i.GiveItem(_id, _currentItem);
     }
 
     private void ChangeCategory(ItemType type)

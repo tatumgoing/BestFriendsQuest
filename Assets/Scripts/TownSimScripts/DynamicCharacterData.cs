@@ -15,6 +15,9 @@ public class DynamicCharacterData
     [HideInInspector] public ID ID { get; private set; }
 
     public List<ItemData> Inventory => _inventory;
+
+    public void AddToInventory(ItemData item) => _inventory.Add(item);
+
     public void SolveProblem()
     {
         CurrentProblem.IsSolved = true;
