@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Linq;
+using Unity.VisualScripting.FullSerializer;
+using System.Threading.Tasks;
 
 [System.Serializable]
 public class DynamicCharacterData 
@@ -16,13 +18,22 @@ public class DynamicCharacterData
 
     public List<ItemData> Inventory => _inventory;
 
-    public void AddToInventory(ItemData item) => _inventory.Add(item);
+    public void AddToInventory(ItemData item)
+    {
+        _inventory.Add(item);
+        SaveToFile();
+    }
+
+    public string GetInventoryString()
+    {
+        if (Inventory.Count == 0) return CharacterManager.i.GetName(ID) + ": No items";
+        return CharacterManager.i.GetName(ID) + ": " + string.Join(", ", Inventory.Select(x => x.Name));
+    }
 
     public void SolveProblem()
     {
         CurrentProblem.IsSolved = true;
     }
-
     /// <summary>
     /// Call to reward the player for completing the problem. 
     /// Also clears the problem from this character
@@ -42,7 +53,9 @@ public class DynamicCharacterData
     /// </summary>
     public void SaveToFile(ID ID)
     {
-        var resultString = ID + "~" + Happiness.ToString();
+        var invString = Inventory.Count > 0 ? string.Join(",", Inventory.Select(item => item.ID)) : "";
+        Debug.Log("Saving to file: " + ID + "~" + Happiness.ToString() + "~" + invString);
+        var resultString = ID + "~" + Happiness.ToString() + "~" + invString;
         SaveSystem.SaveDynamicData(resultString);
     }
     private void SaveToFile() => SaveToFile(ID);
@@ -67,13 +80,24 @@ public class DynamicCharacterData
     /// eventually will load in inventory, preferences, and other dynamic data.
     /// relationships are handled via characterManager.
     /// </summary>
-    private void LoadFromString(string saveString)
+    private async Task LoadFromString(string saveString)
     {
+        Debug.Log("Loading from file. dynamic saveString: " + saveString);
+
+        await Task.Delay(100);
+
         var parts = saveString.Split("~");
         if (parts.Length < 2) return;
 
-        // Load Happiness
         Happiness = float.Parse(parts[1]);
+        if (parts.Length < 3) return;
+
+        var itemIDs = parts[2].Split(',');
+        foreach (var itemID in itemIDs) {
+            if (itemID.Length < 2) continue;
+            var item = TownGameManager.i.GetItemByID(itemID);
+            if (item != null) AddToInventory(item);
+        }
     }
 
     /// <summary>

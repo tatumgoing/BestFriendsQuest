@@ -57,6 +57,7 @@ public class CompleteCharacterData
     //Inventory
     public List<ItemData> Inventory => _dynamicData.Inventory;
     public void AddToInventory(ItemData item) => _dynamicData.AddToInventory(item);
+    public string GetInventoryString() => _dynamicData.GetInventoryString();
 
     //Problems
     /// <summary>

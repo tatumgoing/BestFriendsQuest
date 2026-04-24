@@ -51,6 +51,13 @@ public class CharacterManager : MonoBehaviour
         if (problemRatio < _maxProblemPercent) GenerateProblem();
     }
 
+    [ButtonMethod]
+    public void PrintCharacterInventories()
+    {
+        var saveString = string.Join("|", _allCharacters.Select(c => c.GetInventoryString()));
+        print(saveString);
+    }
+
     public void GiveItem(ID id, ItemData item)
     {
         var characterData = _allCharacters.Find(c => c.ID == id);
@@ -117,7 +124,7 @@ public class CharacterManager : MonoBehaviour
 
     public void GenerateProblem()
     {
-        var validOptions = AllCharacters.Where(x => !x.HasProblem)  .ToList();
+        var validOptions = AllCharacters.Where(x => !x.HasProblem).ToList();
         GenerateProblem(validOptions[Random.Range(0, validOptions.Count)].ID);
     }
 

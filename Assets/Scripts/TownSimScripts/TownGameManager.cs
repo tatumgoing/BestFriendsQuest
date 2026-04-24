@@ -19,6 +19,7 @@ public class TownGameManager : MonoBehaviour
     [SerializeField] private NeighborhoodController _neighborhoodController;
 
     public List<ItemData> GetAllItems() => allItems;
+    public ItemData GetItemByID(ID id) => allItems.Where(x => x.ID == id).FirstOrDefault();
 
     private void OnValidate()
     {
