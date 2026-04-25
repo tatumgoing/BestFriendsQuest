@@ -3,15 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using UnityEngine.Video;
 
 public class TownGameManager : MonoBehaviour
 {
     public static TownGameManager i;
+
+    [SerializeField] private GameObject _mapParent;
+    [SerializeField] private GameObject _invParent;
 
     [SerializeField] private List<AreaData> _areas = new List<AreaData>();
 
@@ -58,6 +59,26 @@ public class TownGameManager : MonoBehaviour
         ChangeScene(sceneUIList[sceneUIList.Count - 1], true);
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            if (_invParent.activeInHierarchy) _invParent.SetActive(false);
+            else if (_mapParent.activeInHierarchy) _mapParent.SetActive(false);
+        }
+
+        if (Input.GetKeyDown(KeyCode.M) && !_invParent.activeInHierarchy) {
+            if (_mapParent.activeInHierarchy) _mapParent.SetActive(false);
+            else _ = ChangeArea(AreaName.MAP);
+        }
+
+        if (Input.GetKeyDown(KeyCode.I) || Input.GetKeyDown(KeyCode.E)) {
+            if (!_mapParent.activeInHierarchy) _ = ChangeArea(AreaName.MAP);
+
+            if (!_invParent.activeInHierarchy) _invParent.SetActive(true);
+            else _invParent.SetActive(false);
+        }
+    }
+
     public int GetNumberOwned(ItemData item)
     {
         if (!items.ContainsKey(item)) return 0;
@@ -99,6 +120,11 @@ public class TownGameManager : MonoBehaviour
 
     public async Task ChangeArea(AreaName targetArea)
     {
+        if (targetArea == AreaName.MAP) {
+            foreach (var a in _areas) if (a.Type == AreaName.MAP) a.SetActiveState(true);
+            return;
+        }
+
         await FadeScreen(true);
 
         if (_demoMode) {
@@ -106,6 +132,7 @@ public class TownGameManager : MonoBehaviour
             sceneUIList[^1].gameObject.SetActive(false);
         }
         foreach (var a in _areas) a.SetActiveState(a.Type == targetArea);
+        
 
         await FadeScreen(false);        
     }
@@ -119,7 +146,7 @@ public class TownGameManager : MonoBehaviour
 
     public async void ChangeScene(GameObject newSceneUI, bool firstLaunch = false)
     {
-        if (_demoMode && !newSceneUI.name.ContainsInsensitive("title")) {
+        if (_demoMode && !newSceneUI.name.ToLower().Contains("title")) {
             await ChangeArea(AreaName.PARK);
             return;
         }

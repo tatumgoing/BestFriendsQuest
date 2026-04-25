@@ -35,7 +35,7 @@ public class ParkController : MonoBehaviour
     /// </summary>
     private void ClearAllCharacters()
     {
-        foreach (var s in _spawnedCharacters) Destroy(s.gameObject);
+        foreach (var s in _spawnedCharacters) if (s && s.gameObject) Destroy(s.gameObject);
         _spawnedCharacters.Clear();
     }
 
