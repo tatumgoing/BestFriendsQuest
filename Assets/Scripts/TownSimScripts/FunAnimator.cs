@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Burst.CompilerServices;
@@ -41,13 +42,22 @@ public class FunAnimator : MonoBehaviour
 
     private Vector3 defScale;
 
+    [Header("Misc")]
+    [SerializeField] private bool _randomizeStart;
+
 
     void Start()
     {
+        if (_randomizeStart) {
+            if (doesRot) transform.localEulerAngles += Vector3.forward * Random.Range(minRot, maxRot);
+            //if (doesScale) transform.localScale += Vector3.one * Random.Range(minScale, maxScale);
+        }
+
         iconPosX = GetComponent<RectTransform>().anchoredPosition.x;
         iconPosY = GetComponent<RectTransform>().anchoredPosition.y;
         defRot= GetComponent<RectTransform>().rotation.z;
         defScale = GetComponent<RectTransform>().localScale;
+
     }
 
     void Update()
@@ -81,6 +91,4 @@ public class FunAnimator : MonoBehaviour
 
         return newVal;
     }
-
-   
 }

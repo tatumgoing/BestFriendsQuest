@@ -174,7 +174,7 @@ public class CharacterManager : MonoBehaviour
 
     public string GetName(ID id)
     {
-        var characterData = _allCharacters.Find(c => c.ID == id);
+        var characterData = _allCharacters.Find(c => c != null && c.ID == id);
         return characterData != null ? characterData.Name : "";
     }
 
