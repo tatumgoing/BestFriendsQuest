@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class InventoryUI : MonoBehaviour, IItemListController
@@ -19,7 +20,7 @@ public class InventoryUI : MonoBehaviour, IItemListController
 
     private void OnEnable()
     {
-        var inventory = TownGameManager.i.GetInventoryItems();
+        var inventory = TownGameManager.i.GetInventoryItems().OrderByDescending(x => TownGameManager.i.GetNumberOwned(x)).ToList();
         _itemListDisplay.DisplayItem(inventory, this);
     }
 
