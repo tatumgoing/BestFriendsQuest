@@ -148,7 +148,8 @@ public class SubgameController : MonoBehaviour
         //highscores
         Dictionary<string, float> tempDict = SaveSystem.LoadHighscoreDictionary("Cooking");
 
-        if (tempDict[_currentRecipe.Name] <= _totalScore)
+        if (!tempDict.ContainsKey(_currentRecipe.name)) tempDict.Add(_currentRecipe.name, _totalScore);
+        else if (tempDict[_currentRecipe.Name] <= _totalScore)
         {
             tempDict[_currentRecipe.Name] = _totalScore;
             SaveSystem.SaveHighscoreDictionary("Cooking", tempDict);
