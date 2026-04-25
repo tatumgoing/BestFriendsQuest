@@ -33,13 +33,13 @@ public class ItemSidebar : MonoBehaviour
     {
         if (recordsManager.selectedBanner != null)
         {
-            if (gameManager.items.ContainsKey(recordsManager.selectedBanner.itemID))
+            if (gameManager.Inventory.ContainsKey(recordsManager.selectedBanner.itemID))
             {
 
                 //descriptionContainer.SetActive(true);
 
                 UpdateDescription(recordsManager.selectedBanner.itemID.Description);
-                UpdateCurrentlyHeld(gameManager.items[recordsManager.selectedBanner.itemID]);
+                UpdateCurrentlyHeld(gameManager.Inventory[recordsManager.selectedBanner.itemID]);
                 UpdateDisplaySprite(recordsManager.selectedBanner.itemID.sprite);
             }
             else

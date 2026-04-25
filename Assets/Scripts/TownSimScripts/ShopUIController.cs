@@ -74,6 +74,6 @@ public class ShopUIController : MonoBehaviour, IItemListController
 
     private void UpdatePurchaseButton()
     {
-        _purchaseButton.SetDisabled(TownGameManager.i.currency < _currentlySelectedItem.Cost);
+        _purchaseButton.SetDisabled(TownGameManager.i.Currency < _currentlySelectedItem.Cost);
     }
 }

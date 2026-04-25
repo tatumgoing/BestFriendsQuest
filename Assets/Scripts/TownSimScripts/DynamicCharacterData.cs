@@ -67,7 +67,7 @@ public class DynamicCharacterData
     {
         var saveStrings = SaveSystem.ReadFromFile(SaveSystem.dynamicDataFileName).Split('\n');
         foreach (var  s in saveStrings) {
-            if (s.Split('~')[0] == ID) LoadFromString(s);
+            if (s.Split('~')[0] == ID) _ = LoadFromString(s);
         }
 
         SaveToFile(ID);

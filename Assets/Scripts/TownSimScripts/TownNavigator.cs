@@ -2,13 +2,6 @@ using UnityEngine;
 
 public class TownNavigator : MonoBehaviour
 {
-    /*public async void GoToMap() => await TownGameManager.i.ChangeArea(AreaName.MAP);
-    public async void GoToPark() => await TownGameManager.i.ChangeArea(AreaName.PARK);
-    public async void GoToTown() => await TownGameManager.i.ChangeArea(AreaName.TOWN);
-    public async void GoToShop() => await TownGameManager.i.ChangeArea(AreaName.SHOP);
-    public async void GoToResturaunt() => await TownGameManager.i.ChangeArea(AreaName.RESTURAUNT);
-    public async void GoToTownHall() => await TownGameManager.i.ChangeArea(AreaName.TOWN_HALL);
-    public async void GoToPort() => await TownGameManager.i.ChangeArea(AreaName.PORT);*/
 
     public static async void GoToMap() => await TownGameManager.i.ChangeArea(AreaName.MAP);
     public static async void GoToPark() => await TownGameManager.i.ChangeArea(AreaName.PARK);
@@ -17,4 +10,5 @@ public class TownNavigator : MonoBehaviour
     public static async void GoToResturaunt() => await TownGameManager.i.ChangeArea(AreaName.RESTURAUNT);
     public static async void GoToTownHall() => await TownGameManager.i.ChangeArea(AreaName.TOWN_HALL);
     public static async void GoToPort() => await TownGameManager.i.ChangeArea(AreaName.PORT);
+    public static async void GoToRecords() => await TownGameManager.i.ChangeArea(AreaName.RECORDS);
 }

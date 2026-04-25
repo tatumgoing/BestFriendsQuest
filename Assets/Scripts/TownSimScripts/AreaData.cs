@@ -1,7 +1,7 @@
 using MyBox;
 using UnityEngine;
 
-public enum AreaName { MAP, PARK, TOWN, SHOP, RESTURAUNT, TOWN_HALL, PORT }
+public enum AreaName { MAP, PARK, TOWN, SHOP, RESTURAUNT, TOWN_HALL, PORT, RECORDS}
 
 [System.Serializable]
 public class AreaData

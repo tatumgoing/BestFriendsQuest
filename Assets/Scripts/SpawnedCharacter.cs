@@ -133,7 +133,7 @@ public class SpawnedCharacter : MonoBehaviour
         }
     }
 
-    public async Task LoadFromString(string saveString)
+    public void LoadFromString(string saveString)
     {
         gameObject.SetActive(true);
 

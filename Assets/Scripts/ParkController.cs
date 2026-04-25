@@ -64,7 +64,7 @@ public class ParkController : MonoBehaviour
         //await System.Threading.Tasks.Task.Delay(100);
         //newCharacter.gameObject.SetActive(true);
         
-        spawnPoint.SetCharacter(newCharacter);
+        _ = spawnPoint.SetCharacter(newCharacter);
 
         _spawnedCharacters.Add(newCharacter);
     }

@@ -127,8 +127,6 @@ public class SubgameController : MonoBehaviour
         _totalTime = _currentSubgameData.TimeLimit;
         _timeLeft = _currentSubgameData.TimeLimit;
 
-        print("Set Slider to 0");
-
         _slider.value = 0;
         _targetSliderPos = 0;
 

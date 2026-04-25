@@ -59,7 +59,7 @@ public class RestrauntController : MonoBehaviour
 
         characterSelectSpawnedCharacter.GetComponent<SpawnedCharacter>().GrowCharacter(1.0f);
 
-        TriggerSpawnAnimation();
+        _ = TriggerSpawnAnimation();
     }
 
     public async Task TriggerSpawnAnimation()
