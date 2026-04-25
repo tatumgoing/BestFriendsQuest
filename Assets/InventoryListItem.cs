@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
+using TMPro;
 
-public class ShopListItem : MonoBehaviour, IListIItem
+public class InventoryListItem : MonoBehaviour, IListIItem
 {
     [SerializeField] private SelectableItem _buttonScript;
     [SerializeField] private TextMeshProUGUI _nameText;
-    [SerializeField] private TextMeshProUGUI _priceText;
+    [SerializeField] private TextMeshProUGUI _quantityText;
 
     private ItemData _item;
     private IItemListController _controller;
@@ -26,7 +26,6 @@ public class ShopListItem : MonoBehaviour, IListIItem
         _controller = controller;
         _item = item;
         _nameText.text = item.Name;
-        _priceText.text = item.Cost.ToString();
+        _quantityText.text = TownGameManager.i.GetNumberOwned(item).ToString(); 
     }
-
 }

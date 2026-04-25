@@ -94,7 +94,7 @@ public class SpawnedCharacter : MonoBehaviour
 
     private void LoadRandomClothing()
     {
-        var inventory = CharacterManager.i.GetInventory(ID);
+        var inventory = CharacterManager.i.GetInventory(ID).Where(x => x.Type == ItemType.Clothing).ToList();
         if (inventory.Count == 0) ShowClothingItem(_defaultClothing);
         else {
             var selected = inventory[Random.Range(0, inventory.Count)];

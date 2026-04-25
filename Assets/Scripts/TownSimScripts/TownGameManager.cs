@@ -58,6 +58,12 @@ public class TownGameManager : MonoBehaviour
         ChangeScene(sceneUIList[sceneUIList.Count - 1], true);
     }
 
+    public int GetNumberOwned(ItemData item)
+    {
+        if (!items.ContainsKey(item)) return 0;
+        return items[item];
+    }
+
     /// <summary>
     /// Returns a list of all items that the player has at least 1 of
     /// </summary>
