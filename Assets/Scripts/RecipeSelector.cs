@@ -74,10 +74,11 @@ public class RecipeSelector : MonoBehaviour
 
         Dictionary<string, float> tempDict = SaveSystem.LoadHighscoreDictionary("Cooking");
 
-        highScore.text = "Highscore: " + tempDict[_selected.Name].ToString();
-
-        HighscoreDisplay();
-
+        if (tempDict.ContainsKey(_selected.name)) {
+            highScore.text = "Highscore: " + tempDict[_selected.Name].ToString();
+            HighscoreDisplay();
+        }
+        else highScore.text = "";
     }
 
     public void HighscoreDisplay()
