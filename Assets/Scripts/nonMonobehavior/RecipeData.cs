@@ -27,6 +27,7 @@ public class RecipeData : ScriptableObject
         {SubgameType.SITRRING, "Stir"},
         {SubgameType.GRILLING, "Grill"},
         {SubgameType.CHOPPING, "Chop"},
+        {SubgameType.BOILING, "Boil"},
     };
 
     public string ReturnSteps()
