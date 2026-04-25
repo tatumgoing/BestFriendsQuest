@@ -2,17 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BoilMinigame : MonoBehaviour
+public class BoilMinigame : Subgame
 {
-    // Start is called before the first frame update
-    void Start()
+    override protected void Update()
     {
-        
+        base.Update();
+
+        //put noremal update code here.
+        //add to _successTime to progress subgame.
+        //max time for successtime (when the subgame marks itself as finished) is data.TargetTime
+
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void StartSubgame(SubgameData data)
     {
-        
+        base.StartSubgame(data);
+
+        //put code here that you want to run every time subgame is started
+
+    }
+
+    protected override void Initialize()
+    {
+        base.Initialize();
+
+        //called just one, like 'start' but for subgame
+        //for example, instnaitating your sound objects
     }
 }

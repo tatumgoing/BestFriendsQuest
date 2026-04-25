@@ -1,7 +1,7 @@
 using MyBox;
 using UnityEngine;
 
-public enum SubgameType { SITRRING, GRILLING, CHOPPING }
+public enum SubgameType { SITRRING, GRILLING, CHOPPING, BOILING }
 
 [System.Serializable]
 public class SubgameData
@@ -23,4 +23,7 @@ public class SubgameData
     [ConditionalField(nameof(Type), false, false, SubgameType.CHOPPING)] public float ChopBarSpeed = 1;
     [ConditionalField(nameof(Type), false, false, SubgameType.CHOPPING)] public float ChopTargetPosition;
     [ConditionalField(nameof(Type), false, false, SubgameType.CHOPPING)] public float ChopTargetScale = 1.0f;
+
+    //boiling
+    [ConditionalField(nameof(Type), false, false, SubgameType.CHOPPING)] public float BoilingValue = 0.2f;
 }
