@@ -58,7 +58,7 @@ public class BoilMinigame : MonoBehaviour
         foreach (TargetZone target in cookingBar.GetComponentsInChildren<TargetZone>()) { 
             targets.Add(target);
             Debug.Log(target.GetComponent<RectTransform>().localPosition);
-            target.SetBounds(target.GetComponent<RectTransform>().localPosition.x);
+            //target.SetBounds(target.GetComponent<RectTransform>().localPosition.x);
         }
 
         upperBound = cookingBar.GetComponent<RectTransform>().anchoredPosition.x + cookingBar.GetComponent<RectTransform>().sizeDelta.x / 2;
