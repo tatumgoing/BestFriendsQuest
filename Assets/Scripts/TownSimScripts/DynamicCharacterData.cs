@@ -54,7 +54,7 @@ public class DynamicCharacterData
     public void SaveToFile(ID ID)
     {
         var invString = Inventory.Count > 0 ? string.Join(",", Inventory.Select(item => item.ID)) : "";
-        Debug.Log("Saving to file: " + ID + "~" + Happiness.ToString() + "~" + invString);
+        //Debug.Log("Saving to file: " + ID + "~" + Happiness.ToString() + "~" + invString);
         var resultString = ID + "~" + Happiness.ToString() + "~" + invString;
         SaveSystem.SaveDynamicData(resultString);
     }
@@ -82,7 +82,7 @@ public class DynamicCharacterData
     /// </summary>
     private async Task LoadFromString(string saveString)
     {
-        Debug.Log("Loading from file. dynamic saveString: " + saveString);
+        //Debug.Log("Loading from file. dynamic saveString: " + saveString);
 
         await Task.Delay(100);
 

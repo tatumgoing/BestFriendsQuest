@@ -7,6 +7,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.Video;
 
 public class TownGameManager : MonoBehaviour
 {
@@ -36,6 +37,14 @@ public class TownGameManager : MonoBehaviour
     {
         i = this;
         allItems = Resources.LoadAll<ItemData>("Items").ToList();
+
+        var itemIDs = new Dictionary<ID, ItemData>();
+        foreach (var i in allItems) {
+            if (itemIDs.ContainsKey(i.ID)) {
+                Debug.LogError("Duplicate ID found for item " + i.Name + " and " + itemIDs[i.ID].Name + ". This will cause problems with saving/loading inventory. Please regenerate the ID of one of these items.");
+            }
+            itemIDs[i.ID] = i;
+        }
 
         LoadInventory();
     }

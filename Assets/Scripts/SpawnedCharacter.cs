@@ -12,10 +12,12 @@ public enum CharacterAnimations { Grilling, Standing, Sitting, SittingGround, Wa
 public class ClothingItemData
 {
     [HideInInspector] public string DisplayName;
-    [DisplayInspector] public ItemData Item;
+    [DisplayInspector] public List<ItemData> Items;
     [SerializeField] private List<GameObject> _meshes;
     [SerializeField] private SetMaterialField _materialField;
     [SerializeField] private bool _useFavoriteColor;
+
+    public SetMaterialField MeshController => _materialField;
 
     public void Initialize(Color favoriteColor)
     {
@@ -24,7 +26,7 @@ public class ClothingItemData
 
     public void OnValidate() 
     { 
-        if (Item) DisplayName = Item.Name;
+        if (Items != null && Items.Count > 0 && Items[0] != null) DisplayName = Items[0].Name;
         else DisplayName = "Empty";
     }
 
@@ -92,46 +94,60 @@ public class SpawnedCharacter : MonoBehaviour
 
     private void LoadRandomClothing()
     {
-        //print(gameObject.name + " loading random clothing item");
         var inventory = CharacterManager.i.GetInventory(ID);
         if (inventory.Count == 0) ShowClothingItem(_defaultClothing);
-        else ShowClothingItem(inventory[Random.Range(0, inventory.Count)]);
+        else {
+            var selected = inventory[Random.Range(0, inventory.Count)];
+            if (selected.ClothingType == ClothingType.OUTFIT) ShowClothingItem(selected);
+            else {
+                var outfit = new List<ItemData>() { selected };
 
-        //print(gameObject.name + " inventory: " + string.Join(",", inventory.Select(i => i.Name).ToArray()));
+                var missingPieceType = selected.ClothingType == ClothingType.TOP ? ClothingType.BOTTOM : ClothingType.TOP;
+                var missingPiece = inventory.FirstOrDefault(item => item.ClothingType == missingPieceType);
+
+                if (missingPiece) {
+                    outfit.Add(missingPiece);
+                    ShowClothingItem(outfit);
+                }
+                else {
+                    ShowClothingItem(_defaultClothing);
+                }
+            }
+        }
     }
 
-    public void ShowClothingItem(ItemData item)
+    private void ShowClothingItem(List<ItemData> items)
     {
-        //print(gameObject.name + " showing clothing item: " + item.Name);
+        foreach (var clothingItem in _clothingItems) clothingItem.SetState(false);
+        foreach (var item in items) ShowClothingItem(item, false);
+    }
 
-        foreach(var clothingItem in _clothingItems) clothingItem.SetState(false);
-        foreach (var clothingItem in _clothingItems) if (clothingItem.Item == item) clothingItem.SetState(true);
+    public void ShowClothingItem(ItemData item, bool disableOthers = true)
+    {
+        if (disableOthers) foreach(var clothingItem in _clothingItems) clothingItem.SetState(false);
+        foreach (var clothingItem in _clothingItems) {
+            if (clothingItem.Items.Contains(item)) {
+                clothingItem.SetState(true);
+                item.AffectMesh(clothingItem.MeshController);
+            }
+        }
     }
 
     public async Task LoadFromString(string saveString)
     {
         gameObject.SetActive(true);
-        //print(gameObject.name + " loading from string1");
 
         _saveString = saveString;
-        //print(gameObject.name + " loading from string2");
         _characterController.LoadFromString(saveString);
-        //print(gameObject.name + " loading from string3");
         ID = _characterController.Data.ID;
         
-        //print(gameObject.name + " loading from string4");
 
         gameObject.name = _characterController.Data.Name + " (spawned character)";
 
         var color = CharacterManager.i.GetClothingColor(_characterController.Data.FavColor);
-        //print("fav color: " + _characterController.Data.FavColor + ", color from manager: " + color);
         foreach (var clothingItem in _clothingItems) clothingItem.Initialize(color);
 
-        //print(_characterController.Data.Name + "loading from string");
         LoadRandomClothing();
-
-        //await Task.Delay(100);
-        //_characterController.LoadFromString(saveString);
     }
 
     public void CharacterLookAt(Transform target)

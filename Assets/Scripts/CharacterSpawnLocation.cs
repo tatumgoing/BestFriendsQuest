@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class CharacterSpawnLocation : MonoBehaviour
 {
-    
     [SerializeField] private CharacterAnimations animations;
     [SerializeField] private bool isMoving;
 
@@ -14,15 +13,10 @@ public class CharacterSpawnLocation : MonoBehaviour
 
     public void Update()
     {
-        if (isMoving)
-        {
-            if (spawnedCharacter != null)
-            {
-                spawnedCharacter.gameObject.transform.position = gameObject.transform.position;
-                spawnedCharacter.gameObject.transform.localEulerAngles = new Vector3(gameObject.transform.localEulerAngles.x, gameObject.transform.localEulerAngles.y - 180, gameObject.transform.localEulerAngles.z);
-            }
-
-        }
+        if (!isMoving || spawnedCharacter == null) return;
+        
+        spawnedCharacter.transform.position = transform.position;
+        spawnedCharacter.transform.localEulerAngles = transform.localEulerAngles - Vector3.up * 180;        
     }
 
     /// <summary>
