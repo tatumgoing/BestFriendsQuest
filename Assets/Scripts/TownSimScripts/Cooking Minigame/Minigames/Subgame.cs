@@ -20,6 +20,12 @@ public class Subgame : MonoBehaviour
             gameObject.SetActive(false);
             Controller.CompleteSubgame();
         }
+
+        if (SuccessTime < 0.0f) { 
+        
+            SuccessTime = 0.0f;
+        }
+
     }
 
     public virtual void StartSubgame(SubgameData data) 

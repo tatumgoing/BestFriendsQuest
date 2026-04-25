@@ -57,7 +57,7 @@ public class ChopMinigameOLD : MonoBehaviour
 
         foreach (TargetZone target in cookingBar.GetComponentsInChildren<TargetZone>()) { 
             targets.Add(target);
-            target.SetBounds(target.GetComponent<RectTransform>().anchoredPosition.x);
+            //target.SetBounds(target.GetComponent<RectTransform>().anchoredPosition.x);
         }
 
         tempIcon.GetComponent<Image>().sprite = manager.characterSelectionMenu.selectedCharacter.Icon;
