@@ -81,7 +81,7 @@ public class ChopMinigame : Subgame
 
     }
 
-    public bool CheckTargets()
+    private bool CheckTargets()
     {
         if (chopSlider.value >= target.lowerBound && chopSlider.value <= target.upperBound)
         {
