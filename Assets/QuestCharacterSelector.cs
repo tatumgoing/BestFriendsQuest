@@ -81,8 +81,8 @@ public class QuestCharacterSelector : MonoBehaviour
     {
         if (_rightTextParent.activeInHierarchy) {
             var value = CharacterManager.i.GetRelationship(id, _alreadySelected);
-            _relationshipLevelText.text = "Relationship to " + CharacterManager.i.GetNameFormatted(_alreadySelected) + ": " + (Mathf.Round(value * 10)/10);
-            _recommendedText.text = "Recommended Level: " + (Mathf.Round(_recommendedLevel * 10) / 10);
+            _relationshipLevelText.text = "Relationship to " + CharacterManager.i.GetNameFormatted(_alreadySelected) + ": " + (Mathf.Floor(value));
+            _recommendedText.text = "Recommended Level: " + (Mathf.Floor(_recommendedLevel));
         }
 
         _nameText.text = CharacterManager.i.GetNameFormatted(id);

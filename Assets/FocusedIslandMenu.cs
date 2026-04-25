@@ -12,6 +12,7 @@ public class FocusedIslandMenu : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _reccomendedText;
     [SerializeField] private TextMeshProUGUI _currentLevel;
     [SerializeField] private TextMeshProUGUI _completionTime;
+    [SerializeField] private TextMeshProUGUI _successChance;
     [SerializeField] private QuestCharacterSelector _characterSelector;
     [SerializeField] private CharacterPortraitNameDisplay _character1Display;
     [SerializeField] private CharacterPortraitNameDisplay _character2Display;
@@ -54,7 +55,7 @@ public class FocusedIslandMenu : MonoBehaviour
 
         _questData = questData;
         _titleText.text = questData.Title;
-        _reccomendedText.text = "Recommended Level: " + questData.relationshipRequirement;
+        _reccomendedText.text = "Recommended Level: " + Mathf.Floor(questData.relationshipRequirement);
 
         string[] tempArray = questData.completionTime.ToString("F2").Split(char.Parse("."));
         _completionTime.text = tempArray[0] + ":" + tempArray[1] + ":00";
@@ -80,9 +81,12 @@ public class FocusedIslandMenu : MonoBehaviour
         _character2QuestionMark.SetActive(false);
 
         var level = CharacterManager.i.GetRelationship(_id1, _id2);
-        _currentLevel.text = "Relationship Level: " + (Mathf.Round(level * 10)/10);
+        _currentLevel.text = "Relationship Level: " + (Mathf.Floor(level));
 
         _character2Display.GetComponent<FunAnimator>().enabled = true;
+
+        var successChance = Mathf.Clamp01(CharacterManager.i.GetRelationship(_id1, _id2) / _questData.relationshipRequirement);
+        _successChance.text = Mathf.Round(successChance * 100) + "%";
 
         _bottomPanelParent.SetActive(true);    
     }
