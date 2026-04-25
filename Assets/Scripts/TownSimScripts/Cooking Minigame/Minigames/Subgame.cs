@@ -32,6 +32,8 @@ public class Subgame : MonoBehaviour
     {
         Data = data;
 
+        SuccessTime = 0;
+
         if (!_initialized) Initialize();
         gameObject.SetActive(true);
     }

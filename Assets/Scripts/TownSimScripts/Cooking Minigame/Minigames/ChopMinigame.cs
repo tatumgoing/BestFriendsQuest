@@ -24,7 +24,7 @@ public class ChopMinigame : Subgame
         //add to _successTime to progress subgame.
         //max time for successtime (when the subgame marks itself as finished) is data.TargetTime
 
-        chopSlider.value = Mathf.Sin(Data.ChopBarSpeed * (Time.time)); 
+        if (Data != null) chopSlider.value = Mathf.Sin(Data.ChopBarSpeed * (Time.time)); 
 
         if (Input.GetKeyDown("space") || Input.GetMouseButtonDown(0))
         {

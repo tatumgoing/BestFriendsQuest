@@ -45,13 +45,17 @@ public class SubgameController : MonoBehaviour
     private bool _isProblem;
 
     private SubgameData _currentSubgameData => _currentRecipe.Subgames[_subgameIndex];
-
     public float TimeLeftPercent => _timeLeft/_totalTime;
-    public void UpdateSlider(float targetPercent) => _targetSliderPos = targetPercent;  
+    public void UpdateSlider(float targetPercent)
+    {
+        //print("Updating Slider: " + targetPercent + ", current: " + _targetSliderPos);
+        _targetSliderPos = targetPercent;
+    }
     
     private void Update()
     {
-        _slider.value = Mathf.Lerp(_slider.value, _targetSliderPos, 7.5f * Time.deltaTime);
+        if (_targetSliderPos == 0) _slider.value = 0;
+        else _slider.value = Mathf.Lerp(_slider.value, _targetSliderPos, 7.5f * Time.deltaTime);
 
         if (_currentSubgame == null || !_currentSubgame.gameObject.activeInHierarchy) return;
 
@@ -122,6 +126,8 @@ public class SubgameController : MonoBehaviour
 
         _totalTime = _currentSubgameData.TimeLimit;
         _timeLeft = _currentSubgameData.TimeLimit;
+
+        print("Set Slider to 0");
 
         _slider.value = 0;
         _targetSliderPos = 0;
