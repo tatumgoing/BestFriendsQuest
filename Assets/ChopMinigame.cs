@@ -13,6 +13,8 @@ public class ChopMinigame : Subgame
 
     [Header("Sounds")]
     [SerializeField] private Sound chopSFX;
+    [SerializeField] private Sound wrongSFX;
+
 
     override protected void Update()
     {
@@ -24,8 +26,6 @@ public class ChopMinigame : Subgame
 
         chopSlider.value = Mathf.Sin(Data.ChopBarSpeed * (Time.time)); 
 
-        Debug.Log (chopSlider.value);
-
         if (Input.GetKeyDown("space") || Input.GetMouseButtonDown(0))
         {
             Chop();
@@ -34,7 +34,6 @@ public class ChopMinigame : Subgame
 
     public override void StartSubgame(SubgameData data)
     {
-        chopSFX = Instantiate(chopSFX);
 
         base.StartSubgame(data);
 
@@ -42,20 +41,25 @@ public class ChopMinigame : Subgame
         iconPosY = sliderIcon.GetComponent<RectTransform>().anchoredPosition.y;
 
         //put code here that you want to run every time subgame is started
+
+        target.MoveTarget(Data.ChopTargetPosition, 0.0f);
+        target.ChangeTargetWidth(Data.ChopTargetScale);
+
+        float position = target.GetComponent<RectTransform>().anchoredPosition.x;
+        float length = target.GetComponent<RectTransform>().sizeDelta.x / chopSlider.GetComponent<RectTransform>().sizeDelta.x;
+        float parentLength = chopSlider.GetComponent<RectTransform>().sizeDelta.x;
+
+        target.SetBounds(position, length, parentLength);
     }
 
     protected override void Initialize()
     {
         base.Initialize();
 
+        chopSFX = Instantiate(chopSFX);
+        wrongSFX = Instantiate(wrongSFX);
+
         //some bullshit about targetzone ratio to slider 
-
-        float length = target.GetComponent<RectTransform>().sizeDelta.x / chopSlider.GetComponent<RectTransform>().sizeDelta.x;
-        
-        // fix this
-        //float center = target.GetComponent<RectTransform>().anchoredPosition.x
-
-        target.SetBounds(0.0f , length);
 
         //called just one, like 'start' but for subgame
         //for example, instnaitating your sound objects
@@ -72,6 +76,7 @@ public class ChopMinigame : Subgame
         else
         {
             SuccessTime -= Data.ChopPenalty;
+            wrongSFX.Play(oneShot: true);
         }
 
     }
