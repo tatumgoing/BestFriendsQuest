@@ -22,6 +22,7 @@ public class FocusedIslandMenu : MonoBehaviour
     [SerializeField] private GameObject _character1QuestionMark;
     [SerializeField] private GameObject _character2QuestionMark;
     [SerializeField] private GameObject _bottomPanelParent;
+    [SerializeField] private QuestMapController _controller;
      
     [SerializeField] private Color _disabledColor;
     [SerializeField] private Color _normalColor;
@@ -89,5 +90,11 @@ public class FocusedIslandMenu : MonoBehaviour
         _successChance.text = Mathf.Round(successChance * 100) + "%";
 
         _bottomPanelParent.SetActive(true);    
+    }
+
+    public void StartQuest()
+    {
+        _controller.StartQuest(_id1, _id2);
+        gameObject.SetActive(false);
     }
 }
