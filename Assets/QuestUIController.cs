@@ -14,6 +14,7 @@ public class QuestUIController : MonoBehaviour
 
     private void OnEnable()
     {
+        _results.gameObject.SetActive(false);
         _map.gameObject.SetActive(_currentQuest == null);
     }
 

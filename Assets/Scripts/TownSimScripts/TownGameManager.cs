@@ -26,6 +26,7 @@ public class TownGameManager : MonoBehaviour
     [SerializeField] private int _characterCreatorSceneIndex = 1;
     [SerializeField] private GameObject _fadeScreen;
     [SerializeField, Min(0)] private float _currency;
+    [SerializeField] private GameObject _mapStartBacking;
 
     [SerializeField] private Dictionary<ItemData, int> _inventory = new Dictionary<ItemData, int>();
 
@@ -68,6 +69,12 @@ public class TownGameManager : MonoBehaviour
 
         foreach (var a in _areas) a.SetActiveState(false);
         _titleScreen.SetActive(true);
+    }
+
+    public void ShowInitialMap()
+    {
+        _mapStartBacking.SetActive(true);
+        _mapParent.SetActive(true);
     }
 
     private void Update()
@@ -131,6 +138,8 @@ public class TownGameManager : MonoBehaviour
 
     public async Task ChangeArea(AreaName targetArea)
     {
+        _mapStartBacking.SetActive(false);
+
         if (targetArea == AreaName.MAP) {
             foreach (var a in _areas) if (a.Type == AreaName.MAP) a.SetActiveState(true);
             return;
