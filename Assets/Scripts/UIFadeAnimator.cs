@@ -11,13 +11,7 @@ public class UIFadeAnimator : MonoBehaviour
     TextMeshProUGUI text;
     private bool fading;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        text = GetComponent<TextMeshProUGUI>();
-    }
 
-    // Update is called once per frame
     void Update()
     {
         if (fading && text.color.a > 0)
@@ -33,6 +27,8 @@ public class UIFadeAnimator : MonoBehaviour
 
     private void OnEnable()
     {
+        if (text == null) text = GetComponent<TextMeshProUGUI>();
+
         fading = false;
 
         var newColor = text.color;
