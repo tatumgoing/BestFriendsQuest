@@ -24,8 +24,6 @@ public class QuestCharacterSelector : MonoBehaviour
 
     public void Show(Action<ID> callBack, ID alreadySelected, float recommendedLevel)
     {
-        print("Showing second character menu");
-
         _alreadySelected = alreadySelected;
         _recommendedLevel = recommendedLevel;
 
