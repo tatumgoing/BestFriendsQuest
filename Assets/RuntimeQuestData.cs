@@ -43,4 +43,12 @@ public class RuntimeQuestData
         var name2 = CharacterManager.i.GetNameFormatted(Character2);
         return template.Replace("CHAR1", name1).Replace("CHAR2", name2).Replace("ITEM", QuestData.unlockedItem.Name);
     }
+
+    public float percentDone()
+    {
+        var targetTime = StartTime.AddHours(QuestData.completionTime);
+        var totalTime = (float)(targetTime - StartTime).TotalSeconds;
+        var timeLeft = (float)(targetTime - System.DateTime.Now).TotalSeconds;
+        return 1 - (timeLeft / totalTime);
+    }
 }

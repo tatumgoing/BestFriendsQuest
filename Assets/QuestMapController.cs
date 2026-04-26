@@ -14,6 +14,8 @@ public class QuestMapController : MonoBehaviour
     [SerializeField] private InProgressQuestMenu _inProgressIslandMenu;
     [SerializeField] private GameObject _mapButton;
     [SerializeField] private QuestUIController _controller;
+    [SerializeField] private RectTransform _boat;
+    [SerializeField] private RectTransform _boatStartPos;
 
     private Vector2 _originalPosition;
     private float _originalScale;
@@ -67,7 +69,10 @@ public class QuestMapController : MonoBehaviour
         _currentQuestData = questData;
         selected.DisplayTimer(questData.GetTimeLeftString());
         foreach (var i in _islands) if (i != selected) i.SetDisabled(true);
-        
+
+        var boatPercent = Mathf.Clamp01(questData.percentDone()) * 0.7f;
+        _boat.anchoredPosition = Vector2.Lerp(_boatStartPos.anchoredPosition, selected.GetComponent<RectTransform>().anchoredPosition, boatPercent);
+
     }
 
     private void FinishTransition()
