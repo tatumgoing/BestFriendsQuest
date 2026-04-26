@@ -28,16 +28,24 @@ public class StirMinigame : Subgame
 
         var dist = Vector2.Distance(Input.mousePosition, _target.Position);
         _targetCanvasGroup.alpha = Mathf.Lerp(_targetCanvasGroup.alpha, dist < _distanceThreshold ? 1 : _minOpacity, 5 * Time.deltaTime);
-        if (dist < _distanceThreshold) SuccessTime += Time.deltaTime;
+        if (dist < _distanceThreshold)
+        {
+            _stirringSFX.SetPercentVolume(100, 10 * Time.deltaTime);
+            SuccessTime += Time.deltaTime;
+        }
+        else
+        {
+            _stirringSFX.SetPercentVolume(0, 10 * Time.deltaTime);
+        }
 
-        base.Update();
+            base.Update();
     }
 
     public override void StartSubgame(SubgameData data)
     {
         base.StartSubgame(data);
 
-        _stirringSFX.Play();
+        _stirringSFX.PlaySilent();
         ChangeSpeed();
     }
 
@@ -46,6 +54,11 @@ public class StirMinigame : Subgame
         base.Initialize();
 
         _stirringSFX = Instantiate(_stirringSFX);
+    }
+
+    private void OnDisable()
+    {
+        _stirringSFX.Stop();
     }
 
     private void ChangeSpeed()
