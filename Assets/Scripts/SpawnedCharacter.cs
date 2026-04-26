@@ -189,10 +189,9 @@ public class SpawnedCharacter : MonoBehaviour
         _lookAtTarget = null;
     }
     
-    public void AnimateFromEnum(CharacterAnimations anim)
+    public void AnimateFromEnum(CharacterAnimations anim, bool value = true)
     {
-        animator.SetBool(anim.ToString(), true);
-
+        animator.SetBool(anim.ToString(), value);
     }
 
     public void AnimateFromString(string anim)

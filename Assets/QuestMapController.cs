@@ -11,11 +11,8 @@ public class QuestMapController : MonoBehaviour
     [SerializeField] private RectTransform _islandTargetTransform;
     [SerializeField] private float _transitionTime;
     [SerializeField] private FocusedIslandMenu _focusedIslandMenu;
-    [SerializeField] private InProgressQuestMenu _inProgressIslandMenu;
     [SerializeField] private GameObject _mapButton;
     [SerializeField] private QuestUIController _controller;
-    [SerializeField] private RectTransform _boat;
-    [SerializeField] private RectTransform _boatStartPos;
 
     private Vector2 _originalPosition;
     private float _originalScale;
@@ -26,7 +23,6 @@ public class QuestMapController : MonoBehaviour
     private RectTransform _rTransform;
     private Quest _questData;
     private List<QuestIsland> _islands;
-    private RuntimeQuestData _currentQuestData;
 
     private void Awake()
     {
@@ -36,7 +32,6 @@ public class QuestMapController : MonoBehaviour
 
     private void OnEnable()
     {
-        _currentQuestData = null;
         _focusedIslandMenu.gameObject.SetActive(false);
         transform.localScale = Vector3.one;
         GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
@@ -58,28 +53,10 @@ public class QuestMapController : MonoBehaviour
         if (_transitionTimeLeft <= 0) FinishTransition();
     }
 
-    public void UpdateIslands(RuntimeQuestData questData)
-    {
-        var selected = _islands.Where(x => x.QuestData == questData.QuestData).FirstOrDefault();
-        if (selected == default) {
-            _currentQuestData = null;
-            return;
-        }
-
-        _currentQuestData = questData;
-        selected.DisplayTimer(questData.GetTimeLeftString());
-        foreach (var i in _islands) if (i != selected) i.SetDisabled(true);
-
-        var boatPercent = Mathf.Clamp01(questData.percentDone()) * 0.7f;
-        _boat.anchoredPosition = Vector2.Lerp(_boatStartPos.anchoredPosition, selected.GetComponent<RectTransform>().anchoredPosition, boatPercent);
-
-    }
-
     private void FinishTransition()
     {
         if (transform.localScale.x > 1) {
-            if (_currentQuestData == null) _focusedIslandMenu.gameObject.SetActive(true);
-            else _inProgressIslandMenu.gameObject.SetActive(true);
+            _focusedIslandMenu.gameObject.SetActive(true);
         }
         transform.localScale = _targetScale * Vector3.one;
         _rTransform.anchoredPosition = _targetPosition;
@@ -90,8 +67,7 @@ public class QuestMapController : MonoBehaviour
         _questData = questData;
         _currentlyFocusedIsland = islandButton;
 
-        if (_currentQuestData != null && questData == _currentQuestData.QuestData) _inProgressIslandMenu.Initialize(_currentQuestData, _currentlyFocusedIsland.GetComponent<QuestIsland>());
-        else _focusedIslandMenu.Initialize(questData);
+        _focusedIslandMenu.Initialize(questData);
 
         ZoomIn(islandButton.GetComponent<RectTransform>());
     }
@@ -112,7 +88,6 @@ public class QuestMapController : MonoBehaviour
             _currentlyFocusedIsland = null;
         }
 
-        _inProgressIslandMenu.gameObject.SetActive(false);
         _focusedIslandMenu.gameObject.SetActive(false);
 
         _mapButton.SetActive(true);
