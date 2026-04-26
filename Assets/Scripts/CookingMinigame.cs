@@ -10,7 +10,7 @@ public class CookingMinigame : MinigameController
     [SerializeField] private RecipeSelector _recipeSelector;
     [SerializeField] private RestrauntController _areaController;
     [SerializeField] private SubgameController _subgameController;
-    [SerializeField] private GameObject _startButton;
+    //[SerializeField] private GameObject _startButton;
     [SerializeField] private GameObject _backButton;
 
     [Header("Subgames")]
@@ -49,13 +49,14 @@ public class CookingMinigame : MinigameController
         _solvingProblem = false;
 
         _backButton.SetActive(true);
-        _startButton.SetActive(true);
+        //_startButton.SetActive(true);
+        OpenCharacterSelect();
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.P)) {
-            _startButton.SetActive(false);
+            //_startButton.SetActive(false);
             _backButton.SetActive(false);
             SelectPrimaryCharacter(_testID);
             SelectRecipient(new ID(2216));
@@ -76,7 +77,7 @@ public class CookingMinigame : MinigameController
     {
         gameObject.SetActive(true);
 
-        _startButton.SetActive(false);
+        //_startButton.SetActive(false);
         _backButton.SetActive(false);
 
         _solvingProblem = true;
@@ -99,14 +100,15 @@ public class CookingMinigame : MinigameController
         if (_spawnedCharacter) Destroy(_spawnedCharacter.gameObject);
 
         _subgameController.gameObject.SetActive(false);
-        _startButton.SetActive(true);
+        //_startButton.SetActive(true);
         _backButton.SetActive(true);
+        OpenCharacterSelect();
     }
 
     public void OpenCharacterSelect()
     {
-        _backButton.SetActive(false);
-        _startButton.SetActive(false);
+        //_backButton.SetActive(false);
+        //_startButton.SetActive(false);
         _characterSelectScreen.SetActive(true);
     }
 
@@ -139,6 +141,8 @@ public class CookingMinigame : MinigameController
 
     public void StartCooking(RecipeData recipe)
     {
+        _backButton.SetActive(false);
+
         _recipeSelector.gameObject.SetActive(false);
 
         _subgameController.StartMinigame(recipe, _selectedCharacter, _selectedRecipient, _solvingProblem);
