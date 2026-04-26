@@ -28,7 +28,7 @@ public class LockScale : MonoBehaviour
 
         if (scale.x != Mathf.Infinity) {
             //print("Setting scale of " + name + " to " + _scale);
-            if (_lossy) transform.SetLossyScale(scale);
+            if (_lossy && transform.lossyScale.x > 0) transform.SetLossyScale(scale);
             else transform.localScale = scale;
         }
 
