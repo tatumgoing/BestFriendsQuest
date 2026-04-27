@@ -44,6 +44,12 @@ public class BFQResultsScreen : MonoBehaviour
         var roll = Random.Range(0, 1f);
         _success = roll < questData.SuccessChance();
 
+        if (_success) {
+            TownGameManager.i.UnlockItem(questData.QuestData.unlockedItem);
+            CharacterManager.i.IncreaseRelationship(questData.Character1, questData.Character2, questData.QuestData.relationshipGain);
+        }
+        
+
         _title.text = _success ? _titleSuccess : _titleFail;
         _bottomDescriptionText.text = _success ? _bottomDescriptionTemplateSuccess : _bottomDescriptionTemplateFail;
         _deltaRelationshipText.text = "Relationship " + (_success ? " increased" : " decreased");

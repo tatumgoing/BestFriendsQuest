@@ -16,7 +16,7 @@ public class ItemData : ScriptableObject
     public string Name;
     [TextArea(3,10)] public string Description;
     public float Cost;
-    public bool unlocked; //INVESTIGATE
+    public bool StartUnlocked; //INVESTIGATE
 
     [Space()]
     public ItemType Type;

@@ -7,6 +7,19 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+[System.Serializable]
+public class RuntimeItemData
+{
+    public ItemData Item;
+    public bool Unlocked;
+
+    public RuntimeItemData(ItemData itemData)
+    {
+        Item = itemData;
+        Unlocked = Item.StartUnlocked;
+    }
+}
+
 public class TownGameManager : MonoBehaviour
 {
     public static TownGameManager i;
@@ -28,11 +41,11 @@ public class TownGameManager : MonoBehaviour
     [SerializeField, Min(0)] private float _currency;
     [SerializeField] private GameObject _mapStartBacking;
 
-    [SerializeField] private Dictionary<ItemData, int> _inventory = new Dictionary<ItemData, int>();
+    private Dictionary<ItemData, int> _inventory = new Dictionary<ItemData, int>();
+    private List<RuntimeItemData> _runtimeItemData = new List<RuntimeItemData>();
 
     public Dictionary<ItemData, int> Inventory => _inventory;
     public float Currency => _currency;
-    public List<ItemData> GetAllItems() => _allItems;
     public ItemData GetItemByID(ID id) => _allItems.Where(x => x.ID == id).FirstOrDefault();
 
     private void OnValidate()
@@ -57,6 +70,8 @@ public class TownGameManager : MonoBehaviour
                 Debug.LogError("Duplicate ID found for item " + i.Name + " and " + itemIDs[i.ID].Name + ". This will cause problems with saving/loading inventory. Please regenerate the ID of one of these items.");
             }
             itemIDs[i.ID] = i;
+
+            _runtimeItemData.Add(new RuntimeItemData(i));
         }
 
         LoadInventory();
@@ -95,6 +110,20 @@ public class TownGameManager : MonoBehaviour
             if (!_invParent.activeInHierarchy) _invParent.SetActive(true);
             else _invParent.SetActive(false);
         }
+    }
+
+    public void UnlockItem(ItemData item)
+    {
+        for (int i = 0; i < _runtimeItemData.Count; i++) {
+            if (_runtimeItemData[i].Item == item) _runtimeItemData[i].Unlocked = true;
+        }
+        print("Unlocked: " + item);
+    }
+
+    public List<ItemData> GetAllItems(bool unlockedOnly)
+    {
+        if (!unlockedOnly) return _allItems;
+        else return _runtimeItemData.Where(x => x.Unlocked).Select(x => x.Item).ToList();
     }
 
     public int GetNumberOwned(ItemData item)
@@ -298,12 +327,12 @@ public class TownGameManager : MonoBehaviour
             if (i.Type == type)
             {
                 //if held
-                if (_inventory.ContainsKey(i) && _inventory[i] != 0 && i.unlocked)
+                if (_inventory.ContainsKey(i) && _inventory[i] != 0 && i.StartUnlocked)
                 {
                     rManager.CreateHeldItem(i, _inventory[i], i.Cost);
                 }
                 //if previously held, but count = 0
-                else if (i.unlocked)
+                else if (i.StartUnlocked)
                 {
                     rManager.CreateUnheldItem(i, 0, i.Cost);
                 }                
