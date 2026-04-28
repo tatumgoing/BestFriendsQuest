@@ -7,6 +7,15 @@ public class NeighborhoodCamera : MonoBehaviour
 {
     [SerializeField] private Transform _camera;
 
+    [Header("Scrolling version")]
+    [SerializeField] private bool _scrollMode;
+    [SerializeField] private float _minPos;
+    [SerializeField] private float _maxPos;
+    [SerializeField] private float _scrollSpeed = 10;
+    [SerializeField] private float _scrollLerpFactor = 10;
+    private float _current;
+    private float _scrollDelta;
+
     [Header("Rotation")]
     [SerializeField] private float _rotationSpeed = 1f;
     [SerializeField] private float _rotationFriction = 10;
@@ -36,6 +45,20 @@ public class NeighborhoodCamera : MonoBehaviour
 
     void Update()
     {
+        if (_scrollMode) {
+
+            var targetDelta = Input.mouseScrollDelta.y;
+
+            if (transform.localPosition.z + targetDelta < _minPos && targetDelta < 0) targetDelta = 0;
+            if (transform.localPosition.z + targetDelta > _maxPos && targetDelta > 0) targetDelta = 0;
+
+            _scrollDelta = Mathf.Lerp(_scrollDelta, targetDelta, _scrollLerpFactor * Time.deltaTime);
+
+            transform.position += Vector3.forward * _scrollDelta * _scrollSpeed * Time.deltaTime;
+
+            return;
+        }
+
         Rot();
         Zoom();
         Tilt();
