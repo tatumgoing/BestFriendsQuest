@@ -64,6 +64,7 @@ public class CharacterManager : MonoBehaviour
         characterData.AddToInventory(item);
     }
 
+    public Color GetClothingColor(ID id) => GetClothingColor(GetFavoriteColor(id));
     public Color GetClothingColor(FavoriteColor color)
     {
         var data = _clothingColors.Find(c => c.Color == color);

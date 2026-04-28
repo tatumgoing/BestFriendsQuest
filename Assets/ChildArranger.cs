@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ChildArranger : MonoBehaviour
 {
-    [SerializeField] private Vector2 _offset;
+    [SerializeField] private Vector3 _offset = new Vector3(35, 50, 0);
     [SerializeField] private int _numRows;
 
     [ButtonMethod]
@@ -22,8 +22,8 @@ public class ChildArranger : MonoBehaviour
 
             child.localPosition = new Vector3(
                 _offset.x * x,
-                0,
-                _offset.y * y
+                _offset.y * y,
+                _offset.z * y
             );
 
             Utils.SetDirty(child);

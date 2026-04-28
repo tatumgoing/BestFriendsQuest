@@ -23,6 +23,7 @@ public class CookingMinigame : MinigameController
 
     //===TESTING===
     [Header("TESTING")]
+    [SerializeField] private ItemData _chefHat;
     [SerializeField] private List<RecipeData> _recipes;
     [SerializeField] private ID _testID = new ID(8126);
     [SerializeField, DisplayInspector] private RecipeData _testRecipe;
@@ -125,6 +126,7 @@ public class CookingMinigame : MinigameController
         //replace bc prev screen is spawning character
         _areaController.DestroySpawnedCharacter();
         _spawnedCharacter = _areaController.SpawnCharacter(_selectedCharacter);
+        _spawnedCharacter.GetComponent<SpawnedCharacter>().SetHat(_chefHat);
     }
 
     public override void SelectRecipient(ID id)

@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Threading.Tasks;
 using System.Linq;
+using Unity.VisualScripting;
 
 public enum CharacterAnimations { Grilling, Standing, Sitting, SittingGround, Walking, Spawn };
 
@@ -65,6 +66,8 @@ public class SpawnedCharacter : MonoBehaviour
     private float _growTimer;
     private float _growRate;
 
+    private List<ClothingItemData> _nonHats => _clothingItems.Where(x => !x.Items.Where(y => y.ClothingType == ClothingType.HAT).Any()).ToList();
+
     private void OnValidate()
     {
         foreach (var item in _clothingItems) item.OnValidate();
@@ -85,6 +88,16 @@ public class SpawnedCharacter : MonoBehaviour
         if (!_disableLookAt) UpdateLookAt();
     }
 
+    public void SetHat(ItemData hat)
+    {
+        foreach(var item in _clothingItems) {
+            bool isHat = item.Items.Where(x => x.ClothingType == ClothingType.HAT).ToList().Count() > 0;
+            if (isHat) {
+                item.SetState(item.Items.Contains(hat));
+            }
+        }
+    }
+
     public void RandomMannequinPose()
     {
         int numPoses = 4;
@@ -94,7 +107,7 @@ public class SpawnedCharacter : MonoBehaviour
 
     private void LoadRandomClothing()
     {
-        var inventory = CharacterManager.i.GetInventory(ID).Where(x => x.Type == ItemType.Clothing).ToList();
+        var inventory = CharacterManager.i.GetInventory(ID).Where(x => x.Type == ItemType.Clothing && x.ClothingType != ClothingType.HAT).ToList();
         if (inventory.Count == 0) ShowClothingItem(_defaultClothing);
         else {
             var selected = inventory[Random.Range(0, inventory.Count)];
@@ -118,13 +131,13 @@ public class SpawnedCharacter : MonoBehaviour
 
     private void ShowClothingItem(List<ItemData> items)
     {
-        foreach (var clothingItem in _clothingItems) clothingItem.SetState(false);
+        foreach (var clothingItem in _nonHats) clothingItem.SetState(false);
         foreach (var item in items) ShowClothingItem(item, false);
     }
 
     public void ShowClothingItem(ItemData item, bool disableOthers = true)
     {
-        if (disableOthers) foreach(var clothingItem in _clothingItems) clothingItem.SetState(false);
+        if (disableOthers) foreach(var clothingItem in _nonHats) clothingItem.SetState(false);
         foreach (var clothingItem in _clothingItems) {
             if (clothingItem.Items.Contains(item)) {
                 clothingItem.SetState(true);
