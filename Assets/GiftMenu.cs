@@ -9,6 +9,7 @@ public class GiftMenu : MonoBehaviour, IItemListController
     [SerializeField] private TextMeshProUGUI _title;
     [SerializeField] private ItemListDisplay _itemListDisplay;
     [SerializeField] private CurrentlySelectedItem _currentlySelectedItem;
+    [SerializeField] private RoomUIController _controller;
 
     private ItemData _currentItem;
     private ID _id;
@@ -41,6 +42,7 @@ public class GiftMenu : MonoBehaviour, IItemListController
         TownGameManager.i.SubtractInventory(_currentItem);
         gameObject.SetActive(false);
         CharacterManager.i.GiveItem(_id, _currentItem);
+        _controller.ShowCurrent();
     }
 
     private void ChangeCategory(ItemType type)

@@ -24,6 +24,19 @@ public class DynamicCharacterData
     {
         _inventory.Add(item);
         SaveToFile();
+
+        if (CurrentProblem != null) {
+            if (CurrentProblem.Type == ProblemType.SINGLE_ITEM) {
+                if (CurrentProblem.SingleItem == item) {
+                    SolveProblem();
+                }
+            }
+            else if (CurrentProblem.Type == ProblemType.GENERAL_ITEM) {
+                if (CurrentProblem.GeneralItems.Items.Contains(item)) {
+                    SolveProblem();
+                }
+            }
+        }
     }
 
     public string GetInventoryString()
