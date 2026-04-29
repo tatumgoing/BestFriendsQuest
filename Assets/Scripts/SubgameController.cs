@@ -155,7 +155,8 @@ public class SubgameController : MonoBehaviour
             //add a new highscore banner later
         }
 
-        //print("Showing results");
+        CharacterManager.i.IncreaseHappiness(_recipient, _totalScore * _currentRecipe.HappinessReward);
+
         _timerParent.SetActive(false);
         await _results.ShowScore(_totalScore, _currentRecipe, _character, _recipient, _isProblem);
     }
