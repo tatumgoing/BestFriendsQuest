@@ -10,6 +10,7 @@ public class SubgameSceneData
     public SubgameType Type;
     public int Index;
     [SerializeField] private GameObject _camera;
+    [SerializeField] private Transform _characterLookTarget;
     [SerializeField] private List<GameObject> _toEnable;
     [SerializeField] private Transform _characterPos;
     [SerializeField] private CharacterAnimations _animation;
@@ -33,7 +34,7 @@ public class SubgameSceneData
         character.transform.position = _characterPos.position;
         character.transform.eulerAngles = _characterPos.eulerAngles;
         character.AnimateFromEnum(_animation);
-        character.CharacterLookAt(_camera.transform, true);
+        character.CharacterLookAt(_characterLookTarget, true);
     }
 }
 

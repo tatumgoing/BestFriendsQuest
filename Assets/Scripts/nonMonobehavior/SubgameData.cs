@@ -6,6 +6,7 @@ public enum SubgameType { SITRRING, GRILLING, CHOPPING, BOILING }
 [System.Serializable]
 public class SubgameData
 {
+    public string IngredientName;
     public float TimeLimit;
     public float TargetTime;
     public int Countdown = 3;

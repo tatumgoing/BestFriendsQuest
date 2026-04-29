@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c17faabe39186a64d856127d979a6d9d, type: 3}
   m_Name: Donut2
   m_EditorClassIdentifier: 
-  Name: Donut TWO
+  Name: Test Donut
+  Description: A testing recipe where we make a donut completely out of chopped veggies
   Icon: {fileID: 21300000, guid: ce662e69cad946747b93e205b08abea9, type: 3}
   MaxScore: 50
   MoneyReward: 300
@@ -20,7 +21,8 @@ MonoBehaviour:
   RelationshipReward: 1.3
   Difficulty: 0
   Subgames:
-  - TimeLimit: 25
+  - IngredientName: veggies
+    TimeLimit: 25
     TargetTime: 1
     Countdown: 3
     Type: 2
@@ -38,7 +40,8 @@ MonoBehaviour:
     BoilDeccSpeed: 2
     BoilTargetPosition: 300
     BoilTargetScale: 1
-  - TimeLimit: 20
+  - IngredientName: more veggies
+    TimeLimit: 20
     TargetTime: 3
     Countdown: 3
     Type: 2
@@ -56,7 +59,8 @@ MonoBehaviour:
     BoilDeccSpeed: 2
     BoilTargetPosition: 300
     BoilTargetScale: 1
-  - TimeLimit: 20
+  - IngredientName: the veggies
+    TimeLimit: 20
     TargetTime: 3
     Countdown: 3
     Type: 0

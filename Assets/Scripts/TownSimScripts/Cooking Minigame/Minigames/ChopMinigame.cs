@@ -56,6 +56,8 @@ public class ChopMinigame : Subgame
     {
         base.Initialize();
 
+        ShowCam(0);
+
         chopSFX = Instantiate(chopSFX);
         wrongSFX = Instantiate(wrongSFX);
 
@@ -63,6 +65,11 @@ public class ChopMinigame : Subgame
 
         //called just one, like 'start' but for subgame
         //for example, instnaitating your sound objects
+    }
+
+    private void OnDisable()
+    {
+        ResetCam();
     }
 
     public void Chop()
