@@ -69,7 +69,7 @@ public class ShopUIController : MonoBehaviour, IItemListController
         _purchaseButton.gameObject.SetActive(true);
         UpdatePurchaseButton();
 
-        _areaController.DisplayItem(item);
+        _areaController?.DisplayItem(item);
     }
 
     private void UpdatePurchaseButton()
