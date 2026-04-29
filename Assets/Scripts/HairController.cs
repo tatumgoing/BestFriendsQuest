@@ -79,7 +79,10 @@ public class HairController : MonoBehaviour, IFeatureController
         foreach (var f in _allOptions) if (f.name == parts[0]) selected = f;
 
         //foreach (var f in _allOptions) if (f.Icon.name != parts[0]) print("|" + f.Icon.name + " != " + parts[0]);
-        //if (selected == null) print("couln't find " + parts[0] + " feature. count: " + _allFeatures.Count);
+        if (selected == null) {
+            print("couln't find " + parts[0] + " feature. count: " + _allOptions.Count);
+            return;
+        }
 
         var newFeature = AddFeature(selected);
         newFeature.ConfigureFromString(parts[1]);

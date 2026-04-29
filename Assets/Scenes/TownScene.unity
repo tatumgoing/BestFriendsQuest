@@ -7534,7 +7534,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &573816291
 RectTransform:
   m_ObjectHideFlags: 0
@@ -15020,8 +15020,9 @@ GameObject:
   m_Component:
   - component: {fileID: 758261002}
   - component: {fileID: 758261003}
+  - component: {fileID: 758261004}
   m_Layer: 0
-  m_Name: RotatingParkCamera
+  m_Name: parkFreecam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15036,7 +15037,7 @@ Transform:
   m_GameObject: {fileID: 758261001}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -212.1, y: -170.5, z: 125.8}
+  m_LocalPosition: {x: -212.1, y: -180.9, z: 125.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -15050,13 +15051,35 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 758261001}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0d30f861cbe6c614abed538fc678bdf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _topSpeed: 4
   _lerpFactor: 5
+--- !u!114 &758261004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 758261001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 860b080c80542664f9999c6cbcf6e67b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _leashCenter: {fileID: 1176352779}
+  _cam: {fileID: 1877831785}
+  _fovSpeed: -250
+  _fovLerpFactor: 10
+  _fovLimits: {x: 60, y: 40}
+  _maxDist: 45
+  _moveSpeed: 30
+  _moveLerpFactor: 10
+  _rotSpeed: 50
+  _rotLerpFactor: 10
 --- !u!1 &763165114
 GameObject:
   m_ObjectHideFlags: 0
@@ -15797,7 +15820,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: -20.5981}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &788212274
 MonoBehaviour:
@@ -15861,7 +15884,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 13750ad4cbb372343a0f60ff16aa070c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ef7f8b51ec14e9545aeb2b6dadb6be3e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -18638,9 +18661,9 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 1.4
-  far clip plane: 3000
-  field of view: 39.6
+  near clip plane: 10
+  far clip plane: 1000
+  field of view: 60.000004
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -18666,8 +18689,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0.008019702, w: 0.9999679}
-  m_LocalPosition: {x: 332.45926, y: 226.95982, z: -352.1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 115.69928, y: 3.6250763, z: 127.634026}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -20645,6 +20668,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1166225553}
   m_CullTransparentMesh: 1
+--- !u!1 &1176352778
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1176352779}
+  m_Layer: 0
+  m_Name: camLeashCenter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1176352779
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1176352778}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -212.1, y: -170.5, z: 125.8}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2074531007}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1182915069
 GameObject:
   m_ObjectHideFlags: 0
@@ -24056,7 +24110,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1347480912
 Transform:
   m_ObjectHideFlags: 0
@@ -28151,8 +28205,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -615.90576, y: -446.8107}
-  m_SizeDelta: {x: 608.1885, y: 108.9947}
+  m_AnchoredPosition: {x: -722.96533, y: -458}
+  m_SizeDelta: {x: 394.0693, y: 108.9947}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1656491613
 GameObject:
@@ -32712,14 +32766,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1877831783}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.20197447, y: -0, z: -0, w: 0.9793908}
-  m_LocalPosition: {x: 8.300003, y: 0, z: -32.9}
+  m_LocalRotation: {x: 0.22461088, y: 0, z: 0, w: 0.97444856}
+  m_LocalPosition: {x: 0, y: 9.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1565529885}
   m_Father: {fileID: 758261002}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 25.96, y: 0, z: 0}
 --- !u!114 &1877831785
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32743,7 +32797,7 @@ MonoBehaviour:
   m_Lens:
     FieldOfView: 60.000004
     OrthographicSize: 5
-    NearClipPlane: 10
+    NearClipPlane: 1
     FarClipPlane: 1000
     Dutch: 0
     ModeOverride: 0
@@ -33239,7 +33293,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Left click and drag to spin
+  m_text: WASD to move
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8c1d22a4556e6bf4b9d59df255fe692c, type: 2}
   m_sharedMaterial: {fileID: 152713942140518569, guid: 8c1d22a4556e6bf4b9d59df255fe692c, type: 2}
@@ -36816,6 +36870,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 398018749}
+  - {fileID: 1176352779}
   - {fileID: 758261002}
   - {fileID: 2146585710}
   - {fileID: 155243487}
@@ -41328,7 +41383,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6999810708835054120, guid: cdb93d67ea85c9147930fe7d18ad6843, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8678956926134374028, guid: cdb93d67ea85c9147930fe7d18ad6843, type: 3}
       propertyPath: m_Pivot.x
