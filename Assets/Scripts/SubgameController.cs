@@ -156,6 +156,9 @@ public class SubgameController : MonoBehaviour
         }
 
         CharacterManager.i.IncreaseHappiness(_recipient, _totalScore * _currentRecipe.HappinessReward);
+        if (_character != _recipient) {
+            CharacterManager.i.IncreaseRelationship(_character, _recipient, _currentRecipe.RelationshipReward * _totalScore);
+        }
 
         _timerParent.SetActive(false);
         await _results.ShowScore(_totalScore, _currentRecipe, _character, _recipient, _isProblem);

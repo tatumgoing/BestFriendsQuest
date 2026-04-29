@@ -17,6 +17,7 @@ public class RecipeData : ScriptableObject
     public float MaxScore;
     public int MoneyReward;
     public float HappinessReward = 30;
+    public float RelationshipReward = 1.5f;
 
     public Difficulty Difficulty;
 
