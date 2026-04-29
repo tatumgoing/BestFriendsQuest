@@ -58,7 +58,7 @@ public class QuestCharacterSelector : MonoBehaviour
         foreach (var button in _spawnedButtons) Destroy(button.gameObject);
         _spawnedButtons.Clear();
 
-        var characters = CharacterManager.i.AllIDs();
+        var characters = CharacterManager.i.AllIDs();//.Where(x => CharacterManager.i.GetHappiness(x) >= 99f).ToList();
 
         if (_rightTextParent.activeInHierarchy) {
             characters = characters.Where(x => x!= _alreadySelected).ToList();
@@ -69,6 +69,7 @@ public class QuestCharacterSelector : MonoBehaviour
         }
 
         foreach (var c in characters) {
+            //print(CharacterManager.i.GetNameFormatted(c) + " happiness: " + CharacterManager.i.GetHappiness(c));
             var b = Instantiate(_buttonPrefab, _gridParent).GetComponent<QuestCharacterButton>();
             b.Initialize(c, this);
             _spawnedButtons.Add(b);

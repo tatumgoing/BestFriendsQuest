@@ -23,6 +23,8 @@ public class QuestCharacterButton : MonoBehaviour
         _id = id;
         _controller = controller;
         _sprite.sprite = CharacterManager.i.GetPortrait(id);
+
+        _button.SetDisabled(CharacterManager.i.GetHappiness(id) < 100);
     }
 
     public void Select()
