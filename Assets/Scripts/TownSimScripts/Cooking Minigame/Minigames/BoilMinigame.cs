@@ -48,6 +48,8 @@ public class BoilMinigame : Subgame
     {
         base.StartSubgame(data);
 
+        ShowCam(0);
+
         iconPosX = sliderIcon.GetComponent<RectTransform>().anchoredPosition.x;
         iconPosY = sliderIcon.GetComponent<RectTransform>().anchoredPosition.y;
 
@@ -78,13 +80,13 @@ public class BoilMinigame : Subgame
 
         boilNormal = Instantiate(boilNormal);
         boilLoud = Instantiate(boilLoud);
-
     }
 
     private void OnDisable()
     {
         boilNormal.Stop();
         boilLoud.Stop();
+        ResetCam();
     }
 
     public void CheckSpeed()

@@ -53,12 +53,15 @@ public class StirMinigame : Subgame
     {
         base.Initialize();
 
+        ShowCam(0);
+
         _stirringSFX = Instantiate(_stirringSFX);
     }
 
     private void OnDisable()
     {
         _stirringSFX.Stop();
+        ResetCam();
     }
 
     private void ChangeSpeed()

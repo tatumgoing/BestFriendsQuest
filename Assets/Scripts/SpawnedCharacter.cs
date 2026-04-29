@@ -163,9 +163,13 @@ public class SpawnedCharacter : MonoBehaviour
         LoadRandomClothing();
     }
 
-    public void CharacterLookAt(Transform target)
+    public void CharacterLookAt(Transform target, bool snapTo = false)
     {
         _lookAtTarget = target;
+        if (snapTo) {
+            Quaternion targetRotation = Quaternion.LookRotation(_lookAtTarget.position - head.position);
+            head.rotation = targetRotation;
+        }
     }
 
     public void UpdateLookAt()

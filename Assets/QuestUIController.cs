@@ -34,6 +34,9 @@ public class QuestUIController : MonoBehaviour
     {
         _areaController.gameObject.SetActive(false);
         _results.ShowResults(_currentQuest);
+
+        CharacterManager.i.IncreaseHappiness(_currentQuest.Character1, -100);
+        CharacterManager.i.IncreaseHappiness(_currentQuest.Character2, -100);
     }
 
     public void ResetQuest()

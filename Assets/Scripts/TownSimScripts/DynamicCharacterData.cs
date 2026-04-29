@@ -4,24 +4,39 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Linq;
-using Unity.VisualScripting.FullSerializer;
 using System.Threading.Tasks;
+using System;
+using MyBox;
 
 [System.Serializable]
 public class DynamicCharacterData 
 {
-    [Range(0,100) ]public float Happiness = 50;
+    [Range(0,100), SerializeField, ReadOnly] private float _happiness = 50;
     public ProblemData CurrentProblem;
     private List<ItemData> _inventory = new List<ItemData>(); 
      
     [HideInInspector] public ID ID { get; private set; }
 
     public List<ItemData> Inventory => _inventory;
+    public float Happiness => _happiness;   
 
     public void AddToInventory(ItemData item)
     {
         _inventory.Add(item);
         SaveToFile();
+
+        if (CurrentProblem != null) {
+            if (CurrentProblem.Type == ProblemType.SINGLE_ITEM) {
+                if (CurrentProblem.SingleItem == item) {
+                    SolveProblem();
+                }
+            }
+            else if (CurrentProblem.Type == ProblemType.GENERAL_ITEM) {
+                if (CurrentProblem.GeneralItems.Items.Contains(item)) {
+                    SolveProblem();
+                }
+            }
+        }
     }
 
     public string GetInventoryString()
@@ -54,9 +69,10 @@ public class DynamicCharacterData
     public void SaveToFile(ID ID)
     {
         var invString = Inventory.Count > 0 ? string.Join(",", Inventory.Select(item => item.ID)) : "";
-        //Debug.Log("Saving to file: " + ID + "~" + Happiness.ToString() + "~" + invString);
-        var resultString = ID + "~" + Happiness.ToString() + "~" + invString;
+        var resultString = ID + "~" + _happiness.ToString() + "~" + invString;
         SaveSystem.SaveDynamicData(resultString);
+
+        //Debug.Log("saved dynamic data. happiness: " + _happiness);
     }
     private void SaveToFile() => SaveToFile(ID);
 
@@ -70,7 +86,6 @@ public class DynamicCharacterData
             if (s.Split('~')[0] == ID) _ = LoadFromString(s);
         }
 
-        SaveToFile(ID);
         this.ID = ID;
     }
 
@@ -82,14 +97,13 @@ public class DynamicCharacterData
     /// </summary>
     private async Task LoadFromString(string saveString)
     {
-        //Debug.Log("Loading from file. dynamic saveString: " + saveString);
-
         await Task.Delay(100);
 
         var parts = saveString.Split("~");
         if (parts.Length < 2) return;
 
-        Happiness = float.Parse(parts[1]);
+        _happiness = float.Parse(parts[1]);
+        //Debug.Log("Loaded happiness for " + CharacterManager.i.GetNameFormatted(ID) + ": " + _happiness);
         if (parts.Length < 3) return;
 
         var itemIDs = parts[2].Split(',');
@@ -113,8 +127,8 @@ public class DynamicCharacterData
     /// </summary>
     public DynamicCharacterData() {}
 
-    public void UpdateHappiness(float newHappiness) {
-        Happiness= Mathf.Clamp(Happiness + newHappiness, 0f, 100f);
+    public void IncreaseHappiness(float newHappiness) {
+        _happiness= Mathf.Clamp(_happiness + newHappiness, 0f, 100f);
         SaveToFile();
     }
 }

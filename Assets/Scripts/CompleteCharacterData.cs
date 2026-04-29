@@ -47,12 +47,11 @@ public class CompleteCharacterData
 
     //Happiness
     public float Happiness => _dynamicData.Happiness;
-    public void SetHappiness(float newHappiness) => _dynamicData.Happiness = newHappiness;
-    public void IncreaseHappiness(float newHappiness)
-    {
-        _dynamicData.Happiness += newHappiness;
-        _dynamicData.Happiness = Mathf.Clamp(_dynamicData.Happiness, 0, 100);
+    public void SetHappiness(float newHappiness) {
+        _dynamicData.IncreaseHappiness(-100);
+        _dynamicData.IncreaseHappiness(newHappiness);
     }
+    public void IncreaseHappiness(float newHappiness) => _dynamicData.IncreaseHappiness(newHappiness);
 
     //Inventory
     public List<ItemData> Inventory => _dynamicData.Inventory;

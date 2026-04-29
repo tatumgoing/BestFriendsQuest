@@ -1,5 +1,6 @@
 using MyBox;
 using System.Collections.Generic;
+using System.ComponentModel.Design.Serialization;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -35,17 +36,20 @@ public class CharacterManager : MonoBehaviour
         //TESTING:
         foreach (var characterA in _allCharacters) {
             foreach (var characterB in _allCharacters) {
-                if (characterA != characterB) _relationships.Add(new RelationshipData(characterA.ID, characterB.ID));
+                if (characterA != characterB) {
+                    var loadedValue = SaveSystem.LoadRelationship(characterA.ID, characterB.ID);
+                    _relationships.Add(new RelationshipData(characterA.ID, characterB.ID, loadedValue));
+                }
             }
         }
-        RandomizeRelationships();
+        //RandomizeRelationships();
 
         GenerateProblem();
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.L)) RandomizeRelationships(); //TESTING
+        //if (Input.GetKeyDown(KeyCode.L)) RandomizeRelationships(); //TESTING
 
         var problemRatio = (float)numCharactersWithProblems() / _allCharacters.Count;
         if (problemRatio < _maxProblemPercent) GenerateProblem();
@@ -142,12 +146,14 @@ public class CharacterManager : MonoBehaviour
         _allProblems = Resources.LoadAll<ProblemData>("Problems").ToList();
     }
 
+
     [ButtonMethod]
     public void RandomizeRelationships()
     {
         print("Randoming all relationships (for testing)");
         for (int i = 0; i < _relationships.Count; i++) {
             _relationships[i].Value = Random.Range(0, 10f);
+            SaveRelationship(_relationships[i]);
         }
     }
 
@@ -302,6 +308,16 @@ public class CharacterManager : MonoBehaviour
         }
 
         _relationships.Add(new RelationshipData(id1, id2, increase));
+
+        SaveRelationship(id1, id2, GetRelationship(id1, id2));
+    }
+
+    private void SaveRelationship(RelationshipData data) => SaveRelationship(data.ID1, data.ID2, data.Value);
+    private void SaveRelationship(ID id1, ID id2, float value)
+    {
+        var firstId = Mathf.Max(id1, id2);
+        var secondID = Mathf.Min(id1, id2);
+        SaveSystem.SaveRelationship(new ID(firstId), new ID(secondID), value);
     }
 
     /// <summary>
