@@ -113,9 +113,7 @@ public class CookingMinigame : MinigameController
 
         _recipientSelectScreen.SelectPreviousPrimary(id);
 
-        //replace bc prev screen is spawning character
-        _areaController.DestroySpawnedCharacter();
-        _spawnedCharacter = _areaController.SpawnCharacter(_selectedCharacter);
+        _spawnedCharacter = _areaController.SpawnedCharacter.gameObject;
         _spawnedCharacter.GetComponent<SpawnedCharacter>().SetHat(_chefHat);
     }
 

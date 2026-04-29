@@ -29,6 +29,7 @@ public class SubgameController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _timerText;
     [SerializeField] private Image _timerFillImage;
     [SerializeField] private Slider _slider;
+    [SerializeField] private RestrauntController _areaController;
 
 
     private float _totalTime;
@@ -44,6 +45,7 @@ public class SubgameController : MonoBehaviour
     private ID _recipient;
     private bool _isProblem;
 
+    public RestrauntController AreaController => _areaController;
     private SubgameData _currentSubgameData => _currentRecipe.Subgames[_subgameIndex];
     public float TimeLeftPercent => _timeLeft/_totalTime;
     public void UpdateSlider(float targetPercent)
