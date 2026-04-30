@@ -20,6 +20,7 @@ public class SubgameController : MonoBehaviour
     [SerializeField] private SubgameCountdownController _countdownTimer;
     [SerializeField] private CompletionText _completionText;
     [SerializeField] private MinigameResultsScreen _results;
+    [SerializeField] private SubgameInstructions _instructions;
 
     [Header("Sounds")]
     [SerializeField] private Sound _tickSound;
@@ -135,12 +136,17 @@ public class SubgameController : MonoBehaviour
         foreach (var o in _options) {
             if (o.Type == _currentSubgameData.Type) {
                 _currentSubgame = o.Subgame;
-                _countdownTimer.StartCountdown(_currentSubgameData.Type, _currentSubgameData.Countdown);
+                _instructions.Show(_currentSubgameData.Type);
             }
             else {
                 o.Subgame.gameObject.SetActive(false);
             }
         }
+    }
+
+    public void StartCountdown()
+    {
+        _countdownTimer.StartCountdown(_currentSubgameData.Type, _currentSubgameData.Countdown);
     }
 
     private async void ShowResults()

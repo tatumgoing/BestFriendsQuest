@@ -45,6 +45,7 @@ public class StirMinigame : Subgame
     {
         base.StartSubgame(data);
 
+        ShowCam(0);
         _stirringSFX.PlaySilent();
         ChangeSpeed();
     }
@@ -52,8 +53,6 @@ public class StirMinigame : Subgame
     protected override void Initialize()
     {
         base.Initialize();
-
-        ShowCam(0);
 
         _stirringSFX = Instantiate(_stirringSFX);
     }

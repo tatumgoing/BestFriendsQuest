@@ -34,8 +34,9 @@ public class ChopMinigame : Subgame
 
     public override void StartSubgame(SubgameData data)
     {
-
         base.StartSubgame(data);
+
+        ShowCam(0);
 
         iconPosX = sliderIcon.GetComponent<RectTransform>().anchoredPosition.x;
         iconPosY = sliderIcon.GetComponent<RectTransform>().anchoredPosition.y;
@@ -56,7 +57,6 @@ public class ChopMinigame : Subgame
     {
         base.Initialize();
 
-        ShowCam(0);
 
         chopSFX = Instantiate(chopSFX);
         wrongSFX = Instantiate(wrongSFX);
