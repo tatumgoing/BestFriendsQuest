@@ -2499,6 +2499,7 @@ Transform:
   - {fileID: 1311164668}
   - {fileID: 1053188650}
   - {fileID: 879565581}
+  - {fileID: 738897720}
   - {fileID: 221880496}
   m_Father: {fileID: 2074531007}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -18473,6 +18474,53 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!1 &738897719
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 738897720}
+  - component: {fileID: 738897721}
+  m_Layer: 0
+  m_Name: characterSpawn_Grilling (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &738897720
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 738897719}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.9958262, z: -0, w: -0.09127}
+  m_LocalPosition: {x: 1.76, y: -0.025, z: 15.76}
+  m_LocalScale: {x: 0.49619, y: 0.49619, z: 0.49619}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 155243487}
+  m_LocalEulerAnglesHint: {x: 0, y: 190.473, z: 0}
+--- !u!114 &738897721
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 738897719}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ce38a1fa0b966743970a315d5e28fb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animations: 0
+  isMoving: 0
+  spawnedCharacter: {fileID: 0}
 --- !u!1 &741371901
 GameObject:
   m_ObjectHideFlags: 0
@@ -18706,9 +18754,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _leashCenter: {fileID: 1176352779}
   _cam: {fileID: 1877831785}
-  _fovSpeed: -250
+  _fovSpeed: 250
   _fovLerpFactor: 10
-  _fovLimits: {x: 60, y: 40}
+  _fovLimits: {x: 40, y: 60}
   _maxDist: 45
   _moveSpeed: 30
   _moveLerpFactor: 10
@@ -23471,9 +23519,9 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 1.4
-  far clip plane: 3000
-  field of view: 45
+  near clip plane: 1
+  far clip plane: 1000
+  field of view: 60.000004
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -23499,8 +23547,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0.3259972, z: 0, w: 0.94537073}
-  m_LocalPosition: {x: 372.37, y: 207.42001, z: -15.22}
+  m_LocalRotation: {x: 0.22461088, y: 0, z: 0, w: 0.97444856}
+  m_LocalPosition: {x: 115.69928, y: 13.125076, z: 127.634026}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -42857,6 +42905,10 @@ PrefabInstance:
       propertyPath: _areaController
       value: 
       objectReference: {fileID: 1933116801}
+    - target: {fileID: 1755163288216971486, guid: 73d5b6b441c101941a9a03cde8c344b5, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3304577144960861748, guid: 73d5b6b441c101941a9a03cde8c344b5, type: 3}
       propertyPath: m_hasFontAssetChanged
       value: 1
@@ -42865,13 +42917,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Restaurant_UI
       objectReference: {fileID: 0}
+    - target: {fileID: 4933895329171210666, guid: 73d5b6b441c101941a9a03cde8c344b5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6150960172106636186, guid: 73d5b6b441c101941a9a03cde8c344b5, type: 3}
       propertyPath: _areaController
       value: 
       objectReference: {fileID: 1933116801}
     - target: {fileID: 6872050295100843593, guid: 73d5b6b441c101941a9a03cde8c344b5, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7348343347973185863, guid: 73d5b6b441c101941a9a03cde8c344b5, type: 3}
       propertyPath: m_Pivot.x
@@ -45200,7 +45256,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1933116800
 Transform:
   m_ObjectHideFlags: 0
@@ -48791,7 +48847,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2074531007
 Transform:
   m_ObjectHideFlags: 0
@@ -48833,6 +48889,7 @@ MonoBehaviour:
   - {fileID: 879565582}
   - {fileID: 263481334}
   - {fileID: 221880497}
+  - {fileID: 738897721}
 --- !u!114 &2074531009
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -54602,7 +54659,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5265743098722616291, guid: 9fa4dc84c512a6d4889282316da1357f, type: 3}
       propertyPath: _maxProblemPercent
-      value: 0
+      value: 0.639
       objectReference: {fileID: 0}
     - target: {fileID: 5265743098722616291, guid: 9fa4dc84c512a6d4889282316da1357f, type: 3}
       propertyPath: _clothingColors.Array.size
