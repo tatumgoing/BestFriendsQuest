@@ -8,7 +8,7 @@ public class CompleteCharacterData
 {
     [HideInInspector] public string DisplayName;
     [SerializeField] private StaticCharacterData _staticData;
-    [SerializeField] private CharacterData _dynamicData;
+    [SerializeField] private DynamicCharacterData _dynamicData;
 
     /// <summary>
     /// Loads character data for the character with the given static saveString from the save file.
@@ -19,7 +19,7 @@ public class CompleteCharacterData
         _staticData = new StaticCharacterData();
         _staticData.FromStaticSaveString(staticSaveString);
 
-        _dynamicData = new CharacterData(_staticData.ID);
+        _dynamicData = new DynamicCharacterData(_staticData.ID);
         DisplayName = _staticData.Name;
     }
 
@@ -31,7 +31,7 @@ public class CompleteCharacterData
     public CompleteCharacterData(StaticCharacterData staticData)
     {
         _staticData = staticData;
-        _dynamicData = new CharacterData(_staticData.ID);
+        _dynamicData = new DynamicCharacterData(_staticData.ID);
         DisplayName = _staticData.Name;
     }
 
@@ -45,19 +45,19 @@ public class CompleteCharacterData
     public int Age => SaveSystem.GetAge(_staticData.Birthday);
     public Sprite Icon => _staticData.Icon;
 
-    //House
-    public CharacterRoomModel RoomScript => _dynamicData.RoomScript;
-    public void SetRoomScript(CharacterRoomModel newHouse) => _dynamicData.RoomScript = newHouse; 
-
     //Happiness
     public float Happiness => _dynamicData.Happiness;
-    public void SetHappiness(float newHappiness) => _dynamicData.Happiness = newHappiness;
-    public void IncreaseHappiness(float newHappiness)
-    {
-        _dynamicData.Happiness += newHappiness;
-        _dynamicData.Happiness = Mathf.Clamp(_dynamicData.Happiness, 0, 100);
+    public void SetHappiness(float newHappiness) {
+        _dynamicData.IncreaseHappiness(-100);
+        _dynamicData.IncreaseHappiness(newHappiness);
     }
-    
+    public void IncreaseHappiness(float newHappiness) => _dynamicData.IncreaseHappiness(newHappiness);
+
+    //Inventory
+    public List<ItemData> Inventory => _dynamicData.Inventory;
+    public void AddToInventory(ItemData item) => _dynamicData.AddToInventory(item);
+    public string GetInventoryString() => _dynamicData.GetInventoryString();
+
     //Problems
     /// <summary>
     /// Solves the problem but doesn't actually remove it because the rewards haven't been dispensed yet.

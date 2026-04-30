@@ -8,6 +8,9 @@ public class Subgame : MonoBehaviour
 
     private bool _initialized;
 
+    protected virtual void ShowCam(int camIndex) => Controller.AreaController.ShowSubgameSceneCam(Data.Type, camIndex);
+    protected virtual void ResetCam() => Controller.AreaController.ResetCamera();
+
     protected virtual void Update()
     {
         if (!_initialized) {
@@ -20,11 +23,18 @@ public class Subgame : MonoBehaviour
             gameObject.SetActive(false);
             Controller.CompleteSubgame();
         }
+
+        if (SuccessTime < 0.0f) { 
+            SuccessTime = 0.0f;
+        }
     }
+
 
     public virtual void StartSubgame(SubgameData data) 
     {
         Data = data;
+
+        SuccessTime = 0;
 
         if (!_initialized) Initialize();
         gameObject.SetActive(true);

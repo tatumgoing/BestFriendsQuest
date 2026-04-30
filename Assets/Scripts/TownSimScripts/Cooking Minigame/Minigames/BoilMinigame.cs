@@ -3,151 +3,119 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BoilMinigame : MonoBehaviour
+public class BoilMinigame : Subgame
 {
-    public MinigameManager manager;
-
-    public GameObject cookingBar;
-
-    public List<TargetZone> targets = new List<TargetZone>();
-
-    public GameObject tempIcon;
-
-    [Header("Scoring")]
-
-    public float addScore;
-    public float penaltyScore;
-
-    [Header("Icon")]
-    public GameObject barIcon;
-    public float iconPosX;
-    public float iconPosY;
+    private float iconPosX, iconPosY;
+    [SerializeField] private Slider boilSlider;
+    [SerializeField] private GameObject sliderIcon;
+    [SerializeField] private TargetZone target;
 
     [Header("Animation")]
 
-    public float maxSpeed;
-    public float minSpeed;
-
-    public float accSpeed;
-    public float decSpeed;
-    public float iconVelocity= 0;
-
-    float upperBound;
-    float lowerBound;
+    public float iconVelocity = 0;
 
     [Header("Audio")]
 
-    [SerializeField]private Sound boilNormal;
-    [SerializeField]private Sound boilLoud;
+    [SerializeField] private Sound boilNormal;
+    [SerializeField] private Sound boilLoud;
 
-    void Start()
+    override protected void Update()
     {
-        boilNormal = Instantiate(boilNormal);
-        boilLoud = Instantiate(boilLoud);
+        base.Update();
 
-        boilNormal.Play();
-        boilLoud.Play();
+        //put normal update code here.
+        //add to _successTime to progress subgame.
+        //max time for su 1`ccesstime (when the subgame marks itself as finished) is data.TargetTime
 
-        //BAD BAD BAD BAD BAD KILL
-        manager = FindFirstObjectByType<MinigameManager>();
+        CheckSpeed();
 
-
-        iconPosX = barIcon.GetComponent<RectTransform>().localPosition.x;
-        iconPosY = barIcon.GetComponent<RectTransform>().localPosition.y;
-
-        foreach (TargetZone target in cookingBar.GetComponentsInChildren<TargetZone>()) { 
-            targets.Add(target);
-            Debug.Log(target.GetComponent<RectTransform>().localPosition);
-            target.SetBounds(target.GetComponent<RectTransform>().localPosition.x);
+        if (CheckTargets())
+        {
+            SuccessTime += Time.deltaTime;
+            boilLoud.SetPercentVolume(100, 10 * Time.deltaTime);
+            boilNormal.SetPercentVolume(0, 10 * Time.deltaTime);
         }
-
-        upperBound = cookingBar.GetComponent<RectTransform>().anchoredPosition.x + cookingBar.GetComponent<RectTransform>().sizeDelta.x / 2;
-        lowerBound = cookingBar.GetComponent<RectTransform>().anchoredPosition.x - cookingBar.GetComponent<RectTransform>().sizeDelta.x / 2;
-
-
-        tempIcon.GetComponent<Image>().sprite = manager.characterSelectionMenu.selectedCharacter.Icon;
+        else
+        {
+            boilLoud.SetPercentVolume(0, 10 * Time.deltaTime);
+            boilNormal.SetPercentVolume(100, 10 * Time.deltaTime);
+        }
+        
 
     }
 
-    void Update()
+    public override void StartSubgame(SubgameData data)
     {
-        /*if (manager.currentTimer != null && manager.currentTimer.timerActive)
-        {
-            CheckSpeed();
-        }
+        base.StartSubgame(data);
 
-        if (manager.currentTimer != null && manager.currentTimer.timerActive)
-        {   
-            if (CheckTargets())
-            {
-                manager.currentTimer.AddProgress(addScore * Time.deltaTime);
+        ShowCam(0);
 
-                boilLoud.SetPercentVolume(100, 10 * Time.deltaTime);
-                boilNormal.SetPercentVolume(0, 10 * Time.deltaTime);
-            }
-            else
-            {
-                manager.currentTimer.RemoveProgress(penaltyScore * Time.deltaTime);
+        iconPosX = sliderIcon.GetComponent<RectTransform>().anchoredPosition.x;
+        iconPosY = sliderIcon.GetComponent<RectTransform>().anchoredPosition.y;
 
-                boilLoud.SetPercentVolume(0, 10 * Time.deltaTime);
-                boilNormal.SetPercentVolume(100, 10 * Time.deltaTime);
-            }
-        }
+        //put code here that you want to run every time subgame is started
 
-        if (!manager.currentTimer.timerActive)
-        {
-            boilLoud.SetPercentVolume(0, 10 * Time.deltaTime);
-            boilNormal.SetPercentVolume(0, 10 * Time.deltaTime);
-        }*/
+        target.MoveTarget(Data.BoilTargetPosition, 0.0f);
+        target.ChangeTargetWidth(Data.BoilTargetScale);
 
+        float position = target.GetComponent<RectTransform>().anchoredPosition.x;
+        float length = target.GetComponent<RectTransform>().sizeDelta.x / boilSlider.GetComponent<RectTransform>().sizeDelta.x;
+        float parentLength = boilSlider.GetComponent<RectTransform>().sizeDelta.x;
+
+        target.SetBounds(position, length, parentLength);
+
+        //audio
+
+        boilNormal.PlaySilent();
+        boilLoud.PlaySilent();
+
+    }
+
+    protected override void Initialize()
+    {
+        base.Initialize();
+
+        //called just one, like 'start' but for subgame
+        //for example, instnaitating your sound objects
+
+        boilNormal = Instantiate(boilNormal);
+        boilLoud = Instantiate(boilLoud);
+    }
+
+    private void OnDisable()
+    {
+        boilNormal.Stop();
+        boilLoud.Stop();
+        ResetCam();
     }
 
     public void CheckSpeed()
     {
         if (Input.GetKey("space") || Input.GetMouseButton(0))
         {
-            iconVelocity += accSpeed * Time.deltaTime;
+            iconVelocity += Data.BoilAccSpeed * Time.deltaTime;
         }
-        else if (barIcon.GetComponent<RectTransform>().localPosition.x ==  lowerBound)
+        else if (boilSlider.value == boilSlider.minValue)
         {
             iconVelocity = 0;
         }
         else
         {
-            iconVelocity -= decSpeed * Time.deltaTime;
+            iconVelocity -= Data.BoilDeccSpeed * Time.deltaTime;
         }
 
-        iconVelocity = Mathf.Clamp(iconVelocity, minSpeed, maxSpeed);
+        iconVelocity = Mathf.Clamp(iconVelocity, Data.BoilMinSpeed, Data.BoilMaxSpeed);
 
-        iconPosX += iconVelocity * Time.deltaTime;
+        boilSlider.value += iconVelocity * Time.deltaTime;
 
-        iconPosX = Mathf.Clamp(iconPosX, lowerBound, upperBound);
-        barIcon.GetComponent<RectTransform>().localPosition = new Vector2(iconPosX, iconPosY);
-
-        //Debug.Log("Checking Speed: " +  Time.deltaTime + " " + iconVelocity);
     }
-    public bool CheckTargets()
+    private bool CheckTargets()
     {
-        bool inRange = false;
-        foreach (TargetZone target in targets)
+        if (boilSlider.value >= target.lowerBound && boilSlider.value <= target.upperBound)
         {
-            
-                if (barIcon.GetComponent<RectTransform>().localPosition.x >= target.lowerBound && barIcon.GetComponent<RectTransform>().localPosition.x <= target.upperBound)
-                {
-                    inRange = true;
-
-                    
-                }
-            
+            return true;
         }
 
-        //Debug.Log(inRange);
-
-        return inRange;
+        return false;
     }
-
-    
-
-
-
 }

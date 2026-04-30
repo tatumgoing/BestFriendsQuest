@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public interface IItemListController
 {
@@ -16,6 +18,10 @@ public class ShopUIController : MonoBehaviour, IItemListController
     [SerializeField] private CurrentlySelectedItem _currentlySelected;
     [SerializeField] private SelectableItem _purchaseButton;
     [SerializeField] private ClothingShopController _areaController;
+
+    // sorry Aidan
+
+    [SerializeField] private Image _hoveringItem;
 
     [Header("Sounds")]
     [SerializeField] private Sound _purchaseSound;
@@ -35,6 +41,8 @@ public class ShopUIController : MonoBehaviour, IItemListController
         }
         BuildList();
         UpdatePurchaseButton();
+
+        _hoveringItem.sprite = _currentlySelectedItem.sprite;
     }
 
     private void Update()
@@ -47,7 +55,7 @@ public class ShopUIController : MonoBehaviour, IItemListController
 
     private void BuildList()
     {
-        var selectedItems = TownGameManager.i.GetAllItems().Where(x => x.Type == _type).ToList();
+        var selectedItems = TownGameManager.i.GetAllItems(true).Where(x => x.Type == _type).ToList();
         _itemList.DisplayItem(selectedItems, this);
         _itemList.SetFirstSelected();
     }
@@ -69,11 +77,13 @@ public class ShopUIController : MonoBehaviour, IItemListController
         _purchaseButton.gameObject.SetActive(true);
         UpdatePurchaseButton();
 
-        _areaController.DisplayItem(item);
+        _areaController?.DisplayItem(item);
+
+        _hoveringItem.sprite = item.sprite;
     }
 
     private void UpdatePurchaseButton()
     {
-        _purchaseButton.SetDisabled(TownGameManager.i.currency < _currentlySelectedItem.Cost);
+        _purchaseButton.SetDisabled(TownGameManager.i.Currency < _currentlySelectedItem.Cost);
     }
 }

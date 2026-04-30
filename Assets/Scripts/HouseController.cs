@@ -1,3 +1,4 @@
+using MyBox;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,7 +8,12 @@ public class HouseController : MonoBehaviour
 {
     [SerializeField] private Image _characterIcon;
     [SerializeField] private Animator _portraitParent;
-    
+    [SerializeField] private GameObject _ruinedHouse;
+    [SerializeField] private GameObject _houseModel;
+    [SerializeField] private ColorApplier _mainHouseColor;
+
+    [SerializeField, ReadOnly] private string favColor;
+    [SerializeField, ReadOnly] private Color favColorColor;
     private ID _id;
     private NeighborhoodController _controller;
     private float timeWhenEnabled = 0;
@@ -16,6 +22,10 @@ public class HouseController : MonoBehaviour
     private void OnEnable()
     {
         timeWhenEnabled = Time.time;
+
+        var rot = _ruinedHouse.transform.localEulerAngles;
+        rot.y = Random.Range(0, 360);
+        _ruinedHouse.transform.localEulerAngles = rot;
     }
 
     private void Update()
@@ -35,15 +45,29 @@ public class HouseController : MonoBehaviour
 
     public void Hide()
     {
-        gameObject.SetActive(false);
+        gameObject.name = "ruined house";
+        _ruinedHouse.SetActive(true);
+        _houseModel.SetActive(false);
     }
 
     public void Initialize(ID id, NeighborhoodController controller)
     {
+        var character = CharacterManager.i.GetNameFormatted(id);
+        gameObject.name = character + "'s house";
+
+        favColor = CharacterManager.i.GetFavoriteColor(id).ToString();
+        favColorColor = CharacterManager.i.GetClothingColor(id);
+
+
         _controller = controller;
         gameObject.SetActive(true);
         _id = id;
         _characterIcon.sprite = CharacterManager.i.GetPortrait(id);
+
+        _ruinedHouse.SetActive(false);
+        _houseModel.SetActive(true);
+
+        _mainHouseColor.ApplyColor(CharacterManager.i.GetClothingColor(id));
     }
 
     private void UpdateHovered()

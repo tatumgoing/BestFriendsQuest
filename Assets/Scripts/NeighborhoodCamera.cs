@@ -7,6 +7,15 @@ public class NeighborhoodCamera : MonoBehaviour
 {
     [SerializeField] private Transform _camera;
 
+    [Header("Scrolling version")]
+    [SerializeField] private bool _scrollMode;
+    [SerializeField] private Transform _topPos;
+    [SerializeField] private Transform _bottomPos;
+    [SerializeField] private float _scrollSpeed = 10;
+    [SerializeField] private float _scrollLerpFactor = 10;
+    private float _current;
+    private float _scrollDelta;
+
     [Header("Rotation")]
     [SerializeField] private float _rotationSpeed = 1f;
     [SerializeField] private float _rotationFriction = 10;
@@ -28,6 +37,7 @@ public class NeighborhoodCamera : MonoBehaviour
     private float _deltaZoom;
     private Vector3 _deltaPos;
     private Vector3 _startingPosition;
+    private float _scrollPos;
 
     private void Start()
     {
@@ -36,6 +46,19 @@ public class NeighborhoodCamera : MonoBehaviour
 
     void Update()
     {
+        if (_scrollMode) {
+            var targetDelta = Input.mouseScrollDelta.y * _scrollSpeed;
+
+            _scrollDelta = Mathf.Lerp(_scrollDelta, targetDelta, _scrollLerpFactor * Time.deltaTime);
+
+            _scrollPos += _scrollDelta;
+            _scrollPos = Mathf.Clamp01(_scrollPos);
+
+            transform.position = Vector3.Lerp(_bottomPos.position, _topPos.position, _scrollPos);
+
+            return;
+        }
+
         Rot();
         Zoom();
         Tilt();

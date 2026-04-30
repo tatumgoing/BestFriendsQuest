@@ -1,5 +1,6 @@
 using MyBox;
 using System.Collections.Generic;
+using System.ComponentModel.Design.Serialization;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -12,6 +13,7 @@ public class CharacterManager : MonoBehaviour
     [SerializeField] private GameObject _characterControllerPrefab;
     [SerializeField, ReadOnly] private List<CompleteCharacterData> _allCharacters = new List<CompleteCharacterData>();
     [SerializeField, ReadOnly] private List<RelationshipData> _relationships = new List<RelationshipData>();
+    [SerializeField] private List<ColorData> _clothingColors;
 
     [Header("Problems")]
     [SerializeField, Range(0, 1), Tooltip("Max percent of citizens that can have problems")] private float _maxProblemPercent = 0.3f;
@@ -34,26 +36,55 @@ public class CharacterManager : MonoBehaviour
         //TESTING:
         foreach (var characterA in _allCharacters) {
             foreach (var characterB in _allCharacters) {
-                if (characterA != characterB) _relationships.Add(new RelationshipData(characterA.ID, characterB.ID));
+                if (characterA != characterB) {
+                    var loadedValue = SaveSystem.LoadRelationship(characterA.ID, characterB.ID);
+                    _relationships.Add(new RelationshipData(characterA.ID, characterB.ID, loadedValue));
+                }
             }
         }
-        RandomizeRelationships();
+        //RandomizeRelationships();
 
         GenerateProblem();
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.L)) RandomizeRelationships(); //TESTING
+        //if (Input.GetKeyDown(KeyCode.L)) RandomizeRelationships(); //TESTING
 
         var problemRatio = (float)numCharactersWithProblems() / _allCharacters.Count;
         if (problemRatio < _maxProblemPercent) GenerateProblem();
+    }
+
+    [ButtonMethod]
+    public void PrintCharacterInventories()
+    {
+        var saveString = string.Join("|", _allCharacters.Select(c => c.GetInventoryString()));
+        print(saveString);
+    }
+
+    public void GiveItem(ID id, ItemData item)
+    {
+        var characterData = _allCharacters.Find(c => c.ID == id);
+        characterData.AddToInventory(item);
+    }
+
+    public Color GetClothingColor(ID id) => GetClothingColor(GetFavoriteColor(id));
+    public Color GetClothingColor(FavoriteColor color)
+    {
+        var data = _clothingColors.Find(c => c.Color == color);
+        return data.UseColor;
     }
 
     public FavoriteColor GetFavoriteColor(ID id)
     {
         var characterData = _allCharacters.Find(c => c.ID == id);
         return characterData.FavColor;
+    }
+
+    public List<ItemData> GetInventory(ID id)
+    {
+        var characterData = _allCharacters.Find(c => c.ID == id);
+        return characterData.Inventory;
     }
 
     /// <summary>
@@ -98,7 +129,7 @@ public class CharacterManager : MonoBehaviour
 
     public void GenerateProblem()
     {
-        var validOptions = AllCharacters.Where(x => !x.HasProblem)  .ToList();
+        var validOptions = AllCharacters.Where(x => !x.HasProblem).ToList();
         GenerateProblem(validOptions[Random.Range(0, validOptions.Count)].ID);
     }
 
@@ -115,12 +146,14 @@ public class CharacterManager : MonoBehaviour
         _allProblems = Resources.LoadAll<ProblemData>("Problems").ToList();
     }
 
+
     [ButtonMethod]
     public void RandomizeRelationships()
     {
         print("Randoming all relationships (for testing)");
         for (int i = 0; i < _relationships.Count; i++) {
             _relationships[i].Value = Random.Range(0, 10f);
+            SaveRelationship(_relationships[i]);
         }
     }
 
@@ -148,7 +181,7 @@ public class CharacterManager : MonoBehaviour
 
     public string GetName(ID id)
     {
-        var characterData = _allCharacters.Find(c => c.ID == id);
+        var characterData = _allCharacters.Find(c => c != null && c.ID == id);
         return characterData != null ? characterData.Name : "";
     }
 
@@ -200,6 +233,8 @@ public class CharacterManager : MonoBehaviour
     public SpawnedCharacter SpawnCharacter(ID id, Transform spawnSpot) => SpawnCharacter(id, spawnSpot.position, spawnSpot.lossyScale, spawnSpot.eulerAngles);
     private SpawnedCharacter SpawnCharacter(ID id, Vector3 position, Vector3 scale, Vector3 rot)
     {
+        //print("Spawning character with ID: " + id);
+
         var characterData = _allCharacters.Find(c => c.ID == id);
         if (characterData == null) return null;
         
@@ -273,6 +308,16 @@ public class CharacterManager : MonoBehaviour
         }
 
         _relationships.Add(new RelationshipData(id1, id2, increase));
+
+        SaveRelationship(id1, id2, GetRelationship(id1, id2));
+    }
+
+    private void SaveRelationship(RelationshipData data) => SaveRelationship(data.ID1, data.ID2, data.Value);
+    private void SaveRelationship(ID id1, ID id2, float value)
+    {
+        var firstId = Mathf.Max(id1, id2);
+        var secondID = Mathf.Min(id1, id2);
+        SaveSystem.SaveRelationship(new ID(firstId), new ID(secondID), value);
     }
 
     /// <summary>

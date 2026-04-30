@@ -128,7 +128,7 @@ public class MinigameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(2);
 
-        gameManager.currency += maxCurrency * (finalScore / 100);
+        //gameManager._currency += maxCurrency * (finalScore / 100);
 
         yield return new WaitForSeconds(2);
     }

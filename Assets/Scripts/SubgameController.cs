@@ -20,6 +20,7 @@ public class SubgameController : MonoBehaviour
     [SerializeField] private SubgameCountdownController _countdownTimer;
     [SerializeField] private CompletionText _completionText;
     [SerializeField] private MinigameResultsScreen _results;
+    [SerializeField] private SubgameInstructions _instructions;
 
     [Header("Sounds")]
     [SerializeField] private Sound _tickSound;
@@ -29,6 +30,7 @@ public class SubgameController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _timerText;
     [SerializeField] private Image _timerFillImage;
     [SerializeField] private Slider _slider;
+    [SerializeField] private RestrauntController _areaController;
 
 
     private float _totalTime;
@@ -44,14 +46,19 @@ public class SubgameController : MonoBehaviour
     private ID _recipient;
     private bool _isProblem;
 
+    public RestrauntController AreaController => _areaController;
     private SubgameData _currentSubgameData => _currentRecipe.Subgames[_subgameIndex];
-
     public float TimeLeftPercent => _timeLeft/_totalTime;
-    public void UpdateSlider(float targetPercent) => _targetSliderPos = targetPercent;  
+    public void UpdateSlider(float targetPercent)
+    {
+        //print("Updating Slider: " + targetPercent + ", current: " + _targetSliderPos);
+        _targetSliderPos = targetPercent;
+    }
     
     private void Update()
     {
-        _slider.value = Mathf.Lerp(_slider.value, _targetSliderPos, 7.5f * Time.deltaTime);
+        if (_targetSliderPos == 0) _slider.value = 0;
+        else _slider.value = Mathf.Lerp(_slider.value, _targetSliderPos, 7.5f * Time.deltaTime);
 
         if (_currentSubgame == null || !_currentSubgame.gameObject.activeInHierarchy) return;
 
@@ -129,7 +136,7 @@ public class SubgameController : MonoBehaviour
         foreach (var o in _options) {
             if (o.Type == _currentSubgameData.Type) {
                 _currentSubgame = o.Subgame;
-                _countdownTimer.StartCountdown(_currentSubgameData.Countdown);
+                _instructions.Show(_currentSubgameData.Type);
             }
             else {
                 o.Subgame.gameObject.SetActive(false);
@@ -137,12 +144,18 @@ public class SubgameController : MonoBehaviour
         }
     }
 
+    public void StartCountdown()
+    {
+        _countdownTimer.StartCountdown(_currentSubgameData.Type, _currentSubgameData.Countdown);
+    }
+
     private async void ShowResults()
     {
         //highscores
         Dictionary<string, float> tempDict = SaveSystem.LoadHighscoreDictionary("Cooking");
 
-        if (tempDict[_currentRecipe.Name] <= _totalScore)
+        if (!tempDict.ContainsKey(_currentRecipe.name)) tempDict.Add(_currentRecipe.name, _totalScore);
+        else if (tempDict[_currentRecipe.Name] <= _totalScore)
         {
             tempDict[_currentRecipe.Name] = _totalScore;
             SaveSystem.SaveHighscoreDictionary("Cooking", tempDict);
@@ -150,7 +163,11 @@ public class SubgameController : MonoBehaviour
             //add a new highscore banner later
         }
 
-        //print("Showing results");
+        CharacterManager.i.IncreaseHappiness(_recipient, _totalScore * _currentRecipe.HappinessReward);
+        if (_character != _recipient) {
+            CharacterManager.i.IncreaseRelationship(_character, _recipient, _currentRecipe.RelationshipReward * _totalScore);
+        }
+
         _timerParent.SetActive(false);
         await _results.ShowScore(_totalScore, _currentRecipe, _character, _recipient, _isProblem);
     }

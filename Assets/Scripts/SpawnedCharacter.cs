@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Threading.Tasks;
+using System.Linq;
+using Unity.VisualScripting;
 
 public enum CharacterAnimations { Grilling, Standing, Sitting, SittingGround, Walking, Spawn };
 
@@ -11,12 +13,21 @@ public enum CharacterAnimations { Grilling, Standing, Sitting, SittingGround, Wa
 public class ClothingItemData
 {
     [HideInInspector] public string DisplayName;
-    [DisplayInspector] public ItemData Item;
+    [DisplayInspector] public List<ItemData> Items;
     [SerializeField] private List<GameObject> _meshes;
+    [SerializeField] private SetMaterialField _materialField;
+    [SerializeField] private bool _useFavoriteColor;
+
+    public SetMaterialField MeshController => _materialField;
+
+    public void Initialize(Color favoriteColor)
+    {
+        if (_useFavoriteColor && _materialField) _materialField.SetColor(favoriteColor);
+    }
 
     public void OnValidate() 
     { 
-        if (Item) DisplayName = Item.Name;
+        if (Items != null && Items.Count > 0 && Items[0] != null) DisplayName = Items[0].Name;
         else DisplayName = "Empty";
     }
 
@@ -35,6 +46,7 @@ public class SpawnedCharacter : MonoBehaviour
     [SerializeField] private Animator animator;
 
     [Header("Clothing")]
+    [SerializeField] private ItemData _defaultClothing;
     [SerializeField] private List<ClothingItemData> _clothingItems;
 
     [Header("Head Look At")]
@@ -53,6 +65,8 @@ public class SpawnedCharacter : MonoBehaviour
     //Growing
     private float _growTimer;
     private float _growRate;
+
+    private List<ClothingItemData> _nonHats => _clothingItems.Where(x => !x.Items.Where(y => y.ClothingType == ClothingType.HAT).Any()).ToList();
 
     private void OnValidate()
     {
@@ -74,6 +88,16 @@ public class SpawnedCharacter : MonoBehaviour
         if (!_disableLookAt) UpdateLookAt();
     }
 
+    public void SetHat(ItemData hat)
+    {
+        foreach(var item in _clothingItems) {
+            bool isHat = item.Items.Where(x => x.ClothingType == ClothingType.HAT).ToList().Count() > 0;
+            if (isHat) {
+                item.SetState(item.Items.Contains(hat));
+            }
+        }
+    }
+
     public void RandomMannequinPose()
     {
         int numPoses = 4;
@@ -83,40 +107,69 @@ public class SpawnedCharacter : MonoBehaviour
 
     private void LoadRandomClothing()
     {
-        var randomClothing = _clothingItems[Random.Range(0, _clothingItems.Count)];
-        ShowClothingItem(randomClothing.Item);
+        var inventory = CharacterManager.i.GetInventory(ID).Where(x => x.Type == ItemType.Clothing && x.ClothingType != ClothingType.HAT).ToList();
+        if (inventory.Count == 0) ShowClothingItem(_defaultClothing);
+        else {
+            var selected = inventory[Random.Range(0, inventory.Count)];
+            if (selected.ClothingType == ClothingType.OUTFIT) ShowClothingItem(selected);
+            else {
+                var outfit = new List<ItemData>() { selected };
+
+                var missingPieceType = selected.ClothingType == ClothingType.TOP ? ClothingType.BOTTOM : ClothingType.TOP;
+                var missingPiece = inventory.FirstOrDefault(item => item.ClothingType == missingPieceType);
+
+                if (missingPiece) {
+                    outfit.Add(missingPiece);
+                    ShowClothingItem(outfit);
+                }
+                else {
+                    ShowClothingItem(_defaultClothing);
+                }
+            }
+        }
     }
 
-    public void ShowClothingItem(ItemData item)
+    private void ShowClothingItem(List<ItemData> items)
     {
-        //print(gameObject.name + " showing clothing item: " + item.Name);
-        foreach(var clothingItem in _clothingItems) clothingItem.SetState(false);
-        foreach (var clothingItem in _clothingItems) if (clothingItem.Item == item) clothingItem.SetState(true);
+        foreach (var clothingItem in _nonHats) clothingItem.SetState(false);
+        foreach (var item in items) ShowClothingItem(item, false);
     }
 
-    public async Task LoadFromString(string saveString)
+    public void ShowClothingItem(ItemData item, bool disableOthers = true)
     {
-        LoadRandomClothing();
+        if (disableOthers) foreach(var clothingItem in _nonHats) clothingItem.SetState(false);
+        foreach (var clothingItem in _clothingItems) {
+            if (clothingItem.Items.Contains(item)) {
+                clothingItem.SetState(true);
+                item.AffectMesh(clothingItem.MeshController);
+            }
+        }
+    }
+
+    public void LoadFromString(string saveString)
+    {
+        gameObject.SetActive(true);
 
         _saveString = saveString;
         _characterController.LoadFromString(saveString);
         ID = _characterController.Data.ID;
+        
 
         gameObject.name = _characterController.Data.Name + " (spawned character)";
 
-        await Task.Delay(100);
-        _characterController.LoadFromString(saveString);
+        var color = CharacterManager.i.GetClothingColor(_characterController.Data.FavColor);
+        foreach (var clothingItem in _clothingItems) clothingItem.Initialize(color);
+
+        LoadRandomClothing();
     }
 
-    [ButtonMethod]
-    public void TESTSAVELOAD()
-    {
-        LoadFromString(_saveString);
-    }
-
-    public void CharacterLookAt(Transform target)
+    public void CharacterLookAt(Transform target, bool snapTo = false)
     {
         _lookAtTarget = target;
+        if (snapTo) {
+            Quaternion targetRotation = Quaternion.LookRotation(_lookAtTarget.position - head.position);
+            head.rotation = targetRotation;
+        }
     }
 
     public void UpdateLookAt()
@@ -153,10 +206,9 @@ public class SpawnedCharacter : MonoBehaviour
         _lookAtTarget = null;
     }
     
-    public void AnimateFromEnum(CharacterAnimations anim)
+    public void AnimateFromEnum(CharacterAnimations anim, bool value = true)
     {
-        animator.SetBool(anim.ToString(), true);
-
+        animator.SetBool(anim.ToString(), value);
     }
 
     public void AnimateFromString(string anim)

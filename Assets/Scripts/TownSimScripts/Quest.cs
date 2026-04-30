@@ -6,6 +6,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Quest", menuName = "Quest", order = 3)]
 public class Quest : ScriptableObject
 {
+    public string Title;
     public bool completed= false;
 
     public ItemData unlockedItem;

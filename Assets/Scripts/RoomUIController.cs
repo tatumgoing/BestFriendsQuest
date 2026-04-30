@@ -15,6 +15,7 @@ public class RoomUIController : MonoBehaviour
 
     private ID _id;
 
+    public void ShowCurrent() => Show(_id);
     public void Show(ID id)
     {
         _id = id;

@@ -7,129 +7,90 @@ using TMPro;
 
 public class BFQResultsScreen : MonoBehaviour
 {
-    Quest associatedQuest;
 
-    [Header("Characters")]
-    public CompleteCharacterData charOne;
-    public CompleteCharacterData charTwo;
+    [Header("General")]
+    [SerializeField] private QuestUIController _controller;
+    [SerializeField] private CharacterPortraitNameDisplay _char1Display;
+    [SerializeField] private CharacterPortraitNameDisplay _char2Display;
+    [SerializeField] private GameObject _page1Parent;
+    [SerializeField] private GameObject _page2Parent;
+    [SerializeField] private TextMeshProUGUI _title;
+    [SerializeField] private string _titleSuccess = "Contrgratulations!";
+    [SerializeField] private string _titleFail = "Better luck next time";
 
-    [Header("Sprites")]
-    public Image charDisplayOne;
-    public Image charDisplayTwo;
-    public Image treasureChest;
+    [Header("Page 1")]
+    [SerializeField] private TextMeshProUGUI _descriptionText;
+    [SerializeField] private string _descriptionTemplateSucceed = "NAME1 and NAME2 brought back ITEM";
+    [SerializeField] private string _descriptionTemplateFail = "NAME1 and NAME2 didn't find the ITEM";
+    [SerializeField] private Image _icon;
+    [SerializeField] private TextMeshProUGUI _bottomDescriptionText;
+    [SerializeField] private string _bottomDescriptionTemplateSuccess = "Find it in the store!";
+    [SerializeField] private string _bottomDescriptionTemplateFail = "Try characters that have a stronger friendship next time";
 
-    public Sprite chestClosed;
-    public Sprite chestOpen;
+    [Header("Page 2")]
+    [SerializeField] private TextMeshProUGUI _deltaRelationshipText;
+    [SerializeField] private TextMeshProUGUI _page2RelationshipLevel;
+    [SerializeField] private TextMeshProUGUI _page2DescriptionText;
+    [SerializeField] private string _page2DescriptionTemplateSucceed = "The Quest for ITEM brought NAME1 and NAME2 closer together.";
+    [SerializeField] private string _page2DescriptionTemplateFail = "The struggle for ITEM weakened NAME1 and NAME2's relationship.";
+    [SerializeField] private Slider _page2Slider;
 
-    public Image resCharOne;
-    public Image resCharTwo;
+    private bool _success;
 
-    [Header("Animation")]
+    //private float _targetSliderValue;
 
-    public GameObject transitionScreen;
-    public GameObject resultsScreen;
-
-    [Header("Final Screen")]
-
-    public TMP_Text topText;
-    public GameObject successWindow;
-    public TMP_Text successText;
-    public GameObject failWindow;
-    public GameObject statsWindow;
-    public TMP_Text statsText;
-
-    public RelationshipBar relationBar;
-
-    void OnEnable()
+    public void ShowResults(RuntimeQuestData questData)
     {
-        resultsScreen.SetActive(false);
+        var roll = Random.Range(0, 1f);
+        _success = roll < questData.SuccessChance();
 
-        successWindow.SetActive(false);
-        failWindow.SetActive(false);
-        statsWindow.SetActive(false);
-    }
-    public IEnumerator ResultsAnimation(bool succeeded, Quest newQuest, CompleteCharacterData cOne, CompleteCharacterData cTwo)
-    {
-        associatedQuest = newQuest;
+        if (_success) {
+            TownGameManager.i.UnlockItem(questData.QuestData.unlockedItem);
+            CharacterManager.i.IncreaseRelationship(questData.Character1, questData.Character2, questData.QuestData.relationshipGain);
+        }
+        
 
-        charOne = cOne;
-        charTwo = cTwo;
+        _title.text = _success ? _titleSuccess : _titleFail;
+        _bottomDescriptionText.text = _success ? _bottomDescriptionTemplateSuccess : _bottomDescriptionTemplateFail;
+        _deltaRelationshipText.text = "Relationship " + (_success ? " increased" : " decreased");
 
-        charDisplayOne.sprite = charOne.Icon;
-        charDisplayTwo.sprite = charTwo.Icon;
+        _page1Parent.SetActive(true);
+        _page2Parent.SetActive(false);
 
-        relationBar.SetCharacters(charOne.ID, charTwo.ID);
+        _char1Display.Show(questData.Character1);
+        _char2Display.Show(questData.Character2);
 
-        FunAnimator anim = treasureChest.gameObject.GetComponent<FunAnimator>();
-        anim.doesRot = false;
-        var rotSpeed = anim.rotSpeed;
+        _icon.sprite = questData.QuestData.unlockedItem.sprite;
+        _icon.color = _success ? Color.white : Color.black;
 
-        yield return new WaitForSeconds(3f);
+        var name1 = CharacterManager.i.GetNameFormatted(questData.Character1);
+        var name2 = CharacterManager.i.GetNameFormatted(questData.Character2);
+        var item = questData.QuestData.unlockedItem.Name;
 
-        anim.doesRot = true;
-        anim.rotSpeed = rotSpeed*4;
+        var page1Template = _success ? _descriptionTemplateSucceed : _descriptionTemplateFail;
+        var description = page1Template.Replace("NAME1", name1).Replace("NAME2", name2).Replace("ITEM", item);
+        _descriptionText.text = description;
 
-        yield return new WaitForSeconds(1f);
+        var page2Template = _success ? _page2DescriptionTemplateSucceed : _page2DescriptionTemplateFail;
+        var page2Description = page2Template.Replace("NAME1", name1).Replace("NAME2", name2).Replace("ITEM", item);
+        _page2DescriptionText.text = page2Description;
 
-        treasureChest.sprite = chestOpen;
-        anim.rotSpeed = rotSpeed;
+        var relationshipLevel = CharacterManager.i.GetRelationship(questData.Character1, questData.Character2);
+        _page2Slider.value = relationshipLevel - Mathf.Floor(relationshipLevel);
+        _page2RelationshipLevel.text = "relationship level: " + Mathf.FloorToInt(relationshipLevel);
 
-        yield return new WaitForSeconds(2f);
-
-
-        if (succeeded) StartCoroutine(SuccessAnimation());
-        else StartCoroutine(FailAnimation());
-    }
-
-    public IEnumerator SuccessAnimation()
-    {
-        resultsScreen.SetActive(true);
-
-        topText.text = "Congratulations!";
-        successWindow.SetActive(true);
-        successText.text = "Your townsfolk brought back " + associatedQuest.unlockedItem.Name + "!";
-        successWindow.GetComponent<Image>().sprite = associatedQuest.unlockedItem.sprite;
-
-        associatedQuest.unlockedItem.unlocked = true;
-
-        yield return new WaitForSeconds(5f);
-
-        StartCoroutine(StatsAnimation("Friendship strengthened!", true));
-
-
+        gameObject.SetActive(true);
     }
 
-    public IEnumerator FailAnimation()
+    public void Continue()
     {
-        resultsScreen.SetActive(true);
-
-        topText.text = "Too bad...";
-        failWindow.SetActive(true);
-        failWindow.GetComponent<Image>().sprite = associatedQuest.unlockedItem.sprite;
-
-        yield return new WaitForSeconds(5f);
-
-        StartCoroutine(StatsAnimation("Friendship weakened...", false));
-    }
-
-    public IEnumerator StatsAnimation(string displayText, bool success)
-    {
-        failWindow.SetActive(false);
-        successWindow.SetActive(false);
-
-        statsWindow.SetActive(true);
-
-        statsText.text = displayText;
-            
-        resCharOne.sprite= charOne.Icon;
-        resCharTwo.sprite= charTwo.Icon;
-
-        yield return new WaitForSeconds(3f);
-
-        var relationshipChange = success ? associatedQuest.relationshipGain : associatedQuest.relationshipLoss;
-        CharacterManager.i.IncreaseRelationship(charOne.ID, charTwo.ID, relationshipChange);
-
-        charOne.SetHappiness(0);
-        charTwo.SetHappiness(0);
+        if (_page1Parent.activeInHierarchy) {
+            _page1Parent.SetActive(false);
+            _page2Parent.SetActive(true);
+        }
+        else {
+            gameObject.SetActive(false);
+            _controller.ResetQuest();
+        }
     }
 }

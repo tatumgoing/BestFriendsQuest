@@ -218,7 +218,7 @@ public class SelectableItem : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
         _clickedDown = false;
 
-        StartHover();
+        if (_hoverBehavior != ClickBehavior.NONE) StartHover();
     }
 
     public void OnPointerExit(PointerEventData eventData)

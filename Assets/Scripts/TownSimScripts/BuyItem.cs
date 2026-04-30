@@ -14,7 +14,7 @@ public class BuyItem : MonoBehaviour
     }
     public void Puchased()
     {
-        if(Mathf.Abs(item.Cost) <= gameManager.currency)
+        if(Mathf.Abs(item.Cost) <= gameManager.Currency)
         {
             gameManager.ChangeCurrency(-item.Cost);
             gameManager.AddInventory(item);

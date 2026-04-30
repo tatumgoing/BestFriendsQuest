@@ -11,10 +11,19 @@ public class CharacterPortraitNameDisplay : MonoBehaviour
 
     public ID ID { get; private set; }
 
+    public void Clear()
+    {
+        _portrait.gameObject.SetActive(false);
+        _name.text = "";
+    }
+
     public void Show(ID id)
     {
         ID = id;
+        
         _portrait.sprite = CharacterManager.i.GetPortrait(id);
+        _portrait.gameObject.SetActive(true);
+
         _name.text = CharacterManager.i.GetNameFormatted(id);
     }
 }

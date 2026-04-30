@@ -4,28 +4,15 @@ using System.Collections.Generic;
 using System.Net.Http;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Test : MonoBehaviour
 {
+    [SerializeField] private Image _waterImage;
+    [SerializeField] private float _speed;
 
-    [ButtonMethod]
-    public void SaveDict()
+    private void Update()
     {
-        var newDict = new Dictionary<string, float>();
-        for (int i = 0; i < 12; i++) {
-            newDict.Add(i.ToString(), i + Random.Range(0, 1f));
-        }
-
-        SaveSystem.SaveHighscoreDictionary("TestDict", newDict);
-    }
-
-    [ButtonMethod]
-    public void LoadDict()
-    {
-        var loadedDict = SaveSystem.LoadHighscoreDictionary("TestDict");
-        print("Loaded dict:");
-        foreach (var pair in loadedDict) {
-            print(pair.Key + ": " + pair.Value);
-        }
+        _waterImage.material.mainTextureOffset += new Vector2(_speed, 0) * Time.deltaTime;
     }
 }

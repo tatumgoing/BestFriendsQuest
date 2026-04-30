@@ -3,22 +3,50 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+
+[System.Serializable]
+public class RuntimeItemData
+{
+    public ItemData Item;
+    public bool Unlocked;
+
+    public RuntimeItemData(ItemData itemData)
+    {
+        Item = itemData;
+        Unlocked = Item.StartUnlocked;
+    }
+}
 
 public class TownGameManager : MonoBehaviour
 {
     public static TownGameManager i;
 
-    [SerializeField] private List<AreaData> _areas = new List<AreaData>();
+    [Header("Non-Location Menus")]
+    [SerializeField] private GameObject _titleScreen;
+    [SerializeField] private GameObject _mapParent;
+    [SerializeField] private GameObject _invParent;
+    [SerializeField] private GameObject _recordsParent;
+    [SerializeField] private List<ItemData> _allItems = new List<ItemData>();
 
-    [SerializeField] private int _characterCreatorSceneIndex = 1;
-    [SerializeField] private bool _demoMode;
+    [Header("Locations")]
+    [SerializeField] private List<AreaData> _areas = new List<AreaData>();
     [SerializeField] private NeighborhoodController _neighborhoodController;
 
-    public List<ItemData> GetAllItems() => allItems;
+    [Header("Misc")]
+    [SerializeField] private int _characterCreatorSceneIndex = 1;
+    [SerializeField] private GameObject _fadeScreen;
+    [SerializeField, Min(0)] private float _currency;
+    [SerializeField] private GameObject _mapStartBacking;
+
+    private Dictionary<ItemData, int> _inventory = new Dictionary<ItemData, int>();
+    private List<RuntimeItemData> _runtimeItemData = new List<RuntimeItemData>();
+
+    public Dictionary<ItemData, int> Inventory => _inventory;
+    public float Currency => _currency;
+    public ItemData GetItemByID(ID id) => _allItems.Where(x => x.ID == id).FirstOrDefault();
 
     private void OnValidate()
     {
@@ -34,18 +62,74 @@ public class TownGameManager : MonoBehaviour
     private void Awake()
     {
         i = this;
-        allItems = Resources.LoadAll<ItemData>("Items").ToList();
+        _allItems = Resources.LoadAll<ItemData>("Items").ToList();
+
+        var itemIDs = new Dictionary<ID, ItemData>();
+        foreach (var i in _allItems) {
+            if (itemIDs.ContainsKey(i.ID)) {
+                Debug.LogError("Duplicate ID found for item " + i.Name + " and " + itemIDs[i.ID].Name + ". This will cause problems with saving/loading inventory. Please regenerate the ID of one of these items.");
+            }
+            itemIDs[i.ID] = i;
+
+            _runtimeItemData.Add(new RuntimeItemData(i));
+        }
 
         LoadInventory();
     }
 
     void Start()
     {
-        currency = PlayerPrefs.GetFloat("PlayerCurrency", 100);
+        _currency = PlayerPrefs.GetFloat("PlayerCurrency", 100);
         ChangeCurrency(0);
 
-        //bad liine of temp code
-        ChangeScene(sceneUIList[sceneUIList.Count - 1], true);
+        foreach (var a in _areas) a.SetActiveState(false);
+        _titleScreen.SetActive(true);
+    }
+
+    public void ShowInitialMap()
+    {
+        _mapStartBacking.SetActive(true);
+        _mapParent.SetActive(true);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            if (_invParent.activeInHierarchy) _invParent.SetActive(false);
+            else if (_mapParent.activeInHierarchy) _mapParent.SetActive(false);
+        }
+
+        if (Input.GetKeyDown(KeyCode.M) && !_invParent.activeInHierarchy) {
+            if (_mapParent.activeInHierarchy) _mapParent.SetActive(false);
+            else _ = ChangeArea(AreaName.MAP);
+        }
+
+        if (Input.GetKeyDown(KeyCode.I) || Input.GetKeyDown(KeyCode.E)) {
+            if (!_mapParent.activeInHierarchy) _ = ChangeArea(AreaName.MAP);
+
+            if (!_invParent.activeInHierarchy) _invParent.SetActive(true);
+            else _invParent.SetActive(false);
+        }
+    }
+
+    public void UnlockItem(ItemData item)
+    {
+        for (int i = 0; i < _runtimeItemData.Count; i++) {
+            if (_runtimeItemData[i].Item == item) _runtimeItemData[i].Unlocked = true;
+        }
+        print("Unlocked: " + item);
+    }
+
+    public List<ItemData> GetAllItems(bool unlockedOnly)
+    {
+        if (!unlockedOnly) return _allItems;
+        else return _runtimeItemData.Where(x => x.Unlocked).Select(x => x.Item).ToList();
+    }
+
+    public int GetNumberOwned(ItemData item)
+    {
+        if (!_inventory.ContainsKey(item)) return 0;
+        return _inventory[item];
     }
 
     /// <summary>
@@ -53,8 +137,8 @@ public class TownGameManager : MonoBehaviour
     /// </summary>
     public List<ItemData> GetInventoryItems()
     {
-        var items = allItems;
-        return items.Where(x => this.items.ContainsKey(x) && this.items[x] > 0).ToList();
+        var items = _allItems;
+        return items.Where(x => this._inventory.ContainsKey(x) && this._inventory[x] > 0).ToList();
     } 
 
     /// <summary>
@@ -83,46 +167,27 @@ public class TownGameManager : MonoBehaviour
 
     public async Task ChangeArea(AreaName targetArea)
     {
-        await FadeScreen(true);
+        _mapStartBacking.SetActive(false);
 
-        if (_demoMode) {
-            targetArea = AreaName.PARK;
-            sceneUIList[^1].gameObject.SetActive(false);
+        if (targetArea == AreaName.MAP) {
+            foreach (var a in _areas) if (a.Type == AreaName.MAP) a.SetActiveState(true);
+            return;
         }
-        foreach (var a in _areas) a.SetActiveState(a.Type == targetArea);
+        if (targetArea == AreaName.RECORDS) {
+            foreach (var a in _areas) if (a.Type == AreaName.RECORDS) a.SetActiveState(true);
+            return;
+        }
 
+        await FadeScreen(true);
+        foreach (var a in _areas) a.SetActiveState(a.Type == targetArea);
         await FadeScreen(false);        
     }
 
     public void BuyItem(ItemData item)
     {
-        if (item.Cost > currency) return;
+        if (item.Cost > _currency) return;
         ChangeCurrency(-item.Cost);
         AddInventory(item);
-    }
-
-    public async void ChangeScene(GameObject newSceneUI, bool firstLaunch = false)
-    {
-        if (_demoMode && !newSceneUI.name.ContainsInsensitive("title")) {
-            await ChangeArea(AreaName.PARK);
-            return;
-        }
-
-        //fades out track
-        var musicPlayer = TownMusicPlayer.i;
-        if (newSceneUI && musicPlayer.currentTrack != null && musicPlayer.currentTrack.TrackName != newSceneUI.GetComponent<Area>().associatedTrack.TrackName) {
-            musicPlayer.StartCoroutine(musicPlayer.FadeTrackOut(musicPlayer.currentTrack));
-        }
-
-        //fades in load screen
-        if (!firstLaunch) await FadeScreen(true);
-
-        //enable the correct UI object
-        foreach (var s in sceneUIList) {
-            if (s) s.SetActive(newSceneUI == s);
-        }
-
-        await FadeScreen(false);
     }
 
     public void LoadCharacterCreator()
@@ -130,41 +195,13 @@ public class TownGameManager : MonoBehaviour
         SceneManager.LoadScene(_characterCreatorSceneIndex);
     }
 
-
-    [Header(":::::::::")]
-    [SerializeField] private CharacterManager _characterManager;
-
-    [Header ("Inventory")]
-    public float currency;
-    
-    public List<RecordsManager> recordsManagers = new List<RecordsManager>();
-
-    [SerializeField] private List<ItemData> allItems = new List<ItemData> ();
-    
-    public List<string> itemNames= new List<string> (); 
-    public List<int> itemCounts = new List<int> ();
-    public Dictionary<ItemData, int> items = new Dictionary<ItemData, int> ();
-
-    [Header ("UI Lists")]
-
-    public List<GameObject> sceneList = new List<GameObject>();
-    public List<GameObject> sceneUIList = new List<GameObject>();
-
-    [SerializeField] private GameObject _townMapUI;
-    public GameObject neighborhoodUI;
-    public GameObject minigameUI;
-    //public GameObject neighborhood;
-
-    public GameObject fadeScreen;
-
-
     public async Task FadeScreen(bool fadeIn)
     {
         if (fadeIn) 
         {
-            fadeScreen.SetActive(true);
+            _fadeScreen.SetActive(true);
 
-            var opacity = fadeScreen.GetComponent<Image>();
+            var opacity = _fadeScreen.GetComponent<Image>();
             float step = 0;
             while (opacity.color.a < 1)
             {
@@ -173,16 +210,14 @@ public class TownGameManager : MonoBehaviour
                 opacity.color = tempOpacity;
                 step += 50f * Time.deltaTime;
 
-
                 await Task.Delay(Mathf.FloorToInt(10000 * Time.deltaTime));
-
             }
         }
         else
         {
             await Task.Delay(500);
 
-            var opacity = fadeScreen.GetComponent<Image>();
+            var opacity = _fadeScreen.GetComponent<Image>();
             float step = 1;
             while (opacity.color.a > 0)
             {
@@ -196,78 +231,45 @@ public class TownGameManager : MonoBehaviour
 
             }
 
-            fadeScreen.SetActive(false);
+            _fadeScreen.SetActive(false);
 
         }
-    }
-
-    
+    }    
 
     public void ChangeCurrency(float curChange)
     {
-        currency += curChange;
-
-        /*foreach (TMP_Text i in currencyDisplays)
-        {
-            i.text =  "$" + currency.ToString("F2");
-        }*/
-
-        PlayerPrefs.SetFloat("PlayerCurrency", currency);
-
+        _currency += curChange;
+        PlayerPrefs.SetFloat("PlayerCurrency", _currency);
     }
 
     public void AddInventory(ItemData newItem)
     {
-        if (items.ContainsKey(newItem))
+        if (_inventory.ContainsKey(newItem))
         {
-            items[newItem] += 1;
+            _inventory[newItem] += 1;
         }
         else{
-            items.Add(newItem, 1);
+            _inventory.Add(newItem, 1);
         }
-
-        //items.Add(inventoryName);
-
-        UpdateInventoryInspector();
 
         SaveCurrentInventory();
     }
 
     public void SubtractInventory(ItemData newItem)
     {
-        if (items.ContainsKey(newItem))
+        if (_inventory.ContainsKey(newItem))
         {
-            items[newItem] -= 1;
+            _inventory[newItem] -= 1;
         }
-   
-        UpdateInventoryInspector();
-
         SaveCurrentInventory();
-    }
-
-    private void UpdateInventoryInspector()
-    {
-        itemNames.Clear();
-
-        foreach (var i in items.Keys)
-        {
-            itemNames.Add(i.ToString());
-        }
-
-        itemCounts.Clear();
-
-        foreach (var j in items.Values)
-        {
-            itemCounts.Add(j);
-        }
     }
 
     private void SaveCurrentInventory()
     {
         string inventory= "";
-        foreach (var i in items.Keys)
+        foreach (var i in _inventory.Keys)
         {
-            inventory += i.Name + "," + items[i] + ":";
+            inventory += i.Name + "," + _inventory[i] + ":";
         }
 
         PlayerPrefs.SetString("Inventory", inventory);
@@ -281,7 +283,7 @@ public class TownGameManager : MonoBehaviour
         string inventory = PlayerPrefs.GetString("Inventory");
 
         var inventoryList = inventory.Split(':');
-        items.Clear();
+        _inventory.Clear();
 
 
         foreach (var itemString in inventoryList) { 
@@ -292,16 +294,14 @@ public class TownGameManager : MonoBehaviour
             if (parsedItem == null) continue;
 
             ItemData newItem = parsedItem;
-            items.Add(newItem, int.Parse(parts[1]));
+            _inventory.Add(newItem, int.Parse(parts[1]));
         }
-
-        UpdateInventoryInspector();
     }
 
 
     private ItemData GetItemFromName(string coolItem)
     {
-        foreach (var item in allItems)
+        foreach (var item in _allItems)
         {
             if (item.Name.Equals(coolItem))
             {
@@ -322,17 +322,17 @@ public class TownGameManager : MonoBehaviour
     {
         rManager.ClearRecords();
 
-        foreach (ItemData i in allItems)
+        foreach (ItemData i in _allItems)
         {
             if (i.Type == type)
             {
                 //if held
-                if (items.ContainsKey(i) && items[i] != 0 && i.unlocked)
+                if (_inventory.ContainsKey(i) && _inventory[i] != 0 && i.StartUnlocked)
                 {
-                    rManager.CreateHeldItem(i, items[i], i.Cost);
+                    rManager.CreateHeldItem(i, _inventory[i], i.Cost);
                 }
                 //if previously held, but count = 0
-                else if (i.unlocked)
+                else if (i.StartUnlocked)
                 {
                     rManager.CreateUnheldItem(i, 0, i.Cost);
                 }                

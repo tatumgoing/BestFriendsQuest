@@ -79,7 +79,10 @@ public class HairController : MonoBehaviour, IFeatureController
         foreach (var f in _allOptions) if (f.name == parts[0]) selected = f;
 
         //foreach (var f in _allOptions) if (f.Icon.name != parts[0]) print("|" + f.Icon.name + " != " + parts[0]);
-        //if (selected == null) print("couln't find " + parts[0] + " feature. count: " + _allFeatures.Count);
+        if (selected == null) {
+            print("couln't find " + parts[0] + " feature. count: " + _allOptions.Count);
+            return;
+        }
 
         var newFeature = AddFeature(selected);
         newFeature.ConfigureFromString(parts[1]);
@@ -149,11 +152,17 @@ public class HairController : MonoBehaviour, IFeatureController
         //print("adding hair. isMain: " + data.IsMainHair + ", name: " +  data.name);
         if (data.IsMainHair) {
             for (int i = _currentPieces.Count - 1; i >= 0; i--) {
-                if (_currentPieces[i].GetData().IsMainHair) Delete(_currentPieces[i]);
+                if (_currentPieces[i].GetData().IsMainHair) {
+                    print("Deleting main hair: " + _currentPieces[i].GetData().name);
+                    Delete(_currentPieces[i]);
+                }
             }
         }
 
         var newFeature = Instantiate(_featurePrefab, _featureListParent).GetComponent<HairPiece>();
+        //Debug.LogError("Instantiating hair piece: " + data.name);
+        //print("initializing new hair piece: " + data.name);
+
         newFeature.Initialize(data, this);
         _currentPieces.Add(newFeature);
         _currentIndex = _currentPieces.Count - 1;
@@ -171,6 +180,7 @@ public class HairController : MonoBehaviour, IFeatureController
 
     public void Delete(FeatureObj feature)
     {
+        //print("Deleting hair feature: " + feature.GetData().name);
         if (Current == feature) _currentIndex = Mathf.Max(0, _currentIndex - 1);
         _currentPieces.Remove((HairPiece)feature);
         Destroy(feature.gameObject);

@@ -13,9 +13,12 @@ public enum Difficulty { EASY, MEDIUM, HARD, EXTREME }
 public class RecipeData : ScriptableObject
 {
     public string Name;
+    [TextArea(3,10)] public string Description;
     public Sprite Icon;
     public float MaxScore;
     public int MoneyReward;
+    public float HappinessReward = 30;
+    public float RelationshipReward = 1.5f;
 
     public Difficulty Difficulty;
 
@@ -27,18 +30,16 @@ public class RecipeData : ScriptableObject
         {SubgameType.SITRRING, "Stir"},
         {SubgameType.GRILLING, "Grill"},
         {SubgameType.CHOPPING, "Chop"},
+        {SubgameType.BOILING, "Boil"},
     };
 
     public string ReturnSteps()
     {
-        int stepNumber = 1;
         string stepsStr = "";
 
         //for every subgame, add the number of step, the verb, and a line break
-        foreach (SubgameData s in Subgames)
-        { 
-            stepsStr += stepNumber.ToString() + ". " + subgameToVerb[s.Type].ToString() + "\n";
-            stepNumber++;
+        for (int i = 0; i < Subgames.Count; i++) {
+            stepsStr += (i+1) + ". " + subgameToVerb[Subgames[i].Type] + " " + Subgames[i].IngredientName + "\n";
         }
 
         return stepsStr;

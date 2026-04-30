@@ -18,7 +18,7 @@ public class CurrencyDisplays : MonoBehaviour
 
     void Update()
     {
-        currencyDisplay.text = (_removeDollarSign ? "" : "$") + gameManager.currency.ToString("F2");
+        currencyDisplay.text = (_removeDollarSign ? "" : "$") + gameManager.Currency.ToString("F2");
         if (_shadowText) _shadowText.text = currencyDisplay.text;
     }
 }

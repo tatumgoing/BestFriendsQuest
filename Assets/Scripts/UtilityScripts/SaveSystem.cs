@@ -5,6 +5,7 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
+using static UnityEngine.Rendering.DebugUI;
 /// <summary>
 /// Handles saving and loading data to and from files, as well as loading save strings by ID for characters.
 /// </summary>
@@ -12,6 +13,7 @@ public static class SaveSystem
 {
     private static readonly string saveFolder = "/SaveData/";
     public static readonly string dynamicDataFileName = "dynamicData.txt";
+    public static readonly string relationshipFileName = "relationships.txt";
     public static readonly string highscoreFileName = "highscores.txt";
     public static readonly string staticDataFileName = "characters.txt";
     public static readonly string relationshipsFileName = "relationships.txt";
@@ -35,6 +37,51 @@ public static class SaveSystem
 
         saveStrings.Add(dynamicData);
         SaveToFile(dynamicDataFileName, string.Join("\n", saveStrings));
+    }
+
+    public static void SaveRelationship(ID id1, ID id2, float value)
+    {
+        var relationships = ReadFromFile(relationshipsFileName).Split("\n").Where(x => x.Length > 2).ToList();
+
+        bool found = false;
+        for (int i = 0; i < relationships.Count; i++) {
+
+            var parts = relationships[i].Split(",");
+            var loadedID1 = int.Parse(parts[0]);
+            var loadedID2 = int.Parse(parts[1]);
+
+            if (loadedID1 == id1 && loadedID2 == id2) {
+                parts[2] = value.ToString();
+                found = true;
+                relationships[i] = string.Join(",", parts);
+                break;
+            }
+        }
+        if (!found) relationships.Add(id1 + "," +  id2 + "," + value);
+
+        SaveToFile(relationshipsFileName, string.Join("\n", relationships));
+    }
+
+    public static float LoadRelationship(ID id1, ID id2)
+    {
+        var higherID = Mathf.Max(id1, id2);
+        var lowerID = Mathf.Min(id1, id2);
+        id1 = new ID(higherID);
+        id2 = new ID(lowerID);
+
+        var relationships = ReadFromFile(relationshipsFileName).Split("\n").Where(x => x.Length > 2).ToList();
+
+        for (int i = 0; i < relationships.Count; i++) {
+            var parts = relationships[i].Split(",");
+            var loadedID1 = int.Parse(parts[0]);
+            var loadedID2 = int.Parse(parts[1]);
+
+            if (loadedID1 == id1 && loadedID2 == id2) {
+                return float.Parse(parts[2]);
+            }
+        }
+        
+        return 0;
     }
 
     /// <summary>
