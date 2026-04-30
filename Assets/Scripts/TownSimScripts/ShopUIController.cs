@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public interface IItemListController
 {
@@ -16,6 +18,10 @@ public class ShopUIController : MonoBehaviour, IItemListController
     [SerializeField] private CurrentlySelectedItem _currentlySelected;
     [SerializeField] private SelectableItem _purchaseButton;
     [SerializeField] private ClothingShopController _areaController;
+
+    // sorry Aidan
+
+    [SerializeField] private Image _hoveringItem;
 
     [Header("Sounds")]
     [SerializeField] private Sound _purchaseSound;
@@ -35,6 +41,8 @@ public class ShopUIController : MonoBehaviour, IItemListController
         }
         BuildList();
         UpdatePurchaseButton();
+
+        _hoveringItem.sprite = _currentlySelectedItem.sprite;
     }
 
     private void Update()
@@ -70,6 +78,8 @@ public class ShopUIController : MonoBehaviour, IItemListController
         UpdatePurchaseButton();
 
         _areaController?.DisplayItem(item);
+
+        _hoveringItem.sprite = item.sprite;
     }
 
     private void UpdatePurchaseButton()
