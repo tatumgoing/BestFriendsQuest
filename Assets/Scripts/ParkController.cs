@@ -77,7 +77,7 @@ public class ParkController : MonoBehaviour
     private List<ID> SelectCharactersToSpawn()
     {
         var IDs = CharacterManager.i.AllIDs();
-        IDs.Reverse();
+        IDs.Shuffle();
 
         IDs = IDs.Take(_spawnSpots.Count).ToList();
         return IDs;

@@ -32,7 +32,7 @@ public class ParkFreecam : MonoBehaviour
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
 
-            var scroll = Input.mouseScrollDelta.y;
+            var scroll = -Input.mouseScrollDelta.y;
             var targetFovDelta = scroll * _fovSpeed * Time.deltaTime;
             _fovDelta = Mathf.Lerp(_fovDelta, targetFovDelta, _fovLerpFactor * Time.deltaTime);
 

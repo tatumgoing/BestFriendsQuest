@@ -113,6 +113,7 @@ public class CookingMinigame : MinigameController
 
         _recipientSelectScreen.SelectPreviousPrimary(id);
 
+        if (_areaController.SpawnedCharacter == null) _areaController.SpawnCharacter(id);
         _spawnedCharacter = _areaController.SpawnedCharacter.gameObject;
         _spawnedCharacter.GetComponent<SpawnedCharacter>().SetHat(_chefHat);
     }

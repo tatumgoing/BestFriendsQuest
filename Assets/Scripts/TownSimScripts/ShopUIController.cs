@@ -42,7 +42,7 @@ public class ShopUIController : MonoBehaviour, IItemListController
         BuildList();
         UpdatePurchaseButton();
 
-        _hoveringItem.sprite = _currentlySelectedItem.sprite;
+        if (_hoveringItem) _hoveringItem.sprite = _currentlySelectedItem.sprite;
     }
 
     private void Update()
@@ -79,7 +79,7 @@ public class ShopUIController : MonoBehaviour, IItemListController
 
         _areaController?.DisplayItem(item);
 
-        _hoveringItem.sprite = item.sprite;
+        if (_hoveringItem) _hoveringItem.sprite = item.sprite;
     }
 
     private void UpdatePurchaseButton()
