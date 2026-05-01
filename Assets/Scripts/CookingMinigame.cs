@@ -127,7 +127,7 @@ public class CookingMinigame : MinigameController
 
     public void ShowRecipeOptions()
     {
-        _recipeSelector.ShowRecipes(_recipes);
+        _recipeSelector.ShowRecipes(_recipes, _selectedCharacter, _selectedRecipient);
     }
 
     public void StartCooking(RecipeData recipe)

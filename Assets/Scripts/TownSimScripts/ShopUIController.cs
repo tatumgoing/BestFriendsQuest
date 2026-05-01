@@ -4,7 +4,6 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
 
 public interface IItemListController
 {
@@ -55,7 +54,7 @@ public class ShopUIController : MonoBehaviour, IItemListController
 
     private void BuildList()
     {
-        var selectedItems = TownGameManager.i.GetAllItems(true).Where(x => x.Type == _type).ToList();
+        var selectedItems = TownGameManager.i.GetAllItems(true).Where(x => x.Type == _type).OrderBy(x => x.Cost).ToList();
         _itemList.DisplayItem(selectedItems, this);
         _itemList.SetFirstSelected();
     }
