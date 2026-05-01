@@ -16,9 +16,14 @@ public class RecipeSelector : MonoBehaviour
 
     private List<RecipeSelectButton> _spawnedButtons = new List<RecipeSelectButton>();
     private RecipeData _selected;
+    private ID _chef;
+    private ID _recipient;
 
-    public void ShowRecipes(List<RecipeData> selectedRecipes)
+    public void ShowRecipes(List<RecipeData> selectedRecipes, ID chef, ID recipient)
     {
+        _chef = chef;
+        _recipient = recipient;
+
         _startButton.SetActive(false);
         BuildRecipeList(selectedRecipes);
         gameObject.SetActive(true);
@@ -58,7 +63,7 @@ public class RecipeSelector : MonoBehaviour
             highscore = tempDict[_selected.name];
         }
 
-        _currentRecipe.Show(_selected, highscore);
+        _currentRecipe.Show(_selected, highscore, _chef, _recipient);
     }
 
 

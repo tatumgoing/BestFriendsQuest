@@ -19,7 +19,9 @@ public class RecipeDisplay : MonoBehaviour
     [SerializeField] private GameObject _goldIcon;
     [SerializeField] private GameObject _specialIcon;
 
-    public void Show(RecipeData data, float highscore)
+    [SerializeField] private RecipeCharacterEffects _characterEffects;
+
+    public void Show(RecipeData data, float highscore, ID chef, ID recipient)
     {
         _bigIcon.sprite = data.Icon;
         _mame.text = data.Name;
@@ -30,6 +32,8 @@ public class RecipeDisplay : MonoBehaviour
 
         if (highscore > 0) HighscoreDisplay(highscore);
         else _highScore.text = "";
+
+        _characterEffects.Show(chef, recipient);
     }
 
     public void HighscoreDisplay(float highscore)
