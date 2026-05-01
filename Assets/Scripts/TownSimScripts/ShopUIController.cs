@@ -55,6 +55,7 @@ public class ShopUIController : MonoBehaviour, IItemListController
     private void BuildList()
     {
         var selectedItems = TownGameManager.i.GetAllItems(true).Where(x => x.Type == _type).OrderBy(x => x.Cost).ToList();
+        if (_type == ItemType.Clothing) selectedItems = selectedItems.OrderBy(x => x.ClothingType == ClothingType.HAT).ToList();
         _itemList.DisplayItem(selectedItems, this);
         _itemList.SetFirstSelected();
     }

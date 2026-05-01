@@ -81,10 +81,10 @@ public class RestrauntController : MonoBehaviour
 
     public SpawnedCharacter SpawnCharacter(ID id)
     {
-        var character = CharacterManager.i.SpawnCharacter(id, _characterSpawnPoint);
-        character.transform.SetParent(_characterSpawnPoint);
-        character.transform.localPosition = Vector3.zero;
-        return character;
+        _spawnedCharacter = CharacterManager.i.SpawnCharacter(id, _characterSpawnPoint);
+        _spawnedCharacter.transform.SetParent(_characterSpawnPoint);
+        _spawnedCharacter.transform.localPosition = Vector3.zero;
+        return _spawnedCharacter;
     }
 
     //make camera controller 

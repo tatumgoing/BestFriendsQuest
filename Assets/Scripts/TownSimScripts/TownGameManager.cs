@@ -86,6 +86,18 @@ public class TownGameManager : MonoBehaviour
         _titleScreen.SetActive(true);
     }
 
+    public void ResetInventory()
+    {
+        _inventory = new Dictionary<ItemData, int>();
+        SaveCurrentInventory();
+    }
+
+    public void SetCurrency(int currency)
+    {
+        _currency = currency;
+        ChangeCurrency(0);
+    }
+
     public void ShowInitialMap()
     {
         _mapStartBacking.SetActive(true);
