@@ -42,7 +42,7 @@ public class CharacterManager : MonoBehaviour
                 }
             }
         }
-        //RandomizeRelationships();
+        RandomizeRelationships();
 
         GenerateProblem();
     }
@@ -138,7 +138,7 @@ public class CharacterManager : MonoBehaviour
         var selectedProblem = _allProblems[Random.Range(0, _allProblems.Count)];
         AssignProblem(selectedCharacterID, selectedProblem);
 
-        print("gave problem: " + selectedProblem.name + " to " + GetNameFormatted(selectedCharacterID));
+        //print("gave problem: " + selectedProblem.name + " to " + GetNameFormatted(selectedCharacterID));
     }
 
     private void LoadProblems()
@@ -150,9 +150,9 @@ public class CharacterManager : MonoBehaviour
     [ButtonMethod]
     public void RandomizeRelationships()
     {
-        print("Randoming all relationships (for testing)");
+        //print("Randoming all relationships (for testing)");
         for (int i = 0; i < _relationships.Count; i++) {
-            _relationships[i].Value = Random.Range(0, 10f);
+            _relationships[i].Value = Random.Range(0, 1.5f);
             SaveRelationship(_relationships[i]);
         }
     }

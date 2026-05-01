@@ -12,6 +12,7 @@ public class RoomUIController : MonoBehaviour
     [SerializeField] private GameObject _talkOnlyButtonParent;
     [SerializeField] private GameObject _buttonsParent;
     [SerializeField] private GameObject _backButton;
+    [SerializeField] private ProblemRewardsDisplay _problemRewardsDisplay;
 
     private ID _id;
 
@@ -30,6 +31,8 @@ public class RoomUIController : MonoBehaviour
         _talkOnlyButtonParent.SetActive(hasSolvedProblem);
         _buttonsParent.SetActive(!hasSolvedProblem);
         _backButton.SetActive(!hasSolvedProblem);
+        if (hasSolvedProblem) _problemRewardsDisplay.Show(problem);
+        else _problemRewardsDisplay.gameObject.SetActive(false);
 
         _giftMenu.gameObject.SetActive(false);
 
