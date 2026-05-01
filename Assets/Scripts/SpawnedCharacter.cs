@@ -153,7 +153,6 @@ public class SpawnedCharacter : MonoBehaviour
         _saveString = saveString;
         _characterController.LoadFromString(saveString);
         ID = _characterController.Data.ID;
-        
 
         gameObject.name = _characterController.Data.Name + " (spawned character)";
 

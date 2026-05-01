@@ -58,6 +58,8 @@ public class CharacterRigController : MonoBehaviour
 
     private bool _initialized;
 
+    private Dictionary<BoneSliderName, float> _savedValues = new Dictionary<BoneSliderName, float>();
+
     private void OnValidate()
     {
         foreach (var data in _bones) {
@@ -94,6 +96,13 @@ public class CharacterRigController : MonoBehaviour
         OnValidate();
     }
 
+    private void Update()
+    {
+        foreach (var data in _savedValues) {
+            SetValue(data.Value, data.Key, false);
+        }
+    }
+
     private void Initialize()
     {
         if (_initialized || !_boneParent) return;
@@ -122,9 +131,11 @@ public class CharacterRigController : MonoBehaviour
         //print(gameObject.name + " was disabled");
     }
 
-    public void SetValue(float value, BoneSliderName slider)
+    public void SetValue(float value, BoneSliderName slider, bool addToDict = true)
     {
         if (!_initialized) Initialize();
+
+        if (addToDict) _savedValues[slider] = value;
 
         //print("Setting value" + slider + " to " + value);
         foreach (var b in _allBones) {
