@@ -81,9 +81,15 @@ public class RestrauntController : MonoBehaviour
 
     public SpawnedCharacter SpawnCharacter(ID id)
     {
+        if (_spawnedCharacter != null) DestroySpawnedCharacter();
+
+        print("About to spawn character");
         _spawnedCharacter = CharacterManager.i.SpawnCharacter(id, _characterSpawnPoint);
         _spawnedCharacter.transform.SetParent(_characterSpawnPoint);
         _spawnedCharacter.transform.localPosition = Vector3.zero;
+
+        print("finished spawning character");
+
         return _spawnedCharacter;
     }
 
