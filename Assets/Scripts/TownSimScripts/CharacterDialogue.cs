@@ -16,6 +16,7 @@ public class CharacterDialogue : MonoBehaviour
 {
     [SerializeField] private Sound _beepSound;
     [SerializeField] private float _letterDelay = 0.02f;
+    [SerializeField] private GameObject _giftRecievedInfo;
 
 
     [SerializeField] private List<string> _randomLines = new List<string>();
@@ -66,12 +67,20 @@ public class CharacterDialogue : MonoBehaviour
         }
     }
 
-    public void Talk(ID id)
+    public void Talk(ID id, bool justGaveGift)
     {
+        _giftRecievedInfo.SetActive(justGaveGift);
+
         _id = id;
         var characterDialogue = CharacterManager.i.GetDialogue(id);
 
-        if (characterDialogue == "") ShowRandomText();
+        if (justGaveGift) {
+            ShowText("Thank you so much! I love it!"); 
+            _minigameButtons.SetActive(false);
+            _closeButton.SetActive(true);
+            return;
+        }
+        else if (characterDialogue == "") ShowRandomText();
         else ShowText(characterDialogue);
 
         var currentProblem = CharacterManager.i.GetProblem(id);

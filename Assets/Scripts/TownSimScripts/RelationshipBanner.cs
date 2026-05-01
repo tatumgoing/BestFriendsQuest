@@ -13,8 +13,11 @@ public class RelationshipBanner : MonoBehaviour
 
     private ID _id;
 
-    public void ShowRelationship(ID id, float relationshipLevel, string levelName)
+    public void ShowRelationship(ID id, float relationshipLevel)
     {
+        var nameOptions = new string[] { "acquaintance", "Pal", "Buddy", "Friend", "Good Friend", "Besties" };
+        var levelName = nameOptions[Mathf.Clamp(Mathf.FloorToInt(relationshipLevel), 0, 5)];
+
         _id = id;
         _portraitImg.sprite = CharacterManager.i.GetPortrait(id);
         _nameText.text = CharacterManager.i.GetNameFormatted(id);

@@ -14,9 +14,17 @@ public class RoomUIController : MonoBehaviour
     [SerializeField] private GameObject _backButton;
     [SerializeField] private ProblemRewardsDisplay _problemRewardsDisplay;
 
+    private bool _justGaveGift;
     private ID _id;
 
-    public void ShowCurrent() => Show(_id);
+    public void GiveGift()
+    {
+        _justGaveGift = true;
+        Show(_id);
+
+        Talk();
+    }
+
     public void Show(ID id)
     {
         _id = id;
@@ -28,9 +36,12 @@ public class RoomUIController : MonoBehaviour
 
         var problem = CharacterManager.i.GetProblem(id);
         var hasSolvedProblem = problem && problem.IsSolved;
-        _talkOnlyButtonParent.SetActive(hasSolvedProblem);
-        _buttonsParent.SetActive(!hasSolvedProblem);
-        _backButton.SetActive(!hasSolvedProblem);
+        var forceTalk = hasSolvedProblem || _justGaveGift;
+
+        _talkOnlyButtonParent.SetActive(forceTalk);
+        _buttonsParent.SetActive(!forceTalk);
+        _backButton.SetActive(!forceTalk);
+
         if (hasSolvedProblem) _problemRewardsDisplay.Show(problem);
         else _problemRewardsDisplay.gameObject.SetActive(false);
 
@@ -46,7 +57,8 @@ public class RoomUIController : MonoBehaviour
 
     public void Talk()
     {
-        _dialogue.Talk(_id);
+        _dialogue.Talk(_id, _justGaveGift);
+        _justGaveGift = false;
     }
 
     public void ShowGiftMenu()

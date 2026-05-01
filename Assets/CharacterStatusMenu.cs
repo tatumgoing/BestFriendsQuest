@@ -103,7 +103,7 @@ public class CharacterStatusMenu : MonoBehaviour
     private void SpawnRelationshipBanner(float relationshipValue, ID otherID)
     {
         var newRelationshipEntry = Instantiate(_relationshipBannerPrefab, _relationshipListParent).GetComponent<RelationshipBanner>();
-        newRelationshipEntry.ShowRelationship(otherID, relationshipValue, "Buddy");
+        newRelationshipEntry.ShowRelationship(otherID, relationshipValue);
         if (_spawnedBanners.Count >= 5) newRelationshipEntry.gameObject.SetActive(false); //TEMP
 
         _spawnedBanners.Add(newRelationshipEntry);
