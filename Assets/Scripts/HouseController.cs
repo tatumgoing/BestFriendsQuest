@@ -11,6 +11,7 @@ public class HouseController : MonoBehaviour
     [SerializeField] private GameObject _ruinedHouse;
     [SerializeField] private GameObject _houseModel;
     [SerializeField] private ColorApplier _mainHouseColor;
+    [SerializeField] private Animator _houseAnimator;
 
     [SerializeField, ReadOnly] private string favColor;
     [SerializeField, ReadOnly] private Color favColorColor;
@@ -68,6 +69,8 @@ public class HouseController : MonoBehaviour
         _houseModel.SetActive(true);
 
         _mainHouseColor.ApplyColor(CharacterManager.i.GetClothingColor(id));
+
+        _houseAnimator.SetBool("HasProblem", CharacterManager.i.GetProblem(id) != null);
     }
 
     private void UpdateHovered()

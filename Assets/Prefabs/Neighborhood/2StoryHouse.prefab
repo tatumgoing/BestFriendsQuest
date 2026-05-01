@@ -214,6 +214,7 @@ MonoBehaviour:
   _ruinedHouse: {fileID: 1639676899209223398}
   _houseModel: {fileID: 1997440039791357173}
   _mainHouseColor: {fileID: 7919357786725082967}
+  _houseAnimator: {fileID: 5758238629861453342}
   favColor: 
   favColorColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &4293386109329721805
@@ -623,6 +624,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 08e3b18146ade254795ac1789d4fe753, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7919357786725082967}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 08e3b18146ade254795ac1789d4fe753, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5758238629861453342}
   m_SourcePrefab: {fileID: 100100000, guid: 08e3b18146ade254795ac1789d4fe753, type: 3}
 --- !u!4 &1221466771116504655 stripped
 Transform:
@@ -675,6 +679,27 @@ MonoBehaviour:
   _fieldName: _BaseColor
   _valueDif: 0.02
   _satDif: 0.08
+--- !u!95 &5758238629861453342
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1997440039791357173}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 0415f3a5c08f50b4dbadc530592c628b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &1873537724125454775
 PrefabInstance:
   m_ObjectHideFlags: 0
