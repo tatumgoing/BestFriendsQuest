@@ -24,6 +24,11 @@ public class MinigameResultsScreen : MonoBehaviour
     [SerializeField] private Color _unhappyColor = Color.red;
     [SerializeField] private Image _happinessCharacterPortrait;
 
+
+    [Space()]
+    [SerializeField] private TextMeshProUGUI _happiness2EffectText;
+    [SerializeField] private Image _happiness2CharacterPortrait;
+
     [Space()]
     [SerializeField] private MinigameNarrativeResults _narrative;
 
@@ -39,7 +44,7 @@ public class MinigameResultsScreen : MonoBehaviour
 
         ColorStars(finalScore);
 
-        ShowHappiness(finalScore, character);
+        ShowHappiness(finalScore, character, recipient);
 
         _cashRewardText.text = Mathf.CeilToInt(finalScore * recipe.MoneyReward).ToString();
 
@@ -62,7 +67,7 @@ public class MinigameResultsScreen : MonoBehaviour
         if (finalScore > 0.75f) _stars[2].color = _goldStarColor;
     }
 
-    private void ShowHappiness(float finalScore, ID character)
+    private void ShowHappiness(float finalScore, ID character, ID recipient)
     {
         if (finalScore <= 0.33f) {
             _happinessEffectText.text = "-";
@@ -74,6 +79,9 @@ public class MinigameResultsScreen : MonoBehaviour
             _happinessEffectText.color = _happyColor;
         } 
         _happinessCharacterPortrait.sprite = CharacterManager.i.GetPortrait(character);
+
+        _happiness2CharacterPortrait.sprite = CharacterManager.i.GetPortrait(recipient);
+        _happiness2EffectText.text = _happinessEffectText.text;
     }
 
     public void ReturnToProblemRoom()
