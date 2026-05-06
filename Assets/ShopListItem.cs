@@ -20,6 +20,7 @@ public class ShopListItem : MonoBehaviour, IListIItem
     void IListIItem.Destroy() => Destroy(gameObject);
     public void Select() => _controller.SelectItem(_item);
     public void SetSelected() => _buttonScript.Select(true);
+    public void SetActive(bool active) => gameObject.SetActive(active);
 
     public void Initialize(ItemData item, IItemListController controller)
     {

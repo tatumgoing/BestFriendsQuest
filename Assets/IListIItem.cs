@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public interface IListIItem
 {
     public abstract void SetSelected();
@@ -8,4 +10,5 @@ public interface IListIItem
     public abstract void Deselect();
     public abstract void Hide();
     public abstract void Show();
+    public abstract void SetActive(bool active); 
 }

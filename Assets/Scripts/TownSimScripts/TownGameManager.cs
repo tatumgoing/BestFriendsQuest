@@ -12,6 +12,7 @@ public class RuntimeItemData
 {
     public ItemData Item;
     public bool Unlocked;
+    public bool AlreadyOwned;
 
     public RuntimeItemData(ItemData itemData)
     {
@@ -136,6 +137,16 @@ public class TownGameManager : MonoBehaviour
     {
         if (!unlockedOnly) return _allItems;
         else return _runtimeItemData.Where(x => x.Unlocked).Select(x => x.Item).ToList();
+    }
+
+    public bool IsUnlocked(ItemData item)
+    {
+        return _runtimeItemData.Where(x => x.Item == item).First().Unlocked;
+    }
+
+    public bool IsAlreadyOwned(ItemData item)
+    {
+        return _runtimeItemData.Where(x => x.Item == item).First().AlreadyOwned;
     }
 
     public int GetNumberOwned(ItemData item)
@@ -265,6 +276,10 @@ public class TownGameManager : MonoBehaviour
             _inventory.Add(newItem, 1);
         }
 
+        for (int i = 0; i < _runtimeItemData.Count; i++) {
+            if (_runtimeItemData[i].Item == newItem) _runtimeItemData[i].AlreadyOwned = true;
+        }
+
         SaveCurrentInventory();
     }
 
@@ -298,7 +313,6 @@ public class TownGameManager : MonoBehaviour
         var inventoryList = inventory.Split(':');
         _inventory.Clear();
 
-
         foreach (var itemString in inventoryList) { 
             var parts = itemString.Split(',');
             if (parts.Length != 2) continue;
@@ -307,8 +321,11 @@ public class TownGameManager : MonoBehaviour
             if (parsedItem == null) continue;
 
             ItemData newItem = parsedItem;
-            _inventory.Add(newItem, int.Parse(parts[1]));
+            AddInventory(newItem);
+            _inventory[newItem] = int.Parse(parts[1]);
         }
+
+        SaveCurrentInventory();
     }
 
 

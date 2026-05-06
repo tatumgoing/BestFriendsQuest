@@ -25,7 +25,7 @@ public class GiftMenu : MonoBehaviour, IItemListController
         _title.text = "A gift for " + CharacterManager.i.GetName(id) + "?";
 
         var items = TownGameManager.i.GetInventoryItems();
-        _itemListDisplay.DisplayItem(items, this);
+        _itemListDisplay.DisplayItems(items, this);
 
         ShowClothing();
     }
