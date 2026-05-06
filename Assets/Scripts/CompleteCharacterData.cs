@@ -10,6 +10,8 @@ public class CompleteCharacterData
     [SerializeField] private StaticCharacterData _staticData;
     [SerializeField] private DynamicCharacterData _dynamicData;
 
+    private PersonalityData _personality;
+
     /// <summary>
     /// Loads character data for the character with the given static saveString from the save file.
     /// loads dynamic data based on ID
@@ -18,6 +20,8 @@ public class CompleteCharacterData
     {
         _staticData = new StaticCharacterData();
         _staticData.FromStaticSaveString(staticSaveString);
+        _personality = CharacterManager.i.GetPersonality(_staticData.ID);
+        Debug.Log(_staticData.Name + " personality: " + _personality.Type);
 
         _dynamicData = new DynamicCharacterData(_staticData.ID);
         DisplayName = _staticData.Name;
@@ -78,7 +82,7 @@ public class CompleteCharacterData
 
     public string GetDialogue()
     {
-        if (_dynamicData.CurrentProblem == null) return "";
+        if (_dynamicData.CurrentProblem == null) return _personality.GetRandomLine();
         else return _dynamicData.CurrentProblem.Dialogue();
     }
 

@@ -18,8 +18,6 @@ public class CharacterDialogue : MonoBehaviour
     [SerializeField] private float _letterDelay = 0.02f;
     [SerializeField] private GameObject _giftRecievedInfo;
 
-
-    [SerializeField] private List<string> _randomLines = new List<string>();
     [SerializeField] private TextMeshProUGUI _textBox;
     [SerializeField] private GameObject _closeButton;
     [SerializeField] private GameObject _minigameButtons;
@@ -31,7 +29,6 @@ public class CharacterDialogue : MonoBehaviour
     private string _targetText;
 
     public void StartMinigame() => TownGameManager.i.QuickStartMinigame(_id);
-    private void ShowRandomText() => ShowText(_randomLines[Random.Range(0, _randomLines.Count)]);
 
     private void OnValidate()
     {
@@ -80,7 +77,6 @@ public class CharacterDialogue : MonoBehaviour
             _closeButton.SetActive(true);
             return;
         }
-        else if (characterDialogue == "") ShowRandomText();
         else ShowText(characterDialogue);
 
         var currentProblem = CharacterManager.i.GetProblem(id);

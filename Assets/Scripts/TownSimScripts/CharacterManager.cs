@@ -14,6 +14,7 @@ public class CharacterManager : MonoBehaviour
     [SerializeField, ReadOnly] private List<CompleteCharacterData> _allCharacters = new List<CompleteCharacterData>();
     [SerializeField, ReadOnly] private List<RelationshipData> _relationships = new List<RelationshipData>();
     [SerializeField] private List<ColorData> _clothingColors;
+    [SerializeField] private List<PersonalityData> _personalities = new List<PersonalityData>();
 
     [Header("Problems")]
     [SerializeField, Range(0, 1), Tooltip("Max percent of citizens that can have problems")] private float _maxProblemPercent = 0.3f;
@@ -23,6 +24,7 @@ public class CharacterManager : MonoBehaviour
     public CompleteCharacterData GetRandomCharacter() => AllCharacters[Random.Range(0, AllCharacters.Count)];
     public string GetAge(ID id) => _allCharacters.Find(c => c.ID == id).Age.ToString();
     public string GetFavoriteColorString(ID id) => Utils.CapitalFirst(GetFavoriteColor(id).ToString().ToLower());
+    public PersonalityData GetPersonality(ID ID) => _personalities[ID %  _personalities.Count]; 
 
     void Awake()
     {
