@@ -202,7 +202,7 @@ public class TownGameManager : MonoBehaviour
         }
 
         await FadeScreen(true);
-        foreach (var character in FindObjectsByType<SpawnedCharacter>(FindObjectsSortMode.None)) Destroy(character.gameObject);
+        //foreach (var character in FindObjectsByType<SpawnedCharacter>(FindObjectsSortMode.None)) Destroy(character.gameObject);
         foreach (var a in _areas) a.SetActiveState(a.Type == targetArea);
         await FadeScreen(false);        
     }

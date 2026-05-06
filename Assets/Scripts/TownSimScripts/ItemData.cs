@@ -24,7 +24,9 @@ public class ItemData : ScriptableObject
     [ConditionalField(nameof(Type), false, false, ItemType.Clothing)] public ClothingType ClothingType;
     [ConditionalField(nameof(Type), false, false, ItemType.Clothing), SerializeField] private bool _customColor;
     [ConditionalField(nameof(Type), false, false, ItemType.Clothing), SerializeField] private Color _color;
+    [ConditionalField(nameof(Type), false, false, ItemType.Clothing), SerializeField] private Texture _texture;
     
+    public Texture Texture => _texture;
 
     private void OnValidate()
     {

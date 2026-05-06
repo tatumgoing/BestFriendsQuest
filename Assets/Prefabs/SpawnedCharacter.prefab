@@ -1341,6 +1341,7 @@ MonoBehaviour:
     _meshes:
     - {fileID: 2762531893604409289}
     _materialField: {fileID: 4179125719616676681}
+    _textureController: {fileID: 0}
     _useFavoriteColor: 1
   - DisplayName: Flower Set
     Items:
@@ -1350,6 +1351,7 @@ MonoBehaviour:
     - {fileID: 2893487937078447425}
     - {fileID: 4037422247542230418}
     _materialField: {fileID: 0}
+    _textureController: {fileID: 0}
     _useFavoriteColor: 0
   - DisplayName: Skull Jacket
     Items:
@@ -1357,6 +1359,7 @@ MonoBehaviour:
     _meshes:
     - {fileID: 200521972170048077}
     _materialField: {fileID: 0}
+    _textureController: {fileID: 0}
     _useFavoriteColor: 0
   - DisplayName: Jumpsuit
     Items:
@@ -1364,6 +1367,7 @@ MonoBehaviour:
     _meshes:
     - {fileID: 5388918818404214308}
     _materialField: {fileID: 5848189326324962535}
+    _textureController: {fileID: 0}
     _useFavoriteColor: 0
   - DisplayName: Tank Top
     Items:
@@ -1371,6 +1375,7 @@ MonoBehaviour:
     _meshes:
     - {fileID: 4409559645643866980}
     _materialField: {fileID: 0}
+    _textureController: {fileID: 0}
     _useFavoriteColor: 0
   - DisplayName: Shorts
     Items:
@@ -1378,6 +1383,7 @@ MonoBehaviour:
     _meshes:
     - {fileID: 4857944814158340748}
     _materialField: {fileID: 0}
+    _textureController: {fileID: 0}
     _useFavoriteColor: 0
   - DisplayName: Pants and tShirt
     Items:
@@ -1385,13 +1391,17 @@ MonoBehaviour:
     _meshes:
     - {fileID: 2126352521419788126}
     _materialField: {fileID: 0}
+    _textureController: {fileID: 0}
     _useFavoriteColor: 0
-  - DisplayName: Casual Skirt Outfit
+  - DisplayName: Skirt and Shirt (flower)
     Items:
     - {fileID: 11400000, guid: 7642520ba47e8c448830fae027f05ed7, type: 2}
+    - {fileID: 11400000, guid: f3be98f89801d934dac3a02af13eacdc, type: 2}
+    - {fileID: 11400000, guid: 5183df2ab6c73f54dad4d46d91a1f9d1, type: 2}
     _meshes:
     - {fileID: 6663142659605216156}
     _materialField: {fileID: 0}
+    _textureController: {fileID: 9133131648676707883}
     _useFavoriteColor: 0
   - DisplayName: T Shirt
     Items:
@@ -1399,6 +1409,7 @@ MonoBehaviour:
     _meshes:
     - {fileID: 5372188037717666104}
     _materialField: {fileID: 0}
+    _textureController: {fileID: 0}
     _useFavoriteColor: 0
   - DisplayName: Brown Sweater
     Items:
@@ -1408,6 +1419,7 @@ MonoBehaviour:
     _meshes:
     - {fileID: 5896664632835379020}
     _materialField: {fileID: 2979352002990023724}
+    _textureController: {fileID: 0}
     _useFavoriteColor: 0
   - DisplayName: Chef Hat
     Items:
@@ -1415,6 +1427,7 @@ MonoBehaviour:
     _meshes:
     - {fileID: 9035141324676610876}
     _materialField: {fileID: 2979352002990023724}
+    _textureController: {fileID: 0}
     _useFavoriteColor: 0
   _disableLookAt: 0
   head: {fileID: 290631710719902758}
@@ -2132,7 +2145,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3512897934683243004, guid: f845d669074fd2d4dad1d19c6ff52f37, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3573176401982859386, guid: f845d669074fd2d4dad1d19c6ff52f37, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2220,7 +2233,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4426272902336853292, guid: f845d669074fd2d4dad1d19c6ff52f37, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4431221625449349669, guid: f845d669074fd2d4dad1d19c6ff52f37, type: 3}
       propertyPath: m_IsActive
@@ -3210,6 +3223,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5399273773448881577, guid: f845d669074fd2d4dad1d19c6ff52f37, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4179125719616676681}
+    - targetCorrespondingSourceObject: {fileID: 3512897934683243004, guid: f845d669074fd2d4dad1d19c6ff52f37, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 9133131648676707883}
     - targetCorrespondingSourceObject: {fileID: 4426272902336853292, guid: f845d669074fd2d4dad1d19c6ff52f37, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2979352002990023724}
@@ -3806,6 +3822,19 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3512897934683243004, guid: f845d669074fd2d4dad1d19c6ff52f37, type: 3}
   m_PrefabInstance: {fileID: 7834133584875797088}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &9133131648676707883
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6663142659605216156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdba51f4b67e0b942a7e4ea7c0df109a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialIndex: 0
 --- !u!4 &6686582846869369952 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3491395068787740160, guid: f845d669074fd2d4dad1d19c6ff52f37, type: 3}

@@ -16,6 +16,7 @@ public class ClothingItemData
     [DisplayInspector] public List<ItemData> Items;
     [SerializeField] private List<GameObject> _meshes;
     [SerializeField] private SetMaterialField _materialField;
+    [SerializeField] private SetTexture _textureController;
     [SerializeField] private bool _useFavoriteColor;
 
     public SetMaterialField MeshController => _materialField;
@@ -23,6 +24,11 @@ public class ClothingItemData
     public void Initialize(Color favoriteColor)
     {
         if (_useFavoriteColor && _materialField) _materialField.SetColor(favoriteColor);
+    }
+
+    public void Configure(ItemData item)
+    {
+        if (item.Texture != null && _textureController) _textureController.Set(item.Texture);
     }
 
     public void OnValidate() 
@@ -162,6 +168,8 @@ public class SpawnedCharacter : MonoBehaviour
             if (clothingItem.Items.Contains(item)) {
                 clothingItem.SetState(true);
                 item.AffectMesh(clothingItem.MeshController);
+
+                clothingItem.Configure(item);
             }
         }
     }
