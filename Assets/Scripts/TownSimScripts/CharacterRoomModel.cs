@@ -91,11 +91,15 @@ public class CharacterRoomModel : MonoBehaviour
         }
     }
 
+    public void WearClothingItem(ItemData clothing)
+    {
+        _spawnedCharacter.WearOrMakeOutfit(clothing);
+    }
+
     public void Show(ID id)
     {
         gameObject.SetActive(true);
         SpawnCharacter(id);
-
 
         UpdateColor(CharacterManager.i.GetFavoriteColor(id));
     }

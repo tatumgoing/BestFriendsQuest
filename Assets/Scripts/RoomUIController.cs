@@ -18,8 +18,12 @@ public class RoomUIController : MonoBehaviour
     private bool _justGaveGift;
     private ID _id;
 
-    public void GiveGift()
+    public void GiveGift(ItemData gift)
     {
+        if (gift.Type == ItemType.Clothing) {
+            FindFirstObjectByType<CharacterRoomModel>().WearClothingItem(gift);
+        }
+
         _justGaveGift = true;
         Show(_id);
 

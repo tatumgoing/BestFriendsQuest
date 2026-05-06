@@ -42,7 +42,7 @@ public class GiftMenu : MonoBehaviour, IItemListController
         TownGameManager.i.SubtractInventory(_currentItem);
         gameObject.SetActive(false);
         CharacterManager.i.GiveItem(_id, _currentItem);
-        _controller.GiveGift();
+        _controller.GiveGift(_currentItem);
     }
 
     private void ChangeCategory(ItemType type)

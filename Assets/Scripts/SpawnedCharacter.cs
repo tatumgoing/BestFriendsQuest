@@ -129,6 +129,26 @@ public class SpawnedCharacter : MonoBehaviour
         }
     }
 
+    public void WearOrMakeOutfit(ItemData selected)
+    {
+        if (selected.ClothingType == ClothingType.OUTFIT) ShowClothingItem(selected);
+        else {
+            var inventory = CharacterManager.i.GetInventory(ID).Where(x => x.Type == ItemType.Clothing && x.ClothingType != ClothingType.HAT).ToList();
+            var outfit = new List<ItemData>() { selected };
+
+            var missingPieceType = selected.ClothingType == ClothingType.TOP ? ClothingType.BOTTOM : ClothingType.TOP;
+            var missingPiece = inventory.FirstOrDefault(item => item.ClothingType == missingPieceType);
+
+            if (missingPiece) {
+                outfit.Add(missingPiece);
+                ShowClothingItem(outfit);
+            }
+            else {
+                ShowClothingItem(_defaultClothing);
+            }
+        }
+    }
+
     private void ShowClothingItem(List<ItemData> items)
     {
         foreach (var clothingItem in _nonHats) clothingItem.SetState(false);
