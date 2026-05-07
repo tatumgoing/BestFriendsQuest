@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class CharacterStatusMenu : MonoBehaviour
 {
-    [SerializeField] private Slider _happinessSlider;
+    [SerializeField] private HappinessBar _happinessSlider;
     [SerializeField] private CharacterProfileDataDisplay _profileDisplay;
     [SerializeField] private CharacterProfileDataDisplay _bestFriendInfo;
     [SerializeField] private CharacterProfileDataDisplay _leftCharacterInfo;
@@ -32,7 +32,7 @@ public class CharacterStatusMenu : MonoBehaviour
     public void Show(ID id)
     {
         gameObject.SetActive(true);
-        _happinessSlider.value = CharacterManager.i.GetHappiness(id)/100;
+        _happinessSlider.Initialize(id);
         _profileDisplay.Show(id);
 
         HideLeftinfo();

@@ -6,11 +6,12 @@ using UnityEngine.UI;
 public class QuestCharacterButton : MonoBehaviour
 {
     [SerializeField] private Image _sprite;
+    [SerializeField] private HappinessBar _happiness;
 
     private SelectableItem _button;
     private ID _id;
     private QuestCharacterSelector _controller;
-
+    
     public ID ID => _id;
 
     private void Awake()
@@ -23,6 +24,7 @@ public class QuestCharacterButton : MonoBehaviour
         _id = id;
         _controller = controller;
         _sprite.sprite = CharacterManager.i.GetPortrait(id);
+        if (_happiness) _happiness.Initialize(id);
 
         _button.SetDisabled(CharacterManager.i.GetHappiness(id) < 100);
     }

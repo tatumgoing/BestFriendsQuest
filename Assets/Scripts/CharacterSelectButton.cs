@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class CharacterSelectButton : MonoBehaviour
 {
     [SerializeField] private Image _portrait;
+    [SerializeField] private HappinessBar _happiness;
 
     private CharacterSelectionMenu _controller;
     private ID _id;
@@ -21,6 +22,7 @@ public class CharacterSelectButton : MonoBehaviour
         _id = id;
         _controller = controller;
         _portrait.sprite = CharacterManager.i.GetPortrait(id);
+        if (_happiness) _happiness.Initialize(id);
     }
 
     /// <summary>

@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class HouseController : MonoBehaviour
 {
     [SerializeField] private Image _characterIcon;
+    [SerializeField] private HappinessBar _happinessBar;
     [SerializeField] private Animator _portraitParent;
     [SerializeField] private GameObject _ruinedHouse;
     [SerializeField] private GameObject _houseModel;
@@ -56,9 +57,10 @@ public class HouseController : MonoBehaviour
         var character = CharacterManager.i.GetNameFormatted(id);
         gameObject.name = character + "'s house";
 
+        _happinessBar.Initialize(id);
+
         favColor = CharacterManager.i.GetFavoriteColor(id).ToString();
         favColorColor = CharacterManager.i.GetClothingColor(id);
-
 
         _controller = controller;
         gameObject.SetActive(true);
