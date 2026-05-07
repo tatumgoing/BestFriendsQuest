@@ -21459,8 +21459,8 @@ Camera:
     width: 1
     height: 1
   near clip plane: 1.4
-  far clip plane: 3000
-  field of view: 39.6
+  far clip plane: 1000
+  field of view: 30
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -21486,8 +21486,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0.008019702, w: 0.9999679}
-  m_LocalPosition: {x: 332.45926, y: 226.95982, z: -352.1}
+  m_LocalRotation: {x: 0.08803495, y: 0.025257774, z: -0.002232956, w: 0.99579465}
+  m_LocalPosition: {x: 366.53, y: 522.8, z: -20.45}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -24884,6 +24884,11 @@ MonoBehaviour:
   locationDescription: Buy Hardware - for your house!
   hoverImage: {fileID: 21300000, guid: 7dfdffffdf279b24e979388f5d1b1671, type: 3}
   defaultImage: {fileID: 21300000, guid: 61b14da5de8d47849889c293fa199fdf, type: 3}
+--- !u!4 &1147057611 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7106277938860234914, guid: 6153e7fa27e50454196817f3c4ba499e, type: 3}
+  m_PrefabInstance: {fileID: 1249428060}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1148952647
 GameObject:
   m_ObjectHideFlags: 0
@@ -26567,6 +26572,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: mirror
       objectReference: {fileID: 0}
+    - target: {fileID: 8094466242044320968, guid: 6153e7fa27e50454196817f3c4ba499e, type: 3}
+      propertyPath: _camera
+      value: 
+      objectReference: {fileID: 1147057611}
     - target: {fileID: 8094466242044320968, guid: 6153e7fa27e50454196817f3c4ba499e, type: 3}
       propertyPath: _favoriteColor.a
       value: 1

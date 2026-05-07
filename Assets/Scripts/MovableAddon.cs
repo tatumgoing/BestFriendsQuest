@@ -16,21 +16,21 @@ public class MovableAddon : MonoBehaviour
     private MovableAddon _mirror;
     private HairPiece _controller;
 
-    private Vector3 _loadedPos; 
+    private Vector3 _loadedPos;
+    private bool _isMirror;
+    private Transform _nonMirror;
 
     public Transform Mirror => _mirror.transform;
     public void StoreLoadedPosition() => _loadedPos = transform.localPosition;
     public Vector3 TargetUp => _targetUp;
+    public void SetTargetUp(Vector3 targetUp) => _targetUp = targetUp;
+    public void SetAsMirror() => _isMirror = true;
+    public void GiveNonMirror(Transform nonMirror) => _nonMirror = nonMirror;
 
     private void Start()
     {
         _uiController = FindObjectOfType<AddonsUIHelper>();
         _controller = GetComponentInParent<HairPiece>();
-    }
-
-    public void SetTargetUp(Vector3 targetUp)
-    {
-        _targetUp = targetUp; 
     }
 
     /// <summary>
@@ -61,10 +61,14 @@ public class MovableAddon : MonoBehaviour
 
         if (_mirror) {
 
+            _mirror.SetAsMirror();
+            _mirror.GiveNonMirror(transform);
             var surfaceNormal = transform.parent.TransformDirection(_targetUp);
             var mirrorUp = Vector3.Scale(transform.parent.InverseTransformDirection(surfaceNormal), new Vector3(-1, 1, 1));
-            _mirror._targetUp = Quaternion.AngleAxis(180f, mirrorUp) * mirrorUp;
-        }
+            _mirror.SetTargetUp(Quaternion.AngleAxis(180f, mirrorUp) * mirrorUp);
+
+            //print("Setting mirror targetUp: " + (Quaternion.AngleAxis(180f, mirrorUp) * mirrorUp));
+        } 
     }
 
     /// <summary>
@@ -153,9 +157,21 @@ public class MovableAddon : MonoBehaviour
     private void Update()
     {
         _currentUp = transform.up;
+
+        if (_isMirror && _nonMirror) {
+
+            transform.localEulerAngles = _nonMirror.localEulerAngles + Vector3.up * 180;
+            var child = transform.GetChild(0);
+            var nonMirrorChild = _nonMirror.GetChild(0);
+            child.localEulerAngles = nonMirrorChild.localEulerAngles;
+            child.localScale = new Vector3(-1, 1, 1);
+
+            return;
+        }
+
+        //Debug.DrawLine(transform.position, transform.position + transform.up * 10, Color.green);
         Quaternion targetLocalRot = Quaternion.FromToRotation(Vector3.up, _targetUp) * Quaternion.identity;
-        transform.localRotation = Quaternion.Slerp(transform.localRotation, targetLocalRot, 20* Time.deltaTime);
-        Debug.DrawLine(transform.position, transform.position + transform.up * 10, Color.green);
+        transform.localRotation = Quaternion.Slerp(transform.localRotation, targetLocalRot, 20 * Time.deltaTime);
 
         if (_controller.IsMirroredVersion) {
             var scale = transform.localScale;
@@ -164,11 +180,14 @@ public class MovableAddon : MonoBehaviour
         }
 
         if (!GameManager.i || !_uiController.Addons) {
-            if (_mirror) transform.localPosition = _loadedPos;
+            if (_mirror) {
+                transform.localPosition = _loadedPos;
+            }
+
             _rotationControls.SetActive(false); 
             _moveGizmo.SetActive(false);
             return;
-        }       
+        }    
 
         _rotationControls.SetActive(_uiController.Rotating && Selected);
         _moveGizmo.SetActive(Selected && !_rotationControls.activeInHierarchy);

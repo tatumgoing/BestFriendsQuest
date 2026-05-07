@@ -29,7 +29,7 @@ public class MaterialColorChangeData
         if (_initialized) return;
         _initialized = true;
 
-        Debug.Log("trying to get color for material: " + _renderer.sharedMaterials[_materialIndex].name + " for object: " + _renderer.gameObject);
+        //Debug.Log("trying to get color for material: " + _renderer.sharedMaterials[_materialIndex].name + " for object: " + _renderer.gameObject);
         _originalColor = _renderer.sharedMaterials[_materialIndex].GetColor("_BASE_COLOR");
     }
 
@@ -52,6 +52,7 @@ public class CharacterRoomModel : MonoBehaviour
     [SerializeField] private Color _favoriteColor;
     [SerializeField] private List<ColorData> _favoriteColors;
     [SerializeField] private List<MaterialColorChangeData> _colorChangeObjects = new List<MaterialColorChangeData>();
+    [SerializeField] private Transform _camera;
 
     private SpawnedCharacter _spawnedCharacter;
 
@@ -121,6 +122,7 @@ public class CharacterRoomModel : MonoBehaviour
     {
         if (_spawnedCharacter != null) Destroy(_spawnedCharacter);
         _spawnedCharacter = CharacterManager.i.SpawnCharacter(character, _characterSpawnSpot);
+        _spawnedCharacter.CharacterLookAt(_camera, true);
     }
     
     private void OnDisable()
