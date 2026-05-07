@@ -21,7 +21,7 @@ public class CompleteCharacterData
         _staticData = new StaticCharacterData();
         _staticData.FromStaticSaveString(staticSaveString);
         _personality = CharacterManager.i.GetPersonality(_staticData.ID);
-        Debug.Log(_staticData.Name + " personality: " + _personality.Type);
+        //Debug.Log(_staticData.Name + " personality: " + _personality.Type);
 
         _dynamicData = new DynamicCharacterData(_staticData.ID);
         DisplayName = _staticData.Name;

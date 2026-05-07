@@ -20,6 +20,6 @@ public class SetTexture : MonoBehaviour
         mats[_materialIndex] = mat;                      
         _renderer.materials = mats;
 
-        print("texutre changed. new texutre: " + texture.name);
+        //print("texutre changed. new texutre: " + texture.name);
     }
 }

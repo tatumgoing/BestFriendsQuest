@@ -29,6 +29,7 @@ public class MaterialColorChangeData
         if (_initialized) return;
         _initialized = true;
 
+        Debug.Log("trying to get color for material: " + _renderer.sharedMaterials[_materialIndex].name + " for object: " + _renderer.gameObject);
         _originalColor = _renderer.sharedMaterials[_materialIndex].GetColor("_BASE_COLOR");
     }
 

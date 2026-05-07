@@ -21458,9 +21458,9 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 1
-  far clip plane: 1000
-  field of view: 60.000004
+  near clip plane: 1.4
+  far clip plane: 3000
+  field of view: 39.6
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -21486,8 +21486,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.22460788, y: 0.005033249, z: -0.0011601665, w: -0.97443557}
-  m_LocalPosition: {x: 115.61365, y: 13.125076, z: 106.50331}
+  m_LocalRotation: {x: 0, y: 0, z: 0.008019702, w: 0.9999679}
+  m_LocalPosition: {x: 332.45926, y: 226.95982, z: -352.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -26525,7 +26525,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3294799608165869178, guid: 6153e7fa27e50454196817f3c4ba499e, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3921066290621768360, guid: 6153e7fa27e50454196817f3c4ba499e, type: 3}
       propertyPath: m_Name
@@ -29138,13 +29138,14 @@ GameObject:
   m_Component:
   - component: {fileID: 1347480912}
   - component: {fileID: 1347480913}
+  - component: {fileID: 1347480914}
   m_Layer: 0
   m_Name: Neighborhood
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1347480912
 Transform:
   m_ObjectHideFlags: 0
@@ -29182,6 +29183,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _room: {fileID: 1249428061}
   _neighborhoodCamera: {fileID: 1112849484}
+--- !u!114 &1347480914
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1347480911}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10267487d6a17c641ae0d200c92bc71a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  daySetting: {fileID: 11400000, guid: 0dc927ee39069264f8624da42908b331, type: 2}
+  eveningSetting: {fileID: 11400000, guid: 99c080564be2f214588454b59c0b1f1d, type: 2}
+  nightSetting: {fileID: 11400000, guid: 89511e696c331314391eaa1e11d17be0, type: 2}
+  genericSetting: {fileID: 11400000, guid: c3bb436165ce41443af71655faf7a367, type: 2}
+  volumeManager: {fileID: 963194225}
 --- !u!1 &1356091508
 GameObject:
   m_ObjectHideFlags: 0
@@ -39344,7 +39362,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 28978871886964977, guid: 73d5b6b441c101941a9a03cde8c344b5, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 9.999939
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 1318408054454804620, guid: 73d5b6b441c101941a9a03cde8c344b5, type: 3}
       propertyPath: _areaController
@@ -44931,7 +44949,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2074531007
 Transform:
   m_ObjectHideFlags: 0
