@@ -24,7 +24,8 @@ public class CookingMinigame : MinigameController
     [Header("TESTING")]
     [SerializeField] private ItemData _chefHat;
     [SerializeField] private List<RecipeData> _recipes;
-    [SerializeField] private ID _testID = new ID(8126);
+    [SerializeField] private ID _testChefID = new ID(8126);
+    [SerializeField] private ID _testRecipientID = new ID(8126);
     [SerializeField, DisplayInspector] private RecipeData _testRecipe;
 
     // I, too, am testing
@@ -53,12 +54,7 @@ public class CookingMinigame : MinigameController
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P)) {
-            _backButton.SetActive(false);
-            SelectPrimaryCharacter(_testID);
-            SelectRecipient(new ID(2216));
-            StartCooking(_testRecipe);
-        }
+        if (Input.GetKeyDown(KeyCode.T)) QuickTest();
 
         //spawn characters as they are selected
         if (_characterSelectScreen.GetComponent<CharacterSelectionMenu>()._selectedCharacter != _displayedSelectedCharacter)
@@ -66,6 +62,15 @@ public class CookingMinigame : MinigameController
             _areaController.SpawnCharacterSelect(_characterSelectScreen.GetComponent<CharacterSelectionMenu>()._selectedCharacter);
             _displayedSelectedCharacter = _characterSelectScreen.GetComponent<CharacterSelectionMenu>()._selectedCharacter;
         }
+    }
+
+    [ButtonMethod]
+    public void QuickTest()
+    {
+        _backButton.SetActive(false);
+        SelectPrimaryCharacter(_testChefID);
+        SelectRecipient(_testRecipientID);
+        StartCooking(_testRecipe);
     }
 
     public override void StartProblemMinigame(ID character)

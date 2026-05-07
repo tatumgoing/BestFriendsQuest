@@ -238,7 +238,10 @@ public class CharacterManager : MonoBehaviour
         //print("Spawning character with ID: " + id);
 
         var characterData = _allCharacters.Find(c => c.ID == id);
-        if (characterData == null) return null;
+        if (characterData == null) {
+            print("tried to spawn character with id: " + id + ", couldn't find");
+            return null;
+        }
         
         var spawnedCharacter = Instantiate(_characterControllerPrefab, position, Quaternion.Euler(rot)).GetComponent<SpawnedCharacter>();
         spawnedCharacter.LoadFromString(SaveSystem.GetStaticSaveString(id));
