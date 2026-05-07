@@ -20,7 +20,7 @@ RenderSettings:
   m_FogDensity: 0.0005
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
+  m_AmbientSkyColor: {r: 0.8392157, g: 0.8392157, b: 0.8392157, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
@@ -21310,9 +21310,9 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 1.4
-  far clip plane: 3000
-  field of view: 45
+  near clip plane: 1
+  far clip plane: 1000
+  field of view: 60.000004
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -21338,8 +21338,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.049575552, y: -0.47180274, z: 0.026592035, w: 0.8799076}
-  m_LocalPosition: {x: 376.89, y: 211.20001, z: -11.944}
+  m_LocalRotation: {x: -0.22460788, y: 0.005033249, z: -0.0011601665, w: -0.97443557}
+  m_LocalPosition: {x: 115.61365, y: 13.125076, z: 106.50331}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -27521,6 +27521,52 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1389873310355295984, guid: 10f2fca7927b0a14e84dce1c94f61d8e, type: 3}
   m_PrefabInstance: {fileID: 1287412460}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1290917181
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1290917182}
+  - component: {fileID: 1290917183}
+  m_Layer: 0
+  m_Name: PPLoader
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1290917182
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1290917181}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1290917183
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1290917181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28f20c7e9319fbf469079a446e5c739c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  setting: {fileID: 11400000, guid: c3bb436165ce41443af71655faf7a367, type: 2}
+  volume: {fileID: 963194231}
 --- !u!1 &1297092289
 GameObject:
   m_ObjectHideFlags: 0
@@ -28860,7 +28906,6 @@ MonoBehaviour:
   daySetting: {fileID: 11400000, guid: 0dc927ee39069264f8624da42908b331, type: 2}
   eveningSetting: {fileID: 11400000, guid: 99c080564be2f214588454b59c0b1f1d, type: 2}
   nightSetting: {fileID: 11400000, guid: 89511e696c331314391eaa1e11d17be0, type: 2}
-  genericSetting: {fileID: 11400000, guid: c3bb436165ce41443af71655faf7a367, type: 2}
   volumeManager: {fileID: 963194225}
 --- !u!1 &1356091508
 GameObject:
@@ -44823,7 +44868,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2074531007
 Transform:
   m_ObjectHideFlags: 0
@@ -44893,7 +44938,6 @@ MonoBehaviour:
   daySetting: {fileID: 11400000, guid: 0dc927ee39069264f8624da42908b331, type: 2}
   eveningSetting: {fileID: 11400000, guid: 99c080564be2f214588454b59c0b1f1d, type: 2}
   nightSetting: {fileID: 11400000, guid: 89511e696c331314391eaa1e11d17be0, type: 2}
-  genericSetting: {fileID: 11400000, guid: c3bb436165ce41443af71655faf7a367, type: 2}
   volumeManager: {fileID: 963194225}
 --- !u!23 &2074878469 stripped
 MeshRenderer:
@@ -55730,6 +55774,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 963194228}
+  - {fileID: 1290917182}
   - {fileID: 4636872752127895047}
   - {fileID: 809776423}
   - {fileID: 635968985}

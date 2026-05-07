@@ -34,9 +34,18 @@ public class PostProcessingManager : MonoBehaviour
 
         volume.profile = genericProcessingSetting.VolumeProfile;
 
-        // Skybox
-        RenderSettings.skybox = genericProcessingSetting.Skybox;
-        DynamicGI.UpdateEnvironment();
+        if(RenderSettings.skybox != genericProcessingSetting.Skybox){
+            // Skybox
+            RenderSettings.skybox = genericProcessingSetting.Skybox;
+            DynamicGI.UpdateEnvironment();
+        }
+
+        if(RenderSettings.ambientLight != genericProcessingSetting.AmbientLightColor)
+        {
+
+            RenderSettings.ambientLight = genericProcessingSetting.AmbientLightColor;
+
+        }
 
     }
 
@@ -54,5 +63,30 @@ public class PostProcessingManager : MonoBehaviour
             RenderSettings.skybox = newSettings.Skybox;
             DynamicGI.UpdateEnvironment();   
         }
+
+        if(RenderSettings.ambientLight != newSettings.AmbientLightColor)
+        {
+
+            RenderSettings.ambientLight = newSettings.AmbientLightColor;
+
+        }
+
     }
+
+
+        public void TestPostProcessing(PostProcessingSetting newSettings){
+
+        volume = volumeManager.GetComponent<Volume>();
+
+        
+        volume.profile = newSettings.VolumeProfile;            
+    
+            // Skybox
+        RenderSettings.skybox = newSettings.Skybox;
+        DynamicGI.UpdateEnvironment();   
+    
+
+        RenderSettings.ambientLight = newSettings.AmbientLightColor;
+
+        }
 }
