@@ -19,6 +19,7 @@ public class RecipeData : ScriptableObject
     public int MoneyReward;
     public float HappinessReward = 30;
     public float RelationshipReward = 1.5f;
+    [SerializeField] private bool _overrideRewards;
 
     public Difficulty Difficulty;
 
@@ -26,12 +27,23 @@ public class RecipeData : ScriptableObject
 
     // enum to verb pls
     static Dictionary<SubgameType, string> subgameToVerb =
-    new Dictionary<SubgameType, string>() {
+    new() {
         {SubgameType.SITRRING, "Stir"},
         {SubgameType.GRILLING, "Grill"},
         {SubgameType.CHOPPING, "Chop"},
         {SubgameType.BOILING, "Boil"},
     };
+
+    private void OnValidate()
+    {
+        if (_overrideRewards) return;
+
+        var difficulty = ((int)Difficulty + 1);
+        MaxScore = difficulty * 20;
+        MoneyReward = difficulty * 50;
+        HappinessReward = difficulty * 60;
+        RelationshipReward = difficulty * 0.45f + 0.2f;
+    }
 
     public string ReturnSteps()
     {
