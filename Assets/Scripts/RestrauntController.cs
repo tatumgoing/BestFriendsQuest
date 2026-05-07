@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Threading.Tasks;
+using UnityEngine.Rendering;
 
 [System.Serializable]
 public class SubgameSceneData
@@ -14,6 +15,8 @@ public class SubgameSceneData
     [SerializeField] private List<GameObject> _toEnable;
     [SerializeField] private Transform _characterPos;
     [SerializeField] private CharacterAnimations _animation;
+
+
 
     public void OnValidate()
     {
@@ -55,9 +58,27 @@ public class RestrauntController : MonoBehaviour
 
     public SpawnedCharacter SpawnedCharacter => _spawnedCharacter;
 
+    [SerializeField] private PostProcessingSetting postProcessingSetting;
+    private PostProcessingManager postProcessingManager;
+ 
+
     private void OnValidate()
     {
-        foreach (var s in _subgameScenes) s.OnValidate();
+        foreach (var s in _subgameScenes) s.OnValidate(); 
+    }
+
+    private void OnEnable(){
+
+        postProcessingManager = PostProcessingManager.i;
+
+        postProcessingManager.SetPostProcessing(postProcessingSetting);
+        
+    }
+
+    private void OnDisable(){
+
+        postProcessingManager.SetGeneric();
+
     }
 
     public void ShowSubgameSceneCam(SubgameType type, int sceneIndex)
