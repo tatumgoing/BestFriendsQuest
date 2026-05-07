@@ -62,7 +62,7 @@ public class MovableAddon : MonoBehaviour
         if (_mirror) {
 
             _mirror.SetAsMirror();
-            _mirror.GiveNonMirror(transform);
+            _mirror.GiveNonMirror(transform);   
             var surfaceNormal = transform.parent.TransformDirection(_targetUp);
             var mirrorUp = Vector3.Scale(transform.parent.InverseTransformDirection(surfaceNormal), new Vector3(-1, 1, 1));
             _mirror.SetTargetUp(Quaternion.AngleAxis(180f, mirrorUp) * mirrorUp);
@@ -159,13 +159,12 @@ public class MovableAddon : MonoBehaviour
         _currentUp = transform.up;
 
         if (_isMirror && _nonMirror) {
-
-            transform.localEulerAngles = _nonMirror.localEulerAngles + Vector3.up * 180;
+            transform.localEulerAngles = _nonMirror.localEulerAngles; 
             var child = transform.GetChild(0);
             var nonMirrorChild = _nonMirror.GetChild(0);
             child.localEulerAngles = nonMirrorChild.localEulerAngles;
-            child.localScale = new Vector3(-1, 1, 1);
-
+            transform.parent.localScale = new Vector3(-1, 1, 1);
+            transform.localPosition = _nonMirror.localPosition;
             return;
         }
 
