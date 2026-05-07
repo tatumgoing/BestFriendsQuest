@@ -22,7 +22,8 @@ public class pauseMenuController : MonoBehaviour
 
     public void Resume()
     {
-        GameManager.i.Resume();
+        if (GameManager.i) GameManager.i.Resume();
+        else gameObject.SetActive(false);
         _clickSound.Play();
     }
 
