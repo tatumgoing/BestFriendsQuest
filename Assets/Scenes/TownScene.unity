@@ -21584,7 +21584,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_IsGlobal: 1
-  priority: 0
+  priority: 1
   blendDistance: 0
   weight: 1
   sharedProfile: {fileID: 11400000, guid: cd7a4cb1c72a5f749b61a86f954d189e, type: 2}
@@ -44924,6 +44924,7 @@ GameObject:
   - component: {fileID: 2074531007}
   - component: {fileID: 2074531008}
   - component: {fileID: 2074531009}
+  - component: {fileID: 2074531010}
   m_Layer: 0
   m_Name: Park
   m_TagString: Untagged
@@ -44985,6 +44986,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8d05a001901f844993365681e9496d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2074531010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2074531006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10267487d6a17c641ae0d200c92bc71a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  daySetting: {fileID: 11400000, guid: 0dc927ee39069264f8624da42908b331, type: 2}
+  eveningSetting: {fileID: 11400000, guid: 99c080564be2f214588454b59c0b1f1d, type: 2}
+  nightSetting: {fileID: 11400000, guid: 89511e696c331314391eaa1e11d17be0, type: 2}
+  genericSetting: {fileID: 11400000, guid: c3bb436165ce41443af71655faf7a367, type: 2}
+  volumeManager: {fileID: 963194225}
 --- !u!23 &2074878469 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 4817979723138446752, guid: 6153e7fa27e50454196817f3c4ba499e, type: 3}
