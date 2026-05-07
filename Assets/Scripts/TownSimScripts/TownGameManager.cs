@@ -41,6 +41,7 @@ public class TownGameManager : MonoBehaviour
     [SerializeField] private GameObject _fadeScreen;
     [SerializeField, Min(0)] private float _currency;
     [SerializeField] private GameObject _mapStartBacking;
+    [SerializeField] private pauseMenuController _pauseMenu;
 
     private Dictionary<ItemData, int> _inventory = new Dictionary<ItemData, int>();
     private List<RuntimeItemData> _runtimeItemData = new List<RuntimeItemData>();
@@ -108,8 +109,10 @@ public class TownGameManager : MonoBehaviour
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape)) {
-            if (_invParent.activeInHierarchy) _invParent.SetActive(false);
+            if (_pauseMenu.gameObject.activeInHierarchy) _pauseMenu.gameObject.SetActive(false);
+            else if (_invParent.activeInHierarchy) _invParent.SetActive(false);
             else if (_mapParent.activeInHierarchy) _mapParent.SetActive(false);
+            else _pauseMenu.gameObject.SetActive(true);
         }
 
         if (Input.GetKeyDown(KeyCode.M) && !_invParent.activeInHierarchy) {
