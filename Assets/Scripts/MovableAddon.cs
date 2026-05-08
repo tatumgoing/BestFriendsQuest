@@ -158,35 +158,36 @@ public class MovableAddon : MonoBehaviour
     {
         _currentUp = transform.up;
 
-        if (_isMirror && _nonMirror) {
-            transform.localEulerAngles = _nonMirror.localEulerAngles; 
-            var child = transform.GetChild(0);
-            var nonMirrorChild = _nonMirror.GetChild(0);
-            child.localEulerAngles = nonMirrorChild.localEulerAngles;
-            transform.parent.localScale = new Vector3(-1, 1, 1);
-            transform.localPosition = _nonMirror.localPosition;
-            return;
-        }
-
         //Debug.DrawLine(transform.position, transform.position + transform.up * 10, Color.green);
         Quaternion targetLocalRot = Quaternion.FromToRotation(Vector3.up, _targetUp) * Quaternion.identity;
         transform.localRotation = Quaternion.Slerp(transform.localRotation, targetLocalRot, 20 * Time.deltaTime);
 
-        if (_controller.IsMirroredVersion) {
-            var scale = transform.localScale;
-            scale.x = -Mathf.Abs(scale.x);
-            transform.localScale = scale;
-        }
-
         if (!GameManager.i || !_uiController.Addons) {
-            if (_mirror) {
-                transform.localPosition = _loadedPos;
+            if (_isMirror && _nonMirror) {
+                transform.localEulerAngles = _nonMirror.localEulerAngles;
+                var child = transform.GetChild(0);
+                var nonMirrorChild = _nonMirror.GetChild(0);
+                child.localEulerAngles = nonMirrorChild.localEulerAngles;
+                transform.parent.localScale = new Vector3(-1, 1, 1);
+                transform.localPosition = _nonMirror.localPosition;
+                return;
             }
+
+            if (_mirror) transform.localPosition = _loadedPos;
 
             _rotationControls.SetActive(false); 
             _moveGizmo.SetActive(false);
             return;
-        }    
+        }  
+        else {
+            transform.parent.localScale = new Vector3(1, 1, 1);
+
+            if (_controller.IsMirroredVersion) {
+                var scale = transform.localScale;
+                scale.x = -Mathf.Abs(scale.x);
+                transform.localScale = scale;
+            }
+        }
 
         _rotationControls.SetActive(_uiController.Rotating && Selected);
         _moveGizmo.SetActive(Selected && !_rotationControls.activeInHierarchy);
