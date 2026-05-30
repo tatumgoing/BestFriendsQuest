@@ -12,7 +12,6 @@ public class TestPostProcessing : MonoBehaviour
     [ButtonMethod]
     public void QuickTest()
     {
-        
         volume.profile = setting.VolumeProfile;            
     
         // Skybox
