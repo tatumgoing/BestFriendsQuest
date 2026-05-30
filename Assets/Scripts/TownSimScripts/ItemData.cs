@@ -30,7 +30,7 @@ public class ItemData : ScriptableObject
 
     private void OnValidate()
     {
-        if (Name.Length < 5) Name = name;
+        if (Name.Length < 2) Name = name;
     }
 
     [ButtonMethod]
