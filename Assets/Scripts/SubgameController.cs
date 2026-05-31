@@ -7,6 +7,7 @@ using UnityEngine.UI;
 [System.Serializable] 
 public class SubGameListData
 {
+    [HideInInspector] public string DisplayName;
     public SubgameType Type;
     public Subgame Subgame;
 }
@@ -49,6 +50,14 @@ public class SubgameController : MonoBehaviour
     public RestrauntController AreaController => _areaController;
     private SubgameData _currentSubgameData => _currentRecipe.Subgames[_subgameIndex];
     public float TimeLeftPercent => _timeLeft/_totalTime;
+
+    private void OnValidate()
+    {
+        foreach (var o in _options) {
+            o.DisplayName = o.Type.ToString();
+        }
+    }
+
     public void UpdateSlider(float targetPercent)
     {
         //print("Updating Slider: " + targetPercent + ", current: " + _targetSliderPos);

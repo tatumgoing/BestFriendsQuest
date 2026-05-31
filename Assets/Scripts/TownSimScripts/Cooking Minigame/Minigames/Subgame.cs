@@ -20,7 +20,7 @@ public class Subgame : MonoBehaviour
 
         Controller.UpdateSlider(SuccessTime / Data.TargetTime);
         if (SuccessTime >= Data.TargetTime) {
-            gameObject.SetActive(false);
+            gameObject?.SetActive(false);
             Controller.CompleteSubgame();
         }
 

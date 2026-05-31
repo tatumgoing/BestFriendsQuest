@@ -26,7 +26,6 @@ public class SteamMinigame : Subgame
 
         SuccessCheck();
         PenaltyCheck(); 
-
     }
 
     public override void StartSubgame(SubgameData data)
@@ -35,13 +34,11 @@ public class SteamMinigame : Subgame
 
         ShowCam(0);
 
-
         //put code here that you want to run every time subgame is started
 
         InvokeRepeating(nameof(SpawnSteam), 0.1f, 0.5f);
 
         //audio
-
     }
 
     protected override void Initialize()
@@ -61,8 +58,7 @@ public class SteamMinigame : Subgame
        ResetCam();
 
         foreach (SteamCloud cloud in steamclouds) { 
-        
-            Destroy(cloud.gameObject);
+            if (cloud) Destroy(cloud.gameObject);
         }
 
         steamclouds.Clear();
@@ -75,7 +71,7 @@ public class SteamMinigame : Subgame
 
         SteamCloud newCloud = Instantiate(cloudPrefab, canvasRect.transform);
         steamclouds.Add(newCloud);
-        Debug.Log(canvasRect.rect.width + " " + canvasRect.rect.height);
+        //Debug.Log(canvasRect.rect.width + " " + canvasRect.rect.height);
 
         //put cloud in random position
 
