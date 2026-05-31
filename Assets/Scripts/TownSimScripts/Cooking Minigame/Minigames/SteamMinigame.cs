@@ -68,12 +68,9 @@ public class SteamMinigame : Subgame
         steamclouds.Clear();
         CancelInvoke(nameof(SpawnSteam));
 
-        Debug.Log("Disabling");
-
     }
     public void SpawnSteam()
     {
-        Debug.Log("Steam");
         //make cloud and add to list of clouds
 
         SteamCloud newCloud = Instantiate(cloudPrefab, canvasRect.transform);
