@@ -20,9 +20,10 @@ public class SubgameInstructions : MonoBehaviour
     {
         var titleString = "How to ";
         if (type == SubgameType.CHOPPING) titleString += "Chop";
-        else if (type == SubgameType.SITRRING) titleString += "Stir";
+        else if (type == SubgameType.STIRRING) titleString += "Stir";
         else if (type == SubgameType.BOILING) titleString += "Boil";
         else if (type == SubgameType.GRILLING) titleString += "Grill";
+        else if (type == SubgameType.STEAMING) titleString += "Steam";
         else titleString += "Cook";
         _titleText.text = titleString;
 

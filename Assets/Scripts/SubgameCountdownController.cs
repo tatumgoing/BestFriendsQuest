@@ -25,9 +25,11 @@ public class SubgameCountdownController : MonoBehaviour
         var countdownString = "Time to Cook!";
         var verb = "";
         if (type == SubgameType.CHOPPING) verb = "chop";
-        if (type == SubgameType.SITRRING) verb = "stir";
+        if (type == SubgameType.STIRRING) verb = "stir";
         if (type == SubgameType.BOILING) verb = "boil";
-        if (type == SubgameType.GRILLING) verb = "grilling";
+        if (type == SubgameType.GRILLING) verb = "grill";
+        if (type == SubgameType.STEAMING) verb = "steam";
+
         if (verb != "") countdownString = countdownString.Replace("Cook", verb);
         _countdownHeader.text = countdownString;
     }

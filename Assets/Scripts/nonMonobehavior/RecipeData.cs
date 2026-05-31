@@ -28,10 +28,12 @@ public class RecipeData : ScriptableObject
     // enum to verb pls
     static Dictionary<SubgameType, string> subgameToVerb =
     new() {
-        {SubgameType.SITRRING, "Stir"},
+        {SubgameType.STIRRING, "Stir"},
         {SubgameType.GRILLING, "Grill"},
         {SubgameType.CHOPPING, "Chop"},
         {SubgameType.BOILING, "Boil"},
+        {SubgameType.STEAMING, "Steam"},
+
     };
 
     private void OnValidate()
