@@ -1,6 +1,4 @@
 using Cinemachine;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -21,45 +19,34 @@ public class ParkFreecam : MonoBehaviour
     private Vector3 _moveDelta;
     private float _rotDelta;
     private float _fovDelta;
-    private bool _hidingMouse;
 
     private void Update()
     {
         HandleMovement();
+        HandleScroll();
 
-        if (_hidingMouse) {
+        if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) {
+            Utils.CloseMenu();
+        }
+
+        if (Input.GetMouseButton(0)) {
             HandleRot();
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
-
-            var scroll = -Input.mouseScrollDelta.y;
-            var targetFovDelta = scroll * _fovSpeed * Time.deltaTime;
-            _fovDelta = Mathf.Lerp(_fovDelta, targetFovDelta, _fovLerpFactor * Time.deltaTime);
-
-            var newFov = _cam.m_Lens.FieldOfView + _fovDelta;
-            newFov = Mathf.Clamp(newFov, _fovLimits.x, _fovLimits.y);
-            _cam.m_Lens.FieldOfView = newFov;
-        }
-        else {
-            if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) _hidingMouse = true;
         }
 
-        if (Input.GetKeyDown(KeyCode.Escape)) {
-            _hidingMouse = false;
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
+        if (Input.GetMouseButtonUp(0)) {
+            Utils.OpenMenu();
         }
     }
 
-    private void OnEnable()
+    private void HandleScroll()
     {
-        _hidingMouse = true;
-    }
+        var scroll = -Input.mouseScrollDelta.y;
+        var targetFovDelta = scroll * _fovSpeed * Time.deltaTime;
+        _fovDelta = Mathf.Lerp(_fovDelta, targetFovDelta, _fovLerpFactor * Time.deltaTime);
 
-    private void OnDisable()
-    {
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        var newFov = _cam.m_Lens.FieldOfView + _fovDelta;
+        newFov = Mathf.Clamp(newFov, _fovLimits.x, _fovLimits.y);
+        _cam.m_Lens.FieldOfView = newFov;
     }
 
     private void HandleRot()

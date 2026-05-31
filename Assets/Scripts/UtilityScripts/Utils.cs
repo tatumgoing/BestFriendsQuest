@@ -17,6 +17,36 @@ public static class Utils
     private static int AXIS_BITS = 6;
     private static int AXIS_STEPS = 1 << AXIS_BITS;
 
+    public static int MenusOpen { get; private set; }
+
+    /// <summary>
+    /// if there is a menu open, the mouse is visible and unlocked. if there are no menus open, the mouse is hidden and locked.
+    /// by default, there is 1 menu open.
+    /// when opening the pause menu, that's a second menu that's open
+    /// no menus is for things like freecam in the park
+    /// except for the townGameManager, use only openMenu and closeMenu. only the gm is allowed to use SetMenus, and only to 1 when it starts.
+    /// </summary>
+    /// <param name="count"></param>
+    public static void SetMenus(int count) => MenusOpen = count;
+
+    public static void OpenMenu()
+    {
+        MenusOpen += 1;
+        SetCursor(MenusOpen > 0);
+    }
+
+    public static void CloseMenu()
+    {
+        MenusOpen = Mathf.Max(0, MenusOpen - 1);
+        SetCursor(MenusOpen > 0);
+    }
+
+    private static void SetCursor(bool visible)
+    {
+        Cursor.visible = visible;
+        Cursor.lockState = visible ? CursorLockMode.None : CursorLockMode.Locked;
+    }
+
     public static float CompareColors(Color col1, Color col2)
     {
         var rDiff = Mathf.Abs(col1.r - col2.r);    
@@ -146,8 +176,6 @@ public static class Utils
         foreach (var item in array) list.Add((T)item);
         return list;
     }
-
-    
 
     public static string GetTimeString(int seconds)
     {

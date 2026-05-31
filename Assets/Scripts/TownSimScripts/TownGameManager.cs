@@ -81,6 +81,8 @@ public class TownGameManager : MonoBehaviour
 
     void Start()
     {
+        Utils.SetMenus(1);
+
         _currency = PlayerPrefs.GetFloat("PlayerCurrency", 100);
         ChangeCurrency(0);
 
@@ -108,7 +110,10 @@ public class TownGameManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape)) {
+        if (Input.GetKeyDown(KeyCode.G)) print("Menus: " + Utils.MenusOpen);
+
+        if (Input.GetKeyDown(KeyCode.Escape) && Cursor.visible) {
+            print("pause menu opened - GM: visible: " + Cursor.visible);
             if (_pauseMenu.gameObject.activeInHierarchy) _pauseMenu.gameObject.SetActive(false);
             else if (_invParent.activeInHierarchy) _invParent.SetActive(false);
             else if (_mapParent.activeInHierarchy) _mapParent.SetActive(false);

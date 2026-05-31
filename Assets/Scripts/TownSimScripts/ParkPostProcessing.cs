@@ -6,51 +6,56 @@ using UnityEngine.Rendering;
 
 public class ParkPostProcessing : MonoBehaviour
 {
-
-
     [SerializeField] private PostProcessingSetting daySetting;
     [SerializeField] private PostProcessingSetting eveningSetting;
     [SerializeField] private PostProcessingSetting nightSetting;
-    private PostProcessingManager postProcessingManager;
-
-
-
-    DateTime currentTime;
-
-
     [SerializeField] private GameObject volumeManager;
-    Volume volume;
 
-    void OnEnable()
+    private PostProcessingManager _postProcessingManager;
+    private DateTime _currentTime;
+    private bool _initialized;
+    private Volume _volume;
+
+    private void Start()
     {
-        postProcessingManager = PostProcessingManager.i;
+        Initialize();
+    }
 
-        volume = volumeManager.GetComponent<Volume>();
+    private void OnEnable()
+    {
+        Initialize();
+    }
 
-        currentTime = System.DateTime.Now;
-        Debug.Log(currentTime.Hour);
+    void Initialize()
+    {
+        if (_initialized) return;
 
-        if (currentTime.Hour >= 5 && currentTime.Hour <= 17)
+        _postProcessingManager = PostProcessingManager.i;
+        if (_postProcessingManager == null) return;
+
+        _initialized = true;
+
+        _volume = volumeManager.GetComponent<Volume>();
+        _currentTime = System.DateTime.Now;
+
+        if (_currentTime.Hour >= 5 && _currentTime.Hour <= 17)
         {
-            postProcessingManager.SetPostProcessing(daySetting);
+            _postProcessingManager.SetPostProcessing(daySetting);
            
         }
-        else if (currentTime.Hour >= 4 && currentTime.Hour <= 19)
+        else if (_currentTime.Hour >= 4 && _currentTime.Hour <= 19)
         {
-            postProcessingManager.SetPostProcessing(eveningSetting);   
+            _postProcessingManager.SetPostProcessing(eveningSetting);   
 
         }
         else {
-            postProcessingManager.SetPostProcessing(nightSetting);
+            _postProcessingManager.SetPostProcessing(nightSetting);
             
         }
-
     }
 
     void OnDisable()
     {
-        postProcessingManager.SetGeneric();
-    }
-
-    
+        _postProcessingManager?.SetGeneric();
+    }    
 }

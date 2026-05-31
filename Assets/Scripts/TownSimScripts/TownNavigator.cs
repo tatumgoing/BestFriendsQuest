@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class TownNavigator : MonoBehaviour
 {
-
     public static async void GoToMap() => await TownGameManager.i.ChangeArea(AreaName.MAP);
     public static async void GoToPark() => await TownGameManager.i.ChangeArea(AreaName.PARK);
     public static async void GoToTown() => await TownGameManager.i.ChangeArea(AreaName.TOWN);
@@ -13,4 +12,10 @@ public class TownNavigator : MonoBehaviour
     public static async void GoToTownHall() => await TownGameManager.i.ChangeArea(AreaName.TOWN_HALL);
     public static async void GoToPort() => await TownGameManager.i.ChangeArea(AreaName.PORT);
     public static async void GoToRecords() => await TownGameManager.i.ChangeArea(AreaName.RECORDS);
+
+    private void Update()
+    {
+        var targetScale = CutsceneManager.i.CurrentCutscene ? 0 : 1;
+        transform.localScale = Mathf.Lerp(transform.localScale.x, targetScale, 10 * Time.deltaTime) * Vector3.one;
+    }
 }
