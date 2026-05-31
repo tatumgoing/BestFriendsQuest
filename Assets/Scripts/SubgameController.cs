@@ -88,6 +88,7 @@ public class SubgameController : MonoBehaviour
 
         _subgameIndex++;
         _completionText.Show(score);
+
     }
 
     private void FinishMinigame()
