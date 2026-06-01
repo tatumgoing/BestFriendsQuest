@@ -2327,6 +2327,7 @@ Transform:
   m_Children:
   - {fileID: 1311164668}
   - {fileID: 1053188650}
+  - {fileID: 735988350}
   - {fileID: 879565581}
   - {fileID: 738897720}
   - {fileID: 221880496}
@@ -6543,7 +6544,7 @@ GameObject:
   - component: {fileID: 386284364}
   - component: {fileID: 386284363}
   m_Layer: 5
-  m_Name: worldCanvas
+  m_Name: cutsceneButtonCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17679,6 +17680,53 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 734225847}
   m_CullTransparentMesh: 1
+--- !u!1 &735988348
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 735988350}
+  - component: {fileID: 735988349}
+  m_Layer: 0
+  m_Name: characterSpawn_ParkBench2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &735988349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 735988348}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ce38a1fa0b966743970a315d5e28fb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animations: 2
+  isMoving: 0
+  spawnedCharacter: {fileID: 0}
+--- !u!4 &735988350
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 735988348}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.9964134, z: -0, w: -0.0846194}
+  m_LocalPosition: {x: -6.58, y: 4.346, z: -1.49}
+  m_LocalScale: {x: 0.49619, y: 0.49619, z: 0.49619}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 155243487}
+  m_LocalEulerAnglesHint: {x: 0, y: 189.708, z: 0}
 --- !u!1 &738897719
 GameObject:
   m_ObjectHideFlags: 0
@@ -21980,6 +22028,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 974258997}
   m_CullTransparentMesh: 1
+--- !u!1 &974587117
+GameObject:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 974587118}
+  - component: {fileID: 974587119}
+  m_Layer: 0
+  m_Name: cm
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &974587118
+Transform:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 974587117}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1397020138}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &974587119
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 974587117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac0b09e7857660247b1477e93731de29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!23 &982002654 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 7349925147102251281, guid: 6153e7fa27e50454196817f3c4ba499e, type: 3}
@@ -23603,13 +23695,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1053188649}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: -8.03, y: 4.346, z: -1.555}
+  m_LocalRotation: {x: -0, y: 0.9960128, z: -0, w: 0.08921055}
+  m_LocalPosition: {x: -9.76, y: 4.346, z: -1.52}
   m_LocalScale: {x: 0.49619, y: 0.49619, z: 0.49619}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 155243487}
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 169.764, z: 0}
 --- !u!114 &1053188651
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31082,6 +31174,78 @@ MonoBehaviour:
   currencyDisplay: {fileID: 529683631}
   _shadowText: {fileID: 301640872}
   _removeDollarSign: 1
+--- !u!1 &1397020137
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1397020138}
+  - component: {fileID: 1397020139}
+  m_Layer: 0
+  m_Name: cam
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1397020138
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1397020137}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.10825295, y: -0, z: -0, w: 0.9941234}
+  m_LocalPosition: {x: -49.00004, y: -46.931046, z: -456.8008}
+  m_LocalScale: {x: 0.99999994, y: 0.9999999, z: 0.9999999}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 974587118}
+  m_Father: {fileID: 6531106085467748649}
+  m_LocalEulerAnglesHint: {x: 8.564, y: 0, z: 0}
+--- !u!114 &1397020139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1397020137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45e653bab7fb20e499bda25e1b646fea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ExcludedPropertiesInInspector:
+  - m_Script
+  m_LockStageInInspector: 
+  m_StreamingVersion: 20170927
+  m_Priority: 10
+  m_StandbyUpdate: 2
+  m_LookAt: {fileID: 0}
+  m_Follow: {fileID: 0}
+  m_Lens:
+    FieldOfView: 60.000004
+    OrthographicSize: 5
+    NearClipPlane: 0.1
+    FarClipPlane: 1000
+    Dutch: 0
+    ModeOverride: 0
+    LensShift: {x: 0, y: 0}
+    GateFit: 2
+    FocusDistance: 10
+    m_SensorSize: {x: 1, y: 1}
+  m_Transitions:
+    m_BlendHint: 0
+    m_InheritPosition: 0
+    m_OnCameraLive:
+      m_PersistentCalls:
+        m_Calls: []
+  m_LegacyBlendHint: 0
+  m_ComponentOwner: {fileID: 974587118}
 --- !u!1 &1397322253
 GameObject:
   m_ObjectHideFlags: 0
@@ -36305,12 +36469,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _textBox: {fileID: 1663475317}
-  _dialogue:
-  - Woah.... a cutscene?
-  - If it's a cutscene, does that means it's a scene that was cut?
-  - Or a scene that cuts through the normal flow?
-  - Impossible to know...
   _letterDelayTime: 0.05
+  _c1Parent: {fileID: 936681741}
+  _c2Parent: {fileID: 1019470289}
+  _c1Name: {fileID: 1155234638}
+  _c2Name: {fileID: 734225849}
 --- !u!114 &1697474284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46001,11 +46164,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spawnSpots:
-  - {fileID: 1053188651}
   - {fileID: 879565582}
   - {fileID: 263481334}
   - {fileID: 221880497}
   - {fileID: 738897721}
+  _benchSpawnSpots:
+  - {fileID: 1053188651}
+  - {fileID: 735988349}
+  _cutsceneButton: {fileID: 7464577927915457795}
 --- !u!114 &2074531009
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -47675,7 +47841,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2146585710
 Transform:
   m_ObjectHideFlags: 0
@@ -48505,9 +48671,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6531106085467748649}
+  - component: {fileID: 7464577927915457795}
   - component: {fileID: 2520660538834125627}
   - component: {fileID: 7464577927915457794}
-  - component: {fileID: 7464577927915457795}
   - component: {fileID: 7464577927915457796}
   m_Layer: 5
   m_Name: cutscene button
@@ -55517,6 +55683,7 @@ RectTransform:
   - {fileID: 5919278190815509115}
   - {fileID: 6540333620455620690}
   - {fileID: 1752900361}
+  - {fileID: 1397020138}
   m_Father: {fileID: 386284362}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -56271,6 +56438,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68452692ce3f6a04a82f33786fa7d269, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _scripts:
+  - {fileID: 4900000, guid: 1b4b418290984c146bdec43b66360641, type: 3}
+  - {fileID: 4900000, guid: 8795e798e6179ed40a91137982c9183c, type: 3}
+  - {fileID: 4900000, guid: 9ae4b6a8b2ede4948a61d592b4eabd62, type: 3}
+  - {fileID: 4900000, guid: f00fb10d64a7e474bb66f969f6d1ac66, type: 3}
+  _cam: {fileID: 1397020137}
 --- !u!114 &7464577927915457796
 MonoBehaviour:
   m_ObjectHideFlags: 0

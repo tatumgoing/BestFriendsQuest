@@ -31,12 +31,14 @@ public static class Utils
 
     public static void OpenMenu()
     {
+        //Debug.Log("opened Menu");
         MenusOpen += 1;
         SetCursor(MenusOpen > 0);
     }
 
     public static void CloseMenu()
-    {
+    { 
+        //Debug.Log("closed Menu");
         MenusOpen = Mathf.Max(0, MenusOpen - 1);
         SetCursor(MenusOpen > 0);
     }

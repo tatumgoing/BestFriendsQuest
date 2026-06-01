@@ -22,6 +22,8 @@ public class ParkFreecam : MonoBehaviour
 
     private void Update()
     {
+        if (CutsceneManager.i.CurrentCutscene) return;
+
         HandleMovement();
         HandleScroll();
 
@@ -33,7 +35,7 @@ public class ParkFreecam : MonoBehaviour
             HandleRot();
         }
 
-        if (Input.GetMouseButtonUp(0)) {
+        if (Input.GetMouseButtonUp(0) && Utils.MenusOpen == 0) {
             Utils.OpenMenu();
         }
     }

@@ -8,7 +8,9 @@ public class ParkController : MonoBehaviour
 {
     //[SerializeField] private List<Transform> _characterSpawns = new List<Transform>();
     [SerializeField] private List<CharacterSpawnLocation> _spawnSpots = new List<CharacterSpawnLocation>();
+    [SerializeField] private List<CharacterSpawnLocation> _benchSpawnSpots = new List<CharacterSpawnLocation>();
     private List<SpawnedCharacter> _spawnedCharacters = new List<SpawnedCharacter>();
+    [SerializeField] private CutsceneButton _cutsceneButton;
 
     private void OnDisable() => ClearAllCharacters();
 
@@ -47,9 +49,19 @@ public class ParkController : MonoBehaviour
     {
         var IDs = SelectCharactersToSpawn();
 
-        _spawnSpots.Shuffle();
-        for (int i = 0; i < Mathf.Min(IDs.Count, _spawnSpots.Count); i++) {
-            SpawnCharacter(IDs[i], _spawnSpots[i]);
+        var spots = new List<CharacterSpawnLocation>(_spawnSpots);
+        spots.Shuffle();
+        var benchSpots = new List<CharacterSpawnLocation>(_benchSpawnSpots);
+        benchSpots.Reverse();
+        foreach (var s in benchSpots) spots.Insert(0, s);
+
+        for (int i = 0; i < Mathf.Min(IDs.Count, spots.Count); i++) {
+            SpawnCharacter(IDs[i], spots[i]);
+        }
+
+        if (IDs.Count >= 2) {
+            _cutsceneButton.SetCharacterNames(CharacterManager.i.GetNameFormatted(IDs[0]), CharacterManager.i.GetNameFormatted(IDs[1]));
+            _cutsceneButton.gameObject.SetActive(true);
         }
     }
 
