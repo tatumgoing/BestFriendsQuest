@@ -209,10 +209,9 @@ public class TownGameManager : MonoBehaviour
             return;
         }
 
-        await FadeScreen(true);
-        //foreach (var character in FindObjectsByType<SpawnedCharacter>(FindObjectsSortMode.None)) Destroy(character.gameObject);
+        if (Application.isPlaying) await FadeScreen(true);
         foreach (var a in _areas) a.SetActiveState(a.Type == targetArea);
-        await FadeScreen(false);        
+        if (Application.isPlaying) await FadeScreen(false);        
     }
 
     public void BuyItem(ItemData item)

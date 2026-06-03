@@ -71,13 +71,13 @@ public class RestrauntController : MonoBehaviour
 
         postProcessingManager = PostProcessingManager.i;
 
-        postProcessingManager.SetPostProcessing(postProcessingSetting);
+        postProcessingManager?.SetPostProcessing(postProcessingSetting);
         
     }
 
     private void OnDisable(){
 
-        postProcessingManager.SetGeneric();
+        postProcessingManager?.SetGeneric();
 
     }
 

@@ -10,78 +10,102 @@ public class MinigameResultsScreen : MonoBehaviour
     [SerializeField] private Transform _listParent;
     [SerializeField] private float _delay;
 
-    [Space()]
-    [SerializeField] private List<Image> _stars;
-    [SerializeField] private Color _goldStarColor;
-    [SerializeField] private Color _greyStarColor;
+    [SerializeField] private TextMeshProUGUI _titleText;
+    [SerializeField] private float _letterDelay = 0.075f;
+    [SerializeField] private MinigameResultsListEntry _scoreEntry;
+    [SerializeField] private MinigameResultsListEntry _rewardEntry;
+    [SerializeField] private MinigameResultsListEntry _chefEntry;
+    [SerializeField] private MinigameResultsListEntry _recipientEntry;
+    [SerializeField] private MinigameResultsListEntry _relationshipEntry;
+    [SerializeField] private GameObject _startCutsceneButton;
+    [SerializeField] private GameObject _normalButtonParent;
 
-    [Space()]
-    [SerializeField] private TextMeshProUGUI _cashRewardText;
+    [Header("Cutscenes")]
+    [SerializeField] private TextAsset _cutsceneScript;
 
-    [Space()]
-    [SerializeField] private TextMeshProUGUI _happinessEffectText;
-    [SerializeField] private Color _happyColor = Color.green;
-    [SerializeField] private Color _unhappyColor = Color.red;
-    [SerializeField] private Image _happinessCharacterPortrait;
+    private ID _chef;
+    private ID _recipient;
+    private bool _animationDone; 
+    private bool _cutscenePlayed;
 
+    public void CompleteAnimation() => _animationDone = true;
 
-    [Space()]
-    [SerializeField] private TextMeshProUGUI _happiness2EffectText;
-    [SerializeField] private Image _happiness2CharacterPortrait;
-
-    [Space()]
-    [SerializeField] private MinigameNarrativeResults _narrative;
-
-    [Space()]
-    [SerializeField] private GameObject _normalButtons;
-    [SerializeField] private GameObject _problemContinueButton;
-
-    public async Task ShowScore(float finalScore, RecipeData recipe, ID character, ID recipient, bool isProblem)
+    public void showResultsCutscene()
     {
-        gameObject.SetActive(true);
+        gameObject.SetActive(false);
+        CutsceneManager.i.StartCutscene(_cutsceneScript, new List<ID> { _chef, _recipient}, () => gameObject.SetActive(true));
+        _cutscenePlayed = true;
+    }
+
+    private void OnEnable()
+    {
+        _animationDone = false;
+        _normalButtonParent.SetActive(false);
+
+        if (_cutscenePlayed) {
+            _cutscenePlayed = false;
+            _startCutsceneButton.SetActive(false);
+            ShowNormalButtons();
+        }
+    }
+
+    private async void ShowNormalButtons()
+    {
+        while (!_animationDone) await Task.Yield(); //AnimationDone is set to true by an animation event at the end of the animation via 'CompleteAnimation()' function
+        _normalButtonParent.SetActive(true);
+    }
+
+    public async Task ShowScore(float finalScore, RecipeData recipe, ID chef, ID recipient, bool isProblem, float originalHappinessChef, float originalHappinessRecipient)
+    {
+        _chef = chef;
+        _recipient = recipient;
+        var intDelay = Mathf.CeilToInt(_delay * 1000);
+
+        _titleText.text = "";
 
         foreach (Transform child in _listParent) child.gameObject.SetActive(false);
+        _startCutsceneButton.SetActive(false);
 
-        ColorStars(finalScore);
+        gameObject.SetActive(true);
+        _animationDone = false;
+        while (!_animationDone) await Task.Yield(); //AnimationDone is set to true by an animation event at the end of the animation via 'CompleteAnimation()' function
 
-        ShowHappiness(finalScore, character, recipient);
-
-        _cashRewardText.text = Mathf.CeilToInt(finalScore * recipe.MoneyReward).ToString();
-
-        _narrative.Show(character, recipient, recipe, finalScore);
-
-        foreach (Transform child in _listParent) {
-            if (isProblem && child.gameObject == _normalButtons) continue;
-            if (!isProblem && child.gameObject == _problemContinueButton) continue;
-
-            child.gameObject.SetActive(true);
-            await Task.Delay(Mathf.RoundToInt(_delay * 1000));
+        var titleText = "Dish Complete";
+        for (int i = 0; i < titleText.Length; i++) {
+            _titleText.text += titleText[i];
+            await Task.Delay(Mathf.CeilToInt(_letterDelay * 1000));
         }
-    }
+        await Task.Delay(intDelay/2);
 
-    private void ColorStars(float finalScore)
-    {
-        foreach (var s in _stars) s.color = _greyStarColor;
-        if (finalScore > 0.25f) _stars[0].color = _goldStarColor;
-        if (finalScore > 0.50f) _stars[1].color = _goldStarColor;
-        if (finalScore > 0.75f) _stars[2].color = _goldStarColor;
-    }
+        _scoreEntry.Initialize(finalScore);
+        await Task.Delay(intDelay);
+        
+        _rewardEntry.Initialize(Mathf.CeilToInt(finalScore * recipe.MoneyReward));
+        await Task.Delay(intDelay);
 
-    private void ShowHappiness(float finalScore, ID character, ID recipient)
-    {
-        if (finalScore <= 0.33f) {
-            _happinessEffectText.text = "-";
-            _happinessEffectText.color = _unhappyColor;
+        _chefEntry.gameObject.SetActive(recipient == chef);
+        if (chef == recipient) {
+            var happinessDelta = Mathf.Min(recipe.HappinessReward * finalScore, 100 - originalHappinessChef);
+            _chefEntry.Initialize(chef, happinessDelta, _delay * 0.75f);
+            await Task.Delay(intDelay);
         }
-        else {
-            if (finalScore > 0.66f) _happinessEffectText.text = "+";
-            if (finalScore > 0.90f) _happinessEffectText.text = "++";
-            _happinessEffectText.color = _happyColor;
-        } 
-        _happinessCharacterPortrait.sprite = CharacterManager.i.GetPortrait(character);
 
-        _happiness2CharacterPortrait.sprite = CharacterManager.i.GetPortrait(recipient);
-        _happiness2EffectText.text = _happinessEffectText.text;
+        _recipientEntry.gameObject.SetActive(recipient != chef);
+        _relationshipEntry.gameObject.SetActive(false);
+        if (recipient != chef) {
+            var happinessDelta = Mathf.Min(recipe.HappinessReward * finalScore, 100 - originalHappinessRecipient);
+            _recipientEntry.Initialize(recipient, happinessDelta, _delay * 0.75f);
+            await Task.Delay(intDelay);
+
+            _relationshipEntry.gameObject.SetActive(true);
+            var relationshipDelta = recipe.RelationshipReward * finalScore;
+            var originalRelationship = CharacterManager.i.GetRelationship(chef, recipient) - relationshipDelta;
+            _relationshipEntry.Initialize(chef, recipient, originalRelationship, relationshipDelta, _delay * 0.75f);
+        }
+
+        await Task.Delay(intDelay/2);
+
+        _startCutsceneButton.SetActive(true);
     }
 
     public void ReturnToProblemRoom()

@@ -15,13 +15,16 @@ public class RecipeData : ScriptableObject
     public string Name;
     [TextArea(3,10)] public string Description;
     public Sprite Icon;
+
+
+    [Header("Rewards")]
+    public Difficulty Difficulty;
+    [SerializeField] private bool _overrideRewards;
     public float MaxScore;
     public int MoneyReward;
     public float HappinessReward = 30;
     public float RelationshipReward = 1.5f;
-    [SerializeField] private bool _overrideRewards;
 
-    public Difficulty Difficulty;
 
     public List<SubgameData> Subgames = new List<SubgameData>();
 

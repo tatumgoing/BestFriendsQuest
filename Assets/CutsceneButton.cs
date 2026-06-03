@@ -21,7 +21,7 @@ public class CutsceneButton : MonoBehaviour
     public void StartCutscene()
     {
         var selected = Random.Range(0, _scripts.Count);
-        CutsceneManager.i.StartCutscene(_scripts[selected], new List<string> { _name1, _name2 }, this);
+        CutsceneManager.i.StartCutscene(_scripts[selected], new List<string> { _name1, _name2 }, ResetCam);
 
         _usedConvos.Add(_scripts[selected]);
         _scripts.RemoveAt(selected);

@@ -15,11 +15,6 @@ public class CookingMinigame : MinigameController
     [Header("Subgames")]
     [SerializeField] private StirMinigame _stirMinigame;
 
-    private ID _selectedCharacter = new ID(0);
-    private ID _selectedRecipient = new ID(0);
-    private bool _solvingProblem;
-    private GameObject _spawnedCharacter;
-
     //===TESTING===
     [Header("TESTING")]
     [SerializeField] private ItemData _chefHat;
@@ -28,11 +23,15 @@ public class CookingMinigame : MinigameController
     [SerializeField] private ID _testRecipientID = new ID(8126);
     [SerializeField, DisplayInspector] private RecipeData _testRecipe;
 
+    private ID _selectedCharacter = new ID(0);
+    private ID _selectedRecipient = new ID(0);
+    private bool _solvingProblem;
+    private GameObject _spawnedCharacter;
+
     // I, too, am testing
     private ID _displayedSelectedCharacter = new ID(0); //tracks character on the main menu
 
-    //===END TESTING===
-
+    public RestrauntController AreaController => _areaController;
     public override MinigameType GetMinigameType() => MinigameType.COOKING;
 
     private void OnEnable()

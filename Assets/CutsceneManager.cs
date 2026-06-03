@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ public class CutsceneManager : MonoBehaviour
 
     [SerializeField] private CutsceneDialogue _dialogueController;
 
-    private CutsceneButton _source;
+    private Action _onCompleteCallback;
 
     public bool CurrentCutscene => _dialogueController.gameObject.activeInHierarchy;
 
@@ -18,14 +19,21 @@ public class CutsceneManager : MonoBehaviour
         i = this;
     }
 
-    public void StartCutscene(TextAsset script, List<string> names, CutsceneButton source)
+    public void StartCutscene(TextAsset script, List<ID> characters, Action callback = null)
     {
-        _source = source;
+        var names = new List<string>();
+        foreach (var character in characters) names.Add(CharacterManager.i.GetNameFormatted(character));
+        StartCutscene(script, names, callback);
+    }
+
+    public void StartCutscene(TextAsset script, List<string> names, Action callback = null)
+    {
+        _onCompleteCallback = callback;
         _dialogueController.StartDialogue(script.text.Split("\n").ToList(), names);
     }
 
     public void EndCutscene()
     {
-        _source.ResetCam();
+        _onCompleteCallback?.Invoke();
     }
 }
