@@ -22,6 +22,7 @@ public class MinigameResultsScreen : MonoBehaviour
 
     [Header("Cutscenes")]
     [SerializeField] private TextAsset _cutsceneScript;
+    [SerializeField] private TextAsset _cutsceneScriptGift;
 
     private ID _chef;
     private ID _recipient;
@@ -33,7 +34,9 @@ public class MinigameResultsScreen : MonoBehaviour
     public void showResultsCutscene()
     {
         gameObject.SetActive(false);
-        CutsceneManager.i.StartCutscene(_cutsceneScript, new List<ID> { _chef, _recipient}, () => gameObject.SetActive(true));
+        if (_chef == _recipient) CutsceneManager.i.StartCutscene(_cutsceneScript, new List<ID> { _chef }, () => gameObject.SetActive(true));
+        else CutsceneManager.i.StartCutscene(_cutsceneScriptGift, new List<ID> { _chef, _recipient}, () => gameObject.SetActive(true));
+
         _cutscenePlayed = true;
     }
 
