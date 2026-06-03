@@ -11,11 +11,15 @@ public class ButtonPressAnimator : MonoBehaviour
     private Vector2 _startingPos = Vector2.one * Mathf.Infinity;
     private bool _initialized;
 
+    private float _timeEnabled;
+
     private void OnEnable()
     {
+        _timeEnabled = Time.time;
+
         if (_backing && !_initialized) {
             _initialized = true;
-            _startingPos = _backing.anchoredPosition; 
+            _startingPos = _backing.anchoredPosition;
         }
         _backing.anchoredPosition = _startingPos;
     }
@@ -26,5 +30,7 @@ public class ButtonPressAnimator : MonoBehaviour
 
         var targetPos = _shadow.gameObject.activeInHierarchy ? _startingPos : _shadow.anchoredPosition;
         _backing.anchoredPosition = Vector2.Lerp(_backing.anchoredPosition, targetPos, _lerpFactor);
+
+        if (Time.time - _timeEnabled < 0.5f) _backing.anchoredPosition = targetPos;
     }
 }

@@ -58,7 +58,7 @@ public class InProgressQuestMenu : MonoBehaviour
 
     public void Complete()
     {
-        gameObject.SetActive(false);
+        //gameObject.SetActive(false);
         _controller.StartWalkingAnimation();
     }
 }

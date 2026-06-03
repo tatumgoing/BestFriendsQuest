@@ -51,7 +51,7 @@ public class MinigameResultsListEntry : MonoBehaviour
         _portrait2.gameObject.SetActive(true);
 
         _portrait.sprite = CharacterManager.i.GetPortrait(chef);
-        _portrait.sprite = CharacterManager.i.GetPortrait(recipient);
+        _portrait2.sprite = CharacterManager.i.GetPortrait(recipient);
 
         _slider.value = relationshipStart - Mathf.Floor(relationshipStart);
         _sliderStartValue = _slider.value;

@@ -1,3 +1,4 @@
+using MyBox;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,6 +17,7 @@ public class PortAreaController : MonoBehaviour
     private RuntimeQuestData _questData;
     private SpawnedCharacter _char1 = null;
     private SpawnedCharacter _char2 = null;
+    private bool _readyToShowResults = false;
 
     private void OnEnable()
     {
@@ -33,10 +35,20 @@ public class PortAreaController : MonoBehaviour
 
         _char2 = CharacterManager.i.SpawnCharacter(questData.Character2, _char2Spawn.transform);
         _ = _char2Spawn.SetCharacter(_char2);
+
+        _readyToShowResults = false;
+    }
+
+    [ButtonMethod]
+    public void FinishWalking()
+    {
+        _readyToShowResults = true;
     }
 
     private void Update()
     {
+        if (!_readyToShowResults) _chest.position = _chestStartPos.position;
+
         if (!_debris.enabled) return;
 
         if (Vector3.Distance(_chestEndPos.position, _chestStartPos.position) < Vector3.Distance(_chest.position, _chestStartPos.position)) {

@@ -37,8 +37,6 @@ public class BFQResultsScreen : MonoBehaviour
 
     private bool _success;
 
-    //private float _targetSliderValue;
-
     public void ShowResults(RuntimeQuestData questData)
     {
         var roll = Random.Range(0, 1f);
@@ -48,7 +46,6 @@ public class BFQResultsScreen : MonoBehaviour
             TownGameManager.i.UnlockItem(questData.QuestData.unlockedItem);
             CharacterManager.i.IncreaseRelationship(questData.Character1, questData.Character2, questData.QuestData.relationshipGain);
         }
-        
 
         _title.text = _success ? _titleSuccess : _titleFail;
         _bottomDescriptionText.text = _success ? _bottomDescriptionTemplateSuccess : _bottomDescriptionTemplateFail;

@@ -19,6 +19,8 @@ public class CutsceneManager : MonoBehaviour
         i = this;
     }
 
+    public void StartCutscene(TextAsset script, ID id1, Action callback = null) => StartCutscene(script, new List<ID>() { id1 }, callback);
+    public void StartCutscene(TextAsset script, ID id1, ID id2, Action callback = null) => StartCutscene(script, new List<ID>() { id1, id2 }, callback);
     public void StartCutscene(TextAsset script, List<ID> characters, Action callback = null)
     {
         var names = new List<string>();

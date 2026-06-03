@@ -103,7 +103,7 @@ public class MinigameResultsScreen : MonoBehaviour
             _relationshipEntry.gameObject.SetActive(true);
             var relationshipDelta = recipe.RelationshipReward * finalScore;
             var originalRelationship = CharacterManager.i.GetRelationship(chef, recipient) - relationshipDelta;
-            _relationshipEntry.Initialize(chef, recipient, originalRelationship, relationshipDelta, _delay * 0.75f);
+            _relationshipEntry.Initialize(recipient, chef, originalRelationship, relationshipDelta, _delay * 0.75f);
         }
 
         await Task.Delay(intDelay/2);
