@@ -1,9 +1,16 @@
 using MyBox;
 using System.Collections.Generic;
-using System.ComponentModel.Design.Serialization;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Events;
+
+[System.Serializable]
+public class AreaCharacterData
+{
+    public AreaName Area;
+    public int Capacity;
+}
 
 public class CharacterManager : MonoBehaviour
 {
@@ -16,15 +23,24 @@ public class CharacterManager : MonoBehaviour
     [SerializeField] private List<ColorData> _clothingColors;
     [SerializeField] private List<PersonalityData> _personalities = new List<PersonalityData>();
 
+    [Header("Areas")]
+    [SerializeField] private List<AreaName> _validAreas = new List<AreaName>();
+    [SerializeField] private List<AreaCharacterData> _areaData = new List<AreaCharacterData>();
+    [SerializeField] private float _minTimeAtLocation = 5; //minimum time that characters will spend in each area
+    [SerializeField] private float _moveCheckCooldown = 5; //how often each character will try to move
+
     [Header("Problems")]
     [SerializeField, Range(0, 1), Tooltip("Max percent of citizens that can have problems")] private float _maxProblemPercent = 0.3f;
     [SerializeField] private List<ProblemData> _allProblems;
 
+    public UnityEvent OnCharacterMove = new UnityEvent();
     public List<CompleteCharacterData> AllCharacters => _allCharacters;
     public CompleteCharacterData GetRandomCharacter() => AllCharacters[Random.Range(0, AllCharacters.Count)];
     public string GetAge(ID id) => _allCharacters.Find(c => c.ID == id).Age.ToString();
     public string GetFavoriteColorString(ID id) => Utils.CapitalFirst(GetFavoriteColor(id).ToString().ToLower());
-    public PersonalityData GetPersonality(ID ID) => _personalities[ID %  _personalities.Count]; 
+    public PersonalityData GetPersonality(ID ID) => _personalities[ID %  _personalities.Count];
+    private int GetCapacity(AreaName area) => _areaData.Where(x => x.Area == area).First().Capacity;
+    public float MinLocationTime  => _minTimeAtLocation;
 
     void Awake()
     {
@@ -35,7 +51,6 @@ public class CharacterManager : MonoBehaviour
 
     private void Start()
     {
-        //TESTING:
         foreach (var characterA in _allCharacters) {
             foreach (var characterB in _allCharacters) {
                 if (characterA != characterB) {
@@ -51,10 +66,29 @@ public class CharacterManager : MonoBehaviour
 
     private void Update()
     {
-        //if (Input.GetKeyDown(KeyCode.L)) RandomizeRelationships(); //TESTING
-
         var problemRatio = (float)numCharactersWithProblems() / _allCharacters.Count;
         if (problemRatio < _maxProblemPercent) GenerateProblem();
+        TickCharacterLocations();
+    }
+
+    private void TickCharacterLocations()
+    {
+        foreach (var character in _allCharacters) {
+            if (character.TimeAtLocation < _minTimeAtLocation || Time.time - character.TimeWhenMoveCheck < character.MoveCheckCooldown) continue;
+            if (Random.Range(0, 1f) < 0.5f) {
+                character.SetArea(GetAvailableLocation());
+                OnCharacterMove.Invoke();
+            }
+            else {
+                character.TimeWhenMoveCheck = Time.time;
+            }
+        }
+    }
+
+    public List<ID> GetIDsByArea(AreaName area)
+    {
+        var charactersInArea = _allCharacters.Where(c => c.CurrentArea == area).ToList();
+        return charactersInArea.Select(c => c.ID).ToList();
     }
 
     [ButtonMethod]
@@ -267,17 +301,27 @@ public class CharacterManager : MonoBehaviour
         character?.SetProblem(problem);
     }
 
+    private AreaName GetAvailableLocation()
+    {
+        var availableAreas = _validAreas.Where(x => GetIDsByArea(x).Count < GetCapacity(x)).ToList();
+        var chosenArea = availableAreas[Random.Range(0, availableAreas.Count)];
+        return chosenArea;
+    }
+
     private async void LoadCharactersFromFile()
     {
         var staticSaveStrings = SaveSystem.LoadAllStaticSaveStrings();
 
         foreach (var s in staticSaveStrings) {
-            _allCharacters.Add(new CompleteCharacterData(s));
+            var newCharacter = new CompleteCharacterData(s);
+            newCharacter.SetArea(GetAvailableLocation());
+            newCharacter.MoveCheckCooldown = Random.Range(0.5f, 2f) * _moveCheckCooldown;
+            _allCharacters.Add(newCharacter);
         }
 
-        var newCharacter = SpawnCharacter(AllCharacters[0].ID, transform);
+        var InitilizeCharacter = SpawnCharacter(AllCharacters[0].ID, transform);
         await Task.Delay(200);
-        Destroy(newCharacter.gameObject);
+        Destroy(InitilizeCharacter.gameObject);
     }
 
     public float GetRelationship(ID id1, ID id2)

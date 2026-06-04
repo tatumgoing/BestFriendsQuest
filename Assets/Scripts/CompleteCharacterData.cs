@@ -11,6 +11,18 @@ public class CompleteCharacterData
     [SerializeField] private DynamicCharacterData _dynamicData;
 
     private PersonalityData _personality;
+    public float TimeWhenMoveCheck;
+    public float MoveCheckCooldown;
+
+    public AreaName CurrentArea => _dynamicData.CurrentLocation;
+    public float TimeAtLocation => Time.time - _dynamicData.TimeWhenMoved;
+
+    public void SetArea(AreaName area)
+    {
+        TimeWhenMoveCheck = Time.time;
+        _dynamicData.TimeWhenMoved = Time.time;
+        _dynamicData.CurrentLocation = area;
+    }
 
     /// <summary>
     /// Loads character data for the character with the given static saveString from the save file.

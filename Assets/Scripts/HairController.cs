@@ -153,7 +153,7 @@ public class HairController : MonoBehaviour, IFeatureController
         if (data.IsMainHair) {
             for (int i = _currentPieces.Count - 1; i >= 0; i--) {
                 if (_currentPieces[i].GetData().IsMainHair) {
-                    print("Deleting main hair: " + _currentPieces[i].GetData().name);
+                    //print("Deleting main hair: " + _currentPieces[i].GetData().name);
                     Delete(_currentPieces[i]);
                 }
             }

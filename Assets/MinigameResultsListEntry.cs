@@ -98,8 +98,8 @@ public class MinigameResultsListEntry : MonoBehaviour
     {
         HideAll();
         _slider.gameObject.SetActive(true);
-
         _portrait.gameObject.SetActive(true);
+
         _portrait.sprite = CharacterManager.i.GetPortrait(character);
         _slider.value = (CharacterManager.i.GetHappiness(character) / 100f) - (happinessIncrease/100f);
 

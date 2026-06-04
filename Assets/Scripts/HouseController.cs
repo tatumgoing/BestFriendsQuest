@@ -1,11 +1,13 @@
 using MyBox;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class HouseController : MonoBehaviour
 {
+    [SerializeField] private TextMeshProUGUI _nameText;
     [SerializeField] private Image _characterIcon;
     [SerializeField] private HappinessBar _happinessBar;
     [SerializeField] private Animator _portraitParent;
@@ -24,10 +26,6 @@ public class HouseController : MonoBehaviour
     private void OnEnable()
     {
         timeWhenEnabled = Time.time;
-
-        var rot = _ruinedHouse.transform.localEulerAngles;
-        rot.y = Random.Range(0, 360);
-        _ruinedHouse.transform.localEulerAngles = rot;
     }
 
     private void Update()
@@ -73,6 +71,8 @@ public class HouseController : MonoBehaviour
         _mainHouseColor.ApplyColor(CharacterManager.i.GetClothingColor(id));
 
         _houseAnimator.SetBool("HasProblem", CharacterManager.i.GetProblem(id) != null);
+
+        _nameText.text = CharacterManager.i.GetNameFormatted(id);
     }
 
     private void UpdateHovered()

@@ -59,9 +59,12 @@ public class ParkController : MonoBehaviour
             SpawnCharacter(IDs[i], spots[i]);
         }
 
+        _cutsceneButton.gameObject.SetActive(true);
         if (IDs.Count >= 2) {
             _cutsceneButton.SetCharacterNames(CharacterManager.i.GetNameFormatted(IDs[0]), CharacterManager.i.GetNameFormatted(IDs[1]));
-            _cutsceneButton.gameObject.SetActive(true);
+        }
+        else if (IDs.Count > 0){ 
+            _cutsceneButton.SetCharacterNames(CharacterManager.i.GetNameFormatted(IDs[0]));
         }
     }
 
@@ -88,10 +91,9 @@ public class ParkController : MonoBehaviour
     /// </summary>
     private List<ID> SelectCharactersToSpawn()
     {
-        var IDs = CharacterManager.i.AllIDs();
+        var IDs = CharacterManager.i.GetIDsByArea(AreaName.PARK);
         IDs.Shuffle();
 
-        IDs = IDs.Take(_spawnSpots.Count).ToList();
         return IDs;
     }
 

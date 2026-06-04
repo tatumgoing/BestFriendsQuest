@@ -13,6 +13,8 @@ public class DynamicCharacterData
 {
     [Range(0,100), SerializeField, ReadOnly] private float _happiness = 50;
     public ProblemData CurrentProblem;
+    public float TimeWhenMoved;
+    public  AreaName CurrentLocation;
     private List<ItemData> _inventory = new List<ItemData>(); 
      
     [HideInInspector] public ID ID { get; private set; }
