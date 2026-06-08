@@ -7,6 +7,12 @@ public class ChildArranger : MonoBehaviour
 {
     [SerializeField] private Vector3 _offset = new Vector3(35, 50, 0);
     [SerializeField] private int _numRows;
+    [SerializeField] private bool _updateOnValidate;
+
+    private void OnValidate()
+    {
+        if (_updateOnValidate) Arrange();
+    }
 
     [ButtonMethod]
     public void Arrange()
