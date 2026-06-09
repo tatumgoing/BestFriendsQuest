@@ -15,7 +15,12 @@ public class Walker
     public float CheckTimeCooldown;
     public float TurnLerpFactor;
 
-    public float DistanceLeft => Vector3.Distance(Obj.position, TargetPosition);
+    public float DistanceLeft()
+    {
+        var selfPos = new Vector2(Obj.position.x, Obj.position.z);
+        var targetPos = new Vector2(TargetPosition.x, TargetPosition.z);
+        return Vector2.Distance(selfPos, targetPos);
+    } 
 
     public Walker(Transform walker)
     {
@@ -54,7 +59,7 @@ public class Walker
         var willCollide = Physics.Raycast(Obj.position + Vector3.up * 2, Obj.forward, out var collideInfo, 3, collideLayers);
         if (willCollide) {
             Obj.Rotate(Vector3.up, 2);
-            speed *= 0.5f;
+            speed *= 0.25f;
         }
 
         //var dir = (TargetPosition - Obj.position).normalized;
@@ -77,7 +82,7 @@ public class Walker
         Gizmos.DrawLine(Obj.position, TargetPosition);
 
         Gizmos.color = Color.red;
-        Gizmos.DrawLine(Obj.position + Vector3.up * 2, Obj.position + Vector3.up * 2 + Obj.forward * 3);
+        Gizmos.DrawLine(Obj.position + Vector3.up * 15, Obj.position + Vector3.up * 2 + Obj.forward * 3);
     }
 }
 
@@ -129,6 +134,14 @@ public class CharacterPointWalker : MonoBehaviour
         if (siblingIndex != 0) options.Add(parent.GetChild(siblingIndex - 1));
         if (siblingIndex != parent.childCount-1) options.Add(parent.GetChild(siblingIndex + 1));
 
+        if (options.Count < 2) {
+            foreach (var p in _allPoints) {
+                if (Vector3.Distance(_currentPoint.position, p.position) < _pointRadius * 2) options.Add(p);
+            }
+        }
+
+        options = options.Where(x => x.gameObject.activeInHierarchy).ToList();
+
         return options;
     }
 
@@ -136,16 +149,16 @@ public class CharacterPointWalker : MonoBehaviour
     {
         if (walker.TargetPoint == null) {
             var closestPoint = _allPoints.OrderBy(x => Vector3.Distance(walker.Obj.position, x.position)).First();
-            walker.SetTargetPoint(closestPoint);
+            walker.SetTargetPoint(closestPoint, _pointRadius * closestPoint.transform.localScale.x);
         }
 
         walker.CheckTimeCooldown -= Time.deltaTime;
         if (walker.CheckTimeCooldown <= 0) {
-            if (Random.Range(0, 1f) < _pickNewTargetChance) walker.PickTargetPosition(_pointRadius);
+            if (Random.Range(0, 1f) < _pickNewTargetChance) walker.PickTargetPosition(_pointRadius * walker.TargetPoint.localScale.x);
             walker.CheckTimeCooldown = Utils.Rand(_pickNewTargetFreq);
         }
 
-        if (walker.DistanceLeft > _pointRadius) walker.MoveTowardPoint(_walkSpeed, _walkSurface, _collideLayers);
+        if (walker.DistanceLeft() > _pointRadius) walker.MoveTowardPoint(_walkSpeed, _walkSurface, _collideLayers);
         else walker.SetTargetPoint(PickRandomNextOption(walker.TargetPoint, walker.PreviousPoint));
     }
 
@@ -153,7 +166,7 @@ public class CharacterPointWalker : MonoBehaviour
     {
         var newWalker = new Walker(walker);
         newWalker.CheckTimeCooldown = Utils.Rand(_pickNewTargetFreq);
-        newWalker.TurnLerpFactor = Random.Range(1, 4);
+        newWalker.TurnLerpFactor = Random.Range(2.5f, 10f);
         _walkers.Add(newWalker);
     }
 
