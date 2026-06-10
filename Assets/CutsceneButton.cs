@@ -10,19 +10,22 @@ public class CutsceneButton : MonoBehaviour
     private List<TextAsset> _usedConvos = new List<TextAsset>();
     [SerializeField] private GameObject _cam;
 
-    private string _name1;
-    private string _name2;
+    private SpawnedCharacter _speaker1;
+    private SpawnedCharacter _speaker2;
 
-    public void SetCharacterNames(string name1, string name2)
+    private string _name1 => CharacterManager.i.GetNameFormatted(_speaker1.ID);
+    private string _name2 => _speaker2 ? CharacterManager.i.GetNameFormatted(_speaker2.ID) : "";
+
+    public void SetCharacters(SpawnedCharacter speaker1, SpawnedCharacter speaker2)
     {
-        _name1 = name1;
-        _name2 = name2;
+        _speaker1 = speaker1;
+        _speaker2 = speaker2;
     }
 
-    public void SetCharacterNames(string name1)
+    public void SetCharacters(SpawnedCharacter speaker1)
     {
-        _name1 = name1;
-        _name2 = "";
+        _speaker1 = speaker1;
+        _speaker2 = null;
     }
 
     public void StartCutscene()
@@ -32,7 +35,7 @@ public class CutsceneButton : MonoBehaviour
         else validScripts = validScripts.Where(x => x.text.Contains("c2")).ToList();
 
         var selected = Random.Range(0, validScripts.Count);
-        CutsceneManager.i.StartCutscene(validScripts[selected], new List<string> { _name1, _name2 }, ResetCam);
+        CutsceneManager.i.StartCutscene(validScripts[selected], _cam.transform, _speaker1, _speaker2, ResetCam);
 
         _usedConvos.Add(validScripts[selected]);
         _scripts.RemoveAt(selected);

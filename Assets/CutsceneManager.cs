@@ -19,19 +19,13 @@ public class CutsceneManager : MonoBehaviour
         i = this;
     }
 
-    public void StartCutscene(TextAsset script, ID id1, Action callback = null) => StartCutscene(script, new List<ID>() { id1 }, callback);
-    public void StartCutscene(TextAsset script, ID id1, ID id2, Action callback = null) => StartCutscene(script, new List<ID>() { id1, id2 }, callback);
-    public void StartCutscene(TextAsset script, List<ID> characters, Action callback = null)
+    public void StartCutscene(TextAsset script, Transform camera, SpawnedCharacter speaker1, SpawnedCharacter speaker2 = null, Action callback = null)
     {
         var names = new List<string>();
-        foreach (var character in characters) names.Add(CharacterManager.i.GetNameFormatted(character));
-        StartCutscene(script, names, callback);
-    }
-
-    public void StartCutscene(TextAsset script, List<string> names, Action callback = null)
-    {
+        names.Add(CharacterManager.i.GetNameFormatted(speaker1.ID));
+        if (speaker2 != null) names.Add(CharacterManager.i.GetNameFormatted(speaker2.ID));
         _onCompleteCallback = callback;
-        _dialogueController.StartDialogue(script.text.Split("\n").ToList(), names);
+        _dialogueController.StartDialogue(script.text.Split("\n").ToList(), names, speaker1, speaker2, camera);
     }
 
     public void EndCutscene()

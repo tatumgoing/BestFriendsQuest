@@ -26,13 +26,14 @@ public class CookingMinigame : MinigameController
     private ID _selectedCharacter = new ID(0);
     private ID _selectedRecipient = new ID(0);
     private bool _solvingProblem;
-    private GameObject _spawnedCharacter;
+    private SpawnedCharacter _spawnedCharacter;
 
     // I, too, am testing
     private ID _displayedSelectedCharacter = new ID(0); //tracks character on the main menu
 
     public RestrauntController AreaController => _areaController;
     public override MinigameType GetMinigameType() => MinigameType.COOKING;
+    public override Transform GetCamera() => _areaController.Camera.transform;
 
     private void OnEnable()
     {
@@ -118,8 +119,8 @@ public class CookingMinigame : MinigameController
         _recipientSelectScreen.SelectPreviousPrimary(id);
 
         if (_areaController.SpawnedCharacter == null) _areaController.SpawnCharacter(id);
-        _spawnedCharacter = _areaController.SpawnedCharacter.gameObject;
-        _spawnedCharacter.GetComponent<SpawnedCharacter>().SetHat(_chefHat);
+        _spawnedCharacter = _areaController.SpawnedCharacter;
+        _spawnedCharacter.SetHat(_chefHat);
     }
 
     public override void SelectRecipient(ID id)
@@ -140,6 +141,7 @@ public class CookingMinigame : MinigameController
 
         _recipeSelector.gameObject.SetActive(false);
 
-        _subgameController.StartMinigame(recipe, _selectedCharacter, _selectedRecipient, _solvingProblem);
+        _subgameController.StartMinigame(recipe, _spawnedCharacter, _selectedRecipient, _solvingProblem);
     }
+
 }

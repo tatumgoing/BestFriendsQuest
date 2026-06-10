@@ -57,6 +57,7 @@ public class RestrauntController : MonoBehaviour
     private SpawnedCharacter _spawnedCharacter;
 
     public SpawnedCharacter SpawnedCharacter => _spawnedCharacter;
+    public GameObject Camera => startingCamera;
 
     [SerializeField] private PostProcessingSetting postProcessingSetting;
     private PostProcessingManager postProcessingManager;

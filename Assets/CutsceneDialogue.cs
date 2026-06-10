@@ -1,8 +1,10 @@
+using MyBox;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public enum CutsceneSpeaker { SPEAKER_1, SPEAKER_2};
@@ -15,6 +17,7 @@ public class CutsceneDialogue : MonoBehaviour
     [SerializeField] private GameObject _c2Parent;
     [SerializeField] private TextMeshProUGUI _c1Name;
     [SerializeField] private TextMeshProUGUI _c2Name;
+    [SerializeField] private float _lookUpAmount = 2;
 
     private int _currentLineIndex;
     private string _currentLineLeft = "";
@@ -22,8 +25,18 @@ public class CutsceneDialogue : MonoBehaviour
     private List<CutsceneLine> _dialogue = new List<CutsceneLine>();
     private CutsceneLine _currentLine => _dialogue[_currentLineIndex];
 
+    private SpawnedCharacter _speaker1;
+    private SpawnedCharacter _speaker2;
+    private Transform _camera;
+    private Quaternion _targetCamRot = new Quaternion();
+    private bool _lerpingCam;
+
     private void Update()
     {
+        if (_lerpingCam && _camera != null && _camera.gameObject.activeInHierarchy) {
+            _camera.localRotation = Quaternion.Slerp(_camera.localRotation, _targetCamRot, 5 * Time.deltaTime);
+        }
+
         if (_currentLineLeft.Length == 0) return;
 
         _letterCountdown -= Time.deltaTime;
@@ -35,8 +48,14 @@ public class CutsceneDialogue : MonoBehaviour
         }
     }
 
-    public async void StartDialogue(List<string> lines, List<string> names)
+    public async void StartDialogue(List<string> lines, List<string> names, SpawnedCharacter speaker1, SpawnedCharacter speaker2, Transform camera)
     {
+        _lerpingCam = false;
+        _targetCamRot = camera.localRotation;
+        _camera = camera;
+        _speaker1 = speaker1;
+        _speaker2 = speaker2;
+
         gameObject.SetActive(true);
 
         if (names.Count > 0) _c1Name.text = names[0];
@@ -55,6 +74,13 @@ public class CutsceneDialogue : MonoBehaviour
     private void ParseDialogue(List<string> rawLines)
     {
         foreach (var line in rawLines) {
+
+            if (!line.Contains(":")) {
+                var metaLine = ParseMetaLine(line.Trim().ToUpper());
+                if (metaLine != null) _dialogue.Add(metaLine);
+                continue;
+            }
+
             var parts = line.Split(":");
             var lineData = parts[0].ToUpper().Trim();
 
@@ -63,6 +89,49 @@ public class CutsceneDialogue : MonoBehaviour
 
             _dialogue.Add(newLine);
         }
+    }
+
+    private CutsceneLine ParseMetaLine(string line)
+    {
+        line = line.Trim().ToUpper().Replace(" ", "");
+        var parts = line.Split(',');
+
+        //print("Parsing meta line. line: " + line + ", parts: " + string.Join(", ", parts));
+
+        var newLine = new CutsceneLine(CutsceneSpeaker.SPEAKER_1);
+
+        if (parts[0].Contains("SETTINGS")) {
+            if (parts[1].Contains("LERPCAM")) {
+                _lerpingCam = true;
+                parts = parts.RemoveAt(1);
+            }
+
+            return newLine;
+        }
+
+        if (parts[0].Contains("CAM")) {
+            var lookTarget = _speaker1.transform;
+            if (parts[1].Contains("C2")) lookTarget = _speaker2.transform;
+
+            newLine.SetCamAngle(lookTarget);
+            return newLine;
+        }
+
+        if (parts[0].Contains("C2")) newLine.Speaker = CutsceneSpeaker.SPEAKER_2;
+        parts = parts.RemoveAt(0);
+        if (parts.Length == 0) return null;
+
+        var expressionOptions = Utils.EnumToList<Expression>().Select(x => x.ToString().Trim().ToUpper()).ToList();
+        for (int i = 0; i < expressionOptions.Count; i++) {
+            if (string.Compare(expressionOptions[i], parts[0]) == 0) {
+                newLine.SetExpression(Utils.EnumToList<Expression>()[i]);
+                parts = parts.RemoveAt(0);
+
+                if (parts.Length == 0) return newLine; 
+            }
+        }
+
+        return newLine;
     }
 
     public void Next()
@@ -75,11 +144,29 @@ public class CutsceneDialogue : MonoBehaviour
 
         _currentLineIndex += 1;
         _textBox.text = "";
+
         if (_currentLineIndex >= _dialogue.Count) {
             EndConversation();
             return;
         }
-        
+
+        if (_currentLine.MetaLine) {
+            var currentSpeaker = _currentLine.Speaker == CutsceneSpeaker.SPEAKER_1 ? _speaker1 : _speaker2;
+
+            if (_currentLine.HasExpression) currentSpeaker.SetExpression(_currentLine.Expression);
+            if (_currentLine.HasCamAngle) {
+                var original = _camera.localRotation;
+                _camera.LookAt(_currentLine.LookPos + Vector3.up * _lookUpAmount);
+                if (_lerpingCam) {
+                    _targetCamRot = _camera.localRotation;
+                    _camera.localRotation = original;
+                }
+            }
+
+            Next();
+            return;
+        }
+
         _currentLineLeft = _currentLine.Line;
         _c1Parent.SetActive(_currentLine.Speaker == CutsceneSpeaker.SPEAKER_1);
         _c2Parent.SetActive(_currentLine.Speaker == CutsceneSpeaker.SPEAKER_2);

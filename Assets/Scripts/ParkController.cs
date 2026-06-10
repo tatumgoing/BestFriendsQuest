@@ -61,23 +61,19 @@ public class ParkController : MonoBehaviour
 
         _cutsceneButton.gameObject.SetActive(true);
         if (IDs.Count >= 2) {
-            _cutsceneButton.SetCharacterNames(CharacterManager.i.GetNameFormatted(IDs[0]), CharacterManager.i.GetNameFormatted(IDs[1]));
+            _cutsceneButton.SetCharacters(_spawnedCharacters[^2], _spawnedCharacters[^1]);
         }
-        else if (IDs.Count > 0){ 
-            _cutsceneButton.SetCharacterNames(CharacterManager.i.GetNameFormatted(IDs[0]));
+        else if (IDs.Count > 0){
+            _cutsceneButton.SetCharacters(_spawnedCharacters[^1]);
         }
     }
 
     /// <summary>
-    /// Spawns 1 character and sets its animation. enables and  disables the spawned character quickly to force update the rig.
+    /// Spawns 1 character and sets its animation.
     /// </summary>
     private void SpawnCharacter(ID id, CharacterSpawnLocation spawnPoint)
     {
         var newCharacter = CharacterManager.i.SpawnCharacter(id, spawnPoint.transform);
-        
-        //newCharacter.gameObject.SetActive(false);
-        //await System.Threading.Tasks.Task.Delay(100);
-        //newCharacter.gameObject.SetActive(true);
         
         _ = spawnPoint.SetCharacter(newCharacter);
 

@@ -17,8 +17,6 @@ public class QuestUIController : MonoBehaviour
     [SerializeField] private List<TextAsset> _scripts;
 
     private RuntimeQuestData _currentQuest = null;
-    private ID _id1;
-    private ID _id2;
 
     private void OnEnable()
     {
@@ -32,12 +30,12 @@ public class QuestUIController : MonoBehaviour
         await Task.Delay(Mathf.RoundToInt(0.5f * 1000));
 
         _inProgress.gameObject.SetActive(false);
-        _areaController.ShowCharacters(_currentQuest);
+        var spawnedCharacters = _areaController.ShowCharacters(_currentQuest);
 
         await Task.Delay (Mathf.RoundToInt(_cutsceneWaitDelay * 1000));
 
         var chosenCutscene = _scripts[Random.Range(0, _scripts.Count)];
-        CutsceneManager.i.StartCutscene(chosenCutscene, _id1, _id2, ShowChest);
+        CutsceneManager.i.StartCutscene(chosenCutscene, _areaController.Camera, spawnedCharacters[0], spawnedCharacters[1], ShowChest);
     }
 
     private void ShowChest()
@@ -45,13 +43,10 @@ public class QuestUIController : MonoBehaviour
         _areaController.FinishWalking();
     }
 
-    public void StartQuest(Quest questData, ID id1, ID id2)
+    public void StartQuest(Quest questData, ID speaker1, ID speaker2)
     {
-        _id1 = id1;
-        _id2 = id2;
-
         _map.gameObject.SetActive(false);
-        _currentQuest = new RuntimeQuestData(questData, id1, id2);
+        _currentQuest = new RuntimeQuestData(questData, speaker1, speaker2);
         _inProgress.Show(_currentQuest);
     }
 

@@ -19,13 +19,16 @@ public class MinigameResultsScreen : MonoBehaviour
     [SerializeField] private MinigameResultsListEntry _relationshipEntry;
     [SerializeField] private GameObject _startCutsceneButton;
     [SerializeField] private GameObject _normalButtonParent;
+    [SerializeField] private Transform TEMPSPAWNSPOT;
 
     [Header("Cutscenes")]
     [SerializeField] private TextAsset _cutsceneScript;
     [SerializeField] private TextAsset _cutsceneScriptGift;
 
-    private ID _chef;
-    private ID _recipient;
+    private SpawnedCharacter _chef;
+    private SpawnedCharacter _recipitent;
+    private ID _chefID => _chef.ID;
+    private ID _recipientID;
     private bool _animationDone; 
     private bool _cutscenePlayed;
 
@@ -34,10 +37,21 @@ public class MinigameResultsScreen : MonoBehaviour
     public void showResultsCutscene()
     {
         gameObject.SetActive(false);
-        if (_chef == _recipient) CutsceneManager.i.StartCutscene(_cutsceneScript, new List<ID> { _chef }, () => gameObject.SetActive(true));
-        else CutsceneManager.i.StartCutscene(_cutsceneScriptGift, new List<ID> { _chef, _recipient}, () => gameObject.SetActive(true));
+
+        var controller = GetComponentInParent<MinigameController>();
+        if (_chefID == _recipientID) CutsceneManager.i.StartCutscene(_cutsceneScript, controller.GetCamera(), _chef, null, () => gameObject.SetActive(true));
+        else {
+            _recipitent = CharacterManager.i.SpawnCharacter(_recipientID, TEMPSPAWNSPOT);
+            CutsceneManager.i.StartCutscene(_cutsceneScriptGift, controller.GetCamera(), _chef, _recipitent, () => gameObject.SetActive(true));
+        }
 
         _cutscenePlayed = true;
+    }
+
+    private void OnDisable()
+    {
+        if (_recipitent != null) Destroy(_recipitent.gameObject);
+        _recipitent = null;
     }
 
     private void OnEnable()
@@ -58,10 +72,10 @@ public class MinigameResultsScreen : MonoBehaviour
         _normalButtonParent.SetActive(true);
     }
 
-    public async Task ShowScore(float finalScore, RecipeData recipe, ID chef, ID recipient, bool isProblem, float originalHappinessChef, float originalHappinessRecipient)
+    public async Task ShowScore(float finalScore, RecipeData recipe, SpawnedCharacter chef, ID recipient, bool isProblem, float originalHappinessChef, float originalHappinessRecipient)
     {
         _chef = chef;
-        _recipient = recipient;
+        _recipientID = recipient;
         var intDelay = Mathf.CeilToInt(_delay * 1000);
 
         _titleText.text = "";
@@ -86,24 +100,24 @@ public class MinigameResultsScreen : MonoBehaviour
         _rewardEntry.Initialize(Mathf.CeilToInt(finalScore * recipe.MoneyReward));
         await Task.Delay(intDelay);
 
-        _chefEntry.gameObject.SetActive(recipient == chef);
-        if (chef == recipient) {
+        _chefEntry.gameObject.SetActive(recipient == _chefID);
+        if (_chefID == recipient) {
             var happinessDelta = Mathf.Min(recipe.HappinessReward * finalScore, 100 - originalHappinessChef);
-            _chefEntry.Initialize(chef, happinessDelta, _delay * 0.75f);
+            _chefEntry.Initialize(_chefID, happinessDelta, _delay * 0.75f);
             await Task.Delay(intDelay);
         }
 
-        _recipientEntry.gameObject.SetActive(recipient != chef);
+        _recipientEntry.gameObject.SetActive(recipient != _chefID);
         _relationshipEntry.gameObject.SetActive(false);
-        if (recipient != chef) {
+        if (recipient != _chefID) {
             var happinessDelta = Mathf.Min(recipe.HappinessReward * finalScore, 100 - originalHappinessRecipient);
             _recipientEntry.Initialize(recipient, happinessDelta, _delay * 0.75f);
             await Task.Delay(intDelay);
 
             _relationshipEntry.gameObject.SetActive(true);
             var relationshipDelta = recipe.RelationshipReward * finalScore;
-            var originalRelationship = CharacterManager.i.GetRelationship(chef, recipient) - relationshipDelta;
-            _relationshipEntry.Initialize(recipient, chef, originalRelationship, relationshipDelta, _delay * 0.75f);
+            var originalRelationship = CharacterManager.i.GetRelationship(_chefID, recipient) - relationshipDelta;
+            _relationshipEntry.Initialize(recipient, _chefID, originalRelationship, relationshipDelta, _delay * 0.75f);
         }
 
         await Task.Delay(intDelay/2);

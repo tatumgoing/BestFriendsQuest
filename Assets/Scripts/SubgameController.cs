@@ -43,10 +43,11 @@ public class SubgameController : MonoBehaviour
     private float _totalScore;
     private RecipeData _currentRecipe;
     private Subgame _currentSubgame;
-    private ID _character;
+    private SpawnedCharacter _speaker1;
     private ID _recipient;
     private bool _isProblem;
 
+    private ID _character => _speaker1.ID;
     public RestrauntController AreaController => _cookingMinigame.AreaController;
     private SubgameData _currentSubgameData => _currentRecipe.Subgames[_subgameIndex];
     public float TimeLeftPercent => _timeLeft/_totalTime;
@@ -105,12 +106,12 @@ public class SubgameController : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void StartMinigame(RecipeData recipe, ID character, ID recipient, bool isProblem)
+    public void StartMinigame(RecipeData recipe, SpawnedCharacter character, ID recipient, bool isProblem)
     {
         if (!_initialized) Initialize();
 
         _isProblem = isProblem;
-        _character = character;
+        _speaker1 = character;
         _recipient = recipient;
         _timerParent.SetActive(true);
         _results.gameObject.SetActive(false);
@@ -182,7 +183,7 @@ public class SubgameController : MonoBehaviour
         }
 
         _timerParent.SetActive(false);
-        await _results.ShowScore(_totalScore, _currentRecipe, _character, _recipient, _isProblem, originalHappinessChef, originalHappinessRecipient);
+        await _results.ShowScore(_totalScore, _currentRecipe, _speaker1, _recipient, _isProblem, originalHappinessChef, originalHappinessRecipient);
     }
 
     public void CompleteCountdown()

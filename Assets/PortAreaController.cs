@@ -13,18 +13,21 @@ public class PortAreaController : MonoBehaviour
     [SerializeField] private Transform _chestEndPos;
     [SerializeField] private Transform _chest;
     [SerializeField] private ScrollingChildren _debris;
+    [SerializeField] private GameObject _camera;
 
     private RuntimeQuestData _questData;
     private SpawnedCharacter _char1 = null;
     private SpawnedCharacter _char2 = null;
     private bool _readyToShowResults = false;
 
+    public Transform Camera => _camera.transform;
+
     private void OnEnable()
     {
         _debris.enabled = false;
     }
 
-    public void ShowCharacters(RuntimeQuestData questData)
+    public List<SpawnedCharacter> ShowCharacters(RuntimeQuestData questData)
     {
         _questData = questData;
         _debris.enabled = true;
@@ -37,6 +40,8 @@ public class PortAreaController : MonoBehaviour
         _ = _char2Spawn.SetCharacter(_char2);
 
         _readyToShowResults = false;
+
+        return new List<SpawnedCharacter>() { _char1, _char2 };
     }
 
     [ButtonMethod]

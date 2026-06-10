@@ -7079,6 +7079,7 @@ MonoBehaviour:
   _chestEndPos: {fileID: 1891238893}
   _chest: {fileID: 217948666}
   _debris: {fileID: 1246789776}
+  _camera: {fileID: 1963913468}
 --- !u!114 &375046176
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11361,7 +11362,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &573816291
 RectTransform:
   m_ObjectHideFlags: 0
@@ -19805,7 +19806,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &783917763
 RectTransform:
   m_ObjectHideFlags: 0
@@ -23556,9 +23557,9 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 1.4
-  far clip plane: 3000
-  field of view: 39.6
+  near clip plane: 1
+  far clip plane: 1000
+  field of view: 60.000004
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -23584,8 +23585,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.008726558, y: 0, z: 0, w: 0.999962}
-  m_LocalPosition: {x: 331.95, y: 226.74, z: -352.1}
+  m_LocalRotation: {x: -0.22460788, y: 0.005033249, z: -0.0011601665, w: -0.97443557}
+  m_LocalPosition: {x: 115.61365, y: 13.125076, z: 106.50331}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -32143,7 +32144,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1347480912
 Transform:
   m_ObjectHideFlags: 0
@@ -39416,6 +39417,7 @@ MonoBehaviour:
   _c2Parent: {fileID: 1019470289}
   _c1Name: {fileID: 1155234638}
   _c2Name: {fileID: 734225849}
+  _lookUpAmount: 2
 --- !u!114 &1697474284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43785,6 +43787,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2669077850521313178, guid: 73d5b6b441c101941a9a03cde8c344b5, type: 3}
+      propertyPath: TEMPSPAWNSPOT
+      value: 
+      objectReference: {fileID: 1855206031}
+    - target: {fileID: 2669077850521313178, guid: 73d5b6b441c101941a9a03cde8c344b5, type: 3}
       propertyPath: _cutsceneScript
       value: 
       objectReference: {fileID: 4900000, guid: 2beee3d6b69235e40b8b27c34974d2e5, type: 3}
@@ -44209,6 +44215,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d9b02b95e34e4a468d2c226798f6453, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!224 &1855206031 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 7461609098652189571, guid: 73d5b6b441c101941a9a03cde8c344b5, type: 3}
+  m_PrefabInstance: {fileID: 1855206028}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1855881794
 Transform:
   m_ObjectHideFlags: 0
@@ -50035,7 +50046,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2074531007
 Transform:
   m_ObjectHideFlags: 0
@@ -57312,7 +57323,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5265743098722616291, guid: 9fa4dc84c512a6d4889282316da1357f, type: 3}
       propertyPath: _areaData.Array.data[0].Capacity
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5265743098722616291, guid: 9fa4dc84c512a6d4889282316da1357f, type: 3}
       propertyPath: _areaData.Array.data[1].Capacity
@@ -57505,6 +57516,10 @@ PrefabInstance:
     - target: {fileID: 886624501158262030, guid: e223ca58aa0291943814e08045d2b2d6, type: 3}
       propertyPath: m_Name
       value: clothingShop
+      objectReference: {fileID: 0}
+    - target: {fileID: 886624501158262030, guid: e223ca58aa0291943814e08045d2b2d6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 966253665960162706, guid: e223ca58aa0291943814e08045d2b2d6, type: 3}
       propertyPath: m_LocalPosition.x
@@ -60546,9 +60561,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _scripts:
   - {fileID: 4900000, guid: 1b4b418290984c146bdec43b66360641, type: 3}
-  - {fileID: 4900000, guid: 8795e798e6179ed40a91137982c9183c, type: 3}
-  - {fileID: 4900000, guid: 9ae4b6a8b2ede4948a61d592b4eabd62, type: 3}
-  - {fileID: 4900000, guid: f00fb10d64a7e474bb66f969f6d1ac66, type: 3}
   - {fileID: 4900000, guid: 115cd042fae6ac34e92b122f54e8a4b0, type: 3}
   _cam: {fileID: 1397020137}
 --- !u!114 &7464577927915457796

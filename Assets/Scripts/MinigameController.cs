@@ -7,4 +7,5 @@ public abstract class MinigameController : MonoBehaviour
     public abstract void SelectRecipient(ID id);
     public abstract void StartProblemMinigame(ID character);
     public abstract void CompleteProblem();
+    public abstract Transform GetCamera();
 }
