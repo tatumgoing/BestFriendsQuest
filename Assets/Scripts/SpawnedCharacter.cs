@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using Unity.VisualScripting;
 
-public enum CharacterAnimations { Grilling, Standing, Sitting, SittingGround, Walking, Spawn };
+public enum CharacterAnimations { Grilling, Standing, Sitting, SittingGround, Walking, Spawn};
 
 [System.Serializable]
 public class ClothingItemData
@@ -93,6 +93,15 @@ public class SpawnedCharacter : MonoBehaviour
     private void LateUpdate()
     {
         if (!_disableLookAt) UpdateLookAt();
+    }
+
+    public void SetAnimation(CharacterAnimations expression)
+    {
+        var animationOptions = Utils.EnumToList<CharacterAnimations>().Select(x => x.ToString().Trim()).ToList();
+        foreach (var a in animationOptions) animator.SetBool(a, false);
+
+        if (expression == CharacterAnimations.Standing) return;
+        animator.SetBool(expression.ToString(), true);
     }
 
     public void SetHat(ItemData hat)

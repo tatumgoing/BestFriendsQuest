@@ -131,6 +131,16 @@ public class CutsceneDialogue : MonoBehaviour
             }
         }
 
+        var animationOptions = Utils.EnumToList<CharacterAnimations>().Select(x => x.ToString().Trim().ToUpper()).ToList();
+        for (int i = 0; i < animationOptions.Count; i++) {
+            if (string.Compare(animationOptions[i], parts[0]) == 0) {
+                newLine.SetAnimation(Utils.EnumToList<CharacterAnimations>()[i]);
+                parts = parts.RemoveAt(0);
+
+                if (parts.Length == 0) return newLine;
+            }
+        }
+
         return newLine;
     }
 
@@ -154,6 +164,9 @@ public class CutsceneDialogue : MonoBehaviour
             var currentSpeaker = _currentLine.Speaker == CutsceneSpeaker.SPEAKER_1 ? _speaker1 : _speaker2;
 
             if (_currentLine.HasExpression) currentSpeaker.SetExpression(_currentLine.Expression);
+            
+            if (_currentLine.HasAnimation) currentSpeaker.SetAnimation(_currentLine.Animation);
+            
             if (_currentLine.HasCamAngle) {
                 var original = _camera.localRotation;
                 _camera.LookAt(_currentLine.LookPos + Vector3.up * _lookUpAmount);

@@ -8,6 +8,7 @@ public class CutsceneLine
 
     public bool MetaLine;
     public bool HasExpression;
+    public bool HasAnimation;
     public bool HasCamAngle;
 
     private Transform _lookTarget;
@@ -15,6 +16,7 @@ public class CutsceneLine
 
     public Vector3 LookPos => _lookTarget ? _lookTarget.position : _lookTargetPosition;
     public Expression Expression { get; private set; }
+    public CharacterAnimations Animation { get; private set; }
 
     public CutsceneLine(CutsceneSpeaker speaker, string line)
     {
@@ -27,6 +29,12 @@ public class CutsceneLine
         MetaLine = true;
         Speaker = speaker;
         Line = "";
+    }
+
+    public void SetAnimation(CharacterAnimations animation)
+    {
+        Animation = animation;
+        HasAnimation = true;
     }
 
     public void SetExpression(Expression expression)
