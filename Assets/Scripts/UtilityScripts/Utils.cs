@@ -29,6 +29,8 @@ public static class Utils
     /// <param name="count"></param>
     public static void SetMenus(int count) => MenusOpen = count;
 
+    public static bool InRange(float t, Vector2 range) => t >= range.x && t <= range.y;
+
     public static void OpenMenu()
     {
         //Debug.Log("opened Menu");

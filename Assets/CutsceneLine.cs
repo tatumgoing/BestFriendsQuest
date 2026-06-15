@@ -31,6 +31,11 @@ public class CutsceneLine
         Line = "";
     }
 
+    public void Format(string c1Name, string c2Name)
+    {
+        Line = Line.Replace("<c1>", c1Name).Replace("<c2>", c2Name);
+    }
+
     public void SetAnimation(CharacterAnimations animation)
     {
         Animation = animation;

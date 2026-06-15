@@ -57275,11 +57275,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5265743098722616291, guid: 9fa4dc84c512a6d4889282316da1357f, type: 3}
       propertyPath: _minTimeAtLocation
-      value: 10
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 5265743098722616291, guid: 9fa4dc84c512a6d4889282316da1357f, type: 3}
       propertyPath: _moveCheckCooldown
-      value: 5
+      value: 120
       objectReference: {fileID: 0}
     - target: {fileID: 5265743098722616291, guid: 9fa4dc84c512a6d4889282316da1357f, type: 3}
       propertyPath: _areaData.Array.size
@@ -57327,7 +57327,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5265743098722616291, guid: 9fa4dc84c512a6d4889282316da1357f, type: 3}
       propertyPath: _areaData.Array.data[1].Capacity
-      value: 1000
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 6931229544831464674, guid: 9fa4dc84c512a6d4889282316da1357f, type: 3}
       propertyPath: m_Name
@@ -60560,8 +60560,123 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _scripts:
-  - {fileID: 4900000, guid: 1b4b418290984c146bdec43b66360641, type: 3}
-  - {fileID: 4900000, guid: 115cd042fae6ac34e92b122f54e8a4b0, type: 3}
+  - DisplayName: ParkBench_2Char_c1-lowHappiness
+    _requirements:
+    - DisplayName: speaker_1's happiness must be between 0 and 25
+      _type: 0
+      _whichSpeaker: 0
+      _minMaxHappiness: {x: 0, y: 25}
+      _minMaxRelationship: {x: 0, y: 0}
+      _personality: 0
+    - DisplayName: Relationship must be between 0.5 and 1
+      _type: 1
+      _whichSpeaker: 0
+      _minMaxHappiness: {x: 0, y: 25}
+      _minMaxRelationship: {x: 0.5, y: 1}
+      _personality: 0
+    _script: {fileID: 4900000, guid: 60a0d77648fe0cc419d221004c2be932, type: 3}
+  - DisplayName: ParkBench_2Char_c1-mediumHappiness
+    _requirements:
+    - DisplayName: speaker_1's happiness must be between 25 and 75
+      _type: 0
+      _whichSpeaker: 0
+      _minMaxHappiness: {x: 25, y: 75}
+      _minMaxRelationship: {x: 0, y: 0}
+      _personality: 0
+    - DisplayName: Relationship must be between 0.5 and 1
+      _type: 1
+      _whichSpeaker: 0
+      _minMaxHappiness: {x: 0, y: 25}
+      _minMaxRelationship: {x: 0.5, y: 1}
+      _personality: 0
+    _script: {fileID: 4900000, guid: c27c622a9c153ce4883b35be6fb54288, type: 3}
+  - DisplayName: ParkBench_2Char_c1-highHappiness
+    _requirements:
+    - DisplayName: speaker_1's happiness must be between 75 and 100
+      _type: 0
+      _whichSpeaker: 0
+      _minMaxHappiness: {x: 75, y: 100}
+      _minMaxRelationship: {x: 0, y: 0}
+      _personality: 0
+    - DisplayName: Relationship must be between 0.5 and 1
+      _type: 1
+      _whichSpeaker: 0
+      _minMaxHappiness: {x: 0, y: 25}
+      _minMaxRelationship: {x: 0.5, y: 1}
+      _personality: 0
+    _script: {fileID: 4900000, guid: 6e06854da2a20514cb6eb6ff3852f561, type: 3}
+  - DisplayName: ParkBench_1Char_c1=angry
+    _requirements:
+    - DisplayName: SPEAKER_1 must be angry
+      _type: 2
+      _whichSpeaker: 0
+      _minMaxHappiness: {x: 75, y: 100}
+      _minMaxRelationship: {x: 0, y: 0}
+      _personality: 4
+    _script: {fileID: 4900000, guid: 4cd19438fa014d84f8c2ac2eead9575f, type: 3}
+  - DisplayName: ParkBench_1Char_c1=bored
+    _requirements:
+    - DisplayName: SPEAKER_1 must be bored
+      _type: 2
+      _whichSpeaker: 0
+      _minMaxHappiness: {x: 75, y: 100}
+      _minMaxRelationship: {x: 0, y: 0}
+      _personality: 3
+    _script: {fileID: 4900000, guid: deda38b723a13ea49a995491243b9855, type: 3}
+  - DisplayName: ParkBench_1Char_c1=chill
+    _requirements:
+    - DisplayName: SPEAKER_1 must be chill
+      _type: 2
+      _whichSpeaker: 0
+      _minMaxHappiness: {x: 75, y: 100}
+      _minMaxRelationship: {x: 0, y: 0}
+      _personality: 0
+    _script: {fileID: 4900000, guid: 14fbd33403be21a45900038fb25e6d3d, type: 3}
+  - DisplayName: ParkBench_1Char_c1=confident
+    _requirements:
+    - DisplayName: SPEAKER_1 must be confident
+      _type: 2
+      _whichSpeaker: 0
+      _minMaxHappiness: {x: 75, y: 100}
+      _minMaxRelationship: {x: 0, y: 0}
+      _personality: 2
+    _script: {fileID: 4900000, guid: cf04a97b1ca13eb4eafd4e1e8875cf2f, type: 3}
+  - DisplayName: ParkBench_1Char_c1=eager
+    _requirements:
+    - DisplayName: SPEAKER_1 must be eager
+      _type: 2
+      _whichSpeaker: 0
+      _minMaxHappiness: {x: 75, y: 100}
+      _minMaxRelationship: {x: 0, y: 0}
+      _personality: 1
+    _script: {fileID: 4900000, guid: 02bcc01c836d33b48bcd4639cd45e2cf, type: 3}
+  - DisplayName: ParkBench_1Char_c1=sad
+    _requirements:
+    - DisplayName: SPEAKER_1 must be sad
+      _type: 2
+      _whichSpeaker: 0
+      _minMaxHappiness: {x: 75, y: 100}
+      _minMaxRelationship: {x: 0, y: 0}
+      _personality: 5
+    _script: {fileID: 4900000, guid: d7fec0e1a44bca44b87668c94516c969, type: 3}
+  - DisplayName: ParkBench_2Char_c1c2-strangers
+    _requirements:
+    - DisplayName: Relationship must be between 0 and 0.5
+      _type: 1
+      _whichSpeaker: 0
+      _minMaxHappiness: {x: 75, y: 100}
+      _minMaxRelationship: {x: 0, y: 0.5}
+      _personality: 5
+    _script: {fileID: 4900000, guid: 1b4b418290984c146bdec43b66360641, type: 3}
+  - DisplayName: ParkBench_2Char_c1c2-besties
+    _requirements:
+    - DisplayName: Relationship must be between 1 and 10
+      _type: 1
+      _whichSpeaker: 0
+      _minMaxHappiness: {x: 75, y: 100}
+      _minMaxRelationship: {x: 1, y: 10}
+      _personality: 5
+    _script: {fileID: 4900000, guid: a4a3f41fcc59cca46a2b97dcca21ebdf, type: 3}
   _cam: {fileID: 1397020137}
 --- !u!114 &7464577927915457796
 MonoBehaviour:

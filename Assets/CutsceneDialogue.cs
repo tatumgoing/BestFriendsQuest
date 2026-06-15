@@ -64,14 +64,14 @@ public class CutsceneDialogue : MonoBehaviour
         _textBox.text = "";
         _currentLineIndex = -1;
         _dialogue.Clear();
-        ParseDialogue(lines);
+        ParseDialogue(lines, names[0], names.Count > 1 ? names[1] : "");
 
         await Task.Delay(1000);
 
         Next();
     }
 
-    private void ParseDialogue(List<string> rawLines)
+    private void ParseDialogue(List<string> rawLines, string c1Name, string c2Name)
     {
         foreach (var line in rawLines) {
 
@@ -85,6 +85,7 @@ public class CutsceneDialogue : MonoBehaviour
             var lineData = parts[0].ToUpper().Trim();
 
             var newLine = new CutsceneLine(CutsceneSpeaker.SPEAKER_1, parts[1]);
+            newLine.Format(c1Name, c2Name);
             if (lineData.Contains("C2")) newLine.Speaker = CutsceneSpeaker.SPEAKER_2;
 
             _dialogue.Add(newLine);
