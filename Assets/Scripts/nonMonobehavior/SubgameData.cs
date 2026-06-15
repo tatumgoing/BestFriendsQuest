@@ -1,7 +1,7 @@
 using MyBox;
 using UnityEngine;
 
-public enum SubgameType { STIRRING, GRILLING, CHOPPING, BOILING, STEAMING }
+public enum SubgameType { STIRRING, GRILLING, CHOPPING, BOILING, STEAMING, ROLLING }
 
 [System.Serializable]
 public class SubgameData
@@ -38,6 +38,17 @@ public class SubgameData
     [ConditionalField(nameof(Type), false, false, SubgameType.STEAMING)] public float SteamValue = .2f;
     [ConditionalField(nameof(Type), false, false, SubgameType.STEAMING)] public float SteamPenalty = .1f;
     [ConditionalField(nameof(Type), false, false, SubgameType.STEAMING)] public float CloudLifetime = 2.5f;
+
+    //rolling
+    [ConditionalField(nameof(Type), false, false, SubgameType.ROLLING)] public float RollGreat = .2f;
+    [ConditionalField(nameof(Type), false, false, SubgameType.ROLLING)] public float RollGood = .2f;
+    [ConditionalField(nameof(Type), false, false, SubgameType.ROLLING)] public float RollPenalty = .1f;
+    [ConditionalField(nameof(Type), false, false, SubgameType.ROLLING)] public float RollSpeed = 500.0f;
+    [ConditionalField(nameof(Type), false, false, SubgameType.ROLLING)] public float SpeedUp = 100.0f;
+
+
+
+
 
 
 }
