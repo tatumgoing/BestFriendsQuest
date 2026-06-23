@@ -9,6 +9,9 @@ public class CharacterToken :MonoBehaviour
 
     public void Initialize(ID id)
     {
+        var name = CharacterManager.i.GetNameFormatted(id);
+        gameObject.name = name;
+
         ID = id;
         _portrait.sprite = CharacterManager.i.GetPortrait(id);
     }

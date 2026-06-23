@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 
 public enum SelectableItemDataType { GRAPHIC, GAMEOBJECT, CANVASGROUP, SPRITE}
 public enum ButtonState { NORMAL, HOVERED, SELECTED, DISABLED }
-public enum ClickBehavior { NONE, SELECT, TOGGLE };
+public enum ClickBehavior { NONE, SELECT, TOGGLE, HOVER};
 
 [System.Serializable] public abstract class ListWrapper { public abstract void Set(int index); }
 

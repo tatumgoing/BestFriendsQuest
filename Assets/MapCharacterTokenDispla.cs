@@ -1,11 +1,14 @@
 using MyBox;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.XR;
 
 public class MapCharacterTokenDispla : MonoBehaviour
 {
+    [SerializeField] private Transform _tokenParent; 
     [SerializeField] private GameObject _tokenPrefab;
     [SerializeField] private float _spawnRadius = 12;   
     [SerializeField] private AreaName _area;
@@ -24,6 +27,8 @@ public class MapCharacterTokenDispla : MonoBehaviour
 
     private void DisplayTokens()
     {
+        if (!CharacterManager.i) return;
+
         var IDsInArea = CharacterManager.i.GetIDsByArea(_area);
 
         var toRemove = new List<int>();
@@ -33,12 +38,13 @@ public class MapCharacterTokenDispla : MonoBehaviour
                 continue;
             }
             else {
-                Destroy(_spawnedTokens[i].gameObject);
+                if (_spawnedTokens[i]) Destroy(_spawnedTokens[i].gameObject);
                 toRemove.Add(i);
             }
         }
+        toRemove.OrderByDescending(x => x);
         for (int i = 0; i < toRemove.Count; i++) {
-            _spawnedTokens.RemoveAt(toRemove[i]);
+            if (_spawnedTokens.Count > toRemove[i])_spawnedTokens.RemoveAt(toRemove[i]);
         }
         
         foreach (var t in IDsInArea) SpawnToken(t);
@@ -46,8 +52,8 @@ public class MapCharacterTokenDispla : MonoBehaviour
 
     private void SpawnToken(ID id)
     {
-        var newToken = Instantiate(_tokenPrefab, transform.GetChild(0));
-        newToken.transform.SetAsFirstSibling();
+        var newToken = Instantiate(_tokenPrefab, _tokenParent);
+        newToken.transform.SetAsLastSibling();
         newToken.GetComponent<CharacterToken>().Initialize(id);
 
         var numAttemps = 0;

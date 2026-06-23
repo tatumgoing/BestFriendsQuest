@@ -16,6 +16,6 @@ public class TownNavigator : MonoBehaviour
     private void Update()
     {
         var targetScale = CutsceneManager.i.CurrentCutscene ? 0 : 1;
-        transform.localScale = Mathf.Lerp(transform.localScale.x, targetScale, 10 * Time.deltaTime) * Vector3.one;
+        //transform.localScale = Mathf.Lerp(transform.localScale.x, targetScale, 10 * Time.deltaTime) * Vector3.one;
     }
 }

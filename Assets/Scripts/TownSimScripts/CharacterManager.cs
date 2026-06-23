@@ -174,7 +174,7 @@ public class CharacterManager : MonoBehaviour
         var selectedProblem = _allProblems[Random.Range(0, _allProblems.Count)];
         AssignProblem(selectedCharacterID, selectedProblem);
 
-        print("gave problem: " + selectedProblem.name + " to " + GetNameFormatted(selectedCharacterID));
+        //print("gave problem: " + selectedProblem.name + " to " + GetNameFormatted(selectedCharacterID));
     }
 
     private void LoadProblems()

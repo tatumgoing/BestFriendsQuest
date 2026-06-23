@@ -7,23 +7,12 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-[System.Serializable]
-public class RuntimeItemData
-{
-    public ItemData Item;
-    public bool Unlocked;
-    public bool AlreadyOwned;
-
-    public RuntimeItemData(ItemData itemData)
-    {
-        Item = itemData;
-        Unlocked = Item.StartUnlocked;
-    }
-}
-
 public class TownGameManager : MonoBehaviour
 {
     public static TownGameManager i;
+
+    [Header("GameModes")]
+    [SerializeField] private bool _steamDemoMode;
 
     [Header("Non-Location Menus")]
     [SerializeField] private GameObject _titleScreen;
@@ -49,6 +38,7 @@ public class TownGameManager : MonoBehaviour
     public Dictionary<ItemData, int> Inventory => _inventory;
     public float Currency => _currency;
     public ItemData GetItemByID(ID id) => _allItems.Where(x => x.ID == id).FirstOrDefault();
+    public bool DemoMode => _steamDemoMode;
 
     private void OnValidate()
     {
@@ -81,6 +71,9 @@ public class TownGameManager : MonoBehaviour
 
     void Start()
     {
+        if (_steamDemoMode) print("Starting game in Steam Demo Mode");
+        else print("Starting game in full mode");
+
         Utils.SetMenus(1);
 
         _currency = PlayerPrefs.GetFloat("PlayerCurrency", 100);
