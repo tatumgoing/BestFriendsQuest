@@ -36,6 +36,8 @@ public class RecipeData : ScriptableObject
         {SubgameType.CHOPPING, "Chop"},
         {SubgameType.BOILING, "Boil"},
         {SubgameType.STEAMING, "Steam"},
+        {SubgameType.ROLLING, "Roll"},
+
 
     };
 
