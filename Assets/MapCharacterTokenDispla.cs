@@ -27,7 +27,7 @@ public class MapCharacterTokenDispla : MonoBehaviour
 
     private void DisplayTokens()
     {
-        if (!CharacterManager.i) return;
+        if (!CharacterManager.i || TownGameManager.i.DemoMode) return;
 
         var IDsInArea = CharacterManager.i.GetIDsByArea(_area);
 

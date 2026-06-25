@@ -61,7 +61,7 @@ public class CharacterManager : MonoBehaviour
         }
         RandomizeRelationships();
 
-        GenerateProblem();
+        //GenerateProblem();
     }
 
     private void Update()
@@ -321,7 +321,7 @@ public class CharacterManager : MonoBehaviour
 
         var InitilizeCharacter = SpawnCharacter(AllCharacters[0].ID, transform);
         await Task.Delay(200);
-        Destroy(InitilizeCharacter.gameObject);
+        if (InitilizeCharacter && InitilizeCharacter.gameObject) Destroy(InitilizeCharacter.gameObject);
     }
 
     public float GetRelationship(ID id1, ID id2)

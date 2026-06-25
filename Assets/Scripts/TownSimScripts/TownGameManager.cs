@@ -97,6 +97,8 @@ public class TownGameManager : MonoBehaviour
 
     public void ShowInitialMap()
     {
+        if (_steamDemoMode && PlayerPrefs.GetInt("DemoStep", 0) < 3) return;
+
         _mapStartBacking.SetActive(true);
         _mapParent.SetActive(true);
     }
@@ -131,7 +133,7 @@ public class TownGameManager : MonoBehaviour
         for (int i = 0; i < _runtimeItemData.Count; i++) {
             if (_runtimeItemData[i].Item == item) _runtimeItemData[i].Unlocked = true;
         }
-        print("Unlocked: " + item);
+        //print("Unlocked: " + item);
     }
 
     public List<ItemData> GetAllItems(bool unlockedOnly)
@@ -192,6 +194,11 @@ public class TownGameManager : MonoBehaviour
     public async Task ChangeArea(AreaName targetArea)
     {
         _mapStartBacking.SetActive(false);
+
+        if (targetArea == AreaName.NONE) {
+            foreach (var a in _areas) a.SetActiveState(false);
+            return;
+        }
 
         if (targetArea == AreaName.MAP) {
             foreach (var a in _areas) if (a.Type == AreaName.MAP) a.SetActiveState(true);

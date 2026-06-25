@@ -2,6 +2,7 @@ using MyBox;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CookingMinigame : MinigameController
 {
@@ -11,6 +12,7 @@ public class CookingMinigame : MinigameController
     [SerializeField] private RestrauntController _areaController;
     [SerializeField] private SubgameController _subgameController;
     [SerializeField] private GameObject _backButton;
+    [HideInInspector] public UnityEvent OnShowResults;
 
     [Header("Subgames")]
     [SerializeField] private StirMinigame _stirMinigame;
@@ -143,5 +145,4 @@ public class CookingMinigame : MinigameController
 
         _subgameController.StartMinigame(recipe, _spawnedCharacter, _selectedRecipient, _solvingProblem);
     }
-
 }

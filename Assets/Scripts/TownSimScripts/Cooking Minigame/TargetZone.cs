@@ -15,8 +15,6 @@ public class TargetZone : MonoBehaviour
     {
          //width = GetComponent<RectTransform>().sizeDelta.x;
         //height = GetComponent<RectTransform>().sizeDelta.y;
-
-
         
     }
 
@@ -30,12 +28,12 @@ public class TargetZone : MonoBehaviour
     {
         float center = 2*(position/parentLength);
 
-        Debug.Log("Setting Bounds");
+        //Debug.Log("Setting Bounds");
         
         upperBound = center + (length);
         lowerBound = center - (length);
 
-        Debug.Log("lower: " + lowerBound + " upper: " + upperBound);
+        //Debug.Log("lower: " + lowerBound + " upper: " + upperBound);
     }
 
     public void ChangeTargetWidth(float newWidth)

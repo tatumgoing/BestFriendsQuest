@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class QuestUIController : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class QuestUIController : MonoBehaviour
 
     [Header("Cutscenes")]
     [SerializeField] private List<TextAsset> _scripts;
+    [SerializeField] private TextAsset _demoScript;
 
     private RuntimeQuestData _currentQuest = null;
 
@@ -35,6 +37,7 @@ public class QuestUIController : MonoBehaviour
         await Task.Delay (Mathf.RoundToInt(_cutsceneWaitDelay * 1000));
 
         var chosenCutscene = _scripts[Random.Range(0, _scripts.Count)];
+        if (TownGameManager.i.DemoMode && DemoController.i.Step == 11) chosenCutscene = _demoScript;
         CutsceneManager.i.StartCutscene(chosenCutscene, _areaController.Camera, spawnedCharacters[0], spawnedCharacters[1], ShowChest);
     }
 
@@ -52,6 +55,8 @@ public class QuestUIController : MonoBehaviour
 
     public void ShowResults()
     {
+        if (!_areaController) return;
+        
         _areaController.gameObject.SetActive(false);
         _results.ShowResults(_currentQuest);
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GiftMenu : MonoBehaviour, IItemListController
 {
@@ -10,6 +11,7 @@ public class GiftMenu : MonoBehaviour, IItemListController
     [SerializeField] private ItemListDisplay _itemListDisplay;
     [SerializeField] private CurrentlySelectedItem _currentlySelectedItem;
     [SerializeField] private RoomUIController _controller;
+    [HideInInspector] public UnityEvent<ID> OnGiveGift = new UnityEvent<ID>();
 
     private ItemData _currentItem;
     private ID _id;
@@ -43,6 +45,7 @@ public class GiftMenu : MonoBehaviour, IItemListController
         gameObject.SetActive(false);
         CharacterManager.i.GiveItem(_id, _currentItem);
         _controller.GiveGift(_currentItem);
+        OnGiveGift.Invoke(_id);
     }
 
     private void ChangeCategory(ItemType type)

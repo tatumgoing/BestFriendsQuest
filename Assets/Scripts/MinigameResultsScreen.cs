@@ -36,6 +36,9 @@ public class MinigameResultsScreen : MonoBehaviour
 
     public void showResultsCutscene()
     {
+        GetComponentInParent<CookingMinigame>().OnShowResults.Invoke();
+        if (!gameObject.activeInHierarchy) return;
+
         gameObject.SetActive(false);
 
         var controller = GetComponentInParent<MinigameController>();
