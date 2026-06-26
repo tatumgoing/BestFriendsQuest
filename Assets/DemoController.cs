@@ -37,18 +37,19 @@ public class DemoController : MonoBehaviour
     [SerializeField] private CutsceneScript _discussPortScript;
     [SerializeField] private CutsceneScript _discoverPortScript;
 
-    //[Header("Tutorials")]
-    //[SerializeField] private Tutorial WelcomeTutorial
-
     [Header("Misc References")]
+    [SerializeField] private DemoTutorialController _tutorialController;
     [SerializeField] private GiftMenu _giftMenu;
     [SerializeField] private GameObject _townHallUIParent;
+    [SerializeField] private GameObject _shopUIParent;
     [SerializeField] private GameObject _parkUIParent;
     [SerializeField] private GameObject _resturuantUIParent;
     [SerializeField] private GameObject _portUIParent;
     [SerializeField] private CookingMinigame _cookingMinigame;
 
-    [SerializeField] private int _step = 0;
+    private int _step = 0;
+    private bool _shopTutorialShown = false;
+
     public int Step => _step;
 
     private void Awake()
@@ -85,6 +86,11 @@ public class DemoController : MonoBehaviour
         if (_step == 5 && _parkUIParent.activeInHierarchy) DoStep5();
         if (_step == 7 && _resturuantUIParent.activeInHierarchy) DoStep7();
         if (_step == 10 && _portUIParent.activeInHierarchy) DoStep10();
+
+        if (_step == 2 && _shopUIParent.activeInHierarchy && !_shopTutorialShown) {
+            _tutorialController.ShowTutorial(DemoTutorialType.SHOP);
+            _shopTutorialShown = true;
+        }
     }
 
     private void UnlockArea(AreaName area)
@@ -276,16 +282,6 @@ public class DemoController : MonoBehaviour
 
         await Task.Delay(Mathf.RoundToInt(delay * 1000));
 
-        //print("ids.Count: " + ids.Count);
-        //print("ids: " + string.Join(",", ids));
-        //print("spawnedCharsCount: " + spawnedChars.Count);
-        //print("spawnedChars: " + string.Join(", ", spawnedChars));
-
         CutsceneManager.i.StartCutscene(script.Script, _setController.Current.Camera, spawnedChars[0], spawnedChars[1], callback);
-    }
-
-    private void ShowTutorial()
-    {
-
     }
 }
