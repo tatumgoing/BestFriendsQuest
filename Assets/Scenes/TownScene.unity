@@ -12943,7 +12943,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &463440902
 Transform:
   m_ObjectHideFlags: 0
@@ -32350,9 +32350,9 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 1.4
+  near clip plane: 7.65
   far clip plane: 3000
-  field of view: 30
+  field of view: 35
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -32378,8 +32378,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.15365101, y: -0.3216626, z: 0.0529843, w: 0.9328007}
-  m_LocalPosition: {x: 369.79, y: 213.44, z: -11.92}
+  m_LocalRotation: {x: 0.103098586, y: -0.6994408, z: 0.1056604, w: 0.69927764}
+  m_LocalPosition: {x: 381.01, y: 212.81001, z: 2.93}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -39952,7 +39952,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8200072468975677627, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8614003353711132865, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
       propertyPath: m_LocalScale.x
@@ -61211,9 +61211,13 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1755163288216971486, guid: 73d5b6b441c101941a9a03cde8c344b5, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2538682731021062177, guid: 73d5b6b441c101941a9a03cde8c344b5, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2581937206427973424, guid: 73d5b6b441c101941a9a03cde8c344b5, type: 3}
       propertyPath: m_IsActive
@@ -61223,13 +61227,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Restaurant_UI
       objectReference: {fileID: 0}
+    - target: {fileID: 4933895329171210666, guid: 73d5b6b441c101941a9a03cde8c344b5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6150960172106636186, guid: 73d5b6b441c101941a9a03cde8c344b5, type: 3}
       propertyPath: _areaController
       value: 
       objectReference: {fileID: 1933116801}
     - target: {fileID: 6872050295100843593, guid: 73d5b6b441c101941a9a03cde8c344b5, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7348343347973185863, guid: 73d5b6b441c101941a9a03cde8c344b5, type: 3}
       propertyPath: m_Pivot.x
@@ -61310,6 +61318,10 @@ PrefabInstance:
     - target: {fileID: 7348343347973185863, guid: 73d5b6b441c101941a9a03cde8c344b5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9034556617238949036, guid: 73d5b6b441c101941a9a03cde8c344b5, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -64490,7 +64502,7 @@ MonoBehaviour:
   - DisplayName: STIRRING 0
     Type: 0
     Index: 0
-    _camera: {fileID: 0}
+    _camera: {fileID: 2057987771}
     _characterLookTarget: {fileID: 1957479565}
     _toEnable:
     - {fileID: 1957479564}

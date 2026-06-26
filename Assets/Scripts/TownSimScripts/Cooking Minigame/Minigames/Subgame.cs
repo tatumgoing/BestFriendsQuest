@@ -9,7 +9,10 @@ public class Subgame : MonoBehaviour
     private bool _initialized;
 
     protected virtual void ShowCam(int camIndex) => Controller.AreaController.ShowSubgameSceneCam(Data.Type, camIndex);
-    protected virtual void ResetCam() => Controller.AreaController.ResetCamera();
+    protected virtual void ResetCam()
+    {
+        if (Controller) Controller.AreaController.ResetCamera();
+    }
 
     protected virtual void Update()
     {
