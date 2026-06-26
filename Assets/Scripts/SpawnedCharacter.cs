@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using Unity.VisualScripting;
 
-public enum CharacterAnimations { Grilling, Standing, Sitting, SittingGround, Walking, Spawn, CookStirring};
+public enum CharacterAnimations { Grilling, Standing, Sitting, SittingGround, Walking, Spawn, CookStirring, CookChop, CookRoll, CookChopStill};
 
 [System.Serializable]
 public class ClothingItemData

@@ -22,6 +22,34 @@ MonoBehaviour:
   HappinessReward: 180
   RelationshipReward: 1.55
   Subgames:
+  - IngredientName: toppings
+    TimeLimit: 20
+    TargetTime: 3
+    Countdown: 3
+    Type: 2
+    MinStirSpeed: 0.5
+    MaxStirSpeed: 4
+    ChangeSpeedFrequency: {x: 3, y: 5}
+    ChopValue: 0.5
+    ChopPenalty: 0.1
+    ChopBarSpeed: 2
+    ChopTargetPosition: 150
+    ChopTargetScale: 1
+    BoilMinSpeed: -1
+    BoilMaxSpeed: 2
+    BoilAccSpeed: 2
+    BoilDeccSpeed: 2
+    BoilTargetPosition: 300
+    BoilTargetScale: 1
+    SpawnRate: 0.5
+    SteamValue: 0.2
+    SteamPenalty: 0.1
+    CloudLifetime: 2.5
+    RollGreat: 0.2
+    RollGood: 0.2
+    RollPenalty: 0.1
+    RollSpeed: 5
+    SpeedUp: 10
   - IngredientName: dough
     TimeLimit: 25
     TargetTime: 3
@@ -63,34 +91,6 @@ MonoBehaviour:
     ChopBarSpeed: 0
     ChopTargetPosition: 0
     ChopTargetScale: 0
-    BoilMinSpeed: -1
-    BoilMaxSpeed: 2
-    BoilAccSpeed: 2
-    BoilDeccSpeed: 2
-    BoilTargetPosition: 300
-    BoilTargetScale: 1
-    SpawnRate: 0.5
-    SteamValue: 0.2
-    SteamPenalty: 0.1
-    CloudLifetime: 2.5
-    RollGreat: 0.2
-    RollGood: 0.2
-    RollPenalty: 0.1
-    RollSpeed: 5
-    SpeedUp: 10
-  - IngredientName: toppings
-    TimeLimit: 20
-    TargetTime: 3
-    Countdown: 3
-    Type: 2
-    MinStirSpeed: 0.5
-    MaxStirSpeed: 4
-    ChangeSpeedFrequency: {x: 3, y: 5}
-    ChopValue: 0.5
-    ChopPenalty: 0.1
-    ChopBarSpeed: 2
-    ChopTargetPosition: 150
-    ChopTargetScale: 1
     BoilMinSpeed: -1
     BoilMaxSpeed: 2
     BoilAccSpeed: 2

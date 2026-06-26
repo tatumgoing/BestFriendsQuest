@@ -28,8 +28,14 @@ public class ChopMinigame : Subgame
 
         if (Input.GetKeyDown("space") || Input.GetMouseButtonDown(0))
         {
+            Debug.Log("Down");
+
+            StopAllCoroutines();
+            StartCoroutine(ChopAnim());
+
             Chop();
         }
+       
     }
 
     public override void StartSubgame(SubgameData data)
@@ -96,6 +102,18 @@ public class ChopMinigame : Subgame
         }
 
         return false;
+    }
+
+    IEnumerator ChopAnim()
+    { 
+        ShowCam(1);
+        // Loop to yield execution for 24 frames
+        for (int i = 0; i < 24; i++)
+        {
+            yield return null;
+        }
+        ShowCam(0);
+        Debug.Log("End Animation");
     }
 
 }
