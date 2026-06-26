@@ -41,7 +41,7 @@ public class RollMinigame : Subgame
     {
         base.StartSubgame(data);
 
-        //ShowCam(0);
+        ShowCam(0);
 
         //put code here that you want to run every time subgame is started
 
