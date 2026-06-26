@@ -69,24 +69,9 @@ public class RollMinigame : Subgame
 
     private void MoveRoll()
     {
-        if (goingUp)
-        {
-            Vector2 tempV = rollIcon.GetComponent<RectTransform>().anchoredPosition;
-
-            tempV.y += currentSpeed * Time.deltaTime;
-
-            rollIcon.GetComponent<RectTransform>().anchoredPosition = tempV;
-        }
-        else {
-
-            Vector2 tempV = rollIcon.GetComponent<RectTransform>().anchoredPosition;
-
-            tempV.y -= currentSpeed * Time.deltaTime;
-
-            rollIcon.GetComponent<RectTransform>().anchoredPosition = tempV;
-
-        }
-        
+        Vector2 tempV = rollIcon.GetComponent<RectTransform>().anchoredPosition;
+        tempV.y += (goingUp ? currentSpeed : -currentSpeed) * Time.deltaTime;
+        rollIcon.GetComponent<RectTransform>().anchoredPosition = tempV;
     }
 
     private void OutOfBounds()
