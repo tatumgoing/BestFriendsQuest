@@ -8,6 +8,7 @@ public class Subgame : MonoBehaviour
 
     private bool _initialized;
 
+    protected virtual SpawnedCharacter CurrentCharacter => Controller.AreaController.SpawnedCharacter;
     protected virtual void ShowCam(int camIndex) => Controller.AreaController.ShowSubgameSceneCam(Data.Type, camIndex);
     protected virtual void ResetCam()
     {

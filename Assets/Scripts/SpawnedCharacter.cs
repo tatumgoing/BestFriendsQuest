@@ -72,6 +72,7 @@ public class SpawnedCharacter : MonoBehaviour
     private float _growTimer;
     private float _growRate;
 
+    public Animator Animator => animator;
     private List<ClothingItemData> _nonHats => _clothingItems.Where(x => !x.Items.Where(y => y.ClothingType == ClothingType.HAT).Any()).ToList();
     public void SetExpression(Expression expression) => _characterController.SetExpression(expression);
 

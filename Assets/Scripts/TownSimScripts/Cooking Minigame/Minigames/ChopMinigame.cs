@@ -56,6 +56,9 @@ public class ChopMinigame : Subgame
         float length = target.GetComponent<RectTransform>().sizeDelta.x / chopSlider.GetComponent<RectTransform>().sizeDelta.x;
         float parentLength = chopSlider.GetComponent<RectTransform>().sizeDelta.x;
 
+
+        CurrentCharacter.Animator.SetBool("CookChopStill", true);
+
         target.SetBounds(position, length, parentLength);
     }
 
@@ -75,6 +78,7 @@ public class ChopMinigame : Subgame
 
     private void OnDisable()
     {
+        CurrentCharacter.Animator.SetBool("CookChopStill", false);
         ResetCam();
     }
 
@@ -105,14 +109,17 @@ public class ChopMinigame : Subgame
     }
 
     IEnumerator ChopAnim()
-    { 
-        ShowCam(1);
+    {
+        CurrentCharacter.Animator.SetBool("CookChop", true);
+
         // Loop to yield execution for 24 frames
         for (int i = 0; i < 24; i++)
         {
             yield return null;
         }
-        ShowCam(0);
+
+        CurrentCharacter.Animator.SetBool("CookChop", false);
+
         Debug.Log("End Animation");
     }
 
