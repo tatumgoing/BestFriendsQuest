@@ -21,6 +21,7 @@ public static class SaveSystem
     private static readonly string savePath = Application.streamingAssetsPath + saveFolder;
     public static int IDLength = 4;
 
+
     public static void SaveDynamicData(string dynamicData)
     {
         var targetID = dynamicData.Split('~')[0];
@@ -38,6 +39,20 @@ public static class SaveSystem
 
         saveStrings.Add(dynamicData);
         SaveToFile(dynamicDataFileName, string.Join("\n", saveStrings));
+    }
+
+    public static List<ID> GetAllQuestingCharacters()
+    {
+        var IDs = new List<ID>();
+        var savedQuests = ReadFromFile(BFQuestFileName).Split("\n").Where(x => x.Length > 2).ToList();
+        foreach (var q in savedQuests) {
+            var loadedQuest = new RuntimeQuestData();
+            loadedQuest.LoadFromSaveString(q);
+            if (!IDs.Contains(loadedQuest.Character1)) IDs.Add(loadedQuest.Character1);
+            if (!IDs.Contains(loadedQuest.Character2)) IDs.Add(loadedQuest.Character2);
+        }
+
+        return IDs;
     }
 
     public static void DeleteSavedQuest(Quest quest)
