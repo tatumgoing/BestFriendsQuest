@@ -12,15 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c17faabe39186a64d856127d979a6d9d, type: 3}
   m_Name: RamenRecipe
   m_EditorClassIdentifier: 
-  Name: Ramen
-  Description: mhmmm delicious ramen. Enjoyed by many!
-  Icon: {fileID: 21300000, guid: 550ccd52633ecbd49a1e8efb1468bb93, type: 3}
+  FoodItem: {fileID: 11400000, guid: 6d5200672ec4b29429da53daddd5f0c8, type: 2}
+  Difficulty: 1
+  _overrideRewards: 0
   MaxScore: 40
   MoneyReward: 100
   HappinessReward: 120
-  RelationshipReward: 1.3
-  _overrideRewards: 0
-  Difficulty: 1
+  RelationshipReward: 1.1
   Subgames:
   - IngredientName: noodles
     TimeLimit: 25
@@ -41,6 +39,15 @@ MonoBehaviour:
     BoilDeccSpeed: 2
     BoilTargetPosition: 300
     BoilTargetScale: 1
+    SpawnRate: 0.5
+    SteamValue: 0.2
+    SteamPenalty: 0.1
+    CloudLifetime: 2.5
+    RollGreat: 0.2
+    RollGood: 0.2
+    RollPenalty: 0.1
+    RollSpeed: 500
+    SpeedUp: 100
   - IngredientName: pasta
     TimeLimit: 20
     TargetTime: 10
@@ -60,3 +67,12 @@ MonoBehaviour:
     BoilDeccSpeed: 0.5
     BoilTargetPosition: 0
     BoilTargetScale: 1
+    SpawnRate: 0.5
+    SteamValue: 0.2
+    SteamPenalty: 0.1
+    CloudLifetime: 2.5
+    RollGreat: 0.2
+    RollGood: 0.2
+    RollPenalty: 0.1
+    RollSpeed: 500
+    SpeedUp: 100

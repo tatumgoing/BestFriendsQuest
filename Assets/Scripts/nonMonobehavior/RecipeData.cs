@@ -12,13 +12,16 @@ public enum Difficulty { EASY, MEDIUM, HARD, EXTREME }
 
 public class RecipeData : ScriptableObject
 {
-    public string Name;
-    [TextArea(3,10)] public string Description;
-    public Sprite Icon;
+    public ItemData FoodItem;
+
+    public string Name => FoodItem.Name;
+    public string Description => FoodItem.Description;
+    public Sprite Icon => FoodItem.sprite;
 
 
     [Header("Rewards")]
     public Difficulty Difficulty;
+
     [SerializeField] private bool _overrideRewards;
     public float MaxScore;
     public int MoneyReward;
@@ -50,6 +53,8 @@ public class RecipeData : ScriptableObject
         MoneyReward = difficulty * 50;
         HappinessReward = difficulty * 60;
         RelationshipReward = difficulty * 0.45f + 0.2f;
+
+
     }
 
     public string ReturnSteps()

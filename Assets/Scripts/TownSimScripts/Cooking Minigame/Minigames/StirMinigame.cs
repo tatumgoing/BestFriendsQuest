@@ -48,6 +48,10 @@ public class StirMinigame : Subgame
         ShowCam(0);
         _stirringSFX.PlaySilent();
         ChangeSpeed();
+
+        //hold item
+        CurrentCharacter.HoldItem(HeldItem.CookSpoon);
+
     }
 
     protected override void Initialize()

@@ -8,6 +8,8 @@ using System.Linq;
 using Unity.VisualScripting;
 
 public enum CharacterAnimations { Grilling, Standing, Sitting, SittingGround, Walking, Spawn, CookStirring, CookChop, CookRoll, CookChopStill};
+public enum HeldItem { CookKnife = 0, CookSpoon = 1, };
+
 
 [System.Serializable]
 public class ClothingItemData
@@ -43,7 +45,19 @@ public class ClothingItemData
     }
 }
 
-[SelectionBase]
+[System.Serializable]
+public class HeldItemData
+{
+    [SerializeField] public HeldItem HeldItemName;
+    [SerializeField] private GameObject HeldItemModel;
+
+    public void SetState(bool active)
+    {
+        HeldItemModel.SetActive(active);
+    }
+}
+
+    [SelectionBase]
 public class SpawnedCharacter : MonoBehaviour
 {
     [SerializeField] private CharacterMetaController _characterController;
@@ -62,6 +76,10 @@ public class SpawnedCharacter : MonoBehaviour
     [SerializeField] private float maxAngle, minAngle;
     [SerializeField] private float lookSpeed;
     [SerializeField] private AnimationCurve growCurve;
+
+    [Header("Holding Item")]
+    [SerializeField] private GameObject rightHandBone;
+    [SerializeField] private List<HeldItemData> holdableItems;
 
     private bool _isLooking;
     private Quaternion _lastRotation;
@@ -269,6 +287,29 @@ public class SpawnedCharacter : MonoBehaviour
         _growTimer = Time.time + growTime;
         transform.localScale = new Vector3(0, 0, 0);
 
+    }
+
+    public void HoldItem(HeldItem item)
+    {
+        foreach (HeldItemData heldItem in holdableItems)
+        {
+            if (heldItem.HeldItemName == item)
+            {
+                heldItem.SetState(true);
+            }
+            else
+            {
+                heldItem.SetState(false);
+            }
+        }
+    }
+
+    public void ClearItem(HeldItem item)
+    {
+        foreach (HeldItemData heldItem in holdableItems)
+        {
+            heldItem.SetState(false);
+        }
     }
 
 }
