@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
@@ -10,6 +11,31 @@ public class RuntimeQuestData
 
     public string GetSuccessChanceString() => Mathf.RoundToInt(SuccessChance() * 100) + "%";
 
+    public string GetSaveString()
+    {
+        var res = new List<string>()
+        {
+            QuestData.name,
+            Character1,
+            Character2,
+            StartTime.ToString("O")
+        };
+
+        return string.Join("|", res);
+    }
+
+    public void LoadFromSaveString(string saveString)
+    {
+        var parts = saveString.Split('|');
+        var questName = parts[0];
+        Character1 = new ID(parts[1]);
+        Character2 = new ID(parts[2]);
+        StartTime = System.DateTime.Parse(parts[3], System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.RoundtripKind);
+
+        Debug.Log("loaded quest: " + questName);
+    }
+
+    public RuntimeQuestData() { }
     public RuntimeQuestData(Quest quest, ID character1, ID character2, System.DateTime? startTime = null)
     {
         QuestData = quest;
