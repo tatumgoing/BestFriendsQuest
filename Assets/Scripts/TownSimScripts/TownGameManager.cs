@@ -99,6 +99,7 @@ public class TownGameManager : MonoBehaviour
     {
         if (_steamDemoMode && PlayerPrefs.GetInt("DemoStep", 0) < 3) return;
 
+        CharacterManager.i.LoadCurrentQuests();
         _mapStartBacking.SetActive(true);
         _mapParent.SetActive(true);
     }
@@ -201,6 +202,7 @@ public class TownGameManager : MonoBehaviour
         }
 
         if (targetArea == AreaName.MAP) {
+            CharacterManager.i.LoadCurrentQuests();
             foreach (var a in _areas) if (a.Type == AreaName.MAP) a.SetActiveState(true);
             return;
         }

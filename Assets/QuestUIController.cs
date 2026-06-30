@@ -51,6 +51,8 @@ public class QuestUIController : MonoBehaviour
         _map.gameObject.SetActive(false);
         _currentQuest = new RuntimeQuestData(questData, speaker1, speaker2);
         _inProgress.Show(_currentQuest);
+
+        SaveSystem.SaveBFQuest(_currentQuest);
     }
 
     public void ShowResults()
@@ -62,6 +64,8 @@ public class QuestUIController : MonoBehaviour
 
         CharacterManager.i.IncreaseHappiness(_currentQuest.Character1, -100);
         CharacterManager.i.IncreaseHappiness(_currentQuest.Character2, -100);
+
+        SaveSystem.DeleteSavedQuest(_currentQuest.QuestData);
     }
 
     public void ResetQuest()

@@ -14,11 +14,13 @@ public static class SaveSystem
     private static readonly string saveFolder = "/SaveData/";
     public static readonly string dynamicDataFileName = "dynamicData.txt";
     public static readonly string relationshipFileName = "relationships.txt";
+    public static readonly string BFQuestFileName = "BFQuests.txt";
     public static readonly string highscoreFileName = "highscores.txt";
     public static readonly string staticDataFileName = "characters.txt";
     public static readonly string relationshipsFileName = "relationships.txt";
     private static readonly string savePath = Application.streamingAssetsPath + saveFolder;
     public static int IDLength = 4;
+
 
     public static void SaveDynamicData(string dynamicData)
     {
@@ -37,6 +39,62 @@ public static class SaveSystem
 
         saveStrings.Add(dynamicData);
         SaveToFile(dynamicDataFileName, string.Join("\n", saveStrings));
+    }
+
+    public static List<ID> GetAllQuestingCharacters()
+    {
+        var IDs = new List<ID>();
+        var savedQuests = ReadFromFile(BFQuestFileName).Split("\n").Where(x => x.Length > 2).ToList();
+        foreach (var q in savedQuests) {
+            var loadedQuest = new RuntimeQuestData();
+            loadedQuest.LoadFromSaveString(q);
+            if (!IDs.Contains(loadedQuest.Character1)) IDs.Add(loadedQuest.Character1);
+            if (!IDs.Contains(loadedQuest.Character2)) IDs.Add(loadedQuest.Character2);
+        }
+
+        return IDs;
+    }
+
+    public static void DeleteSavedQuest(Quest quest)
+    {
+        var questStrings = new List<string>();
+        var savedQuests = ReadFromFile(BFQuestFileName).Split("\n").Where(x => x.Length > 2).ToList();
+        foreach (var q in savedQuests) {
+            if (q.ContainsInsensitive(quest.name)) continue;
+            questStrings.Add(q);
+        }
+
+        SaveToFile(BFQuestFileName, string.Join("\n", questStrings));
+    }
+
+    public static void SaveBFQuest(RuntimeQuestData quest)
+    {
+        var questStrings = new List<string>();
+        var savedQuests = ReadFromFile(BFQuestFileName).Split("\n").Where(x => x.Length > 2).ToList();
+        foreach (var q in savedQuests) {
+            if (q.ContainsInsensitive(quest.QuestData.name)) continue;
+            questStrings.Add(q);
+        }
+        questStrings.Add(quest.GetSaveString());
+
+        SaveToFile(BFQuestFileName, string.Join("\n", questStrings));
+
+        //Debug.Log("Saved quest: " + quest.QuestData.name);
+    }
+
+    public static RuntimeQuestData LoadBFQuest(Quest quest)
+    {
+        var questData = new RuntimeQuestData();
+        var savedQuests = ReadFromFile(BFQuestFileName).Split("\n").Where(x => x.Length > 2).ToList();
+        foreach (var q in savedQuests) {
+            if (q.ContainsInsensitive(quest.name)) {
+                questData.LoadFromSaveString(q);
+                questData.QuestData = quest;
+                return questData;
+            }
+        }
+
+        return null;
     }
 
     public static void SaveRelationship(ID id1, ID id2, float value)

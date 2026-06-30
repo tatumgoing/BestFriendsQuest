@@ -71,6 +71,12 @@ public class CharacterManager : MonoBehaviour
         TickCharacterLocations();
     }
 
+    public void LoadCurrentQuests()
+    {
+        var questingChars = SaveSystem.GetAllQuestingCharacters();
+        foreach (var c in _allCharacters) if (questingChars.Contains(c.ID)) c.SetArea(AreaName.PORT);
+    }
+
     private void TickCharacterLocations()
     {
         foreach (var character in _allCharacters) {
@@ -83,6 +89,22 @@ public class CharacterManager : MonoBehaviour
                 character.TimeWhenMoveCheck = Time.time;
             }
         }
+    }
+
+    public string GetLocation(ID id)
+    {
+        switch (GetCharacter(id).CurrentArea) {
+            case AreaName.PARK: return "at the park";
+            case AreaName.TOWN: return "in town";
+            case AreaName.SHOP: return "buying clothes";
+            case AreaName.RESTURAUNT: return "eating out";
+            case AreaName.TOWN_HALL: return "at town hall";
+            case AreaName.PORT: return "out questing";
+            case AreaName.HARDWARE_STORE: return "at the hardware store";
+            case AreaName.GROCERY_STORE: return "getting groceries";
+        }
+
+        return "";
     }
 
     public List<ID> GetIDsByArea(AreaName area)

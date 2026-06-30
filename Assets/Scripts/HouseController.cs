@@ -38,6 +38,8 @@ public class HouseController : MonoBehaviour
 
     private async void ShowRoom()
     {
+        if (!CharacterManager.i.GetIDsByArea(AreaName.TOWN).Contains(_id)) return;
+
         await TownGameManager.i.FadeScreen(true);
         _controller.ShowRoom(_id);
         await TownGameManager.i.FadeScreen(false);
@@ -70,9 +72,11 @@ public class HouseController : MonoBehaviour
 
         _mainHouseColor.ApplyColor(CharacterManager.i.GetClothingColor(id));
 
-        _houseAnimator.SetBool("HasProblem", CharacterManager.i.GetProblem(id) != null);
+        //_houseAnimator.SetBool("HasProblem", CharacterManager.i.GetProblem(id) != null);
 
         _nameText.text = CharacterManager.i.GetNameFormatted(id);
+        var isHere = CharacterManager.i.GetIDsByArea(AreaName.TOWN).Contains(_id);
+        if (!isHere) _nameText.text += " is " + CharacterManager.i.GetLocation(_id);
     }
 
     private void UpdateHovered()
