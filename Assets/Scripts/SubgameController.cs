@@ -33,7 +33,6 @@ public class SubgameController : MonoBehaviour
     [SerializeField] private Slider _slider;
     [SerializeField] private CookingMinigame _cookingMinigame;
 
-
     private float _totalTime;
     private float _timeLeft;
     private float _targetSliderPos;
@@ -98,7 +97,6 @@ public class SubgameController : MonoBehaviour
 
         _subgameIndex++;
         _completionText.Show(score);
-
     }
 
     private void FinishMinigame()
@@ -177,9 +175,14 @@ public class SubgameController : MonoBehaviour
         var originalHappinessChef = CharacterManager.i.GetHappiness(_character);
         var originalHappinessRecipient = CharacterManager.i.GetHappiness(_recipient);
 
-        CharacterManager.i.IncreaseHappiness(_recipient, _totalScore * _currentRecipe.HappinessReward);
-        if (_character != _recipient) {
-            CharacterManager.i.IncreaseRelationship(_character, _recipient, _currentRecipe.RelationshipReward * _totalScore);
+        var totalHappiness = _totalScore * _currentRecipe.HappinessReward;
+
+        if (_character == _recipient) {
+            CharacterManager.i.IncreaseHappiness(_character, totalHappiness);
+        }
+        else {
+            CharacterManager.i.IncreaseHappiness(_character, totalHappiness/2);
+            CharacterManager.i.IncreaseHappiness(_recipient, totalHappiness/2);
         }
 
         _timerParent.SetActive(false);
