@@ -12,15 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c17faabe39186a64d856127d979a6d9d, type: 3}
   m_Name: Popcorn
   m_EditorClassIdentifier: 
-  Name: Popcorn
-  Description: A classic movie night treat! Great for sharing with a special someone.
-  Icon: {fileID: 21300000, guid: ac79971c796d35546a9f3277cf4d568e, type: 3}
+  FoodItem: {fileID: 11400000, guid: 6adc5a367e03ccd44bdb51af89807515, type: 2}
+  Difficulty: 0
+  _overrideRewards: 0
   MaxScore: 20
   MoneyReward: 50
   HappinessReward: 60
   RelationshipReward: 0.65
-  _overrideRewards: 0
-  Difficulty: 0
   Subgames:
   - IngredientName: Popcorn
     TimeLimit: 15
@@ -42,6 +40,14 @@ MonoBehaviour:
     BoilTargetPosition: 300
     BoilTargetScale: 1
     SpawnRate: 0.5
+    SteamValue: 0.2
+    SteamPenalty: 0.1
+    CloudLifetime: 2.5
+    RollGreat: 0.2
+    RollGood: 0.2
+    RollPenalty: 0.1
+    RollSpeed: 500
+    SpeedUp: 100
   - IngredientName: More Popcorn
     TimeLimit: 15
     TargetTime: 10
@@ -62,3 +68,11 @@ MonoBehaviour:
     BoilTargetPosition: 300
     BoilTargetScale: 1
     SpawnRate: 0.5
+    SteamValue: 0.2
+    SteamPenalty: 0.1
+    CloudLifetime: 2.5
+    RollGreat: 0.2
+    RollGood: 0.2
+    RollPenalty: 0.1
+    RollSpeed: 500
+    SpeedUp: 100
