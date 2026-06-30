@@ -1,3 +1,4 @@
+using MyBox;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -77,6 +78,7 @@ public class MinigameResultsScreen : MonoBehaviour
 
     public async Task ShowScore(float finalScore, RecipeData recipe, SpawnedCharacter chef, ID recipient, bool isProblem, float originalHappinessChef, float originalHappinessRecipient)
     {
+        var cMan = CharacterManager.i;
         _chef = chef;
         _recipientID = recipient;
         var intDelay = Mathf.CeilToInt(_delay * 1000);
@@ -103,23 +105,27 @@ public class MinigameResultsScreen : MonoBehaviour
         _rewardEntry.Initialize(Mathf.CeilToInt(finalScore * recipe.MoneyReward));
         await Task.Delay(intDelay);
 
-        _chefEntry.gameObject.SetActive(recipient == _chefID);
-        if (_chefID == recipient) {
-            var happinessDelta = Mathf.Min(recipe.HappinessReward * finalScore, 100 - originalHappinessChef);
-            _chefEntry.Initialize(_chefID, happinessDelta, _delay * 0.75f);
+        var chefHappinessDelta = cMan.GetHappiness(_chefID) - originalHappinessChef;
+        _chefEntry.gameObject.SetActive(chefHappinessDelta > 0);
+        if (chefHappinessDelta > 0) {
+            _chefEntry.Initialize(_chefID, chefHappinessDelta, _delay * 0.75f);
             await Task.Delay(intDelay);
         }
 
-        _recipientEntry.gameObject.SetActive(recipient != _chefID);
+        if (_recipientID != _chefID) {
+            var recipientHappinessDelta = cMan.GetHappiness(_recipientID) - originalHappinessRecipient;
+            _recipientEntry.gameObject.SetActive(recipientHappinessDelta > 0);
+            if (recipientHappinessDelta > 0) {
+                _recipientEntry.Initialize(_recipientID, recipientHappinessDelta, _delay * 0.75f);
+                await Task.Delay(intDelay);
+            }
+        }
+
         _relationshipEntry.gameObject.SetActive(false);
         if (recipient != _chefID) {
-            var happinessDelta = Mathf.Min(recipe.HappinessReward * finalScore, 100 - originalHappinessRecipient);
-            _recipientEntry.Initialize(recipient, happinessDelta, _delay * 0.75f);
-            await Task.Delay(intDelay);
-
             _relationshipEntry.gameObject.SetActive(true);
             var relationshipDelta = recipe.RelationshipReward * finalScore;
-            var originalRelationship = CharacterManager.i.GetRelationship(_chefID, recipient) - relationshipDelta;
+            var originalRelationship = cMan.GetRelationship(_chefID, recipient) - relationshipDelta;
             _relationshipEntry.Initialize(recipient, _chefID, originalRelationship, relationshipDelta, _delay * 0.75f);
         }
 
