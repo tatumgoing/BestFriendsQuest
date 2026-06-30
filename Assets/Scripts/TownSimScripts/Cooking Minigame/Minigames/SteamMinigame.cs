@@ -39,6 +39,11 @@ public class SteamMinigame : Subgame
         InvokeRepeating(nameof(SpawnSteam), 0.1f, 0.5f);
 
         //audio
+
+        //item
+
+        CurrentCharacter.HoldItem(HeldItem.CookSpoon);
+
     }
 
     protected override void Initialize()
@@ -63,6 +68,8 @@ public class SteamMinigame : Subgame
 
         steamclouds.Clear();
         CancelInvoke(nameof(SpawnSteam));
+
+        CurrentCharacter.ClearItem();
 
     }
     public void SpawnSteam()

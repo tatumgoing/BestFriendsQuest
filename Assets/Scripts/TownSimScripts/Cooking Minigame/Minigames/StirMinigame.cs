@@ -65,6 +65,8 @@ public class StirMinigame : Subgame
     {
         _stirringSFX.Stop();
         ResetCam();
+
+        CurrentCharacter.ClearItem();
     }
 
     private void ChangeSpeed()

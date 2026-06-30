@@ -60,6 +60,11 @@ public class ChopMinigame : Subgame
         CurrentCharacter.Animator.SetBool("CookChopStill", true);
 
         target.SetBounds(position, length, parentLength);
+
+        // hold item
+
+        CurrentCharacter.HoldItem(HeldItem.CookKnife);
+
     }
 
     protected override void Initialize()
@@ -80,6 +85,8 @@ public class ChopMinigame : Subgame
     {
         CurrentCharacter.Animator.SetBool("CookChopStill", false);
         ResetCam();
+
+        CurrentCharacter.ClearItem();
     }
 
     public void Chop()

@@ -48,6 +48,11 @@ public class RollMinigame : Subgame
         currentSpeed = Data.RollSpeed;
 
         //audio
+
+        //item
+
+        CurrentCharacter.HoldItem(HeldItem.CookRoll);
+
     }
 
     protected override void Initialize()
@@ -64,7 +69,7 @@ public class RollMinigame : Subgame
     {
        ResetCam();
 
-
+       CurrentCharacter.ClearItem();
     }
 
     private void MoveRoll()

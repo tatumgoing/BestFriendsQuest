@@ -8,7 +8,7 @@ using System.Linq;
 using Unity.VisualScripting;
 
 public enum CharacterAnimations { Grilling, Standing, Sitting, SittingGround, Walking, Spawn, CookStirring, CookChop, CookRoll, CookChopStill};
-public enum HeldItem { CookKnife = 0, CookSpoon = 1, };
+public enum HeldItem { CookKnife = 0, CookSpoon = 1, CookRoll = 2};
 
 
 [System.Serializable]
@@ -304,7 +304,7 @@ public class SpawnedCharacter : MonoBehaviour
         }
     }
 
-    public void ClearItem(HeldItem item)
+    public void ClearItem()
     {
         foreach (HeldItemData heldItem in holdableItems)
         {

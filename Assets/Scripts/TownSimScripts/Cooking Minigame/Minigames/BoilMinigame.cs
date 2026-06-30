@@ -69,6 +69,8 @@ public class BoilMinigame : Subgame
         boilNormal.PlaySilent();
         boilLoud.PlaySilent();
 
+        CurrentCharacter.HoldItem(HeldItem.CookSpoon);
+
     }
 
     protected override void Initialize()
@@ -87,6 +89,9 @@ public class BoilMinigame : Subgame
         boilNormal.Stop();
         boilLoud.Stop();
         ResetCam();
+
+        CurrentCharacter.ClearItem();
+
     }
 
     public void CheckSpeed()
