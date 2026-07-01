@@ -26,7 +26,7 @@ public class QuestUIController : MonoBehaviour
         var quests = GetComponentsInChildren<QuestIsland>(true).Select(x => x.QuestData).ToList();
         _currentQuest = SaveSystem.LoadBFQuest(quests);
 
-        print("loaded quest: " + (_currentQuest != null ? _currentQuest.QuestData.name : "none"));
+        //print("loaded quest: " + (_currentQuest != null ? _currentQuest.QuestData.name : "none"));
 
         _results.gameObject.SetActive(false);
         _map.gameObject.SetActive(_currentQuest == null);
@@ -79,7 +79,6 @@ public class QuestUIController : MonoBehaviour
         CharacterManager.i.IncreaseHappiness(_currentQuest.Character2, -100);
 
         SaveSystem.DeleteSavedQuest(_currentQuest.QuestData);
-        SaveSystem.SaveCompletedBFQuest(_currentQuest.QuestData);
     }
 
     public void ResetQuest()
