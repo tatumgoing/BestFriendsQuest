@@ -10,6 +10,7 @@ public class QuestIsland : MonoBehaviour
     [SerializeField, DisplayInspector] private Quest _questData;
     [SerializeField] private Image _itemRewardImage;
     [SerializeField] private TextMeshProUGUI _timerText;
+    [SerializeField] private GameObject _completedParent;
 
     private QuestMapController _controller;
     private bool _disabled;
@@ -22,6 +23,10 @@ public class QuestIsland : MonoBehaviour
         if (!_controller) _controller = GetComponentInParent<QuestMapController>();
         _timerText.text = "";
         _disabled = false;
+
+        var completed = SaveSystem.IsBFQuestCompleted(_questData);
+        _completedParent.SetActive(completed);
+        GetComponent<SelectableItem>().SetDisabled(completed);
     }
 
     private void Start()

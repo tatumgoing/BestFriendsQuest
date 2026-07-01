@@ -10,5 +10,7 @@ public class TestResetter : MonoBehaviour
     {
         TownGameManager.i.SetCurrency(50);
         TownGameManager.i.ResetInventory();
+        SaveSystem.ResetCompletedBFQuests();
+        SaveSystem.ResetInProgressQuest();
     }
 }

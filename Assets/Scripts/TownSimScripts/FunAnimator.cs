@@ -45,12 +45,14 @@ public class FunAnimator : MonoBehaviour
     [Header("Misc")]
     [SerializeField] private bool _randomizeStart;
 
+    private float vertOffset;
 
     void Start()
     {
         if (_randomizeStart) {
             if (doesRot) transform.localEulerAngles += Vector3.forward * Random.Range(minRot, maxRot);
             //if (doesScale) transform.localScale += Vector3.one * Random.Range(minScale, maxScale);
+            if (doesVert) vertOffset = Random.Range(0, 10f);
         }
 
         iconPosX = GetComponent<RectTransform>().anchoredPosition.x;
@@ -72,7 +74,7 @@ public class FunAnimator : MonoBehaviour
         }
         if (doesVert)
         {
-             newIconPosY = SinAnimator( maxVert, minVert, vertSpeed, iconPosY);
+             newIconPosY = SinAnimator( maxVert, minVert, vertSpeed, iconPosY, vertOffset);
         }
         if (doesHoriz)
         {
@@ -85,9 +87,9 @@ public class FunAnimator : MonoBehaviour
         }
     }
 
-    float SinAnimator(float max, float min, float speed, float start)
+    float SinAnimator(float max, float min, float speed, float start, float offset = 0)
     {
-        var newVal = (max - min) / 2 * Mathf.Sin(speed * (Time.time)) + start + ((max + min) / 2);
+        var newVal = (max - min) / 2 * Mathf.Sin(speed * (Time.time) + offset) + start + ((max + min) / 2);
 
         return newVal;
     }

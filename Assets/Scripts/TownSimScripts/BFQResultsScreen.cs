@@ -45,6 +45,7 @@ public class BFQResultsScreen : MonoBehaviour
         if (_success) {
             TownGameManager.i.UnlockItem(questData.QuestData.unlockedItem);
             CharacterManager.i.IncreaseRelationship(questData.Character1, questData.Character2, questData.QuestData.relationshipGain);
+            SaveSystem.SaveCompletedBFQuest(questData.QuestData);
         }
 
         _title.text = _success ? _titleSuccess : _titleFail;

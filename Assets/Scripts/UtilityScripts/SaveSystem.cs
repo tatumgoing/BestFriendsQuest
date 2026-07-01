@@ -40,6 +40,12 @@ public static class SaveSystem
         SaveToFile(dynamicDataFileName, string.Join("\n", saveStrings));
     }
 
+    public static bool IsBFQuestCompleted(Quest quest)
+    {
+        var text = ReadFromFile(completedBFQuestFileName);
+        return text.ContainsInsensitive(quest.name);
+    }
+
     public static void ResetCompletedBFQuests()
     {
         SaveToFile(completedBFQuestFileName, "");
@@ -67,6 +73,8 @@ public static class SaveSystem
 
         return IDs;
     }
+
+    public static void ResetInProgressQuest() => SaveToFile(inProgressBFQuestFileName, "");
 
     public static void DeleteSavedQuest(Quest quest)
     {

@@ -33,6 +33,12 @@ public class QuestUIController : MonoBehaviour
         if (_currentQuest != null) _inProgress.Show(_currentQuest);
     }
 
+    [ButtonMethod]
+    public void ResetCompletedQuests()
+    {
+        SaveSystem.ResetCompletedBFQuests();
+    }
+
     public async void StartWalkingAnimation()
     {
         _wipe.SetActive(true);
@@ -73,6 +79,7 @@ public class QuestUIController : MonoBehaviour
         CharacterManager.i.IncreaseHappiness(_currentQuest.Character2, -100);
 
         SaveSystem.DeleteSavedQuest(_currentQuest.QuestData);
+        SaveSystem.SaveCompletedBFQuest(_currentQuest.QuestData);
     }
 
     public void ResetQuest()
