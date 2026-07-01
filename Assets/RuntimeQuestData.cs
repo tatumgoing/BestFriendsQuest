@@ -32,7 +32,7 @@ public class RuntimeQuestData
         Character2 = new ID(parts[2]);
         StartTime = System.DateTime.Parse(parts[3], System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.RoundtripKind);
 
-        Debug.Log("loaded quest: " + questName);
+        //Debug.Log("loaded quest: " + questName);
     }
 
     public RuntimeQuestData() { }

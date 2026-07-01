@@ -1,6 +1,7 @@
 using MyBox;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -22,8 +23,14 @@ public class QuestUIController : MonoBehaviour
 
     private void OnEnable()
     {
+        var quests = GetComponentsInChildren<QuestIsland>(true).Select(x => x.QuestData).ToList();
+        _currentQuest = SaveSystem.LoadBFQuest(quests);
+
+        print("loaded quest: " + (_currentQuest != null ? _currentQuest.QuestData.name : "none"));
+
         _results.gameObject.SetActive(false);
         _map.gameObject.SetActive(_currentQuest == null);
+        if (_currentQuest != null) _inProgress.Show(_currentQuest);
     }
 
     public async void StartWalkingAnimation()
@@ -70,6 +77,7 @@ public class QuestUIController : MonoBehaviour
 
     public void ResetQuest()
     {
+        print("Resetting quest");
         _areaController.gameObject.SetActive(true);
         _currentQuest = null; 
         _map.gameObject.SetActive(true);
