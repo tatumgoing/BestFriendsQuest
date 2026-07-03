@@ -14,6 +14,7 @@ public class QuestUIController : MonoBehaviour
     [SerializeField] private BFQResultsScreen _results;
     [SerializeField] private GameObject _wipe;
     [SerializeField] private float _cutsceneWaitDelay = 2;
+    [SerializeField] private QuestMapSelector _mapSelector;
 
     [Header("Cutscenes")]
     [SerializeField] private List<TextAsset> _scripts;
@@ -23,6 +24,11 @@ public class QuestUIController : MonoBehaviour
 
     private void OnEnable()
     {
+        var loadedRegion = SaveSystem.LoadRegion();
+        if (loadedRegion == "") {
+            _mapSelector.gameObject.SetActive(true);
+        }
+
         var quests = GetComponentsInChildren<QuestIsland>(true).Select(x => x.QuestData).ToList();
         _currentQuest = SaveSystem.LoadBFQuest(quests);
 

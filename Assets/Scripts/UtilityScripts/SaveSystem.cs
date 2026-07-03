@@ -15,11 +15,25 @@ public static class SaveSystem
     public static readonly string relationshipFileName = "relationships.txt";
     public static readonly string inProgressBFQuestFileName = "inProgressBFQuests.txt";
     public static readonly string completedBFQuestFileName = "completedBFQuests.txt";
+    public static readonly string selectedRegionFileName = "selectedRegion.txt";
     public static readonly string highscoreFileName = "highscores.txt";
     public static readonly string staticDataFileName = "characters.txt";
     public static readonly string relationshipsFileName = "relationships.txt";
     private static readonly string savePath = Application.streamingAssetsPath + saveFolder;
     public static int IDLength = 4;
+
+    public static void ResetRegion() => SaveToFile(selectedRegionFileName, "");
+    public static void SaveRegion(string regionName)
+    {
+        SaveToFile(selectedRegionFileName, regionName);
+    }
+
+    public static string LoadRegion()
+    {
+        var text = ReadFromFile(selectedRegionFileName);
+        if (text.Length > 1) return text;
+        return "";
+    }
 
     public static void SaveDynamicData(string dynamicData)
     {
