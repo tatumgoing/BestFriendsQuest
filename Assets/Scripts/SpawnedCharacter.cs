@@ -8,7 +8,7 @@ using System.Linq;
 using Unity.VisualScripting;
 
 public enum CharacterAnimations { Grilling, Standing, Sitting, SittingGround, Walking, Spawn, CookStirring, CookChop, CookRoll, CookChopStill};
-public enum HeldItem { CookKnife = 0, CookSpoon = 1, CookRoll = 2};
+public enum HeldItem { CookKnife = 0, CookSpoon = 1, CookRoll = 2, FishingRodSimple = 3, FishingRodModerate = 4, FishingRodAdvanced = 5 };
 
 
 [System.Serializable]
