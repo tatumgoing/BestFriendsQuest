@@ -24,7 +24,7 @@ public class IDCamera : MonoBehaviour
     {
         _cameraSound.Play();
         GetComponent<CameraController>().ResetZoom(true);
-        _characterSpinner.Reset();
+        _characterSpinner.ResetRot();
         UIManager.i.FlashCamera();
 
         await Task.Delay(100);

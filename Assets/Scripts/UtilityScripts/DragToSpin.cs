@@ -34,9 +34,10 @@ public class DragToSpin : MonoBehaviour
         transform.Rotate(Vector3.up * -_rotDelta * 10 * Time.deltaTime * _dragSpeed);
     }
 
-    public void Reset()
+    public void ResetRot()
     {
         transform.localRotation = _originalRot;
+        //transform.localEulerAngles = Vector3.zero;
         _rotDelta = 0;
     }
 

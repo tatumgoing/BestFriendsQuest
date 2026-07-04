@@ -165,11 +165,13 @@ public class CameraController : MonoBehaviour
 
     public void ResetZoom(bool instant = false)
     {
-        _targetPosition = _character.position + (_getCurrentDir() * _currentBaseZoom);
         if (instant) {
+            _targetPosition = _character.position + (_getCurrentDir() * (_currentBaseZoom + 2));
             _targetPosition.y = _character.position.y + (_body ? _bodyYOffset : _headYOffset);
             transform.position = _targetPosition;
+            return;
         }
+        _targetPosition = _character.position + (_getCurrentDir() * _currentBaseZoom);
     }
 
     private void OnDrawGizmosSelected()
