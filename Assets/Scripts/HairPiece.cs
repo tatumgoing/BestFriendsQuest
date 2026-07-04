@@ -31,6 +31,15 @@ public class HairPiece : FeatureObj
         Initialize(controller);
     }
 
+    public void SetFlipped(bool flipped)
+    {
+        var scale = transform.localScale;
+        scale.x = flipped ? -Mathf.Abs(scale.x) : Mathf.Abs(scale.x);
+        transform.localScale = scale;
+
+        Settings.Mirror = flipped ? MirrorType.LEFT : MirrorType.RIGHT;
+    }
+
     public void Initialize(HairController controller)
     {
         //print("initialize called on: " + Data.name);
@@ -56,6 +65,10 @@ public class HairPiece : FeatureObj
         base.SpawnMirror();
         _mirroredFeature = MirroredFeature.As<HairPiece>();
         _mirroredFeature.Initialize(_controller);
+
+        if (Data.IsMainHair) {
+            if (Settings.Mirror == MirrorType.LEFT) SetFlipped(true);
+        }
     }
 
     protected override void UpdateDisplay()

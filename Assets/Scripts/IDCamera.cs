@@ -24,7 +24,7 @@ public class IDCamera : MonoBehaviour
     {
         _cameraSound.Play();
         GetComponent<CameraController>().ResetZoom(true);
-        _characterSpinner.Reset();
+        _characterSpinner.ResetRot();
         UIManager.i.FlashCamera();
 
         await Task.Delay(100);
@@ -53,7 +53,8 @@ public class IDCamera : MonoBehaviour
         idPicture.ReadPixels(captureRect, 0, 0);
         idPicture.Apply();
 
-        Color targetColor = Utils.HexToColor("#83E221");
+        //Color targetColor = Utils.HexToColor("#83E221");
+        Color targetColor = Utils.HexToColor("#7edd56");
         var target = new Vector3(targetColor.r, targetColor.g, targetColor.b);
         Color[] pixels = idPicture.GetPixels();
 

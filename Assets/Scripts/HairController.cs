@@ -147,6 +147,13 @@ public class HairController : MonoBehaviour, IFeatureController
         original.CopyTo(Current);
     }
 
+    public void SetFlipped(bool flipped)
+    {
+        foreach (var h in _currentPieces) {
+            if (h.GetData().IsMainHair) h.SetFlipped(flipped);
+        }
+    }
+
     public FeatureObj AddFeature(FeatureSOData data)
     {
         //print("adding hair. isMain: " + data.IsMainHair + ", name: " +  data.name);

@@ -267,6 +267,7 @@ public class LayersMenuController : MonoBehaviour
             var button = l.GetComponent<SelectableItem>();
             if (button.GetComponent<Layer>() != layerObj) button.Deselect(true, false);
         }
+
         _featureController.Select(feature);
 
         if (_addonSizeSlider) _addonSizeSlider.value = feature.GetSettings().Size;

@@ -32,6 +32,11 @@ public class MainHairController : MonoBehaviour
         if (!_initialized) Initialize();
     }
 
+    public void ToggleFlipped(bool flipped)
+    {
+        _controller.SetFlipped(flipped);
+    }
+
     public void SetHair(string saveString)
     {
         Initialize();
