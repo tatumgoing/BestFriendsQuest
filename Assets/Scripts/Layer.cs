@@ -2,9 +2,10 @@ using MyBox;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Layer : MonoBehaviour
+public class Layer : MonoBehaviour, IPointerDownHandler
 {
     private LayersMenuController _controller;
     [SerializeField] private Image _preview;
@@ -14,13 +15,39 @@ public class Layer : MonoBehaviour
     [SerializeField] private GameObject _changeTierArrowParent;
 
     private FeatureTier _tier;
+    private bool _isFace;
+    private bool _holding;
 
     public FeatureObj GetFeature() => _feature;
 
     private void Start()
     {
         _controller = GetComponentInParent<LayersMenuController>();
-        //if (_changeTierArrowParent) _changeTierArrowParent.SetActive(_controller.ShowingDetails());
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        _holding = true;
+        GetComponentInParent<ScrollRect>().enabled = false;
+        transform.parent.GetComponentInChildren<DraggableLayerHighlight>().StartDrag(transform.GetSiblingIndex(), this);
+    }
+
+    private void Update()
+    {
+        if (Input.GetMouseButtonUp(0) && _holding) {
+            Release();
+        }   
+    }
+
+    private void OnDisable()
+    {
+        if (_holding) Release();
+    }
+
+    private void Release()
+    {
+        GetComponentInParent<ScrollRect>().enabled = true;
+        _holding = false;
     }
 
     public void Initialize(FeatureObj feature, FeatureTier tier, LayersMenuController controller)
@@ -38,7 +65,19 @@ public class Layer : MonoBehaviour
         if (!controller.ShowingDetails() && _feature && _feature.GetComponent<FacialFeature>()) {
             if (_tier == FeatureTier.BASE) _feature.GetComponent<FacialFeature>().SetInBack();
             else _feature.GetComponent<FacialFeature>().SetOnTop();
+
+            _isFace = true;
         }
+
+        foreach (Transform child in transform.parent) {
+            var layer = child.GetComponent<Layer>();
+            if (layer) layer.UpdatePriority(child.GetSiblingIndex());
+        }
+    }
+
+    public void UpdatePriority(int index)
+    {
+        if (_feature.GetComponent<FacialFeature>()) _feature.GetComponent<FacialFeature>().SetPriority(index);
     }
 
     public void Select()

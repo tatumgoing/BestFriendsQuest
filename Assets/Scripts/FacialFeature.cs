@@ -19,6 +19,7 @@ public class FacialFeature : FeatureObj
     private float _expressionRotOffset;
 
     [ReadOnly, HideInInspector] public FeatureCategory Category;
+    private int _priorityOffset = 0;
 
     private void OnValidate()
     {
@@ -35,16 +36,42 @@ public class FacialFeature : FeatureObj
         if (MirroredFeature && !MirroredFeature.gameObject.name.Contains("Mirror")) MirroredFeature.gameObject.name += " Mirror";
     }
 
+    private int GetPriority()
+    {
+        if (Category == FeatureCategory.EXTRAS && _priorityOffset >= 0) return _priorityOffset;
+        if (Category == FeatureCategory.EYEBROWS) return _priorityOffset - 100;
+        if (Category == FeatureCategory.NOSE) return _priorityOffset - 200;
+        if (Category == FeatureCategory.EYES) return _priorityOffset - 300;
+        if (Category == FeatureCategory.MOUTH) return _priorityOffset - 400;
+        return _priorityOffset - 500;
+    }
+
+    public void SetPriority(int index)
+    {
+        _projector.material.SetInt("_DrawOrder", GetPriority() - index);
+        if (MirroredFeature) MirroredFeature.As<FacialFeature>().SetDrawOrderRAW(GetPriority() - index);
+        //print("Set priority of " + gameObject.name + " to " + (_priorityOffset + index)); 
+    }
+
     [ButtonMethod]
     public void SetOnTop()
     {
-        _projector.material.SetInt("_DrawOrder", 1);
+        _priorityOffset = 1000;
+        _projector.material.SetInt("_DrawOrder", _priorityOffset);
+        if (MirroredFeature) MirroredFeature.As<FacialFeature>().SetDrawOrderRAW(_priorityOffset);
     }
 
     [ButtonMethod]
     public void SetInBack()
     {
-        _projector.material.SetInt("_DrawOrder", -1);
+        _priorityOffset = -1000;
+        _projector.material.SetInt("_DrawOrder", _priorityOffset);
+        if (MirroredFeature) MirroredFeature.As<FacialFeature>().SetDrawOrderRAW(_priorityOffset);
+    }
+
+    public void SetDrawOrderRAW(int drawOrder)
+    {
+        _projector.material.SetInt("_DrawOrder", drawOrder);
     }
 
     public void SetScaleMode(bool inCharacterCreator)
@@ -80,6 +107,7 @@ public class FacialFeature : FeatureObj
         if (Data.Texture == null) return;
         mat.name = Data.Texture.name + " (virtual)" + (IsMirroredVersion ? "(mirror)" : "");
         gameObject.name = Data.Texture.name;
+        if (gameObject.name.Contains("Empty")) gameObject.name = Data.ColorMask.name;
         UpdateMaterial();
     }
 
