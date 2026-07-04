@@ -77,7 +77,7 @@ public class Layer : MonoBehaviour, IPointerDownHandler
 
     public void UpdatePriority(int index)
     {
-        if (_feature.GetComponent<FacialFeature>()) _feature.GetComponent<FacialFeature>().SetPriority(index);
+        if (_feature && _feature.GetComponent<FacialFeature>()) _feature.GetComponent<FacialFeature>().SetPriority(index);
     }
 
     public void Select()
