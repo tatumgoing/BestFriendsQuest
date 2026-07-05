@@ -23,6 +23,9 @@ public class HouseController : MonoBehaviour
     private float timeWhenEnabled = 0;
     private bool _hovered;
 
+    //TESTING
+    [SerializeField] private Transform _testSpawnSpot;
+
     private void OnEnable()
     {
         timeWhenEnabled = Time.time;
@@ -75,6 +78,8 @@ public class HouseController : MonoBehaviour
         _nameText.text = CharacterManager.i.GetNameFormatted(id);
         var isHere = CharacterManager.i.GetIDsByArea(AreaName.TOWN).Contains(_id);
         if (!isHere) _nameText.text += " is " + CharacterManager.i.GetLocation(_id);
+
+        CharacterManager.i.SpawnCharacterNormalized(_id, _testSpawnSpot);
     }
 
     private void UpdateHovered()

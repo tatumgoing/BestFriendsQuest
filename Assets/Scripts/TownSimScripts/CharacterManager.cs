@@ -22,6 +22,7 @@ public class CharacterManager : MonoBehaviour
     [SerializeField, ReadOnly] private List<RelationshipData> _relationships = new List<RelationshipData>();
     [SerializeField] private List<ColorData> _clothingColors;
     [SerializeField] private List<PersonalityData> _personalities = new List<PersonalityData>();
+    [SerializeField] private float _defaultHeight = 3.4f;
 
     [Header("Areas")]
     [SerializeField] private List<AreaName> _validAreas = new List<AreaName>();
@@ -286,6 +287,14 @@ public class CharacterManager : MonoBehaviour
         }
 
         return name;
+    }
+
+    public SpawnedCharacter SpawnCharacterNormalized(ID id, Transform spawnSpot) {
+        var character = SpawnCharacter(id, spawnSpot.position, spawnSpot.lossyScale, spawnSpot.eulerAngles);
+        var height = character.GetComponentInChildren<HairController>().transform.position.y - spawnSpot.position.y;
+        var extraHeight = height - _defaultHeight;
+        character.transform.position -= new Vector3(0, extraHeight, 0);
+        return character;
     }
 
     public SpawnedCharacter SpawnCharacter(ID id, Transform spawnSpot) => SpawnCharacter(id, spawnSpot.position, spawnSpot.lossyScale, spawnSpot.eulerAngles);

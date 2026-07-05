@@ -16,7 +16,6 @@ public class DemoController : MonoBehaviour
 {
     public static DemoController i;
 
-
     [SerializeField] private bool _forceStep0;
     [SerializeField] private bool _printSteps;
     [SerializeField] private TestResetter _resetter;
@@ -47,6 +46,7 @@ public class DemoController : MonoBehaviour
     [SerializeField] private GameObject _portUIParent;
     [SerializeField] private CookingMinigame _cookingMinigame;
 
+    private ItemData selectedFood = null;
     private int _step = 0;
     private bool _shopTutorialShown = false;
 
