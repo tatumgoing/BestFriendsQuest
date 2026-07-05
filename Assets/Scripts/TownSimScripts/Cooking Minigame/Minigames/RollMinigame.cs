@@ -32,8 +32,13 @@ public class RollMinigame : Subgame
 
         if (Input.GetMouseButtonDown(0))
         {
-            ChangeDirection();
             CheckSuccess();
+
+        }
+
+        if (currentSpeed < Data.RollSpeed)
+        {
+            currentSpeed += Data.RollSpeed * Time.deltaTime;
         }
     }
 
@@ -98,7 +103,7 @@ public class RollMinigame : Subgame
     {
         rollIcon.GetComponent<RectTransform>().anchoredPosition= new Vector2 (0, 0);
         
-        currentSpeed = Data.RollSpeed;
+        currentSpeed = 0;
         SubtractScore();
 
     }
@@ -115,16 +120,19 @@ public class RollMinigame : Subgame
         if (CheckGreat())
         {
             AddScore(true);
+            ChangeDirection();
         }
         else if (CheckGood())
         {
             AddScore(false);
+            ChangeDirection();
         }
         else
         {
             Debug.Log("Miss");
 
             SubtractScore();
+            ResetRoll();
         }
 
     }
