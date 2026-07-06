@@ -79,7 +79,7 @@ public class HouseController : MonoBehaviour
         var isHere = CharacterManager.i.GetIDsByArea(AreaName.TOWN).Contains(_id);
         if (!isHere) _nameText.text += " is " + CharacterManager.i.GetLocation(_id);
 
-        CharacterManager.i.SpawnCharacterNormalized(_id, _testSpawnSpot);
+        //CharacterManager.i.SpawnCharacterNormalized(_id, _testSpawnSpot);
     }
 
     private void UpdateHovered()

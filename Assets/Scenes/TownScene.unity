@@ -23805,7 +23805,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &809776420
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27191,7 +27191,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &918846564
 Transform:
   m_ObjectHideFlags: 0
@@ -28729,9 +28729,9 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 10
-  far clip plane: 1000
-  field of view: 40
+  near clip plane: 1.4
+  far clip plane: 3000
+  field of view: 39.6
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -28757,8 +28757,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.04786661, y: 0.84527177, z: -0.07683151, w: -0.52661324}
-  m_LocalPosition: {x: 915.3993, y: 218.22507, z: 541.2341}
+  m_LocalRotation: {x: 0.008726558, y: 0, z: 0, w: 0.999962}
+  m_LocalPosition: {x: 331.95, y: 226.74, z: -352.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -42423,6 +42423,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 918846564}
     m_Modifications:
+    - target: {fileID: 3035577401360136947, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8200072468975677627, guid: 3fea817dbba8a5e48b35803d6cdaf4ba, type: 3}
       propertyPath: m_Name
       value: SpawnedCharacter
@@ -76454,7 +76458,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5265743098722616291, guid: 9fa4dc84c512a6d4889282316da1357f, type: 3}
       propertyPath: _areaData.Array.data[0].Capacity
-      value: 7
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5265743098722616291, guid: 9fa4dc84c512a6d4889282316da1357f, type: 3}
       propertyPath: _areaData.Array.data[1].Capacity
