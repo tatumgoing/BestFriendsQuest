@@ -46,7 +46,8 @@ public class DraggableLayerHighlight : MonoBehaviour
         }
 
         var scale = transform.localScale;
-        scale.y = Input.GetMouseButton(0) && transform.parent.childCount > 2 ? _yScale : _yScaleHidden;
+        var activeChildCount = transform.parent.GetComponentsInChildren<Layer>(false).Length;
+        scale.y = Input.GetMouseButton(0) && activeChildCount >= 2 ? _yScale : _yScaleHidden;
         transform.localScale = scale;
 
         var hidden = transform.localScale.y < _yScale;
