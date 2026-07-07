@@ -102,12 +102,6 @@ public class ColorMenuController : MonoBehaviour
         } 
     }
 
-    public void SetAdvancedMode(GameMode advanced)
-    { 
-        _advancedModeParentToggle.SetActive(advanced == GameMode.ADVANCED);
-        if (advanced == GameMode.SIMPLE) SetMode(false);
-    }
-
     public Color GetColor()
     {
         if (_initialized) return _currentColor;

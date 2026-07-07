@@ -44,7 +44,6 @@ public class ResearchData
     static string _timeBodyID = "entry.478587131";
     static string _timeDataID = "entry.112423647";
 
-    private GameMode _mode;
     private string _saveString;
     private float _timeSpent;
 
@@ -67,7 +66,6 @@ public class ResearchData
     public void Finalize(string saveString)
     {
         _saveString = saveString;
-        _mode = GameManager.i.Advanced ? GameMode.ADVANCED : GameMode.SIMPLE;
     }
 
     public void SubtractClick(AnalyticsInputType type)
@@ -90,7 +88,7 @@ public class ResearchData
     {
         var formData = new Dictionary<string, string>()
         {
-            { _advQuestionID, _mode.ToString()},
+            { _advQuestionID, "true"},
             { _saveStringID, _saveString},
             { _timeSpentID, Mathf.Round(_timeSpent).ToString()},
 

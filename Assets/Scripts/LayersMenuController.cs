@@ -1,8 +1,6 @@
 using MyBox;
 using System.Collections;
 using System.Collections.Generic;
-using System.Net;
-using System.Net.NetworkInformation;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -31,7 +29,6 @@ public class LayersMenuController : MonoBehaviour
     [SerializeField] private bool _transitionToMoveAutomatically;
     [SerializeField, ConditionalField(nameof(_transitionToMoveAutomatically))] private SelectableItem _moveMenuButton;
     [SerializeField] private Slider _addonSizeSlider;
-
     [SerializeField] private UnityEvent OnAddFeature;
 
     private List<Layer> _spawnedLayers = new List<Layer>();
@@ -39,13 +36,7 @@ public class LayersMenuController : MonoBehaviour
     private FeatureSubType _currentSubType;
     private IFeatureController _featureController;
 
-    public bool ShowingDetails() {
-        if (_detailsParent) return _detailsParent.activeInHierarchy;
-        return false;
-    }
-
     public int NumLayers => _spawnedLayers.Count;
-
     public FeatureObj GetCurrent() => _featureController.GetCurrent();
     public void OpenAddMenuBase() => OpenAddMenu(FeatureTier.BASE);
     public void OpenAddMenuDetails() => OpenAddMenu(FeatureTier.DETAIL);
@@ -62,6 +53,12 @@ public class LayersMenuController : MonoBehaviour
     private void Start()
     {
         if (_hairAddonLayers) Initialize(FeatureSubType.ADDONS);
+    }
+
+    public bool ShowingDetails()
+    {
+        if (_detailsParent) return _detailsParent.activeInHierarchy;
+        return false;
     }
 
     public void SetShowDetails(bool showDetails = true)
@@ -127,7 +124,6 @@ public class LayersMenuController : MonoBehaviour
     public void Duplicate(FeatureObj original)
     {
         _currentTier = original.Tier;
-        //print("duplicated a " +  original.Tier);
 
         AddFeature(original.GetData(), true);
         _featureController.CopySettingsToCurrent(original);

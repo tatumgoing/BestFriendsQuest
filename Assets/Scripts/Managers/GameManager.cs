@@ -7,7 +7,6 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
-public enum GameMode { SIMPLE, ADVANCED}
 
 [RequireComponent(typeof(InputController))]
 public class GameManager : MonoBehaviour
@@ -15,11 +14,9 @@ public class GameManager : MonoBehaviour
     public static GameManager i;
     private void Awake() { i = this; }
 
-
     [SerializeField] private bool _researchMode;
     [SerializeField] private bool _demoMode;
     [SerializeField] private bool _sendData = true;
-    [SerializeField] private GameMode _mode;
     [SerializeField] GameObject _pauseMenu;
     [SerializeField] Fade _fade;
     [SerializeField] MusicPlayer _music;
@@ -31,8 +28,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private CharacterMetaController _character;
     [SerializeField] private string _saveFileName = "characters.txt";
  
-    public bool Advanced => _mode == GameMode.ADVANCED;
-    [HideInInspector] public UnityEvent OnModeChange;
     private List<ModeExlusiveItem> _modeExlusiveItems = new List<ModeExlusiveItem>();
 
     private string UndoStateString; //WIP
@@ -48,8 +43,7 @@ public class GameManager : MonoBehaviour
         _fade.Disappear();
 
         _modeExlusiveItems = FindObjectsByType<ModeExlusiveItem>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList();
-        UpdateMode();
-
+       
         _tutorial.SetActive(_demoMode);
         _editExistingButtonParent.SetActive(!_demoMode && !ResearchMode);
     }
@@ -60,12 +54,6 @@ public class GameManager : MonoBehaviour
         var file = File.CreateText(CharactersSavePath);
         file.Write("");
         file.Close();
-    }
-
-    private void UpdateMode()
-    {
-        _modeExlusiveItems.ForEach(item => item.UpdateMode(_mode));
-        OnModeChange.Invoke();
     }
 
     private void Update()
@@ -90,8 +78,6 @@ public class GameManager : MonoBehaviour
     public string SaveCurrent()
     {
         var newData = _character.GetSaveString();
-
-        if (!Advanced) return newData;
 
         Directory.CreateDirectory(System.IO.Path.GetDirectoryName(CharactersSavePath));
         if (!File.Exists(CharactersSavePath)) {

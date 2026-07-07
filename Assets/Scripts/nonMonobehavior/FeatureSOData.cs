@@ -47,11 +47,11 @@ public class FeatureSOData : ScriptableObject
     [SerializeField] private FeatureObjSettings _defaultSettings;
     public FeatureObjSettings DefaultSettings => _defaultSettings;
     public Vector2 HoriLimits => GetHoriLimits();
-    public Vector2 VertLimits => GameManager.i == null ? _vertLimits : (GameManager.i.Advanced ? _vertLimits : _simpleVertLimits);
+    public Vector2 VertLimits => _vertLimits;
 
     private Vector2 GetHoriLimits()
     {
-        var horiLimits = GameManager.i == null ? _horiLimit : (GameManager.i.Advanced ? _horiLimit : _simpleHoriLimit);
+        var horiLimits = _horiLimit;
 
         if (Type == FeatureType.EAR) return  new Vector2(_earOffset - horiLimits, _earOffset + horiLimits);
         else return new Vector2(-horiLimits, horiLimits);
