@@ -52,16 +52,24 @@ public class ParkController : MonoBehaviour
         var spots = new List<CharacterSpawnLocation>(_spawnSpots);
         spots.Shuffle();
         var benchSpots = new List<CharacterSpawnLocation>(_benchSpawnSpots);
+
+        var bench1 = benchSpots[0];
+        var bench2 = benchSpots[1];
+        SpawnedCharacter benchId1 = null;
+        SpawnedCharacter benchId2 = null;
+
         benchSpots.Reverse();
         foreach (var s in benchSpots) spots.Insert(0, s);
 
         for (int i = 0; i < Mathf.Min(IDs.Count, spots.Count); i++) {
-            SpawnCharacter(IDs[i], spots[i]);
+            var spawnedChar = SpawnCharacter(IDs[i], spots[i]);
+            if (spots[i] == bench1) benchId1 = spawnedChar;
+            if (spots[i] == bench2) benchId2 = spawnedChar;
         }
 
         _cutsceneButton.gameObject.SetActive(true);
         if (IDs.Count >= 2) {
-            _cutsceneButton.SetCharacters(_spawnedCharacters[^2], _spawnedCharacters[^1]);
+            _cutsceneButton.SetCharacters(benchId1, benchId2);
         }
         else if (IDs.Count > 0){
             _cutsceneButton.SetCharacters(_spawnedCharacters[^1]);
@@ -71,13 +79,14 @@ public class ParkController : MonoBehaviour
     /// <summary>
     /// Spawns 1 character and sets its animation.
     /// </summary>
-    private void SpawnCharacter(ID id, CharacterSpawnLocation spawnPoint)
+    private SpawnedCharacter SpawnCharacter(ID id, CharacterSpawnLocation spawnPoint)
     {
         var newCharacter = CharacterManager.i.SpawnCharacter(id, spawnPoint.transform);
         
         _ = spawnPoint.SetCharacter(newCharacter);
 
         _spawnedCharacters.Add(newCharacter);
+        return newCharacter;
     }
 
     /// <summary>
