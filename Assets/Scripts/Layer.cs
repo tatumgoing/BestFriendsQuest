@@ -62,7 +62,8 @@ public class Layer : MonoBehaviour, IPointerDownHandler
 
         gameObject.name = feature.GetData().name + " Layer";
 
-        if (!controller.ShowingDetails() && _feature && _feature.GetComponent<FacialFeature>()) {
+        if (controller.ShowingDetails() && _feature && _feature.GetComponent<FacialFeature>()) {
+
             if (_tier == FeatureTier.BASE) _feature.GetComponent<FacialFeature>().SetInBack();
             else _feature.GetComponent<FacialFeature>().SetOnTop();
 
