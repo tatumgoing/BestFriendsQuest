@@ -185,6 +185,8 @@ public class SubgameController : MonoBehaviour
             CharacterManager.i.IncreaseHappiness(_recipient, totalHappiness/2);
         }
 
+        TownGameManager.i.ChangeCurrency(_currentRecipe.MoneyReward * _totalScore);
+
         _timerParent.SetActive(false);
         await _results.ShowScore(_totalScore, _currentRecipe, _speaker1, _recipient, _isProblem, originalHappinessChef, originalHappinessRecipient);
     }
