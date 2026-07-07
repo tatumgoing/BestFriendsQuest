@@ -13,6 +13,7 @@ public class AddonsUIHelper : MonoBehaviour
     [SerializeField] private Animator _rmbPanParent;
     [SerializeField] private GameObject _moveRotButonParent;
     [SerializeField] private LayersMenuController _layerMenu;
+    [SerializeField] private DragToSpin _dragToSpin;
 
     [HideInInspector] public bool Rotating;
     private bool _addons = false;
@@ -52,7 +53,7 @@ public class AddonsUIHelper : MonoBehaviour
     }
 
     private void UpdateVisuals()
-    {
+    { 
         if (_addons) {
             _expressionsParent.SetTrigger("Exit");
             _lmbRotParent.SetTrigger("Exit");
@@ -67,6 +68,9 @@ public class AddonsUIHelper : MonoBehaviour
 
             _rmbPanParent.SetTrigger("Exit");
         }
+
+        _dragToSpin.enabled = !_addons;
+
 
         _moveRotButonParent.SetActive(_addons && _layerMenu.NumLayers > 0);
     }
