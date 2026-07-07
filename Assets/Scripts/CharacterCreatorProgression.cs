@@ -11,6 +11,8 @@ public class CharacterCreatorProgression : MonoBehaviour
     [SerializeField] private CameraController _cameraController;
     [SerializeField] private CharacterMetaController _characterController;
     [SerializeField] private SelectableItem _facialFeaturesTabButton;
+    [SerializeField] private GameObject _faceContinueButtonParent;
+    [SerializeField] private SelectableItem _skinColorTabButton;
     [SerializeField] private Animator _titleOptions;
     [SerializeField] private GameObject _facialOptions;
     [SerializeField] private GameObject _bodyOptions;
@@ -27,6 +29,11 @@ public class CharacterCreatorProgression : MonoBehaviour
         HideAll(false);
         _characterController.gameObject.SetActive(false);
         _titleOptions.gameObject.SetActive(true);
+    }
+
+    private void Update()
+    {
+        _faceContinueButtonParent.SetActive(_skinColorTabButton.Selected);
     }
 
     public void Randomize()
