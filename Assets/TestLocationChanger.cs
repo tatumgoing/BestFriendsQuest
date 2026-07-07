@@ -11,6 +11,7 @@ public class TestLocationChanger : MonoBehaviour
     [ButtonMethod] private void GoToTown() => GoTo(AreaName.TOWN);
     [ButtonMethod] private void GoToPort() => GoTo(AreaName.PORT);
     [ButtonMethod] private void GoToGrocery() => GoTo(AreaName.GROCERY_STORE);
+    [ButtonMethod] private void GoToTownHall() => GoTo(AreaName.TOWN_HALL);
 
     private void GoTo(AreaName target)
     {

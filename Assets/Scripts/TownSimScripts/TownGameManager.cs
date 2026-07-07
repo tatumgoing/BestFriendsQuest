@@ -206,6 +206,7 @@ public class TownGameManager : MonoBehaviour
             foreach (var a in _areas) if (a.Type == AreaName.MAP) a.SetActiveState(true);
             return;
         }
+
         if (targetArea == AreaName.RECORDS) {
             foreach (var a in _areas) if (a.Type == AreaName.RECORDS) a.SetActiveState(true);
             return;
