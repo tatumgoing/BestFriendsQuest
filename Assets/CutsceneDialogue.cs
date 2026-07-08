@@ -2,6 +2,7 @@ using MyBox;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using TMPro;
 using Unity.VisualScripting;
@@ -18,6 +19,7 @@ public class CutsceneDialogue : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _c1Name;
     [SerializeField] private TextMeshProUGUI _c2Name;
     [SerializeField] private float _lookUpAmount = 2;
+    [SerializeField] private GameObject _playerNameEntryParent;
 
     private int _currentLineIndex;
     private string _currentLineLeft = "";
@@ -55,6 +57,8 @@ public class CutsceneDialogue : MonoBehaviour
         _camera = camera;
         _speaker1 = speaker1;
         _speaker2 = speaker2;
+
+        _playerNameEntryParent.SetActive(false);
 
         if (speaker1) {
             var original = _camera.localRotation;
@@ -101,14 +105,33 @@ public class CutsceneDialogue : MonoBehaviour
         }
     }
 
+    private string ReplaceKeywords(string rawString)
+    {
+        var dict = SaveSystem.GetDialogueDict();
+
+        return Regex.Replace(rawString, @"<(.*?)>", match =>
+        {
+            string key = match.Groups[1].Value.Trim().ToUpper();
+            if (dict.TryGetValue(key, out var value)) return value;
+            return match.Value;
+        });
+    }
+
     private CutsceneLine ParseMetaLine(string line)
     {
+        var newLine = new CutsceneLine(CutsceneSpeaker.SPEAKER_1);
+
+        //parsing commands
+        if (line.Trim()[0] == '/') {
+            line = line.Trim().ToUpper();
+            if (line.Contains("ShowNameEntry".ToUpper())) {
+                newLine.SetCommand(CutsceneCommand.SHOW_NAME_ENTRY);
+                return newLine;
+            }
+        }
+
         line = line.Trim().ToUpper().Replace(" ", "");
         var parts = line.Split(',');
-
-        //print("Parsing meta line. line: " + line + ", parts: " + string.Join(", ", parts));
-
-        var newLine = new CutsceneLine(CutsceneSpeaker.SPEAKER_1);
 
         if (parts[0].Contains("SETTINGS")) {
             if (parts[1].Contains("LERPCAM")) {
@@ -151,6 +174,7 @@ public class CutsceneDialogue : MonoBehaviour
             }
         }
 
+
         return newLine;
     }
 
@@ -186,11 +210,19 @@ public class CutsceneDialogue : MonoBehaviour
                 }
             }
 
+            if (_currentLine.HasCommand) {
+
+                if (_currentLine.Command == CutsceneCommand.SHOW_NAME_ENTRY) {
+                    _playerNameEntryParent.SetActive(true);
+                    return;
+                }
+            }
+
             Next();
             return;
         }
 
-        _currentLineLeft = _currentLine.Line;
+        _currentLineLeft = ReplaceKeywords(_currentLine.Line.Trim());
         _c1Parent.SetActive(_currentLine.Speaker == CutsceneSpeaker.SPEAKER_1);
         _c2Parent.SetActive(_currentLine.Speaker == CutsceneSpeaker.SPEAKER_2);
     }

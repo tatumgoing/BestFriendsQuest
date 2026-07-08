@@ -12,5 +12,7 @@ public class TestResetter : MonoBehaviour
         TownGameManager.i.ResetInventory();
         SaveSystem.ResetCompletedBFQuests();
         SaveSystem.ResetInProgressQuest();
+        SaveSystem.ResetRegion();
+        SaveSystem.ResetDialogueDict();
     }
 }

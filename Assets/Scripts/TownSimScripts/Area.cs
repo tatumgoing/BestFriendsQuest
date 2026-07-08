@@ -39,8 +39,8 @@ public class Area : MonoBehaviour
         {
             musicPlayer.PlayNewTrack(associatedTrack);
         }
-       
     }
+
     private void OnDisable()
     {
         if (associatedEnvironment != null) {
