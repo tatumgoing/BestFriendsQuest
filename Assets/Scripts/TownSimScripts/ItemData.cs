@@ -7,7 +7,7 @@ using UnityEngine;
 public enum ItemType { Clothing, Food, Housing}
 public enum ClothingType { OUTFIT, TOP, BOTTOM, HAT}
 
-[CreateAssetMenu(fileName = "Item", menuName = "Item", order = 1)]
+[CreateAssetMenu(fileName = "Item", menuName = "Data/Item", order = 1)]
 public class ItemData : ScriptableObject
 {
     [ReadOnly] public ID ID;

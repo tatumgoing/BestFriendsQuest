@@ -4,7 +4,7 @@ using System.Drawing;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-[CreateAssetMenu(fileName = "PostProcessingSetting", menuName = "Post Processing Setting", order = 3)]
+[CreateAssetMenu(fileName = "New PostProcessingSetting", menuName = "Data/Post Processing Setting", order = 3)]
 public class PostProcessingSetting : ScriptableObject
 {
     [SerializeField] public VolumeProfile VolumeProfile;

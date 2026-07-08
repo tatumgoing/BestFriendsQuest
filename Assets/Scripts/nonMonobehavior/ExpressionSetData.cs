@@ -16,7 +16,7 @@ public class ExpressionSetItemData
     [DisplayInspector]public ExpressionData Expression;
 }
 
-[CreateAssetMenu(fileName = "Expression Set", menuName = "New Expression Set")]
+[CreateAssetMenu(fileName = "New Expression Set", menuName = "Data/Expression Set")]
 public class ExpressionSetData : ScriptableObject
 {
     [SerializeField] private List<ExpressionSetItemData> _expressions = new List<ExpressionSetItemData>();

@@ -11,7 +11,7 @@ public class ItemGroupData
 
 public enum ProblemType { SINGLE_ITEM, GENERAL_ITEM, MINIGAME}
 
-[CreateAssetMenu(fileName = "Problem", menuName = "Problem", order = 2)]
+[CreateAssetMenu(fileName = "New Problem", menuName = "Data/Problem", order = 2)]
 public class ProblemData : ScriptableObject
 {
     [TextArea(2, 10), SerializeField] private string _startingDialogue;

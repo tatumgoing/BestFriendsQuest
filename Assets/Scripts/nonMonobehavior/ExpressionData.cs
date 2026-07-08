@@ -20,7 +20,7 @@ public class ExpressionPieceData
     [Range(-180, 180)] public float RotationOffset; 
 }
 
-[CreateAssetMenu(fileName = "Expression", menuName = "New Expression")]
+[CreateAssetMenu(fileName = "New Expression", menuName = "Data/Expression")]
 public class ExpressionData : ScriptableObject
 {
     public List<ExpressionPieceData> Data = new List<ExpressionPieceData>();

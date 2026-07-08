@@ -7,7 +7,7 @@ public enum FeatureSubType { BROWS, EYES, NOSE, LIPS, MISC, BANGS, BIG, STRANDS,
 public enum FeatureType { FACE, HAIR, EAR }
 public enum MirrorType { LEFT, BOTH, RIGHT }
 
-[CreateAssetMenu(fileName = "New Facial Feature", menuName = "Facial Feature")]
+[CreateAssetMenu(fileName = "New Facial Feature", menuName = "Data/Facial Feature")]
 public class FeatureSOData : ScriptableObject
 {
     [HideInInspector] public string Name;

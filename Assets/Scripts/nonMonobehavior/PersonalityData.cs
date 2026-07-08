@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum PersonalityType { CHILL, EAGER, CONFIDENT, BORED, ANGRY, SAD}
 
-[CreateAssetMenu(fileName = "New Personality", menuName = "Personality")]
+[CreateAssetMenu(fileName = "New Personality", menuName = "Data/Personality")]
 public class PersonalityData : ScriptableObject
 {
     public PersonalityType Type;
