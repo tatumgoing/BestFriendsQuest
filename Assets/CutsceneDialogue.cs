@@ -50,11 +50,20 @@ public class CutsceneDialogue : MonoBehaviour
 
     public async void StartDialogue(List<string> lines, List<string> names, SpawnedCharacter speaker1, SpawnedCharacter speaker2, Transform camera)
     {
-        _lerpingCam = false;
+        _lerpingCam = true; //defaults to true
         _targetCamRot = camera.localRotation;
         _camera = camera;
         _speaker1 = speaker1;
         _speaker2 = speaker2;
+
+        if (speaker1) {
+            var original = _camera.localRotation;
+            _camera.LookAt(speaker1.transform.position + Vector3.up * _lookUpAmount);
+            if (_lerpingCam) {
+                _targetCamRot = _camera.localRotation;
+                _camera.localRotation = original;
+            }
+        }
 
         gameObject.SetActive(true);
 

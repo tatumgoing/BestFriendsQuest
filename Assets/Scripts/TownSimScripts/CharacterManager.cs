@@ -46,12 +46,13 @@ public class CharacterManager : MonoBehaviour
     void Awake()
     {
         i = this;
-        LoadCharactersFromFile();
-        LoadProblems();
     }
 
     private void Start()
     {
+        LoadCharactersFromFile();
+        LoadProblems();
+
         foreach (var characterA in _allCharacters) {
             foreach (var characterB in _allCharacters) {
                 if (characterA != characterB) {
@@ -346,6 +347,7 @@ public class CharacterManager : MonoBehaviour
         foreach (var s in staticSaveStrings) {
             var newCharacter = new CompleteCharacterData(s);
             newCharacter.SetArea(GetAvailableLocation());
+            if (TownGameManager.i.DemoMode) newCharacter.SetArea(AreaName.TOWN);
             newCharacter.MoveCheckCooldown = Random.Range(0.5f, 2f) * _moveCheckCooldown;
             _allCharacters.Add(newCharacter);
         }
