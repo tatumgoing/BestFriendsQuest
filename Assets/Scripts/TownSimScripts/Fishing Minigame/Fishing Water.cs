@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
+using System.Threading.Tasks;
 
 public class FishingWater : MonoBehaviour
 {
@@ -10,10 +10,12 @@ public class FishingWater : MonoBehaviour
 
 
     [SerializeField] private GameObject player;
-    [SerializeField] private GameObject bobber;
+    [SerializeField] private Bobber bobber;
 
     [SerializeField] private GameObject startingPosition;
     [SerializeField] private GameObject endingPosition;
+
+    [SerializeField] private GameObject fishWin;
 
     [Header("Settings")]
 
@@ -37,6 +39,7 @@ public class FishingWater : MonoBehaviour
 
 
     private float spawnTime; //tracks time
+    private bool stuckToggle;
 
 
     // Start is called before the first frame update
@@ -51,6 +54,10 @@ public class FishingWater : MonoBehaviour
         currentSpeed = 0;
 
         GenerateObstacles();
+
+        stuckToggle = true;
+
+        fishWin.SetActive(false);
     }
 
     // Update is called once per frame
@@ -58,8 +65,12 @@ public class FishingWater : MonoBehaviour
     {
         CheckBobber();
 
-        MovePlayer();
-       
+        CheckObstacle();
+
+        if (bobber.victory)
+        {
+            FishWin();
+        }
 
         // check for obstacle spawn
 
@@ -86,6 +97,39 @@ public class FishingWater : MonoBehaviour
             MoveBobber();
         }
     }
+
+    public void CheckObstacle()
+    {
+
+        if (bobber.stuck && stuckToggle)
+        {
+            if (currentSpeed > 0)
+            {
+                Debug.Log("Hit From Front");
+                currentSpeed = playerMinSpeed;
+            }
+            else
+            {
+                Debug.Log("Hit From Back");
+                currentSpeed = playerMinSpeed * -1.0f;
+            }
+
+            Debug.Log(currentSpeed);
+
+            player.transform.Translate(Vector3.forward * currentSpeed * Time.deltaTime);
+            stuckToggle = false;
+        }
+        else if (bobber.stuck)
+        {
+            player.transform.Translate(Vector3.forward * currentSpeed * Time.deltaTime);
+        }
+        else
+        {
+            MovePlayer();
+
+            stuckToggle = true;
+        }
+    }
     public void MoveBobber()
     {
         bobber.transform.position = new Vector3(lanes[currentLane].transform.position.x, bobber.transform.position.y, bobber.transform.position.z);
@@ -93,6 +137,7 @@ public class FishingWater : MonoBehaviour
 
     public void MovePlayer()
     {
+        
         if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
         {
 
@@ -102,8 +147,6 @@ public class FishingWater : MonoBehaviour
         {
             currentSpeed -= playerDecceleration * Time.deltaTime;
         }
-
-        Debug.Log(currentSpeed);
 
         currentSpeed = Mathf.Clamp(currentSpeed, playerMinSpeed, playerMaxSpeed);
 
@@ -119,8 +162,6 @@ public class FishingWater : MonoBehaviour
             //randomly picks obstacleMin amount of lanes to spawn obstacles
 
             List<int> obstacleInts = new List<int>();
-
-            Debug.Log(lanes.Count);
 
             for (int i = 0; i < lanes.Count; i++)
             {
@@ -144,29 +185,37 @@ public class FishingWater : MonoBehaviour
         }
     }
 
-        //public void SpawnObstacles()
-        //{
-        //    Debug.Log("Spawn: " + spawnTime + " " + Time.time);
-
-        //    //randomly picks obstacleCount amount of lanes to spawn obstacles
-
-        //    List<int> obstacleInts = new List<int>();
-
-        //    for (int i = 0; i < lanes.Count; i++) {
-        //        obstacleInts.Add(i);
-        //    }
-
-        //    for (int j = 0; j < obstacleCount; j++)
-        //    {
-        //        int index = Random.Range(0, obstacleInts.Count - 1);
-
-        //        lanes[index].SpawnObstacle(obstacle);
-
-        //        Debug.Log("Spawning at: " + index);
-
-
-        //        obstacleInts.RemoveAt(index);
-        //    }
-        //}
+    public void FishWin()
+    {
+        fishWin.SetActive(true);
 
     }
+
+
+
+    //public void SpawnObstacles()
+    //{
+    //    Debug.Log("Spawn: " + spawnTime + " " + Time.time);
+
+    //    //randomly picks obstacleCount amount of lanes to spawn obstacles
+
+    //    List<int> obstacleInts = new List<int>();
+
+    //    for (int i = 0; i < lanes.Count; i++) {
+    //        obstacleInts.Add(i);
+    //    }
+
+    //    for (int j = 0; j < obstacleCount; j++)
+    //    {
+    //        int index = Random.Range(0, obstacleInts.Count - 1);
+
+    //        lanes[index].SpawnObstacle(obstacle);
+
+    //        Debug.Log("Spawning at: " + index);
+
+
+    //        obstacleInts.RemoveAt(index);
+    //    }
+    //}
+
+}
