@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 /// <summary>
 /// Handles saving and loading data to and from files, as well as loading save strings by ID for characters.
@@ -13,6 +14,7 @@ public static class SaveSystem
     private static readonly string saveFolder = "/SaveData/";
     public static readonly string dynamicDataFileName = "dynamicData.txt";
     public static readonly string relationshipFileName = "relationships.txt";
+    public static readonly string dialogueDictFileName = "dialogueDict.txt";
     public static readonly string inProgressBFQuestFileName = "inProgressBFQuests.txt";
     public static readonly string completedBFQuestFileName = "completedBFQuests.txt";
     public static readonly string selectedRegionFileName = "selectedRegion.txt";
@@ -21,6 +23,59 @@ public static class SaveSystem
     public static readonly string relationshipsFileName = "relationships.txt";
     private static readonly string savePath = Application.streamingAssetsPath + saveFolder;
     public static int IDLength = 4;
+
+    public static Dictionary<string, string> GetDialogueDict()
+    {
+        var dict = new Dictionary<string, string>();
+        var lines = ReadFromFile(dialogueDictFileName).Split('\n').ToList();
+
+        for (int i = 0; i < lines.Count; i++) {
+            if (!lines[i].Contains(',')) continue;
+            var key = lines[i].Split(',')[0].Trim().ToUpper();
+            dict.Add(key, lines[i].Split(",")[1].Trim());
+        }
+
+        return dict;
+    }
+
+    public static string GetDialogueDictValue(string key, string defaultValue = "")
+    {
+        var lines = ReadFromFile(dialogueDictFileName).Split('\n').ToList();
+
+        for (int i = 0; i < lines.Count; i++) {
+            if (!lines[i].Contains(',')) continue;
+            var existingKey = lines[i].Split(',')[0].Trim().ToUpper();
+            if (existingKey == key) {
+                return "";
+            }
+        }
+
+        return "";
+    }
+
+    public static void ResetDialogueDict() => SaveToFile(dialogueDictFileName, "");
+    public static void SaveToDialogueDict(string key, string value)
+    {
+        key = key.Trim().ToUpper();
+        var lines = ReadFromFile(dialogueDictFileName).Split('\n').ToList();
+
+        bool found = false;
+        for (int i = 0; i < lines.Count; i++) {
+            if (!lines[i].Contains(',')) continue;
+            var existingKey = lines[i].Split(',')[0].Trim().ToUpper();
+            if (existingKey == key) {
+                lines[i] = existingKey + "," + value;
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            lines.Add(key + "," + value);
+        }
+
+        SaveToFile(dialogueDictFileName, string.Join('\n', lines));
+    }
 
     public static void ResetRegion() => SaveToFile(selectedRegionFileName, "");
     public static void SaveRegion(string regionName)

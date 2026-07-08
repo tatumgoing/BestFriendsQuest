@@ -8,7 +8,7 @@ public enum MinigameType { COOKING, GARDENING, FISHING}
 
 public enum Difficulty { EASY, MEDIUM, HARD, EXTREME }
 
-[CreateAssetMenu(fileName = "Recipe", menuName = "Recipe", order = 1)]
+[CreateAssetMenu(fileName = "New Recipe", menuName = "Data/Recipe", order = 1)]
 
 public class RecipeData : ScriptableObject
 {

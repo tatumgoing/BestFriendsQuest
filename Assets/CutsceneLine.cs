@@ -1,5 +1,7 @@
 using UnityEngine;
 
+public enum CutsceneCommand { NONE, SHOW_NAME_ENTRY}
+
 [System.Serializable]
 public class CutsceneLine
 {
@@ -10,6 +12,7 @@ public class CutsceneLine
     public bool HasExpression;
     public bool HasAnimation;
     public bool HasCamAngle;
+    public bool HasCommand;
 
     private Transform _lookTarget;
     private Vector3 _lookTargetPosition;
@@ -17,6 +20,7 @@ public class CutsceneLine
     public Vector3 LookPos => _lookTarget ? _lookTarget.position : _lookTargetPosition;
     public Expression Expression { get; private set; }
     public CharacterAnimations Animation { get; private set; }
+    public CutsceneCommand Command { get; private set; }
 
     public CutsceneLine(CutsceneSpeaker speaker, string line)
     {
@@ -29,6 +33,12 @@ public class CutsceneLine
         MetaLine = true;
         Speaker = speaker;
         Line = "";
+    }
+
+    public void SetCommand(CutsceneCommand command)
+    {
+        HasCommand = true;
+        Command = command;
     }
 
     public void Format(string c1Name, string c2Name)

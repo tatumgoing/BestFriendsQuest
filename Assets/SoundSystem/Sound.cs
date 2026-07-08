@@ -7,7 +7,7 @@ using UnityEngine;
 
 public enum SoundType { sfx, music, ambient}
 
-[CreateAssetMenu(fileName = "New Sound", menuName = "Sound")]
+[CreateAssetMenu(fileName = "New Sound", menuName = "Data/Sound")]
 public class Sound : ScriptableObject
 {
     public string TrackName;

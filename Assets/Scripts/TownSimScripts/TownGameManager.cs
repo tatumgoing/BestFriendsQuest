@@ -34,6 +34,7 @@ public class TownGameManager : MonoBehaviour
 
     private Dictionary<ItemData, int> _inventory = new Dictionary<ItemData, int>();
     private List<RuntimeItemData> _runtimeItemData = new List<RuntimeItemData>();
+    private CutsceneSets _cutsceneSets;
 
     public Dictionary<ItemData, int> Inventory => _inventory;
     public float Currency => _currency;
@@ -71,6 +72,8 @@ public class TownGameManager : MonoBehaviour
 
     void Start()
     {
+        _cutsceneSets = FindObjectOfType<CutsceneSets>(true);
+
         if (_steamDemoMode) print("Starting game in Steam Demo Mode");
         else print("Starting game in full mode");
 
@@ -81,6 +84,33 @@ public class TownGameManager : MonoBehaviour
 
         foreach (var a in _areas) a.SetActiveState(false);
         _titleScreen.SetActive(true);
+    }
+
+    private void Update()
+    {
+        if (_cutsceneSets.IsActive()) return; //disable all menu hotkeys during a cutscene (temp quick fix for now)
+
+        if (Input.GetKeyDown(KeyCode.G)) print("Menus: " + Utils.MenusOpen);
+
+        if (Input.GetKeyDown(KeyCode.Escape) && Cursor.visible) {
+            print("pause menu opened - GM: visible: " + Cursor.visible);
+            if (_pauseMenu.gameObject.activeInHierarchy) _pauseMenu.gameObject.SetActive(false);
+            else if (_invParent.activeInHierarchy) _invParent.SetActive(false);
+            else if (_mapParent.activeInHierarchy) _mapParent.SetActive(false);
+            else _pauseMenu.gameObject.SetActive(true);
+        }
+
+        if (Input.GetKeyDown(KeyCode.M) && !_invParent.activeInHierarchy) {
+            if (_mapParent.activeInHierarchy) _mapParent.SetActive(false);
+            else _ = ChangeArea(AreaName.MAP);
+        }
+
+        if (Input.GetKeyDown(KeyCode.I) || Input.GetKeyDown(KeyCode.E)) {
+            if (!_mapParent.activeInHierarchy) _ = ChangeArea(AreaName.MAP);
+
+            if (!_invParent.activeInHierarchy) _invParent.SetActive(true);
+            else _invParent.SetActive(false);
+        }
     }
 
     public void ResetInventory()
@@ -104,30 +134,7 @@ public class TownGameManager : MonoBehaviour
         _mapParent.SetActive(true);
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.G)) print("Menus: " + Utils.MenusOpen);
-
-        if (Input.GetKeyDown(KeyCode.Escape) && Cursor.visible) {
-            print("pause menu opened - GM: visible: " + Cursor.visible);
-            if (_pauseMenu.gameObject.activeInHierarchy) _pauseMenu.gameObject.SetActive(false);
-            else if (_invParent.activeInHierarchy) _invParent.SetActive(false);
-            else if (_mapParent.activeInHierarchy) _mapParent.SetActive(false);
-            else _pauseMenu.gameObject.SetActive(true);
-        }
-
-        if (Input.GetKeyDown(KeyCode.M) && !_invParent.activeInHierarchy) {
-            if (_mapParent.activeInHierarchy) _mapParent.SetActive(false);
-            else _ = ChangeArea(AreaName.MAP);
-        }
-
-        if (Input.GetKeyDown(KeyCode.I) || Input.GetKeyDown(KeyCode.E)) {
-            if (!_mapParent.activeInHierarchy) _ = ChangeArea(AreaName.MAP);
-
-            if (!_invParent.activeInHierarchy) _invParent.SetActive(true);
-            else _invParent.SetActive(false);
-        }
-    }
+    
 
     public void UnlockItem(ItemData item)
     {
