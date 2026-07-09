@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class QuestIsland : MonoBehaviour
 {
-    [SerializeField, DisplayInspector] private Quest _questData;
+    [SerializeField, ReadOnly] private Quest _questData;
     [SerializeField] private Image _itemRewardImage;
     [SerializeField] private TextMeshProUGUI _timerText;
     [SerializeField] private GameObject _completedParent;
@@ -20,17 +20,20 @@ public class QuestIsland : MonoBehaviour
 
     private void OnEnable()
     {
+        if (_questData == null) return;
+
         if (!_controller) _controller = GetComponentInParent<QuestMapController>();
         _timerText.text = "";
-        _disabled = false;
+        _disabled = false;   
+    }
+
+    public void Initialize(Quest data)
+    {
+        _questData = data;
 
         var completed = SaveSystem.IsBFQuestCompleted(_questData);
         _completedParent.SetActive(completed);
         GetComponent<SelectableItem>().SetDisabled(completed);
-    }
-
-    private void Start()
-    {
         _itemRewardImage.sprite = _questData.unlockedItem.sprite;
     }
 

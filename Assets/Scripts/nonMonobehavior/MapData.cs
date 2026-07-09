@@ -6,6 +6,10 @@ using UnityEngine;
 public class MapData : ScriptableObject
 {
     public string Name;
-    public int NumIslands;
+    public Sprite Image;
     public Difficulty Difficulty;
+    public int NumRequiredToUnlock;
+    public List<Quest> Quests = new List<Quest>();
+
+    public int NumIslands => Quests.Count;
 }

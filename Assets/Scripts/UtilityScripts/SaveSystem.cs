@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Unity.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEngine.Rendering.DebugUI;
@@ -77,6 +78,17 @@ public static class SaveSystem
         SaveToFile(dialogueDictFileName, string.Join('\n', lines));
     }
 
+    public static MapData GetSelectedMap()
+    {
+        var allMaps = Resources.LoadAll<MapData>("MapBundles").ToList();
+        var selected = LoadRegion();
+        foreach (var map in allMaps) {
+            if (map.Name == selected) return map;
+        }
+
+        return null;
+    }
+
     public static void ResetRegion() => SaveToFile(selectedRegionFileName, "");
     public static void SaveRegion(string regionName)
     {
@@ -107,6 +119,12 @@ public static class SaveSystem
 
         saveStrings.Add(dynamicData);
         SaveToFile(dynamicDataFileName, string.Join("\n", saveStrings));
+    }
+
+    public static int NumQuestsCompleted()
+    {
+        var lines = ReadFromFile(completedBFQuestFileName).Split("\n").Where(x => x.Length > 2).ToList();
+        return lines.Count();
     }
 
     public static bool IsBFQuestCompleted(Quest quest)

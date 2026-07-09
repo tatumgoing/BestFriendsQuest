@@ -28,15 +28,27 @@ public class QuestUIController : MonoBehaviour
         if (loadedRegion == "") {
             _mapSelector.gameObject.SetActive(true);
         }
+        else {
+            _mapSelector.gameObject.SetActive(false);
 
-        var quests = GetComponentsInChildren<QuestIsland>(true).Select(x => x.QuestData).ToList();
-        _currentQuest = SaveSystem.LoadBFQuest(quests);
+            var selectedMap = SaveSystem.GetSelectedMap();
+            SelectMap(selectedMap);
 
-        //print("loaded quest: " + (_currentQuest != null ? _currentQuest.QuestData.name : "none"));
+            if (_currentQuest != null) _inProgress.Show(_currentQuest);
+        }
 
         _results.gameObject.SetActive(false);
         _map.gameObject.SetActive(_currentQuest == null);
-        if (_currentQuest != null) _inProgress.Show(_currentQuest);
+    }
+
+    public void SelectMap(MapData selectedMap)
+    {
+        var islands = GetComponentsInChildren<QuestIsland>(true);
+        for (int i = 0; i < selectedMap.Quests.Count; i++) {
+            islands[i].Initialize(selectedMap.Quests[i]);
+        }
+
+        _currentQuest = SaveSystem.LoadBFQuest(selectedMap.Quests);
     }
 
     [ButtonMethod]

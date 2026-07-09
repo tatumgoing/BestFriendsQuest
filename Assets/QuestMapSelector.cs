@@ -11,41 +11,66 @@ public class QuestMapSelector : MonoBehaviour
     [SerializeField] private RectTransform _optionsParent;
     [SerializeField] private float _transitionTime = 1;
     [SerializeField] private AnimationCurve _curve;
-    [SerializeField] private float _moveDist = 1.5f;
+    [SerializeField] private float _moveDist = 800;
+    [SerializeField] private float _startPos = -300;
     [SerializeField] private SelectableItem _prevButton;
     [SerializeField] private SelectableItem _nextButton;
+    [SerializeField] private SelectableItem _selectButton;
+    [SerializeField] private GameObject _prefab;
+    [SerializeField] private Transform _mapListParent;
+    [SerializeField] private QuestUIController _controller;
 
+    private List<MapOptionBFQuest> _spawnedMaps = new List<MapOptionBFQuest>();
+    private int _currentMapIndex;
     private bool  _animating = false;
-
-    public void Next() => Transition(_moveDist);
-    public void Previous() => Transition(-_moveDist);
-
-    private void Initialize()
-    {
-        _mapOptions = Resources.LoadAll<MapData>("MapBundles").ToList();
-    }
 
     private void OnEnable()
     {
         if (_mapOptions.Count == 0) Initialize();
 
-        var maps = GetComponentsInChildren<MapOptionBFQuest>(true);
-        for (int i = 0; i < maps.Length; i++)
-        {
-            if (i > _mapOptions.Count) maps[i].Initiailize(_mapOptions[i]);
-            else maps[i].gameObject.SetActive(false);
-        }
+        BuildList();
     }
 
     private void Start()
     {
-        UpdateMapPos(1600);
+        UpdateMapPos(_startPos);
         _prevButton.SetDisabled(true);
+    }
+
+    private void Initialize()
+    {
+        _mapOptions = Resources.LoadAll<MapData>("MapBundles").OrderBy(x => x.NumRequiredToUnlock).ToList();
+        _currentMapIndex = 0;
+    }
+
+    private void BuildList()
+    {
+        foreach (var m in _spawnedMaps) Destroy(m.gameObject);
+        _spawnedMaps.Clear();
+
+        foreach (var m in _mapOptions) {
+            var newMap = Instantiate(_prefab, _mapListParent).GetComponent<MapOptionBFQuest>();
+            newMap.Initiailize(m, SaveSystem.NumQuestsCompleted() >= m.NumRequiredToUnlock);
+            _spawnedMaps.Add(newMap);
+        }
+    }
+
+    public void Next() {
+        _currentMapIndex += 1;
+        Transition(-_moveDist);
+    }
+
+    public void Previous() {
+        _currentMapIndex -= 1;
+
+        Transition(_moveDist);
     }
 
     public void SelectMap()
     {
-        SaveSystem.SaveRegion("testRegion");
+        var selected = _spawnedMaps[_currentMapIndex].Data;
+        SaveSystem.SaveRegion(selected.Name);
+        _controller.SelectMap(selected);
         gameObject.SetActive(false);
     }
 
@@ -58,7 +83,6 @@ public class QuestMapSelector : MonoBehaviour
     
     private async void Transition(float move)
     {
-
         while (_animating) {
             await Task.Delay(10);
         }
@@ -68,9 +92,10 @@ public class QuestMapSelector : MonoBehaviour
         var startX = _optionsParent.anchoredPosition.x;
         var targetX = startX + move;
 
+        _prevButton.SetDisabled(_currentMapIndex == 0);
+        _nextButton.SetDisabled(-_currentMapIndex == _spawnedMaps.Count-1);
 
-        _prevButton.SetDisabled(targetX >= 1600);
-        _nextButton.SetDisabled(targetX <= -1600);
+        _selectButton.SetDisabled(!_spawnedMaps[_currentMapIndex].Unlocked);
 
         while (timeLeft > 0) {
 
