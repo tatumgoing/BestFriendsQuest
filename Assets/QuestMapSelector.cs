@@ -1,12 +1,13 @@
 using MyBox;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 
 public class QuestMapSelector : MonoBehaviour
 {
-    [SerializeField] private List<MapOptionBFQuestData> _mapOptions = new List<MapOptionBFQuestData>();
+    [SerializeField, ReadOnly] private List<MapData> _mapOptions = new List<MapData>();
     [SerializeField] private RectTransform _optionsParent;
     [SerializeField] private float _transitionTime = 1;
     [SerializeField] private AnimationCurve _curve;
@@ -19,12 +20,20 @@ public class QuestMapSelector : MonoBehaviour
     public void Next() => Transition(_moveDist);
     public void Previous() => Transition(-_moveDist);
 
+    private void Initialize()
+    {
+        _mapOptions = Resources.LoadAll<MapData>("MapBundles").ToList();
+    }
+
     private void OnEnable()
     {
+        if (_mapOptions.Count == 0) Initialize();
+
         var maps = GetComponentsInChildren<MapOptionBFQuest>(true);
         for (int i = 0; i < maps.Length; i++)
         {
-            maps[i].Initiailize(_mapOptions[i]);
+            if (i > _mapOptions.Count) maps[i].Initiailize(_mapOptions[i]);
+            else maps[i].gameObject.SetActive(false);
         }
     }
 
