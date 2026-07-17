@@ -11,7 +11,7 @@ public class GiftMenu : MonoBehaviour, IItemListController
     [SerializeField] private ItemListDisplay _itemListDisplay;
     [SerializeField] private CurrentlySelectedItem _currentlySelectedItem;
     [SerializeField] private RoomUIController _controller;
-    [HideInInspector] public UnityEvent<ID> OnGiveGift = new UnityEvent<ID>();
+    [HideInInspector] public UnityEvent<(ID, ItemData)> OnGiveGift = new UnityEvent<(ID, ItemData)>();
 
     private ItemData _currentItem;
     private ID _id;
@@ -45,7 +45,7 @@ public class GiftMenu : MonoBehaviour, IItemListController
         gameObject.SetActive(false);
         CharacterManager.i.GiveItem(_id, _currentItem);
         _controller.GiveGift(_currentItem);
-        OnGiveGift.Invoke(_id);
+        OnGiveGift.Invoke((_id, _currentItem));
     }
 
     private void ChangeCategory(ItemType type)

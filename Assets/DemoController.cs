@@ -226,15 +226,18 @@ public class DemoController : MonoBehaviour
     }
 
     //after a character is given a food gift, cutscene of them eating it
-    private void DoStep3(ID giftRecipient)
+    private void DoStep3((ID, ItemData) giftInfo)
     {
         AdvanceStep();
         _giftMenu.OnGiveGift.RemoveListener(DoStep3);
 
+        selectedFood = giftInfo.Item2;
+        SaveSystem.SaveToDialogueDict("DemoFood", selectedFood.Name);
+
         DeleteAllSpawnedCharacters();
 
         UnlockArea(AreaName.TOWN_HALL);
-        ShowCutscene(_eatingFoodAloneScript, AreaName.PARK, new List<ID>() { giftRecipient }, 1.5f, () => _uiController.UnlockArea("Town Hall"));
+        ShowCutscene(_eatingFoodAloneScript, AreaName.PARK, new List<ID>() { giftInfo.Item1 }, 1.5f, () => _uiController.UnlockArea("Town Hall"));
     }
 
     //after buying a food item, unlock the town so you can give the food to the character
