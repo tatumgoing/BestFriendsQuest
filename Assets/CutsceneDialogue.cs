@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum CutsceneSpeaker { SPEAKER_1, SPEAKER_2};
 
@@ -14,12 +15,17 @@ public class CutsceneDialogue : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _textBox;
     [SerializeField] private float _letterDelayTime;
-    [SerializeField] private GameObject _c1Parent;
-    [SerializeField] private GameObject _c2Parent;
     [SerializeField] private TextMeshProUGUI _c1Name;
     [SerializeField] private TextMeshProUGUI _c2Name;
     [SerializeField] private float _lookUpAmount = 2;
+    [SerializeField] private float _nextPaperwaitTime = 0.6f;
     [SerializeField] private GameObject _playerNameEntryParent;
+    [SerializeField] private Vector2 _rotLimits;
+    [SerializeField] private Animator _animator;
+    [SerializeField] private GameObject _backing;
+    [SerializeField] private GameObject _helperParent;
+    [SerializeField] private Sound _nextLineSound;
+    [SerializeField] private Sound _letterSound;
 
     private int _currentLineIndex;
     private string _currentLineLeft = "";
@@ -32,6 +38,13 @@ public class CutsceneDialogue : MonoBehaviour
     private Transform _camera;
     private Quaternion _targetCamRot = new Quaternion();
     private bool _lerpingCam;
+    private List<GameObject> _spawnedBackings = new List<GameObject>();
+
+    private void Start()
+    {
+        _nextLineSound = Instantiate(_nextLineSound);
+        _letterSound = Instantiate(_letterSound);
+    }
 
     private void Update()
     {
@@ -46,8 +59,15 @@ public class CutsceneDialogue : MonoBehaviour
             _letterCountdown = _letterDelayTime;
 
             _textBox.text += _currentLineLeft[0];
+            _letterSound.Play(restart: false);
             if (_currentLineLeft.Length > 0) _currentLineLeft = _currentLineLeft.Substring(1);
         }
+    }
+
+    private void OnDisable()
+    {
+        foreach (var s in _spawnedBackings) Destroy(s);
+        _spawnedBackings.Clear();
     }
 
     public async void StartDialogue(List<string> lines, List<string> names, SpawnedCharacter speaker1, SpawnedCharacter speaker2, Transform camera)
@@ -57,6 +77,11 @@ public class CutsceneDialogue : MonoBehaviour
         _camera = camera;
         _speaker1 = speaker1;
         _speaker2 = speaker2;
+
+        _backing.GetComponent<StickerRandomizer>().Randomize();
+
+        _c1Name.text = "";
+        _c2Name.text = "";
 
         _playerNameEntryParent.SetActive(false);
 
@@ -181,50 +206,82 @@ public class CutsceneDialogue : MonoBehaviour
     public void Next()
     {
         if (_currentLineLeft.Length > 0) {
-            _textBox.text += _currentLineLeft;
-            _currentLineLeft = "";
+            SkipAnimation();
             return;
         }
 
         _currentLineIndex += 1;
         _textBox.text = "";
 
-        if (_currentLineIndex >= _dialogue.Count) {
-            EndConversation();
-            return;
-        }
+        if (_currentLineIndex >= _dialogue.Count) EndConversation();
+        else if (_currentLine.MetaLine) HandleMetaLine();
+        else ShowNextLine();
+    }
 
-        if (_currentLine.MetaLine) {
-            var currentSpeaker = _currentLine.Speaker == CutsceneSpeaker.SPEAKER_1 ? _speaker1 : _speaker2;
+    private void ShowNextLine()
+    {
+        _nextLineSound.Play();
 
-            if (_currentLine.HasExpression) currentSpeaker.SetExpression(_currentLine.Expression);
-            
-            if (_currentLine.HasAnimation) currentSpeaker.SetAnimation(_currentLine.Animation);
-            
-            if (_currentLine.HasCamAngle) {
-                var original = _camera.localRotation;
-                _camera.LookAt(_currentLine.LookPos + Vector3.up * _lookUpAmount);
-                if (_lerpingCam) {
-                    _targetCamRot = _camera.localRotation;
-                    _camera.localRotation = original;
-                }
+        if (_currentLineIndex > 1) {
+
+            var newHelperParent = Instantiate(_helperParent, transform.parent);
+            newHelperParent.transform.localEulerAngles = transform.localEulerAngles;
+            newHelperParent.transform.SetSiblingIndex(_spawnedBackings.Count);
+
+            var NewBacking = Instantiate(_backing, newHelperParent.transform);
+            _spawnedBackings.Add(newHelperParent);
+
+            if (_spawnedBackings.Count > 4) {
+                Destroy(_spawnedBackings[0]);
+                _spawnedBackings.RemoveAt(0);
             }
 
-            if (_currentLine.HasCommand) {
+            _animator.SetTrigger("Next");
 
-                if (_currentLine.Command == CutsceneCommand.SHOW_NAME_ENTRY) {
-                    _playerNameEntryParent.SetActive(true);
-                    return;
-                }
-            }
-
-            Next();
-            return;
+            _backing.GetComponent<StickerRandomizer>().Randomize();
+            transform.localEulerAngles = Vector3.forward * Mathf.Pow(Utils.Rand(_rotLimits), 2);
         }
+
+        _letterCountdown = _nextPaperwaitTime;
 
         _currentLineLeft = ReplaceKeywords(_currentLine.Line.Trim());
-        _c1Parent.SetActive(_currentLine.Speaker == CutsceneSpeaker.SPEAKER_1);
-        _c2Parent.SetActive(_currentLine.Speaker == CutsceneSpeaker.SPEAKER_2);
+        _c1Name.gameObject.SetActive(_currentLine.Speaker == CutsceneSpeaker.SPEAKER_1);
+        _c2Name.gameObject.SetActive(_currentLine.Speaker == CutsceneSpeaker.SPEAKER_2);
+    }
+
+    private void HandleMetaLine()
+    {
+        var currentSpeaker = _currentLine.Speaker == CutsceneSpeaker.SPEAKER_1 ? _speaker1 : _speaker2;
+
+        if (_currentLine.HasExpression) currentSpeaker.SetExpression(_currentLine.Expression);
+
+        if (_currentLine.HasAnimation) currentSpeaker.SetAnimation(_currentLine.Animation);
+
+        if (_currentLine.HasCamAngle) {
+            var original = _camera.localRotation;
+            _camera.LookAt(_currentLine.LookPos + Vector3.up * _lookUpAmount);
+            if (_lerpingCam) {
+                _targetCamRot = _camera.localRotation;
+                _camera.localRotation = original;
+            }
+        }
+
+        if (_currentLine.HasCommand) {
+
+            if (_currentLine.Command == CutsceneCommand.SHOW_NAME_ENTRY) {
+                _playerNameEntryParent.SetActive(true);
+                return;
+            }
+        }
+
+        Next();
+        return;
+    }
+
+    private void SkipAnimation()
+    {
+        _textBox.text += _currentLineLeft;
+        _currentLineLeft = "";
     }
 
     private void EndConversation()

@@ -13,6 +13,7 @@ public static class Utils
     public static readonly float fadeTime = 1f;
 
     public static float Rand(Vector2 range) => Random.Range(range.x, range.y);
+    public static int Rand(Vector2Int range) => Random.Range(range.x, range.y);
 
     private static int AXIS_BITS = 6;
     private static int AXIS_STEPS = 1 << AXIS_BITS;
