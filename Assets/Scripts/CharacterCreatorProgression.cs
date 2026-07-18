@@ -12,7 +12,7 @@ public class CharacterCreatorProgression : MonoBehaviour
     [SerializeField] private CharacterMetaController _characterController;
     [SerializeField] private SelectableItem _facialFeaturesTabButton;
     [SerializeField] private GameObject _faceContinueButtonParent;
-    [SerializeField] private SelectableItem _skinColorTabButton;
+    [SerializeField] private SelectableItem _earTabButton;
     [SerializeField] private Animator _titleOptions;
     [SerializeField] private GameObject _facialOptions;
     [SerializeField] private GameObject _bodyOptions;
@@ -33,7 +33,7 @@ public class CharacterCreatorProgression : MonoBehaviour
 
     private void Update()
     {
-        _faceContinueButtonParent.SetActive(_skinColorTabButton.Selected);
+        _faceContinueButtonParent.SetActive(_earTabButton.Selected);
     }
 
     public void Randomize()

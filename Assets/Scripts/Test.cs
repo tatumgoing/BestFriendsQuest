@@ -8,11 +8,13 @@ using UnityEngine.UI;
 
 public class Test : MonoBehaviour
 {
-    [SerializeField] private Image _waterImage;
-    [SerializeField] private float _speed;
-
-    private void Update()
+    private void OnEnable()
     {
-        _waterImage.material.mainTextureOffset += new Vector2(_speed, 0) * Time.deltaTime;
+        print("enabling!");
+    }
+
+    private void OnDisable()
+    {
+        print("disabling!");
     }
 }
