@@ -12,6 +12,8 @@ public class TownNavigator : MonoBehaviour
     public static async void GoToTownHall() => await TownGameManager.i.ChangeArea(AreaName.TOWN_HALL);
     public static async void GoToPort() => await TownGameManager.i.ChangeArea(AreaName.PORT);
     public static async void GoToRecords() => await TownGameManager.i.ChangeArea(AreaName.RECORDS);
+    public static async void GoToLake() => await TownGameManager.i.ChangeArea(AreaName.LAKE);
+    public static async void GoToFarm() => await TownGameManager.i.ChangeArea(AreaName.FARM);
 
     private void Update()
     {

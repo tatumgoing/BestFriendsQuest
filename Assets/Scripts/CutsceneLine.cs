@@ -1,0 +1,66 @@
+using UnityEngine;
+
+public enum CutsceneCommand { NONE, SHOW_NAME_ENTRY}
+
+[System.Serializable]
+public class CutsceneLine
+{
+    public CutsceneSpeaker Speaker;
+    public string Line;
+
+    public bool MetaLine;
+    public bool HasExpression;
+    public bool HasAnimation;
+    public bool HasCamAngle;
+    public bool HasCommand;
+
+    private Transform _lookTarget;
+    private Vector3 _lookTargetPosition;
+
+    public Vector3 LookPos => _lookTarget ? _lookTarget.position : _lookTargetPosition;
+    public Expression Expression { get; private set; }
+    public CharacterAnimations Animation { get; private set; }
+    public CutsceneCommand Command { get; private set; }
+
+    public CutsceneLine(CutsceneSpeaker speaker, string line)
+    {
+        Speaker = speaker;
+        Line = line;
+    }
+
+    public CutsceneLine(CutsceneSpeaker speaker)
+    {
+        MetaLine = true;
+        Speaker = speaker;
+        Line = "";
+    }
+
+    public void SetCommand(CutsceneCommand command)
+    {
+        HasCommand = true;
+        Command = command;
+    }
+
+    public void Format(string c1Name, string c2Name)
+    {
+        Line = Line.Replace("<c1>", c1Name).Replace("<c2>", c2Name);
+    }
+
+    public void SetAnimation(CharacterAnimations animation)
+    {
+        Animation = animation;
+        HasAnimation = true;
+    }
+
+    public void SetExpression(Expression expression)
+    {
+        Expression = expression;
+        HasExpression = true;
+    }
+
+    public void SetCamAngle(Transform lookTarget)
+    {
+        HasCamAngle = true;
+        _lookTarget = lookTarget;
+    }
+}
