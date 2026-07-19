@@ -14,14 +14,14 @@ public class Clock : MonoBehaviour
 
     void Update()
     {
-        timeDisplay.text = GetTime() + " " + GetAM();
+        timeDisplay.text = GetTime();
 
-        bool isPM = DateTime.Now.Hour > 12;
+        bool isPM = DateTime.Now.Hour >= 12;
         if (_am) _am.SetActive(!isPM);
         if (_pm) _pm.SetActive(isPM);
 
         if (_date) {
-            _date.text = DateTime.Now.Date.ToString("dd-mm");
+            _date.text = DateTime.Now.Date.ToString("dd-MM");
         }
         if (_season) {
             var month = DateTime.Now.Month;
@@ -36,19 +36,6 @@ public class Clock : MonoBehaviour
     private string GetTime()
     {
         return DateTime.Now.ToString("hh:mm");
-       
-    }
-
-    private string GetAM()
-    {
-        if (DateTime.Now.Hour > 12)
-        {
-            return("PM");
-        }
-        else
-        {
-            return("AM");
-        }
     }
 }
 

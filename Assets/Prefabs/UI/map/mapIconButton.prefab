@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2323372331605917095}
   - component: {fileID: 1005927427917348469}
   - component: {fileID: 1296020234676304737}
+  - component: {fileID: 6178726551294379557}
   m_Layer: 5
   m_Name: mapIconButton
   m_TagString: Untagged
@@ -137,8 +138,45 @@ MonoBehaviour:
     _showGOSettings: 1
     _showGroupSettings: 0
     _showSpriteSettings: 0
-  _hasAnimation: 0
-  _animator: {fileID: 0}
+  - Name: icon
+    _type: 0
+    _graphic: {fileID: 1309283433314124378}
+    _useMaterials: 0
+    _colors:
+      _normal: {r: 1, g: 1, b: 1, a: 1}
+      _hovered: {r: 0.936, g: 0.936, b: 0.936, a: 1}
+      _selected: {r: 0.83699995, g: 0.83699995, b: 0.83699995, a: 1}
+      _disabled: {r: 1, g: 1, b: 1, a: 1}
+    _materials:
+      _normal: {fileID: 0}
+      _hovered: {fileID: 0}
+      _selected: {fileID: 0}
+      _disabled: {fileID: 0}
+    _gameObjectTarget: {fileID: 5607873949661328471}
+    _activeStates:
+      _normal: 1
+      _hovered: 1
+      _selected: 0
+      _disabled: 0
+    _canvasGroup: {fileID: 0}
+    _alphaValues:
+      _normal: 1
+      _hovered: 1
+      _selected: 1
+      _disabled: 1
+    _spriteTarget: {fileID: 0}
+    _sprites:
+      _normal: {fileID: 0}
+      _hovered: {fileID: 0}
+      _selected: {fileID: 0}
+      _disabled: {fileID: 0}
+    _showGraphicSettings: 1
+    _showGraphicColorSettings: 1
+    _showGOSettings: 0
+    _showGroupSettings: 0
+    _showSpriteSettings: 0
+  _hasAnimation: 1
+  _animator: {fileID: 6178726551294379557}
   _animationSelectedBool: Selected
   _animationHoveredBool: Hovered
   _animationDisabledBool: Disabled
@@ -198,6 +236,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62efb83397ebb274c9032decf5ba45c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &6178726551294379557
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 631870185133077759}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: be83e4554fbcc8042a6268c1069e844e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1083096264452171941
 GameObject:
   m_ObjectHideFlags: 0
