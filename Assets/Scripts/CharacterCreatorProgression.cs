@@ -20,15 +20,19 @@ public class CharacterCreatorProgression : MonoBehaviour
     [SerializeField] private MainHairController _hairController;
     [SerializeField] private ExpressionButtonsController _expressionButtons;
     [SerializeField] private AnalyticsTracker _analyticsTracker;
+    [SerializeField] private TextAsset _randomNames;
 
     [SerializeField] private ColorMenuController _faceColorMenu;
     [SerializeField] private ColorMenuController _skinColorMenu;
+
+    private string[] _names;
 
     private void Start()
     {
         HideAll(false);
         _characterController.gameObject.SetActive(false);
         _titleOptions.gameObject.SetActive(true);
+        _names = _randomNames.text.Split("\n");
     }
 
     private void Update()
@@ -89,6 +93,7 @@ public class CharacterCreatorProgression : MonoBehaviour
         FindObjectOfType<HairController>().AddFeature(allHairs.GetRandom());
         FindObjectOfType<HairController>().SetHairColor(hairColor);
 
+        FindObjectOfType<DataPanelController>(true).SetData(ProfileDataType.NAME, _names[Random.Range(0, _names.Length)]);
     }
 
     public void StartNew()

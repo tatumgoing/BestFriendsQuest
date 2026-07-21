@@ -40,7 +40,10 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        _fade.Disappear();
+        if (PlayerPrefs.GetInt("DemoStep", -1) == 1) {
+            _fade.gameObject.SetActive(false);
+        }
+        else _fade.Disappear();
 
         _modeExlusiveItems = FindObjectsByType<ModeExlusiveItem>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList();
        

@@ -16453,15 +16453,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 268784782261423809, guid: 6f1437241537a6842bdbdf28a4f91c91, type: 3}
       propertyPath: _data.Array.data[0]._colors._disabled.b
-      value: 0.72300005
+      value: 0.622
       objectReference: {fileID: 0}
     - target: {fileID: 268784782261423809, guid: 6f1437241537a6842bdbdf28a4f91c91, type: 3}
       propertyPath: _data.Array.data[0]._colors._disabled.g
-      value: 0.72300005
+      value: 0.622
       objectReference: {fileID: 0}
     - target: {fileID: 268784782261423809, guid: 6f1437241537a6842bdbdf28a4f91c91, type: 3}
       propertyPath: _data.Array.data[0]._colors._disabled.r
-      value: 0.72300005
+      value: 0.622
       objectReference: {fileID: 0}
     - target: {fileID: 268784782261423809, guid: 6f1437241537a6842bdbdf28a4f91c91, type: 3}
       propertyPath: _data.Array.data[0]._colors._selected.b
@@ -48604,6 +48604,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2998532877825990620, guid: 6f1437241537a6842bdbdf28a4f91c91, type: 3}
   m_PrefabInstance: {fileID: 615875848}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1909865315 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 268784782261423809, guid: 6f1437241537a6842bdbdf28a4f91c91, type: 3}
+  m_PrefabInstance: {fileID: 615875848}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1909865311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 898f698a9835d194c90dd0b423be4462, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1934760136
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -51048,6 +51059,7 @@ MonoBehaviour:
   _hairController: {fileID: 247497124}
   _expressionButtons: {fileID: 141350793}
   _analyticsTracker: {fileID: 1991562807}
+  _randomNames: {fileID: 4900000, guid: 7f4777f15f396ac44801f12197b921a8, type: 3}
   _faceColorMenu: {fileID: 1884511572}
   _skinColorMenu: {fileID: 1252040731}
 --- !u!114 &2053537680
@@ -53131,6 +53143,7 @@ GameObject:
   - component: {fileID: 2116218513}
   - component: {fileID: 2116218514}
   - component: {fileID: 2116218515}
+  - component: {fileID: 2116218516}
   m_Layer: 5
   m_Name: IntroMain
   m_TagString: Untagged
@@ -53197,6 +53210,19 @@ MonoBehaviour:
   _sounds: []
   _randomStart: 0
   _animator: {fileID: 0}
+--- !u!114 &2116218516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2116218512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 638b9a96f1c65d24196bc07cf3920c05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _editExistingButton: {fileID: 1909865315}
 --- !u!1001 &2118381718
 PrefabInstance:
   m_ObjectHideFlags: 0

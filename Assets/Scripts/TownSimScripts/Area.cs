@@ -6,6 +6,7 @@ public class Area : MonoBehaviour
 {
     TownMusicPlayer musicPlayer;
 
+    [SerializeField] private bool _dontStop;
     public Sound associatedTrack;
     [SerializeField] GameObject associatedEnvironment;
 
@@ -29,7 +30,7 @@ public class Area : MonoBehaviour
 
         if (associatedTrack == null) 
         {
-            musicPlayer.StopCurrentTrack();
+            if (!_dontStop) musicPlayer.StopCurrentTrack();
         }
         else if (musicPlayer.currentTrack == null)
         {

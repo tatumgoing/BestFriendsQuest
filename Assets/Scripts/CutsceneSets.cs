@@ -18,6 +18,17 @@ public class CutsceneSets : MonoBehaviour
         HideAll();
     }
 
+    public void setCamera(Vector3 camLocalPosition, Vector3 camLocalEulers)
+    {
+        //print("trying to set camera");
+        if (Current == null) return;
+
+        //print("actually setting camera");
+
+        Current.Camera.transform.localPosition = camLocalPosition;
+        Current.Camera.transform.localEulerAngles = camLocalEulers;
+    }
+
     public bool IsActive()
     {
         foreach (var s in _sets) if (s.SetParent.activeInHierarchy) return true;

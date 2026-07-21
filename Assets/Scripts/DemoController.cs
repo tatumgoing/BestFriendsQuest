@@ -24,6 +24,10 @@ public class DemoController : MonoBehaviour
     [SerializeField] private SteamDemoUI _uiController;
     [SerializeField] private List<AreaUnlockedData> _data = new List<AreaUnlockedData>();
 
+    [Header("Camera angles")]
+    [SerializeField] private Vector3 _parkCamPos;
+    [SerializeField] private Vector3 _parkCamEulers;
+
     [Header("Cutscenes")]
     [SerializeField] CutsceneSets _setController;
     [SerializeField] private CutsceneScript _helloImHungryScript;
@@ -69,6 +73,9 @@ public class DemoController : MonoBehaviour
             _resetter.ResetAll();
             ResetDemo();
         }
+        else {
+            print("Demo wasn't reset. current step: " + _step);
+        }
 
         if (_step == 0) DoStep0();
     }
@@ -110,6 +117,7 @@ public class DemoController : MonoBehaviour
     {
         PlayerPrefs.SetInt("DemoStep", 0);
         _step = 0;
+        SaveSystem.DeleteAllCharacters();
     }
 
     public bool IsUnlocked(AreaName area)
@@ -266,14 +274,17 @@ public class DemoController : MonoBehaviour
 
         var selected = CharacterManager.i.AllIDs()[0];
         ShowCutscene(_helloImHungryScript, AreaName.PARK, new List<ID>() { selected }, 1f, () => _uiController.UnlockArea("Grocery Store"));
+
+        _setController.setCamera(_parkCamPos, _parkCamEulers);
     }
 
-    //tutorial to say 'welcome to game, go make a character!'
+    //look at park sky, say 'welcome to game, go make a character!'
     private void DoStep0()
     {
         AdvanceStep();
 
-        //ShowTutorial(WelcomeTutorial)
+        _setController.ShowSet(AreaName.PARK, new List<ID>());
+        //_uiController.gameObject.SetActive(true);
     }
 
     private async void ShowCutscene(CutsceneScript script, AreaName Set, List<ID> ids, float delay = 0, System.Action callback = null)

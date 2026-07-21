@@ -352,6 +352,7 @@ public class CharacterManager : MonoBehaviour
             _allCharacters.Add(newCharacter);
         }
 
+        if (AllCharacters.Count == 0) return;
         var InitilizeCharacter = SpawnCharacter(AllCharacters[0].ID, transform);
         await Task.Delay(200);
         if (InitilizeCharacter && InitilizeCharacter.gameObject) Destroy(InitilizeCharacter.gameObject);

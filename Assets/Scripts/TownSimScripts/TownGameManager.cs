@@ -31,6 +31,7 @@ public class TownGameManager : MonoBehaviour
     [SerializeField, Min(0)] private float _currency;
     [SerializeField] private GameObject _mapStartBacking;
     [SerializeField] private pauseMenuController _pauseMenu;
+    [SerializeField] private GameObject _demoUIController;
 
     private Dictionary<ItemData, int> _inventory = new Dictionary<ItemData, int>();
     private List<RuntimeItemData> _runtimeItemData = new List<RuntimeItemData>();
@@ -68,6 +69,8 @@ public class TownGameManager : MonoBehaviour
         }
 
         LoadInventory();
+
+        _demoUIController.SetActive(false);
     }
 
     void Start()
@@ -127,14 +130,16 @@ public class TownGameManager : MonoBehaviour
 
     public void ShowInitialMap()
     {
-        if (_steamDemoMode && PlayerPrefs.GetInt("DemoStep", 0) < 3) return;
+        if (_steamDemoMode && PlayerPrefs.GetInt("DemoStep", 0) < 3) {
+            _demoUIController.SetActive(DemoMode);
+            return;
+        }
 
         CharacterManager.i.LoadCurrentQuests();
         _mapStartBacking.SetActive(true);
         _mapParent.SetActive(true);
-    }
 
-    
+    }    
 
     public void UnlockItem(ItemData item)
     {

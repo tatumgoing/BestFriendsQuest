@@ -370,6 +370,14 @@ public static class SaveSystem
         return saveStrings.Take(quantity).ToList();
     }
 
+
+
+    public static void DeleteAllCharacters()
+    {
+        File.WriteAllText(System.IO.Path.Combine(Application.streamingAssetsPath, staticDataFileName), "");
+        Debug.Log("Deleted all characters");
+    }
+
     /// <summary>
     /// Returns a list of all the 'static' saveStrings for characters, generated from character creator.
     /// </summary>
