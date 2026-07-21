@@ -96,23 +96,23 @@ public class TownMusicPlayer : MonoBehaviour
         
     }
 
-    public IEnumerator FadeTrackOut(Sound sound)
+    public void FadeOutCurrent() => StartCoroutine(FadeTrackOut(currentTrack));
+    public IEnumerator FadeTrackOut(Sound sound, float speed = 0.01f)
     {
 
         float vol = sound.percentVolume;
 
         while (vol > 0)
         {
-            //Debug.Log(vol);
+            vol -= speed;
 
-            vol -= .01f;
-
-            yield return new WaitForSeconds(.01f);
+            yield return new WaitForSeconds(speed);
             sound.SetPercentVolume(vol);
         }
 
         sound.Stop();
     }
+
     public void StopCurrentTrack()
     {
         if (currentTrack != null){ currentTrack.Stop(); }
