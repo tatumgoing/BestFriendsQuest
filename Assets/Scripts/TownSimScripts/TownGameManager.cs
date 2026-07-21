@@ -91,7 +91,10 @@ public class TownGameManager : MonoBehaviour
 
     private void Update()
     {
-        if (_cutsceneSets.IsActive()) return; //disable all menu hotkeys during a cutscene (temp quick fix for now)
+        if (_cutsceneSets.IsActive()) {
+            if (Input.GetKeyDown(KeyCode.Escape) && Input.GetKey(KeyCode.LeftShift)) FindObjectOfType<DemoController>().RuntimeDemoReset();
+            return; //disable all menu hotkeys during a cutscene (temp quick fix for now)
+        }
 
         if (Input.GetKeyDown(KeyCode.G)) print("Menus: " + Utils.MenusOpen);
 

@@ -41,6 +41,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         if (PlayerPrefs.GetInt("DemoStep", -1) == 1) {
+            _demoMode = true;
             _fade.gameObject.SetActive(false);
         }
         else _fade.Disappear();

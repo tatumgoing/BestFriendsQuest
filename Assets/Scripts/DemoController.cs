@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [System.Serializable]
 public class AreaUnlockedData
@@ -98,6 +99,12 @@ public class DemoController : MonoBehaviour
             _tutorialController.ShowTutorial(DemoTutorialType.SHOP);
             _shopTutorialShown = true;
         }
+    }
+
+    public void RuntimeDemoReset()
+    {
+        ResetDemo();
+        SceneManager.LoadScene(2);
     }
 
     private void UnlockArea(AreaName area)
