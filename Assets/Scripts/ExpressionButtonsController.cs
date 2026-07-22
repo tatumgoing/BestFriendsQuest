@@ -6,7 +6,11 @@ using UnityEngine;
 public class ExpressionButtonsController : MonoBehaviour
 {
     [SerializeField] private SelectableItem _neutralButton;
+    [SerializeField] private GameObject _tutorial;
+    [SerializeField] private float _tutorialOffset;
 
+    private RectTransform _rTransform;
+    private float _startX;
     private bool _clicking;
     private bool _showing;
 
@@ -35,6 +39,12 @@ public class ExpressionButtonsController : MonoBehaviour
         if (Input.GetMouseButtonUp(0) && _clicking) {
             _neutralButton.Select(true);
         }
+
+        if (!_rTransform) {
+            _rTransform = transform.parent.GetComponent<RectTransform>();
+            _startX = _rTransform.anchoredPosition.x;
+        }
+        _rTransform.anchoredPosition = new Vector2(_startX + (_tutorial.activeInHierarchy ? _tutorialOffset : 0), _rTransform.anchoredPosition.y);
     }
 
     public void PickExpression()

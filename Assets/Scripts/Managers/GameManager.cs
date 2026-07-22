@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
@@ -22,7 +23,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] MusicPlayer _music;
     public Transform Camera;
     [SerializeField] private GameObject _tutorial;
-    [SerializeField] private GameObject _editExistingButtonParent;
 
     [Header("saving")]
     [SerializeField] private CharacterMetaController _character;
@@ -41,15 +41,20 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         if (PlayerPrefs.GetInt("DemoStep", -1) == 1) {
-            _demoMode = true;
+            _demoMode = true; 
             _fade.gameObject.SetActive(false);
         }
         else _fade.Disappear();
 
         _modeExlusiveItems = FindObjectsByType<ModeExlusiveItem>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList();
        
-        _tutorial.SetActive(_demoMode);
-        _editExistingButtonParent.SetActive(!_demoMode && !ResearchMode);
+        _tutorial.SetActive(false);
+    }
+
+    public async void StartTutorial()
+    {
+        await Task.Delay(1000);
+        if (_demoMode) _tutorial.SetActive(true);
     }
 
     [ButtonMethod]

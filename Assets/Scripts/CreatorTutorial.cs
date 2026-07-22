@@ -1,102 +1,137 @@
 using MyBox;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
+
+public enum CCTutorialTriggerType { NEXT, PRESS_BUTTON, NUMBER_FEATURES, GAMEOBJECT}
 
 [System.Serializable] 
 public class TutorialData
 {
     [HideInInspector] public string DisplayName;
-    [TextArea(2, 10)] public string Text;
-    public TextMeshProUGUI TexBox;
-    public GameObject Parent;
+    [TextArea(3, 10)] public string Text;
+
+    [Header("ContinueTrigger")]
+    public CCTutorialTriggerType TriggerType;
+    [ConditionalField(nameof(TriggerType), true, false, CCTutorialTriggerType.NEXT)] public bool Auto;
+    [ConditionalField(nameof(TriggerType), false, false, CCTutorialTriggerType.PRESS_BUTTON)] public SelectableItem Button;
+    [ConditionalField(nameof(TriggerType), false, false, CCTutorialTriggerType.NUMBER_FEATURES)] public int MinNumber;
+    [ConditionalField(nameof(TriggerType), false, false, CCTutorialTriggerType.GAMEOBJECT)] public GameObject GameObject;
+
+    [Space()]
+    public GameObject HighlightParent;
 }
 
 public class CreatorTutorial : MonoBehaviour
 {
     [SerializeField] private List<TutorialData> _steps;
 
-    private int _current = -1;
-    private bool _changingSlider = false;
-    private float _timeWhenLastAdvanced;
+    [Header("References")]
+    [SerializeField] private TextMeshProUGUI _textBox;
+
+    [Header("Typewriter effect")]
+    [SerializeField] private float _letterDelayTime = 0.04f;
+
+    [Header("Animation")]
+    [SerializeField] private Animator _hideButtonAnimator;
+    [SerializeField] private Animator _showButtonAnimator;
+    [SerializeField] private Animator _journalAnimator;
+    [SerializeField] private GameObject _nextButton;
+
+    [Header("Sounds")]
+    [SerializeField] private Sound _letterSound;
+    [SerializeField] private Sound _completeStepSound;
+
+    private float _letterCooldown;
+
+    private TutorialData _current => _steps[0];
 
     private void OnValidate()
     {
         for (int i = 0; i < _steps.Count; i++) {
-            _steps[i].DisplayName = (i+1) + ": " + _steps[i].Text;
+            _steps[i].DisplayName = (i + 1) + ": " + _steps[i].Text;
+            if (_steps[i].TriggerType == CCTutorialTriggerType.NEXT) {
+                _steps[i].Auto = false;
+            }
         }
+    }
+
+    private void OnEnable()
+    {
+        _showButtonAnimator.SetTrigger("Hide");
+
+        foreach (var s in _steps) {
+            if (s.HighlightParent) s.HighlightParent.SetActive(false);
+        }
+
+        StartCurrent();
     }
 
     private void Start()
     {
-        _timeWhenLastAdvanced = 100000;
-        _current = -1;
-        Next();
+        _letterSound = Instantiate(_letterSound);
+        _completeStepSound = Instantiate(_completeStepSound);
     }
 
     private void Update()
     {
-        if (_changingSlider && Input.GetMouseButtonUp(0) && _current == 5) {
-            _changingSlider = false;
-            Next();
+        if (_steps.Count == 0) return;
+
+        _letterCooldown -= Time.deltaTime;
+        var stillAnimating = _current.Text.Length > _textBox.maxVisibleCharacters;
+        if (_letterCooldown <= 0 && stillAnimating) {
+            _textBox.maxVisibleCharacters += 1;
+            _letterCooldown = _letterDelayTime;
+            _letterSound.Play(restart: false);
+        }
+
+        _nextButton.SetActive(_current.TriggerType == CCTutorialTriggerType.NEXT && !stillAnimating);
+    }
+
+    public void CompleteStep()
+    {
+        _journalAnimator.SetTrigger("Throb");
+        if (_current.TriggerType == CCTutorialTriggerType.PRESS_BUTTON) {
+            _current.Button.OnSelect.RemoveListener(CompleteStep);
+        }
+        if (_current.HighlightParent) _current.HighlightParent.SetActive(false);
+
+        _completeStepSound.Play();
+        _steps.RemoveAt(0);
+        StartCurrent();
+    }
+
+    private void StartCurrent()
+    {
+        _textBox.text = _current.Text;
+        _textBox.maxVisibleCharacters = 0;
+
+        if (_steps.Count == 0) {
+            Hide();
+            _showButtonAnimator.SetTrigger("Hide");
+        }
+
+        if (_current.HighlightParent) _current.HighlightParent.SetActive(true);
+        if (_current.TriggerType == CCTutorialTriggerType.PRESS_BUTTON) {
+            _current.Button.OnSelect.AddListener(CompleteStep);
         }
     }
 
-    public void Next()
+    public void Show()
     {
-        if (Mathf.Abs(Time.time - _timeWhenLastAdvanced) < 0.25f) return;
-        _timeWhenLastAdvanced = Time.time;  
-
-        _current++;
-        if (_current >= _steps.Count) {
-            gameObject.SetActive(false);
-            return;
-        }
-
-        if (_current > 0) _steps[_current - 1].Parent.SetActive(false);
-
-        _steps[_current].Parent.SetActive(true);
-        _steps[_current].TexBox.text = _steps[_current].Text;
+        _hideButtonAnimator.SetTrigger("Show");
+        _showButtonAnimator.SetTrigger("Hide");
+        _journalAnimator.SetBool("Hidden", false);
     }
 
-    public void OpenEyesCategory()
+    public void Hide()
     {
-        if (_current == 1) Next();
+        _hideButtonAnimator.SetTrigger("Hide");
+        _showButtonAnimator.SetTrigger("Show");
+        _journalAnimator.SetBool("Hidden", true);
     }
 
-    public void SwitchToColorTab()
-    {
-        if (_current == 6) Next();
-    }
 
-    public void OpenBaseAddMenu()
-    {
-        if (_current == 2) Next();
-    }
-
-    public void AddFeature()
-    {
-        if (_current == 3 || _current == 10) Next();
-    }
-
-    public void PickColor()
-    {
-        if (_current == 7) Next();
-    }
-
-    public void AddDetail()
-    {
-        if (_current == 9) Next();
-    }
-
-    public void SwitchToLayersTab()
-    {
-        if (_current == 8) Next();
-    }
-
-    public void StartChangingSlider(float value)
-    {
-        _changingSlider = true;
-    }
 }
