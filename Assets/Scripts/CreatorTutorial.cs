@@ -30,6 +30,7 @@ public class CreatorTutorial : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private TextMeshProUGUI _textBox;
+    [SerializeField] private CharacterMetaController _character; 
 
     [Header("Typewriter effect")]
     [SerializeField] private float _letterDelayTime = 0.04f;
@@ -79,6 +80,10 @@ public class CreatorTutorial : MonoBehaviour
     {
         if (_steps.Count == 0) return;
 
+        if (_current.TriggerType == CCTutorialTriggerType.NUMBER_FEATURES && _character.NumFeatures >= _current.MinNumber) {
+            CompleteStep();
+        }
+
         _letterCooldown -= Time.deltaTime;
         var stillAnimating = _current.Text.Length > _textBox.maxVisibleCharacters;
         if (_letterCooldown <= 0 && stillAnimating) {
@@ -90,6 +95,12 @@ public class CreatorTutorial : MonoBehaviour
         _nextButton.SetActive(_current.TriggerType == CCTutorialTriggerType.NEXT && !stillAnimating);
     }
 
+    public void SkipAnimation()
+    {
+        _textBox.maxVisibleCharacters = _textBox.text.Length;
+        _letterSound.Play(restart: false);
+    }
+
     public void CompleteStep()
     {
         _journalAnimator.SetTrigger("Throb");
@@ -98,9 +109,13 @@ public class CreatorTutorial : MonoBehaviour
         }
         if (_current.HighlightParent) _current.HighlightParent.SetActive(false);
 
+
         _completeStepSound.Play();
         _steps.RemoveAt(0);
-        StartCurrent();
+        if (_steps.Count > 0) {
+            StartCurrent();
+            Show();
+        }
     }
 
     private void StartCurrent()

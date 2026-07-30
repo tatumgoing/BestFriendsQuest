@@ -42,6 +42,7 @@ public class CharacterMetaController : MonoBehaviour
     private bool _mouthOpen;
     private string _inputString;
 
+    public int NumFeatures => _face.CurrentFeatures.Count;
     public Color SkinColor => _skinColor;
     [ButtonMethod] public void setNeutral() => SetExpression(Expression.NEUTRAL);
     [ButtonMethod] public void setHappy() => SetExpression(Expression.HAPPY);
