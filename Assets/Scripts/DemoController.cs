@@ -174,7 +174,7 @@ public class DemoController : MonoBehaviour
         var selected = CharacterManager.i.AllIDs().Take(2).ToList();
 
         UnlockArea(AreaName.PORT);
-        ShowCutscene(_discussPortScript, AreaName.TOWN, selected, 1, () => _uiController.UnlockArea("Port"));
+        ShowCutscene(_discussPortScript, AreaName.TOWN, selected, 1, () => _uiController.UnlockArea("Port", "Visit to see info about the current Best Friend Quest"));
     }
 
     //char2 giving their cooked food to char1
@@ -214,7 +214,7 @@ public class DemoController : MonoBehaviour
         var selected = CharacterManager.i.AllIDs()[1];
 
         UnlockArea(AreaName.RESTURAUNT);
-        ShowCutscene(_secondGratefulScript, AreaName.TOWN, new List<ID>() { selected }, 1, () => _uiController.UnlockArea("Resturaunt"));
+        ShowCutscene(_secondGratefulScript, AreaName.TOWN, new List<ID>() { selected }, 1, () => _uiController.UnlockArea("Resturaunt", "A nice place to cook with your townsfolk"));
     }
 
     //picnic in the park!
@@ -237,7 +237,7 @@ public class DemoController : MonoBehaviour
         var selected = CharacterManager.i.AllIDs().Take(2).ToList();
 
         UnlockArea(AreaName.PARK);
-        ShowCutscene(_firstTwoMeetingScript, AreaName.TOWN, selected, 1, () => _uiController.UnlockArea("Park"));
+        ShowCutscene(_firstTwoMeetingScript, AreaName.TOWN, selected, 1, () => _uiController.UnlockArea("Park", "Townsfolk love relaxing in the park"));
     }
 
     //after a character is given a food gift, cutscene of them eating it
@@ -252,7 +252,7 @@ public class DemoController : MonoBehaviour
         DeleteAllSpawnedCharacters();
 
         UnlockArea(AreaName.TOWN_HALL);
-        ShowCutscene(_eatingFoodAloneScript, AreaName.PARK, new List<ID>() { giftInfo.Item1 }, 1.5f, () => _uiController.UnlockArea("Town Hall"));
+        ShowCutscene(_eatingFoodAloneScript, AreaName.PARK, new List<ID>() { giftInfo.Item1 }, 1.5f, () => _uiController.UnlockArea("Town Hall", "Visit to invite new townsfolk or update your existing ones"));
     }
 
     //after buying a food item, unlock the town so you can give the food to the character
@@ -260,7 +260,7 @@ public class DemoController : MonoBehaviour
     {
         AdvanceStep();
         UnlockArea(AreaName.TOWN);
-        _uiController.UnlockArea("Town");
+        _uiController.UnlockArea("Town", "Visit to speak to townsfolk and see their lovely homes");
 
         _giftMenu.OnGiveGift.AddListener(DoStep3);
     }
@@ -280,7 +280,7 @@ public class DemoController : MonoBehaviour
         UnlockArea(AreaName.GROCERY_STORE);
 
         var selected = CharacterManager.i.AllIDs()[0];
-        ShowCutscene(_helloImHungryScript, AreaName.PARK, new List<ID>() { selected }, 1f, () => _uiController.UnlockArea("Grocery Store"));
+        ShowCutscene(_helloImHungryScript, AreaName.PARK, new List<ID>() { selected }, 1f, () => _uiController.UnlockArea("Grocery Store", "Buy new food to give to your townsfolk"));
 
         _setController.setCamera(_parkCamPos, _parkCamEulers);
     }

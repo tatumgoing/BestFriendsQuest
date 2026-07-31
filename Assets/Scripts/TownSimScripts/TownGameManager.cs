@@ -70,7 +70,7 @@ public class TownGameManager : MonoBehaviour
 
         LoadInventory();
 
-        _demoUIController.SetActive(false);
+        if (_demoUIController) _demoUIController.SetActive(false);
     }
 
     void Start()
