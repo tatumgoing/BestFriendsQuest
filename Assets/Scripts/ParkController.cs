@@ -53,6 +53,8 @@ public class ParkController : MonoBehaviour
         spots.Shuffle();
         var benchSpots = new List<CharacterSpawnLocation>(_benchSpawnSpots);
 
+        if (benchSpots.Count < 2 || IDs.Count < 2) return;
+
         var bench1 = benchSpots[0];
         var bench2 = benchSpots[1];
         SpawnedCharacter benchId1 = null;

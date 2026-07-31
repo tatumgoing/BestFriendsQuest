@@ -81,7 +81,7 @@ public class FirstTimeController : MonoBehaviour
 
         _selectedIndex++;
 
-        if (_selectedIndex == _text.Count) {
+        if (_selectedIndex >= _text.Count) {
             _textBoxParent.GetComponent<Animator>().SetTrigger("Hide");
             _inviteNewButton.SetActive(true);
             return;
