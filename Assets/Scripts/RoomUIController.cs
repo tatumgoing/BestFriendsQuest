@@ -34,7 +34,7 @@ public class RoomUIController : MonoBehaviour
     {
         _id = id;
         var character = CharacterManager.i.GetCharacter(id);
-        _nameText.text = character.Name + "'s";
+        _nameText.text = character.Name + "'s Room";
 
         _statusMenu.gameObject.SetActive(false);
         _dialogue.gameObject.SetActive(false);

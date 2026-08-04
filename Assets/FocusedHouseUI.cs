@@ -99,9 +99,11 @@ public class FocusedHouseUI : MonoBehaviour
         _targetVisibleCharacters = _descriptionText.text.Length;
     }
 
-    public void ShowRoom()
+    public async void ShowRoom()
     {
-        GetComponentInParent<NeighborhoodUI>().ShowRoomUI(_id);
+        await TownGameManager.i.FadeScreen(true);
         gameObject.SetActive(false);
+        GetComponentInParent<NeighborhoodUI>().ShowRoomUI(_id);
+        await TownGameManager.i.FadeScreen(false);
     }
 }
