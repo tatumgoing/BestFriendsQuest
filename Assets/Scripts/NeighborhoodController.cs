@@ -8,11 +8,13 @@ using UnityEngine;
 public class NeighborhoodController : MonoBehaviour
 {
     [SerializeField] private CharacterRoomModel _room;
-    [SerializeField] private GameObject _neighborhoodCamera;
+    [SerializeField] private NeighborhoodCamera _neighborhoodCamera;
     [SerializeField] private List<CharacterSpawnLocation> _spawnSpots;
     [SerializeField] private CharacterPointWalker _walker;
+    [SerializeField] private NeighborhoodUI _ui;
 
     private List<GameObject> _spawnedCharacters = new List<GameObject>();
+    private Transform _currentFocusedHouse;
 
     private void OnEnable()
     {
@@ -38,10 +40,22 @@ public class NeighborhoodController : MonoBehaviour
         }
     }
 
+    public void FocusHouse(Transform houseTransform, ID character)
+    {
+        if (_currentFocusedHouse == houseTransform) _currentFocusedHouse = null;
+        else if (_currentFocusedHouse != null) return;
+        else _currentFocusedHouse = houseTransform;
+
+        _neighborhoodCamera.Focus(houseTransform);
+        _ui.ShowFocusedHouse(_neighborhoodCamera.IsFocused, character);
+    }
+
     public void LeaveRoom()
     {
         _room.Hide();
-        _neighborhoodCamera.SetActive(true);
+        _neighborhoodCamera.gameObject.SetActive(true);
+        _neighborhoodCamera.ClearFocus();
+        _currentFocusedHouse = null;
     }
 
     public void ShowRoom(ID id)
@@ -50,9 +64,7 @@ public class NeighborhoodController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Confined;
 
         _room.Show(id);
-        _neighborhoodCamera.SetActive(false);
-
-        TownUIManager.i.ShowRoomUI(id);
+        _neighborhoodCamera.gameObject.SetActive(false);
     }
 
     private void HouseCharacters()
@@ -68,6 +80,6 @@ public class NeighborhoodController : MonoBehaviour
         }
 
         _room.Hide();
-        _neighborhoodCamera.SetActive(true);
+        _neighborhoodCamera.gameObject.SetActive(true);
     }
 }

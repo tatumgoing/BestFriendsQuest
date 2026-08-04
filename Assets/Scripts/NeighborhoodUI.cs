@@ -7,10 +7,24 @@ public class NeighborhoodUI : MonoBehaviour
     [SerializeField] private RoomUIController _roomUI;
     [SerializeField] private GameObject _neighborhoodUI;
     [SerializeField] private NeighborhoodController _controller;
+    [SerializeField] private FocusedHouseUI _focusedHouseUI;
+    [SerializeField] private GameObject _mapButton;
+
+    private void Start()
+    {
+        _focusedHouseUI.gameObject.SetActive(false); 
+    }
 
     public void ExitNeighborhood()
     {
         TownNavigator.GoToMap();
+    }
+
+    public void ShowFocusedHouse(bool houseFocused, ID character)
+    {
+        if (houseFocused) _focusedHouseUI.Show(character);
+        else _focusedHouseUI.gameObject.SetActive(false);
+        _mapButton.SetActive(!houseFocused);
     }
 
     public void ShowRoomUI(ID id)
@@ -19,6 +33,7 @@ public class NeighborhoodUI : MonoBehaviour
 
         _roomUI.Show(id);
         _neighborhoodUI.SetActive(false);
+        _controller.ShowRoom(id);
     }
 
     public void ShowNeighborhoodUI()

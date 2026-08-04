@@ -79,6 +79,12 @@ public class CharacterManager : MonoBehaviour
         foreach (var c in _allCharacters) if (questingChars.Contains(c.ID)) c.SetArea(AreaName.PORT);
     }
 
+    public void ChangeCharacterLocation(ID id, AreaName area)
+    {
+        var character = _allCharacters.Find(c => c.ID == id);
+        character?.SetArea(area);
+    }
+
     private void TickCharacterLocations()
     {
         foreach (var character in _allCharacters) {

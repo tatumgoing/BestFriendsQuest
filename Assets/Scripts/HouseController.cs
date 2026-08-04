@@ -18,10 +18,13 @@ public class HouseController : MonoBehaviour
 
     [SerializeField, ReadOnly] private string favColor;
     [SerializeField, ReadOnly] private Color favColorColor;
-    private ID _id;
+
+    private ID _id = new ID(0);
     private NeighborhoodController _controller;
     private float timeWhenEnabled = 0;
     private bool _hovered;
+    private bool _focused;
+    private bool _initialized;
 
     //TESTING
     [SerializeField] private Transform _testSpawnSpot;
@@ -34,13 +37,19 @@ public class HouseController : MonoBehaviour
     private void Update()
     {
         UpdateHovered();
-        if (_hovered) _portraitParent.gameObject.SetActive(true);
+        if (_hovered && !_focused && _initialized) _portraitParent.gameObject.SetActive(true);
 
         if (_hovered && Input.GetMouseButtonUp(0)) ShowRoom();
     }
 
     private async void ShowRoom()
     {
+        if (!_controller) _controller = FindObjectOfType<NeighborhoodController>();
+        _controller.FocusHouse(transform, _id);
+        _focused = !_focused;
+        if (_focused && _portraitParent.gameObject.activeInHierarchy) _portraitParent.SetTrigger("Exit");
+        return;
+
         if (!CharacterManager.i.GetIDsByArea(AreaName.TOWN).Contains(_id)) return;
 
         await TownGameManager.i.FadeScreen(true);
@@ -57,6 +66,7 @@ public class HouseController : MonoBehaviour
 
     public void Initialize(ID id, NeighborhoodController controller)
     {
+        _initialized = true;
         var character = CharacterManager.i.GetNameFormatted(id);
         gameObject.name = character + "'s house";
 
@@ -77,7 +87,7 @@ public class HouseController : MonoBehaviour
 
         _nameText.text = CharacterManager.i.GetNameFormatted(id);
         var isHere = CharacterManager.i.GetIDsByArea(AreaName.TOWN).Contains(_id);
-        if (!isHere) _nameText.text += " is " + CharacterManager.i.GetLocation(_id);
+        //if (!isHere) _nameText.text += " is " + CharacterManager.i.GetLocation(_id);
 
         //CharacterManager.i.SpawnCharacterNormalized(_id, _testSpawnSpot);
     }

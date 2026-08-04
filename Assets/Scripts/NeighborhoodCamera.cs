@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Experimental.AI;
 
 
 public class NeighborhoodCamera : MonoBehaviour
@@ -32,20 +34,49 @@ public class NeighborhoodCamera : MonoBehaviour
     [SerializeField] private float _panFriction = 10;
     [SerializeField] private Vector2 _panLimits;
 
+    [Header("FocusMode")]
+    [SerializeField] private Vector3 _focusTargetPositionOffset;
+    [SerializeField] private Vector3 _focusTargetOffset;
+    [SerializeField] private float _focusChangeLerpFactor = 10;
 
+    private Transform _focusTarget;
     private float _deltaRot;
     private float _deltaZoom;
     private Vector3 _deltaPos;
     private Vector3 _startingPosition;
     private float _scrollPos;
+    private Vector3 _originalChildOffset;
+    private Quaternion _originalChildRot;
+
+    public bool IsFocused => _focusTarget != null;
+    public void ClearFocus() => _focusTarget = null;
 
     private void Start()
     {
         _startingPosition = transform.localPosition;
+        _originalChildOffset = _camera.localPosition;
+        _originalChildRot = _camera.localRotation;
     }
 
     void Update()
     {
+        if (_focusTarget != null) {
+            _camera.localPosition = Vector3.Lerp(_camera.localPosition, Vector3.zero, _focusChangeLerpFactor * Time.deltaTime);
+
+            var originalRot = transform.localRotation;
+            transform.LookAt(_focusTarget.TransformPoint(_focusTargetOffset));
+            transform.localRotation = Quaternion.Slerp(originalRot, transform.localRotation, _focusChangeLerpFactor * Time.deltaTime);
+
+            var targetPos = _focusTarget.TransformPoint(_focusTargetPositionOffset);
+            transform.position = Vector3.Lerp(transform.position, targetPos, _focusChangeLerpFactor * Time.deltaTime);
+            return;
+        }
+        else {
+            _camera.localPosition = Vector3.Lerp(_camera.localPosition, _originalChildOffset, _focusChangeLerpFactor/2 * Time.deltaTime);
+            _camera.localRotation = Quaternion.Slerp(_camera.localRotation, _originalChildRot, _focusChangeLerpFactor/2 * Time.deltaTime);
+            transform.localRotation = Quaternion.Slerp(transform.localRotation, quaternion.Euler(Vector3.zero), _focusChangeLerpFactor/2 * Time.deltaTime);
+        }
+
         if (_scrollMode) {
             var targetDelta = Input.mouseScrollDelta.y * _scrollSpeed;
 
@@ -54,7 +85,8 @@ public class NeighborhoodCamera : MonoBehaviour
             _scrollPos += _scrollDelta;
             _scrollPos = Mathf.Clamp01(_scrollPos);
 
-            transform.position = Vector3.Lerp(_bottomPos.position, _topPos.position, _scrollPos);
+            var targetPos = Vector3.Lerp(_bottomPos.position, _topPos.position, _scrollPos);
+            transform.position = Vector3.Lerp(transform.position, targetPos, _scrollLerpFactor * Time.deltaTime);
 
             return;
         }
@@ -63,6 +95,12 @@ public class NeighborhoodCamera : MonoBehaviour
         Zoom();
         Tilt();
         Pan();
+    }
+
+    public void Focus(Transform selectedHouse)
+    {
+        if (_focusTarget == selectedHouse) ClearFocus();
+        else _focusTarget = selectedHouse;
     }
 
     private void Pan()
