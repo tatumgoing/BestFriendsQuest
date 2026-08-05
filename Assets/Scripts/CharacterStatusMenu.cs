@@ -26,7 +26,7 @@ public class CharacterStatusMenu : MonoBehaviour
     public void ShowInfoLeft(ID id)
     {
         _leftCharacterInfo.gameObject.SetActive(true);
-        _leftCharacterInfo.Show(id);
+        //_leftCharacterInfo.Show(id);
     }
 
     public void Show(ID id)
@@ -74,7 +74,7 @@ public class CharacterStatusMenu : MonoBehaviour
             UpdatePageDisplay();
         }
 
-        _bestFriendInfo.Show(bestFriend);
+        //_bestFriendInfo.Show(bestFriend);
     }
 
     private void UpdatePageDisplay()

@@ -251,6 +251,18 @@ public class CharacterManager : MonoBehaviour
         return characterData != null ? characterData.Name : "";
     }
 
+    public Gender GetGender(ID id)
+    {
+        var characterData = _allCharacters.Find(c => c != null && c.ID == id);
+        return characterData != null ? characterData.Gender : Gender.NONBINARY;
+    }
+
+    public Attraction GetAttraction(ID id)
+    {
+        var characterData = _allCharacters.Find(c => c != null && c.ID == id);
+        return characterData != null ? characterData.Attraction : Attraction.NONE;
+    } 
+
     public Pronoun GetPronoun(ID id)
     {
         var characterData = _allCharacters.Find(c => c.ID == id);
