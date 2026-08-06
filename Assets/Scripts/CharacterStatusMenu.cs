@@ -9,7 +9,12 @@ public class CharacterStatusMenu : MonoBehaviour
 {
     [SerializeField] private HappinessBar _happinessSlider;
     [SerializeField] private CharacterProfileDataDisplay _profileDisplay;
-    [SerializeField] private CharacterProfileDataDisplay _bestFriendInfo;
+
+    [Header("CurrentBestie")]
+    [SerializeField] private Image _bestiePortrait;
+    [SerializeField] private TextMeshProUGUI _bestieName;
+
+    [Header("Misc")]
     [SerializeField] private CharacterProfileDataDisplay _leftCharacterInfo;
     [SerializeField] private GameObject _relationshipBannerPrefab;
     [SerializeField] private Transform _relationshipListParent;
@@ -74,7 +79,8 @@ public class CharacterStatusMenu : MonoBehaviour
             UpdatePageDisplay();
         }
 
-        //_bestFriendInfo.Show(bestFriend);
+        _bestiePortrait.sprite = CharacterManager.i.GetPortrait(bestFriend);
+        _bestieName.text = CharacterManager.i.GetNameFormatted(bestFriend);
     }
 
     private void UpdatePageDisplay()

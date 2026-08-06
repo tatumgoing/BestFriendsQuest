@@ -12,6 +12,7 @@ public class FocusedHouseUI : MonoBehaviour
     [SerializeField] private GameObject _summonButton;
     [SerializeField] private float _letterDelayTime = 0.01f;
     [SerializeField] private Sound _letterSound;
+    [SerializeField] private GameObject _mapButton;
 
     private int _targetVisibleCharacters;
     private float _letterCooldown;
@@ -30,6 +31,11 @@ public class FocusedHouseUI : MonoBehaviour
             _letterSound.Play(restart: false);
             _letterCooldown = _letterDelayTime;
         }
+    }
+
+    private void OnDisable()
+    {
+        _mapButton.SetActive(true);
     }
 
     public void Show(ID id)
