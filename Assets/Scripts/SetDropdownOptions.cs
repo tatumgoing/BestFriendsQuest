@@ -6,7 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum DropdownDataType { ENUM, RANGE, DAY_MONTH, COLOR, MONTH_ABR}
+public enum DropdownDataType { ENUM, RANGE, DAY_MONTH, COLOR, MONTH_ABR, YEAR}
 public enum ProfileDataEnum { GENDER, PRONOUN, ATTRACTION}
 public enum MonthAbrev { Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec}
 
@@ -45,6 +45,10 @@ public class SetDropdownOptions : MonoBehaviour
         if (!_dropdown) return;
 
         if (_type == DropdownDataType.RANGE) AddRange(_range, true);
+        if (_type == DropdownDataType.YEAR) {
+            var currentYear = System.DateTime.Now.Year;
+            AddRange(new Vector2Int(currentYear-100, currentYear), true);
+        }
         if (_type == DropdownDataType.DAY_MONTH) {
             SetDays(0);
             _monthDropdown.onValueChanged.AddListener(SetDays);
