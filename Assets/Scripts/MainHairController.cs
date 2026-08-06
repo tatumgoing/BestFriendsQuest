@@ -47,6 +47,7 @@ public class MainHairController : MonoBehaviour
             //print("name: " +  _hairData[i].Icon.name + ", equals data: " + (_hairData[i].Icon.name == data));
             if (_hairData[i].name == data) _currentlySelectedIndex = i;
         }
+        _currentPage = Mathf.FloorToInt(_currentlySelectedIndex / 9f);
     }
 
     private void Initialize()

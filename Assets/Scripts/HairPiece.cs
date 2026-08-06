@@ -37,7 +37,7 @@ public class HairPiece : FeatureObj
         scale.x = flipped ? -Mathf.Abs(scale.x) : Mathf.Abs(scale.x);
         transform.localScale = scale;
 
-        Settings.Mirror = flipped ? MirrorType.LEFT : MirrorType.RIGHT;
+        Settings.Mirror = flipped ? MirrorType.BOTH : MirrorType.LEFT;
     }
 
     public void Initialize(HairController controller)
@@ -67,7 +67,8 @@ public class HairPiece : FeatureObj
         _mirroredFeature.Initialize(_controller);
 
         if (Data.IsMainHair) {
-            if (Settings.Mirror == MirrorType.LEFT) SetFlipped(true);
+            if (Settings.Mirror == MirrorType.BOTH) SetFlipped(true);
+            else SetFlipped(false);
         }
     }
 

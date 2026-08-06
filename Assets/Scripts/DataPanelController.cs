@@ -43,6 +43,8 @@ public class DataPanelController : MonoBehaviour
         _mainPanel.SetTrigger("Right");
     }
 
+    public void ReloadCurrent() => Load(_currentData);
+
     public void Load(StaticCharacterData inputData)
     {
         _currentData = inputData;
