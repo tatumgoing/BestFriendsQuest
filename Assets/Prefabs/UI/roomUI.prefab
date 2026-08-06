@@ -972,6 +972,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8484750561967316780}
   - component: {fileID: 3822322366074651555}
+  - component: {fileID: 3810360111589519180}
   m_Layer: 0
   m_Name: Status Menu
   m_TagString: Untagged
@@ -1027,6 +1028,27 @@ MonoBehaviour:
   _prevPageButton: {fileID: 6112928495789215598}
   _nextPageButton: {fileID: 818784352023008033}
   _pageCoutnerText: {fileID: 4309560865511015994}
+--- !u!95 &3810360111589519180
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 447220337955174803}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 52c78a9e023f97240846120457603bc8, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &483569496957700607
 GameObject:
   m_ObjectHideFlags: 0
@@ -1142,7 +1164,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 1.66}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 1.7102661, y: 0.35894775}
+  m_AnchoredPosition: {x: 1.7102661, y: 0.35888672}
   m_SizeDelta: {x: 1074.6343, y: 178.3987}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!95 &2953268901728804953
@@ -16126,19 +16148,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1218347346623003466, guid: 4fcd2d671ac9d9045841fbbe5541fcde, type: 3}
       propertyPath: m_text
-      value: Status
+      value: Details
       objectReference: {fileID: 0}
     - target: {fileID: 1218347346623003466, guid: 4fcd2d671ac9d9045841fbbe5541fcde, type: 3}
       propertyPath: m_fontSize
-      value: 40
+      value: 35
       objectReference: {fileID: 0}
     - target: {fileID: 1218347346623003466, guid: 4fcd2d671ac9d9045841fbbe5541fcde, type: 3}
       propertyPath: m_fontSizeBase
-      value: 40
+      value: 35
       objectReference: {fileID: 0}
     - target: {fileID: 2998532877825990620, guid: 4fcd2d671ac9d9045841fbbe5541fcde, type: 3}
       propertyPath: m_Name
-      value: status
+      value: details
       objectReference: {fileID: 0}
     - target: {fileID: 8926947360471708883, guid: 4fcd2d671ac9d9045841fbbe5541fcde, type: 3}
       propertyPath: m_Pivot.x
