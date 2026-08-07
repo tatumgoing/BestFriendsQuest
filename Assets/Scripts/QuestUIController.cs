@@ -97,6 +97,8 @@ public class QuestUIController : MonoBehaviour
         CharacterManager.i.IncreaseHappiness(_currentQuest.Character2, -100);
 
         SaveSystem.DeleteSavedQuest(_currentQuest.QuestData);
+
+        DemoController.i.UnlockAllAreas(); ;
     }
 
     public void ResetQuest()

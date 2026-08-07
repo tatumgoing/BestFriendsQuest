@@ -55,6 +55,7 @@ public class TownGameManager : MonoBehaviour
 
     private void Awake()
     {
+        if (i != null) Destroy(i);
         i = this;
         _allItems = Resources.LoadAll<ItemData>("Items").ToList();
 
@@ -91,6 +92,8 @@ public class TownGameManager : MonoBehaviour
 
     private void Update()
     {
+        if (!_cutsceneSets) _cutsceneSets = FindObjectOfType<CutsceneSets>(true);
+
         if (_cutsceneSets.IsActive()) {
             if (Input.GetKeyDown(KeyCode.Escape) && Input.GetKey(KeyCode.LeftShift)) FindObjectOfType<DemoController>().RuntimeDemoReset();
             return; //disable all menu hotkeys during a cutscene (temp quick fix for now)
@@ -133,8 +136,8 @@ public class TownGameManager : MonoBehaviour
 
     public void ShowInitialMap()
     {
-        if (_steamDemoMode && PlayerPrefs.GetInt("DemoStep", 0) < 3) {
-            _demoUIController.SetActive(DemoMode);
+        if (_steamDemoMode) {
+            _demoUIController.SetActive(true);
             return;
         }
 

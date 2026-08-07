@@ -146,6 +146,8 @@ public class CutsceneDialogue : MonoBehaviour
     {
         var newLine = new CutsceneLine(CutsceneSpeaker.SPEAKER_1);
 
+        if (line.Length == 0) return newLine;
+
         //parsing commands
         if (line.Trim()[0] == '/') {
             line = line.Trim().ToUpper();
@@ -168,6 +170,8 @@ public class CutsceneDialogue : MonoBehaviour
         }
 
         if (parts[0].Contains("CAM")) {
+            if (!_speaker1) return newLine;
+            
             var lookTarget = _speaker1.transform;
             if (parts[1].Contains("C2")) lookTarget = _speaker2.transform;
 
