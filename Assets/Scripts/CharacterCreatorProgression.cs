@@ -24,6 +24,7 @@ public class CharacterCreatorProgression : MonoBehaviour
     [SerializeField] private AnalyticsTracker _analyticsTracker;
     [SerializeField] private TextAsset _randomNames;
     [SerializeField] private TextAsset _randomLastNames;
+    [SerializeField] private CharacterMetaController _character;
 
     [SerializeField] private ColorMenuController _faceColorMenu;
     [SerializeField] private ColorMenuController _skinColorMenu;
@@ -104,7 +105,7 @@ public class CharacterCreatorProgression : MonoBehaviour
         _bodyCustomizer.MoveTorsoSlider(Random.Range(0, 1f));
         _bodyCustomizer.MoveLegsSlider(Random.Range(0, 1f));
 
-        var saveString = GameManager.i.SaveCurrent();
+        var saveString = _character.GetSaveString();
         FindObjectOfType<MainHairController>(true).SetHair(saveString);
 
         _skinColorButton.Select(true);

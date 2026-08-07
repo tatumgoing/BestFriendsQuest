@@ -49,7 +49,7 @@ public class DataPanelController : MonoBehaviour
     {
         _currentData = inputData;
 
-        _nameField.text = _currentData.Name;
+        _nameField.SetTextWithoutNotify(_currentData.Name);
 
         _gender.SetValueWithoutNotify((int)_currentData.Gender);
         _pronoun.SetValueWithoutNotify((int)_currentData.Pronouns);
@@ -80,6 +80,7 @@ public class DataPanelController : MonoBehaviour
     public void SetData(ProfileDataType type, string value)
     {
         //print("recieved value for category: " + type + ", value: " + value);
+        value = value.Replace("\n", "").Replace("\r", "");
 
         if (type == ProfileDataType.NAME) _currentData.Name = value;
         if (type == ProfileDataType.GENDER) _currentData.Gender = Enum.Parse<Gender>(value);

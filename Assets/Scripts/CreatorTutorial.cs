@@ -45,6 +45,7 @@ public class CreatorTutorial : MonoBehaviour
     [SerializeField] private Sound _letterSound;
     [SerializeField] private Sound _completeStepSound;
 
+    private bool _shown;
     private float _letterCooldown;
 
     private TutorialData _current => _steps[0];
@@ -61,6 +62,7 @@ public class CreatorTutorial : MonoBehaviour
 
     private void OnEnable()
     {
+        _shown = true;
         _showButtonAnimator.SetTrigger("Hide");
 
         foreach (var s in _steps) {
@@ -136,6 +138,10 @@ public class CreatorTutorial : MonoBehaviour
 
     public void Show()
     {
+        if (_shown) return;
+        _shown = true;
+
+        //print("Showing menu");
         _hideButtonAnimator.SetTrigger("Show");
         _showButtonAnimator.SetTrigger("Hide");
         _journalAnimator.SetBool("Hidden", false);
@@ -143,10 +149,12 @@ public class CreatorTutorial : MonoBehaviour
 
     public void Hide()
     {
+        if (!_shown) return;
+        _shown = false;
+
+        //print("Hiding menu");
         _hideButtonAnimator.SetTrigger("Hide");
         _showButtonAnimator.SetTrigger("Show");
         _journalAnimator.SetBool("Hidden", true);
     }
-
-
 }
