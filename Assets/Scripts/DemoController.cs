@@ -90,7 +90,7 @@ public class DemoController : MonoBehaviour
     {
         if (_step == 1 && CharacterManager.i.AllCharacters.Count > 0) DoStep1();
         if (_step == 2 && TownGameManager.i.GetInventoryItems().Count > 0) DoStep2();
-        if (_step == 4 && CharacterManager.i.AllIDs().Count > 1 && _townHallUIParent.activeInHierarchy) DoStep4();
+        if (_step == 4 && CharacterManager.i.AllIDs().Count > 1) DoStep4();
         if (_step == 5 && _parkUIParent.activeInHierarchy) DoStep5();
         if (_step == 7 && _resturuantUIParent.activeInHierarchy) DoStep7();
         if (_step == 10 && _portUIParent.activeInHierarchy) DoStep10();
@@ -127,6 +127,11 @@ public class DemoController : MonoBehaviour
         SaveSystem.DeleteAllCharacters();
     }
 
+    public void UnlockAllAreas()
+    {
+        foreach (var d in _data) d.Unlocked = true;
+    }
+
     public bool IsUnlocked(AreaName area)
     {
         if (!TownGameManager.i.DemoMode) return true;
@@ -145,8 +150,8 @@ public class DemoController : MonoBehaviour
     [ButtonMethod]
     private void SkipToStep()
     {
-        _step = 10;
-        DoStep10();
+        _step = 4;
+        DoStep4();
     }
 
     private void DoStep10()
@@ -233,6 +238,8 @@ public class DemoController : MonoBehaviour
     {
         AdvanceStep();
         DeleteAllSpawnedCharacters();
+
+        print("STARTING STEP4 CUTSCENE");
 
         var selected = CharacterManager.i.AllIDs().Take(2).ToList();
 

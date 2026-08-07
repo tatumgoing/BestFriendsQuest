@@ -187,8 +187,7 @@ public class CharacterCreatorProgression : MonoBehaviour
         var fadeTime = Mathf.RoundToInt(UIManager.i.Fade.FadeTime * 1000);
         await Task.Delay(fadeTime);
 
-        if (GameManager.i.DemoMode) SceneManager.LoadScene(4);
-        else SceneManager.LoadScene(2);
+        SceneManager.LoadScene(2);
     }
 
     private void HideAll(bool hideTitle = true)

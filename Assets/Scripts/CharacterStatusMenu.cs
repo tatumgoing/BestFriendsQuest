@@ -51,6 +51,12 @@ public class CharacterStatusMenu : MonoBehaviour
         _spawnedBanners.Clear();
         _currentPage = 0;
 
+        if (CharacterManager.i.AllIDs().Count < 2) {
+            _bestieName.text = "";
+            _bestiePortrait.sprite = null;
+            return;
+        }
+
         ID bestFriend = null;
         var bestRelo = Mathf.NegativeInfinity;
         ID enemy = null;
