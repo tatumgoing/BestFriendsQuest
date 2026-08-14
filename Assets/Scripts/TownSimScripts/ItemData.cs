@@ -5,7 +5,8 @@ using UnityEngine;
 
 
 public enum ItemType { Clothing, Food, Housing}
-public enum ClothingType { OUTFIT, TOP, BOTTOM, HAT}
+public enum ItemSubType {ALL, HAT, TOP, BOTTOM, OUTFIT, BREAKFAST, LUNCH, DINNER, DESSERT, DRINKS, SNACKS, ROOF, FLOOR, WALLS, FURNITURE, SHOES}
+public enum ClothingType { OUTFIT, TOP, BOTTOM, HAT, SHOES}
 
 [CreateAssetMenu(fileName = "Item", menuName = "Data/Item", order = 1)]
 public class ItemData : ScriptableObject
@@ -20,6 +21,7 @@ public class ItemData : ScriptableObject
 
     [Space()]
     public ItemType Type;
+    public ItemSubType SubType;
 
     [ConditionalField(nameof(Type), false, false, ItemType.Clothing)] public ClothingType ClothingType;
     [ConditionalField(nameof(Type), false, false, ItemType.Clothing), SerializeField] private bool _customColor;

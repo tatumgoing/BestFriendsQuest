@@ -13,9 +13,10 @@ public class CharacterStatusMenu : MonoBehaviour
     [Header("CurrentBestie")]
     [SerializeField] private Image _bestiePortrait;
     [SerializeField] private TextMeshProUGUI _bestieName;
+    [SerializeField] private GameObject _bestieParent;
 
-    [Header("Misc")]
-    [SerializeField] private CharacterProfileDataDisplay _leftCharacterInfo;
+    [Header("Relationships")]
+    [SerializeField] private GameObject _relationshipPanelParent;
     [SerializeField] private GameObject _relationshipBannerPrefab;
     [SerializeField] private Transform _relationshipListParent;
     [SerializeField] private GameObject _multiPageParent;
@@ -26,21 +27,11 @@ public class CharacterStatusMenu : MonoBehaviour
     private List<RelationshipBanner> _spawnedBanners = new List<RelationshipBanner>();
     private int _currentPage;
 
-    public void HideLeftinfo() => _leftCharacterInfo.gameObject.SetActive(false);
-
-    public void ShowInfoLeft(ID id)
-    {
-        _leftCharacterInfo.gameObject.SetActive(true);
-        //_leftCharacterInfo.Show(id);
-    }
-
     public void Show(ID id)
     {
         gameObject.SetActive(true);
         _happinessSlider.Initialize(id);
         _profileDisplay.Show(id);
-
-        HideLeftinfo();
 
         BuildRelationshipBanners(id);
     }
@@ -52,10 +43,12 @@ public class CharacterStatusMenu : MonoBehaviour
         _currentPage = 0;
 
         if (CharacterManager.i.AllIDs().Count < 2) {
-            _bestieName.text = "";
-            _bestiePortrait.sprite = null;
+            _bestieParent.SetActive(false);
+            _relationshipPanelParent.SetActive(false);
             return;
         }
+        _bestieParent.SetActive(true);
+        _relationshipPanelParent.SetActive(true);
 
         ID bestFriend = null;
         var bestRelo = Mathf.NegativeInfinity;

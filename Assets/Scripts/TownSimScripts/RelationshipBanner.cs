@@ -25,8 +25,4 @@ public class RelationshipBanner : MonoBehaviour
         _relationshipLevelTxt.text = "Level " + Mathf.FloorToInt(relationshipLevel);
         _relationshipNameText.text = levelName;
     }
-
-    public void Hover() => GetComponentInParent<CharacterStatusMenu>().ShowInfoLeft(_id);
-    
-    public void EndHover() => GetComponentInParent<CharacterStatusMenu>().HideLeftinfo();
 }
