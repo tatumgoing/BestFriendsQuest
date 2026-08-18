@@ -5,6 +5,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 [System.Serializable]
 public class CategoryGameObjectLink
@@ -20,6 +21,12 @@ public class GiftMenu : MonoBehaviour, IItemListController
     [HideInInspector] public UnityEvent<(ID, ItemData)> OnGiveGift = new UnityEvent<(ID, ItemData)>();
     [SerializeField] private TextMeshProUGUI _categoryTitle;
     [SerializeField] private List<CategoryGameObjectLink> _categoryParents = new List<CategoryGameObjectLink>();
+
+    [Header("Selected")]
+    [SerializeField] private Image _selectedImg;
+    [SerializeField] private TextMeshProUGUI _selectedName;
+    [SerializeField] private RectTransform _selectedItemParent;
+    [SerializeField] private Vector2 _selectedItemRotRange = new Vector2(-4, 4);
 
     [Header("Item List")]
     [SerializeField] private int _numItems = 16;
@@ -39,6 +46,7 @@ public class GiftMenu : MonoBehaviour, IItemListController
     private void OnEnable()
     {
         _listItems = _gridParent.GetComponentsInChildren<InventoryListItem>(true).ToList();
+        ResetSelected();
     }
 
     public void Show(ID id)
@@ -56,7 +64,10 @@ public class GiftMenu : MonoBehaviour, IItemListController
         _currentSubcategory = ItemSubType.ALL;
         DisplayItems();
 
-        ShowClothing();
+        if (_items.Count == 0) return;
+
+        var cat = _items[0].Type;
+        ChangeCategory(cat);
     }
 
     public void SelectSubcategoryAll() => ChangeSubCategory(ItemSubType.ALL);
@@ -77,8 +88,13 @@ public class GiftMenu : MonoBehaviour, IItemListController
     public void SelectSubcategoryFurniture() => ChangeSubCategory(ItemSubType.FURNITURE);
     public void ChangeSubCategory(ItemSubType subcategory)
     {
+        if (_currentSubcategory == subcategory) return;
+
         _currentSubcategory = subcategory;
         DisplayItems();
+        ResetSelected();
+
+        if (_listItems[0].Item != null) _listItems[0].Select();
     }
 
     private void DisplayItems()
@@ -105,11 +121,28 @@ public class GiftMenu : MonoBehaviour, IItemListController
         }
     }
 
+    private void ResetSelected()
+    {
+        _selectedImg.enabled = false;
+        _selectedName.text = "";
+    }
+
     void IItemListController.SelectItem(ItemData item)
     {
         _currentItem = item;
+
+        if (item == null) {
+            ResetSelected();
+            return;
+        }
+
         foreach (var i in _listItems) if (i.Item != item) i.Deselect();
         _currentlySelectedItem.ShowItem(item);
+
+        _selectedItemParent.localEulerAngles = Vector3.forward * Utils.Rand(_selectedItemRotRange);
+        _selectedImg.sprite = item.sprite;
+        _selectedImg.enabled = true;
+        _selectedName.text = item.Name;
     }
 
     public void GiveGift()
@@ -125,5 +158,7 @@ public class GiftMenu : MonoBehaviour, IItemListController
     {
         _currentCategory = type;
         DisplayItems();
+        ResetSelected();
+        if (_listItems[0].Item != null) _listItems[0].Select();
     }
 }

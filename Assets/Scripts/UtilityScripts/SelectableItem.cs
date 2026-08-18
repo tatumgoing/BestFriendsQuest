@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using MyBox;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using System.Linq;
 
 public enum SelectableItemDataType { GRAPHIC, GAMEOBJECT, CANVASGROUP, SPRITE}
 public enum ButtonState { NORMAL, HOVERED, SELECTED, DISABLED }
@@ -355,9 +356,8 @@ public class SelectableItem : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     private void UpdateAnimator()
     {
         if (!_hasAnimation || !_animator) return;
-        _animator.SetBool(_animationSelectedBool, _visualState == ButtonState.SELECTED);
-        _animator.SetBool(_animationHoveredBool, _visualState == ButtonState.HOVERED);
-        _animator.SetBool(_animationDisabledBool, _visualState == ButtonState.DISABLED);
+        if (Utils.HasParameter(_animator, _animationSelectedBool)) _animator.SetBool(_animationSelectedBool, _visualState == ButtonState.SELECTED);
+        if (Utils.HasParameter(_animator, _animationHoveredBool)) _animator.SetBool(_animationHoveredBool, _visualState == ButtonState.HOVERED);
+        if (Utils.HasParameter(_animator, _animationDisabledBool)) _animator.SetBool(_animationDisabledBool, _visualState == ButtonState.DISABLED);
     }
-
 }

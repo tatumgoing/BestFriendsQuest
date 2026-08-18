@@ -32,6 +32,16 @@ public static class Utils
 
     public static bool InRange(float t, Vector2 range) => t >= range.x && t <= range.y;
 
+    public static bool HasParameter(Animator animator, string paramName)
+    {
+        foreach (AnimatorControllerParameter param in animator.parameters) {
+            if (param.name == paramName) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static void OpenMenu()
     {
         //Debug.Log("opened Menu");
